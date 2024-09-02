@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/layout.service.dart';
 import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/custom_elevated_button.widget.dart';
 import '../../../common_modules_widgets/language_dropdown_button.widget.dart';
@@ -57,11 +58,17 @@ class OnBoardingScreen extends StatelessWidget {
                 top: MediaQuery.of(context).size.height * 0.3,
                 left: AppSizes.s0,
                 right: AppSizes.s0,
-                child: Image.asset(
-                  AppImages.logo,
-                  width: AppSizes.s125,
+                child: Container(
+                  padding: const EdgeInsets.all(AppSizes.s20),
+                  width: LayoutService.getWidth(context),
                   height: AppSizes.s125,
-                  key: const ValueKey<String>(AppImages.logo),
+                  child: Center(
+                    child: Image.asset(
+                      AppImages.logo,
+                      fit: BoxFit.fill,
+                      key: const ValueKey<String>(AppImages.logo),
+                    ),
+                  ),
                 ),
               ),
 

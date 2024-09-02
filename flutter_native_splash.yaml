@@ -1,0 +1,39 @@
+flutter_native_splash:
+  # The path to your splash screen image.
+  # This image will be displayed in the center of the splash screen.
+  image: assets/images/general_images/app_icon.png
+
+  # The background color of your splash screen.
+  # It should be a hex color code as a string (e.g., "#42a5f5").
+  color: "#FFFFFF"
+
+  # Enable the splash screen for Android platform.
+  android: true
+
+  # Enable the splash screen for iOS platform.
+  ios: true
+
+  # Enable the splash screen for Web platform.
+  web: true
+
+  # Android 12 specific configurations
+  android_12:
+    image: assets/images/general_images/logo_android12+.png
+    color: "#FFFFFF"
+
+  # (Optional) The alignment of the image on Android.
+  # Possible values are: 'top', 'bottom', 'center', 'left', 'right', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'.
+  android_gravity: center
+
+  # (Optional) The content mode for the image on iOS.
+  # Possible values are: 'center', 'top', 'bottom', 'left', 'right', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'scaleAspectFit', 'scaleAspectFill', 'scaleToFill'.
+  ios_content_mode: center
+
+  # (Optional) The mode for the image on Web.
+  # Possible values are: 'center', 'top', 'bottom', 'left', 'right', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'contain', 'cover'.
+  web_image_mode: center
+
+  # (Optional) Enable fullscreen mode for the splash screen.
+  # This makes the splash screen cover the entire screen.
+  fullscreen: true
+

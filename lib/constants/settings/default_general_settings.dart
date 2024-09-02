@@ -69,12 +69,6 @@ Map<String, dynamic> _defaultGeneralSettingsMap = {
         "image": AppImages.onboardingBackground2,
         "info":
             "Record attendance in multiple ways, and watch live all attendance records and their dates",
-      },
-      {
-        "title": "PAYROLL IS MORE ACCURATE AND FASTER",
-        "image": AppImages.onboardingBackground3,
-        "info":
-            "View the salary in its details, automatically based on your permissions and attendance",
       }
     ]
   },

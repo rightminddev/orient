@@ -43,8 +43,6 @@ abstract class AppImages {
       '$_onboardingImagesDirectory/onboarding_1.png';
   static const String onboardingBackground2 =
       '$_onboardingImagesDirectory/onboarding_2.png';
-  static const String onboardingBackground3 =
-      '$_onboardingImagesDirectory/onboarding_3.png';
   // login images
   static const String loginBackground =
       '$_loginImagesDirectory/login_background.png';

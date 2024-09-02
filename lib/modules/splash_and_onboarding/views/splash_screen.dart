@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/layout.service.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_images.dart';
 import '../../../constants/app_sizes.dart';
@@ -37,28 +38,35 @@ class _SplashScreenState extends State<SplashScreen> {
                 key: const ValueKey<String>(AppImages.splashScreenBackground)),
             const OverlayGradientWidget(),
             Positioned(
-              bottom: AppSizes.s48,
               left: AppSizes.s0,
               right: AppSizes.s0,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    AppImages.logo,
-                    height: AppSizes.s75,
-                    width: AppSizes.s75,
-                    key: const ValueKey<String>(AppImages.logo),
-                  ),
-                  Text(
-                    AppStrings.loading.tr(),
-                    style: LocalizationService.isArabic(context: context)
-                        ? Theme.of(context)
-                            .textTheme
-                            .displayMedium
-                            ?.copyWith(letterSpacing: 0)
-                        : Theme.of(context).textTheme.displayMedium,
-                  )
-                ],
+              child: SizedBox(
+                height: LayoutService.getHeight(context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox.shrink(),
+                    Image.asset(
+                      AppImages.logo,
+                      height: AppSizes.s100,
+                      width: LayoutService.getWidth(context) - AppSizes.s50,
+                      key: const ValueKey<String>(AppImages.logo),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: AppSizes.s40),
+                      child: Text(
+                        AppStrings.loading.tr(),
+                        style: LocalizationService.isArabic(context: context)
+                            ? Theme.of(context)
+                                .textTheme
+                                .displayMedium
+                                ?.copyWith(letterSpacing: 0)
+                            : Theme.of(context).textTheme.displayMedium,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],

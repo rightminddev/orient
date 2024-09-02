@@ -1,7 +1,7 @@
 flutter_native_splash:
   # The path to your splash screen image.
   # This image will be displayed in the center of the splash screen.
-  image: assets/images/general_images/app_icon.png
+  image: assets/images/general_images/orient-logo.png
 
   # The background color of your splash screen.
   # It should be a hex color code as a string (e.g., "#42a5f5").
@@ -18,7 +18,7 @@ flutter_native_splash:
 
   # Android 12 specific configurations
   android_12:
-    image: assets/images/general_images/logo_android12+.png
+    image: assets/images/general_images/orient-logo.png
     color: "#FFFFFF"
 
   # (Optional) The alignment of the image on Android.

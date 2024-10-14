@@ -4,6 +4,7 @@ import 'package:orient/modules/orders/views/my_stores_screen.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
 import 'modules/components/subviews/button_screen.dart';
+import 'modules/components/subviews/image_with_title_screen.dart';
 import 'platform/platform_is.dart';
 import 'routing/app_router.dart';
 import 'package:flutter/gestures.dart';
@@ -36,9 +37,10 @@ class MyApp extends StatelessWidget {
       title: 'Orient',
       restorationScopeId: 'app',
       routes: {
-        '/buttons': (context) => ButtonsScreen(),
+        '/buttons': (context) => const ButtonsScreen(),
+        '/image_with_title': (context) => const ImageWithTitleScreen(),
       },
-      supportedLocales: [
+      supportedLocales: const [
         Locale('en', 'US'),
         Locale('ar', 'EG'),
       ],
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
       theme: AppThemeService.getTheme(isDark: false, context: context),
       darkTheme: AppThemeService.getTheme(isDark: true, context: context),
       scrollBehavior: AppScrollBehavior(),
-      home: ComponenetsScreen(),
+      home: const ComponenetsScreen(),
     );
   }
 }

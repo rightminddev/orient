@@ -88,6 +88,7 @@ class AuthenticationViewModel extends ChangeNotifier {
               password: passwordController.text,
               deviceInformation:
                   appConfigServiceProvider.deviceInformation.toMap());
+
       if (result.success &&
           result.data != null &&
           (result.data?.isNotEmpty ?? false)) {

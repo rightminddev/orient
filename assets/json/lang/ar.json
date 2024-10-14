@@ -94,5 +94,6 @@
   "invalidUUIDOrSentType": "UUID أو نوع الإرسال غير صالح!",
   "thisAccountHasBeenDeactivated": "تم تعطيل هذا الحساب!",
   "thisAccountHasBeenBlocked": "تم حظر هذا الحساب!",
-  "thisAccountHasBeenScheduledForDeletion": "تم جدولة هذا الحساب للحذف!"
+  "thisAccountHasBeenScheduledForDeletion": "تم جدولة هذا الحساب للحذف!",
+  "myStores": "متاجري"
 }

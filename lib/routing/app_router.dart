@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/modules/orders/views/my_orders_screen.dart';
+import 'package:orient/modules/orders/views/my_stores_screen.dart';
 import '../general_services/app_config.service.dart';
 import '../models/request.model.dart';
 import '../modules/authentication/views/login_screen.dart';
@@ -47,6 +49,7 @@ enum AppRoutes {
   requestsById,
   requestDetails,
   addRequest,
+  stores,
   requestsCalendar,
   employeesList,
   employeeDetails,
@@ -596,6 +599,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           parentNavigatorKey: _rootNavigatorKey,
           name: AppRoutes.splash.name,
           builder: (context, state) => const SplashScreen(),
+          //builder: (context, state) => MyStoresScreen(),
         ),
         GoRoute(
             path: '/:lang/onboarding-screen',
@@ -646,6 +650,31 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           parentNavigatorKey: _rootNavigatorKey,
           name: AppRoutes.offlineScreen.name,
           builder: (context, state) => const OfflineScreen(),
+        ),
+        GoRoute(
+          path: '/:lang/stores',
+          parentNavigatorKey: _rootNavigatorKey,
+          name: AppRoutes.stores.name,
+          pageBuilder: (context, state) {
+            Offset? begin = state.extra as Offset?;
+
+            final animationController = AnimationController(
+              vsync: ticker,
+            );
+            // Make sure to dispose the controller after the transition is complete
+            animationController.addStatusListener((status) {
+              if (status == AnimationStatus.completed ||
+                  status == AnimationStatus.dismissed) {
+                animationController.dispose();
+              }
+            });
+            return AppRouterTransitions.slideTransition(
+              key: state.pageKey,
+              child: const MyStoresScreen(),
+              animation: animationController,
+              begin: begin ?? const Offset(1.0, 0.0),
+            );
+          },
         ),
       ],
       debugLogDiagnostics: true,

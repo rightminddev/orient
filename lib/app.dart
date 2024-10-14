@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/modules/orders/views/my_stores_screen.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
 import 'platform/platform_is.dart';
@@ -14,19 +15,33 @@ class MyApp extends StatelessWidget {
     // precache spash screen image
     precacheImage(const AssetImage(AppImages.splashScreenBackground), context);
     final appGoRouter = goRouter(context);
-    return MaterialApp.router(
+    // return MaterialApp.router(
+    //   title: 'Orient',
+    //   restorationScopeId: 'app',
+    //   routerDelegate: appGoRouter.routerDelegate,
+    //   routeInformationParser: appGoRouter.routeInformationParser,
+    //   routeInformationProvider: appGoRouter.routeInformationProvider,
+    //   localizationsDelegates: context.localizationDelegates,
+    //   supportedLocales: context.supportedLocales,
+    //   locale: context.locale,
+    //   themeMode: ThemeMode.light,
+    //   theme: AppThemeService.getTheme(isDark: false, context: context),
+    //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
+    //   scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
+    // );
+
+    return MaterialApp(
       title: 'Orient',
       restorationScopeId: 'app',
-      routerDelegate: appGoRouter.routerDelegate,
-      routeInformationParser: appGoRouter.routeInformationParser,
-      routeInformationProvider: appGoRouter.routeInformationProvider,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('ar', 'EG'),
+      ],
       themeMode: ThemeMode.light,
       theme: AppThemeService.getTheme(isDark: false, context: context),
       darkTheme: AppThemeService.getTheme(isDark: true, context: context),
-      scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
+      scrollBehavior: AppScrollBehavior(),
+      home: MyStoresScreen(),
     );
   }
 }

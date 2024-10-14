@@ -20,7 +20,7 @@ class HttpApiService implements BackEndServicesInterface {
     return _singleton;
   }
   HttpApiService._internal();
-  static Future<Uri> _getUri(String url) async {
+  static Uri _getUri(String url) {
     return Uri.parse(url);
   }
 
@@ -102,8 +102,9 @@ class HttpApiService implements BackEndServicesInterface {
       bool? checkOnTokenExpiration = true,
       required BuildContext context}) async {
     try {
+      debugPrint('GET --------------------- $url');
       final response = await http.get(
-        Uri.parse(url),
+        _getUri(url),
         headers: ApiServiceHelpers.buildHeaders(
             additionalHeaders: header, context: context),
       );
@@ -130,7 +131,7 @@ class HttpApiService implements BackEndServicesInterface {
     try {
       var httpClient = http.Client();
       final response = await httpClient.post(
-        await _getUri(url),
+        _getUri(url),
         headers: ApiServiceHelpers.buildHeaders(
             additionalHeaders: header, context: context),
         body: jsonEncode(data),
@@ -161,7 +162,10 @@ class HttpApiService implements BackEndServicesInterface {
     bool? allData = false,
   }) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse(url));
+      var request = http.MultipartRequest(
+        'POST',
+        _getUri(url),
+      );
       request.fields.addAll(data);
       request.headers.addAll(ApiServiceHelpers.buildHeaders(
           additionalHeaders: header, context: context));
@@ -213,7 +217,7 @@ class HttpApiService implements BackEndServicesInterface {
       required BuildContext context}) async {
     try {
       final response = await http.put(
-        await _getUri(url),
+        _getUri(url),
         headers: ApiServiceHelpers.buildHeaders(
             additionalHeaders: header, context: context),
         body: jsonEncode(data),
@@ -240,7 +244,7 @@ class HttpApiService implements BackEndServicesInterface {
       required BuildContext context}) async {
     try {
       final response = await http.delete(
-        await _getUri(url),
+        _getUri(url),
         headers: ApiServiceHelpers.buildHeaders(
             additionalHeaders: header, context: context),
       );
@@ -269,7 +273,7 @@ class HttpApiService implements BackEndServicesInterface {
       String mimeType = lookupMimeType(name) ?? 'application/octet-stream';
       String fileName = name.split('/').last;
 
-      var request = http.MultipartRequest('POST', await _getUri(url));
+      var request = http.MultipartRequest('POST', _getUri(url));
       request.fields.addAll(requestFields ?? {});
       request.files.add(http.MultipartFile.fromBytes(
         'file',
@@ -352,7 +356,7 @@ class HttpApiService implements BackEndServicesInterface {
         return validateTokensResult;
       }
       var httpClient = http.Client();
-      debugPrint('POST: ${(await _getUri(url)).toString()}');
+      debugPrint('POST: ${(_getUri(url)).toString()}');
 
       if (asString) {
         data = json
@@ -362,7 +366,7 @@ class HttpApiService implements BackEndServicesInterface {
       var body = json.encode(data, toEncodable: ApiServiceHelpers.customEncode);
 
       http.Response response = await httpClient.post(
-        await _getUri(url),
+        _getUri(url),
         headers: ApiServiceHelpers.buildHeaders(
             additionalHeaders: header, context: context),
         body: utf8.encode(body),
@@ -400,10 +404,10 @@ class HttpApiService implements BackEndServicesInterface {
       }
       var httpClient = http.Client();
 
-      debugPrint('PUT: ${(await _getUri(url)).toString()}');
+      debugPrint('PUT: ${(_getUri(url)).toString()}');
 
       http.Response response = await httpClient.put(
-        await _getUri(url),
+        _getUri(url),
         headers: ApiServiceHelpers.buildHeaders(
             additionalHeaders: header, context: context),
         body: json.encode(data, toEncodable: ApiServiceHelpers.customEncode),
@@ -450,7 +454,7 @@ class HttpApiService implements BackEndServicesInterface {
       if (validateTokensResult.success == false) {
         return validateTokensResult;
       }
-      var request = http.MultipartRequest("POST", await _getUri(url));
+      var request = http.MultipartRequest("POST", _getUri(url));
       request.headers['Authorization'] =
           'Bearer ${appConfigServiceProvider.token}';
       // request.fields['user'] = 'someone@somewhere.com';
@@ -524,9 +528,9 @@ class HttpApiService implements BackEndServicesInterface {
       if (validateTokensResult.success == false) {
         return validateTokensResult;
       }
-      debugPrint('POST: ${(await _getUri(url)).toString()}');
+      debugPrint('POST: ${(_getUri(url)).toString()}');
       var httpClient = http.Client();
-      var result = await httpClient.post(await _getUri(url),
+      var result = await httpClient.post(_getUri(url),
           body: json.encode(data, toEncodable: ApiServiceHelpers.customEncode),
           headers: ApiServiceHelpers.buildHeaders(
               addToken: addToken, additionalHeaders: header, context: context));
@@ -563,9 +567,9 @@ class HttpApiService implements BackEndServicesInterface {
       if (validateTokensResult.success == false) {
         return validateTokensResult;
       }
-      debugPrint('PUT: ${(await _getUri(url)).toString()}');
+      debugPrint('PUT: ${(_getUri(url)).toString()}');
       var httpClient = http.Client();
-      var result = await httpClient.put(await _getUri(url),
+      var result = await httpClient.put(_getUri(url),
           body: json.encode(data, toEncodable: ApiServiceHelpers.customEncode),
           headers: ApiServiceHelpers.buildHeaders(
               additionalHeaders: header, context: context));
@@ -603,10 +607,9 @@ class HttpApiService implements BackEndServicesInterface {
       if (validateTokensResult.success == false) {
         return validateTokensResult;
       }
-      debugPrint(
-          'GET --------------------- ${(await _getUri(url)).toString()}');
+      debugPrint('GET --------------------- ${(_getUri(url)).toString()}');
       var httpClient = http.Client();
-      var response = await httpClient.get(await _getUri(url),
+      var response = await httpClient.get(_getUri(url),
           headers: ApiServiceHelpers.buildHeaders(
               additionalHeaders: header, context: context));
       httpClient.close();
@@ -654,10 +657,9 @@ class HttpApiService implements BackEndServicesInterface {
       if (validateTokensResult.success == false) {
         return validateTokensResult;
       }
-      debugPrint(
-          'DELETE --------------------- ${(await _getUri(url)).toString()}');
+      debugPrint('DELETE --------------------- ${(_getUri(url)).toString()}');
       var httpClient = http.Client();
-      var response = await httpClient.delete(await _getUri(url),
+      var response = await httpClient.delete(_getUri(url),
           headers: ApiServiceHelpers.buildHeaders(
               additionalHeaders: header, context: context));
       httpClient.close();
@@ -698,11 +700,10 @@ class HttpApiService implements BackEndServicesInterface {
       if (validateTokensResult.success == false) {
         return validateTokensResult;
       }
-      debugPrint(
-          'DELETE --------------------- ${(await _getUri(url)).toString()}');
+      debugPrint('DELETE --------------------- ${(_getUri(url)).toString()}');
       var httpClient = http.Client();
 
-      http.Response response = await httpClient.delete(await _getUri(url),
+      http.Response response = await httpClient.delete(_getUri(url),
           headers: ApiServiceHelpers.buildHeaders(
               additionalHeaders: header, context: context));
 
@@ -742,7 +743,7 @@ class HttpApiService implements BackEndServicesInterface {
         return validateTokensResult;
       }
       var httpClient = http.Client();
-      var result = await httpClient.get(await _getUri(url),
+      var result = await httpClient.get(_getUri(url),
           headers: ApiServiceHelpers.buildHeaders(
               additionalHeaders: header, context: context));
       httpClient.close();

@@ -94,6 +94,6 @@
   "invalidUUIDOrSentType": "Invalid UUID or Send Type!",
   "thisAccountHasBeenDeactivated": "This Account has been deactivated!",
   "thisAccountHasBeenBlocked": "This Account has been blocked!",
-  "thisAccountHasBeenScheduledForDeletion": "This Account has been Scheduled for Deletion!"
-
+  "thisAccountHasBeenScheduledForDeletion": "This Account has been Scheduled for Deletion!",
+  "myStores": "My stores"
 }

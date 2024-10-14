@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      debugShowCheckedModeBanner:false,
       themeMode: ThemeMode.light,
       theme: AppThemeService.getTheme(isDark: false, context: context),
       darkTheme: AppThemeService.getTheme(isDark: true, context: context),

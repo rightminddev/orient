@@ -49,7 +49,7 @@ class GeneralSettingsModel extends AppSettingsModel {
   factory GeneralSettingsModel.fromJson(Map<String, dynamic> json) {
     return GeneralSettingsModel(
       lastUpdateDate: json['last_update_date'],
-      popup: json['popup'] is List ? null : Popup.fromJson(json['popup']),
+      popup: (json['popup'] == null) ? null : Popup.fromJson(json['popup']),
       mandatoryUpdatesAlertBuild: json['mandatory_updates_alert_build'],
       mandatoryUpdatesEndBuild: json['mandatory_updates_end_build'],
       storeUrl: json['store_url'] != null
@@ -409,7 +409,8 @@ class ColorsModel {
 
 class CompanyContacts {
   final String? phone;
-  final List<String?>? otherphones;
+  //final List<String?>? otherphones;
+  final String? otherphones;
   final String? whatassp;
   final String? whatsapp;
   final String? workingHours;
@@ -443,11 +444,11 @@ class CompanyContacts {
   factory CompanyContacts.fromJson(Map<String, dynamic> json) {
     return CompanyContacts(
       phone: json['phone'],
-      otherphones: json['otherphones'] != null
-          ? (json['otherphones'] as List<dynamic>)
-              .map((e) => e?.toString())
-              .toList()
-          : null,
+      otherphones: json['otherphones'],
+      // ? (json['otherphones'] as List<dynamic>)
+      //     .map((e) => e?.toString())
+      //     .toList()
+      // : null,
       whatassp: json['whatassp'],
       branches: json['branches'] != null
           ? (json['branches'] as List<dynamic>)

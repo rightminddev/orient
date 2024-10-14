@@ -28,6 +28,13 @@ class ComponenetsScreen extends StatelessWidget {
                 },
                 child: Text('image with title'),
               ),
+              SizedBox(height: AppSizes.s12),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/comment_widget');
+                },
+                child: Text('comment widget'),
+              ),
             ],
           ),
         ),

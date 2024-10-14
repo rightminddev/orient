@@ -4,4 +4,5 @@ class AppIcons {
       "assets/icons/continue-shopping-cart.svg";
   static const String signOut = "assets/icons/sign-out.svg";
   static const String redeem = "assets/icons/redeem.svg";
+  static const String star = 'assets/icons/star.svg';
 }

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/modules/components/subviews/comment_screen.dart';
 import 'package:orient/modules/components/views/componenets_screen.dart';
 import 'package:orient/modules/orders/views/my_stores_screen.dart';
 import 'constants/app_images.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/buttons': (context) => const ButtonsScreen(),
         '/image_with_title': (context) => const ImageWithTitleScreen(),
+        '/comment_widget': (context) => const CommentScreen(),
       },
       supportedLocales: const [
         Locale('en', 'US'),

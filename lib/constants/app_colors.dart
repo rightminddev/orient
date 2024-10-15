@@ -7,7 +7,6 @@ abstract class AppColors {
   static const int red = 0xFFBD1215;
   static const int red1 = 0xFFFF6B6B;
   static const int gray1 = 0xFF464646;
-  static const int pink = 0xFFE6007E;
 
   // application colors
   static const int c1 = 0xff1E2D74;

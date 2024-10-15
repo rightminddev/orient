@@ -58,7 +58,8 @@ enum EndpointsNames {
   removeAccount,
   empEvaluation,
   summaryReport,
-  activateTfa
+  activateTfa,
+  myStores
 }
 
 class EndPoint {

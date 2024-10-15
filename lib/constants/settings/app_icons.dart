@@ -5,4 +5,10 @@ class AppIcons {
   static const String signOut = "assets/icons/sign-out.svg";
   static const String redeem = "assets/icons/redeem.svg";
   static const String star = 'assets/icons/star.svg';
+  static const String addReqShoppingCart =
+      'assets/icons/add-req-shopping-cart.svg';
+  static const String notes = 'assets/icons/notes.svg';
+  static const String bag = 'assets/icons/bag.svg';
+
+  static const String edit = 'assets/icons/edit.svg';
 }

@@ -126,6 +126,7 @@ flutter:
     - assets/json/lang/
     - assets/icons/
     - pubspec.yaml
+    - assets/images/
     - assets/images/alerts_images/
     - assets/images/splash_images/
     - assets/images/general_images/

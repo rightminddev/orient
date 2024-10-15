@@ -125,9 +125,9 @@ class LoginScreenState extends State<LoginScreen>
                                               hintText:
                                                   AppStrings.yourEmail.tr(),
                                             ),
-                                            validator: (value) =>
-                                                ValidationService.validateEmail(
-                                                    value),
+                                            // validator: (value) =>
+                                            //     ValidationService.validateEmail(
+                                            //         value),
                                           );
                                   },
                                 ),
@@ -138,8 +138,8 @@ class LoginScreenState extends State<LoginScreen>
                                   decoration: InputDecoration(
                                     hintText: AppStrings.password.tr(),
                                   ),
-                                  validator: (value) =>
-                                      ValidationService.validatePassword(value),
+                                  // validator: (value) =>
+                                  //     ValidationService.validatePassword(value),
                                   obscureText: true,
                                 ),
                                 gapH12,

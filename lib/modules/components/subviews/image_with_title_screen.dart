@@ -75,7 +75,7 @@ class ImageWithTitleScreen extends StatelessWidget {
                 ///     subtitleFontWeight: FontWeight.w500,
                 isButtonOneVisible: true,
                 buttonOneTitle: 'discover',
-                buttonOneColor: const Color(AppColors.pink),
+                buttonOneColor: const Color(AppColors.oc2),
                 buttonOneOnPressed: () {},
               ),
               CustomListTileWidget(
@@ -89,7 +89,7 @@ class ImageWithTitleScreen extends StatelessWidget {
                 ///     subtitleFontWeight: FontWeight.w500,
                 isButtonOneVisible: true,
                 buttonOneTitle: 'More',
-                buttonOneColor: const Color(AppColors.pink),
+                buttonOneColor: const Color(AppColors.oc2),
                 buttonOneOnPressed: () {},
               ),
             ],

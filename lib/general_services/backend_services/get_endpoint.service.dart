@@ -306,6 +306,11 @@ abstract class EndpointServices {
             name: name,
             method: 'GET',
             url: '${AppConstants.baseUrl}/emp_reports/v1/summary_report');
+      case EndpointsNames.myStores:
+        return EndPoint(
+            name: name,
+            method: 'GET',
+            url: '${AppConstants.baseUrl}/rm_ecommarce/v1/stores');
     }
   }
 }

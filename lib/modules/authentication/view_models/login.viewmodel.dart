@@ -689,7 +689,8 @@ class AuthenticationViewModel extends ChangeNotifier {
       case AuthStatus.active:
         appConfigServiceProvider.setAuthenticationStatusWithToken(
             isLogin: true, token: result['token']);
-        context.goNamed(AppRoutes.home.name);
+        //context.goNamed(AppRoutes.home.name);
+        context.goNamed(AppRoutes.merchantHome.name);
         return;
       case AuthStatus.deactivated:
         AlertsService.info(

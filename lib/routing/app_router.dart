@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:orient/modules/orders/views/my_orders_screen.dart';
-import 'package:orient/modules/orders/views/my_stores_screen.dart';
+import 'package:orient/merchant/main/views/merchant_main_screen.dart';
 import '../general_services/app_config.service.dart';
+import '../merchant/stores/views/my_stores_actions_screen.dart';
 import '../models/request.model.dart';
+import '../models/stores/store_model.dart';
 import '../modules/authentication/views/login_screen.dart';
 import '../modules/general/views/comapny_structure_info_screen.dart';
 import '../modules/fingerprint/views/fingerprint_screen.dart';
@@ -37,9 +38,11 @@ import '../modules/requests/views/requests_calendar_screen.dart';
 
 enum AppRoutes {
   home,
+  merchantHome,
   splash,
   onboarding,
   login,
+  storeActions,
   offlineScreen,
   qrcodeScreen,
   fingerprint,
@@ -117,73 +120,78 @@ GoRouter goRouter(BuildContext context) => GoRouter(
       routes: [
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
-          builder: (context, state, child) => MainScreen(
+          // builder: (context, state, child) => MainScreen(
+          //   key: UniqueKey(),
+          //   currentNavPage: state.fullPath == null
+          //       ? NavbarPages.home
+          //       : getNavbarPage(currentLocationRoute: state.fullPath!),
+          //   child: child,
+          // ),
+          builder: (context, state, child) => MerchantMainScreen(
             key: UniqueKey(),
-            currentNavPage: state.fullPath == null
-                ? NavbarPages.home
-                : getNavbarPage(currentLocationRoute: state.fullPath!),
-            child: child,
           ),
+
           routes: [
             GoRoute(
-                path: '/:lang',
-                parentNavigatorKey: _shellNavigatorKey,
-                name: AppRoutes.home.name,
-                pageBuilder: (context, state) {
-                  Offset? begin = state.extra as Offset?;
-                  final lang = state.uri.queryParameters['lang'];
-                  if (lang != null) {
-                    final locale = Locale(lang);
-                    context.setLocale(locale);
+              path: '/:lang',
+              parentNavigatorKey: _shellNavigatorKey,
+              name: AppRoutes.home.name,
+              pageBuilder: (context, state) {
+                Offset? begin = state.extra as Offset?;
+                final lang = state.uri.queryParameters['lang'];
+                if (lang != null) {
+                  final locale = Locale(lang);
+                  context.setLocale(locale);
+                }
+                final animationController = AnimationController(
+                  vsync: ticker,
+                );
+                // Make sure to dispose the controller after the transition is complete
+                animationController.addStatusListener((status) {
+                  if (status == AnimationStatus.completed ||
+                      status == AnimationStatus.dismissed) {
+                    animationController.dispose();
                   }
-                  final animationController = AnimationController(
-                    vsync: ticker,
-                  );
-                  // Make sure to dispose the controller after the transition is complete
-                  animationController.addStatusListener((status) {
-                    if (status == AnimationStatus.completed ||
-                        status == AnimationStatus.dismissed) {
-                      animationController.dispose();
+                });
+                return AppRouterTransitions.slideTransition(
+                  key: state.pageKey,
+                  child: const HomeScreen(),
+                  animation: animationController,
+                  begin: begin ?? const Offset(1.0, 0.0),
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: 'personal-profile',
+                  parentNavigatorKey: _shellNavigatorKey,
+                  name: AppRoutes.personalProfile.name,
+                  pageBuilder: (context, state) {
+                    Offset? begin = state.extra as Offset?;
+                    final lang = state.uri.queryParameters['lang'];
+                    if (lang != null) {
+                      final locale = Locale(lang);
+                      context.setLocale(locale);
                     }
-                  });
-                  return AppRouterTransitions.slideTransition(
-                    key: state.pageKey,
-                    child: const HomeScreen(),
-                    animation: animationController,
-                    begin: begin ?? const Offset(1.0, 0.0),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: 'personal-profile',
-                    parentNavigatorKey: _shellNavigatorKey,
-                    name: AppRoutes.personalProfile.name,
-                    pageBuilder: (context, state) {
-                      Offset? begin = state.extra as Offset?;
-                      final lang = state.uri.queryParameters['lang'];
-                      if (lang != null) {
-                        final locale = Locale(lang);
-                        context.setLocale(locale);
+                    final animationController = AnimationController(
+                      vsync: ticker,
+                    );
+                    // Make sure to dispose the controller after the transition is complete
+                    animationController.addStatusListener((status) {
+                      if (status == AnimationStatus.completed ||
+                          status == AnimationStatus.dismissed) {
+                        animationController.dispose();
                       }
-                      final animationController = AnimationController(
-                        vsync: ticker,
-                      );
-                      // Make sure to dispose the controller after the transition is complete
-                      animationController.addStatusListener((status) {
-                        if (status == AnimationStatus.completed ||
-                            status == AnimationStatus.dismissed) {
-                          animationController.dispose();
-                        }
-                      });
-                      return AppRouterTransitions.slideTransition(
-                        key: state.pageKey,
-                        child: const PersonalProfileScreen(),
-                        animation: animationController,
-                        begin: begin ?? const Offset(1.0, 0.0),
-                      );
-                    },
-                  )
-                ]),
+                    });
+                    return AppRouterTransitions.slideTransition(
+                      key: state.pageKey,
+                      child: const PersonalProfileScreen(),
+                      animation: animationController,
+                      begin: begin ?? const Offset(1.0, 0.0),
+                    );
+                  },
+                )
+              ],
+            ),
             GoRoute(
                 path: '/:lang/requests/:type',
                 parentNavigatorKey: _shellNavigatorKey,
@@ -351,6 +359,37 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   child: FingerprintScreen(
                     empId: employeeId,
                     empName: employeeName,
+                  ),
+                  animation: animationController,
+                  begin: begin ?? const Offset(1.0, 0.0),
+                );
+              },
+            ),
+            GoRoute(
+              path: '/:lang/store-actions',
+              parentNavigatorKey: _shellNavigatorKey,
+              name: AppRoutes.storeActions.name,
+              pageBuilder: (context, state) {
+                Offset? begin =
+                    (state.extra as Map<String, dynamic>)['offset'] as Offset?;
+
+                StoreModel storeModel = (state.extra
+                    as Map<String, dynamic>)['storeModel'] as StoreModel;
+                final animationController = AnimationController(
+                  vsync: ticker,
+                );
+                // Make sure to dispose the controller after the transition is complete
+                animationController.addStatusListener((status) {
+                  if (status == AnimationStatus.completed ||
+                      status == AnimationStatus.dismissed) {
+                    animationController.dispose();
+                  }
+                });
+
+                return AppRouterTransitions.slideTransition(
+                  key: state.pageKey,
+                  child: MyStoreActionsScreen(
+                    storeModel: storeModel,
                   ),
                   animation: animationController,
                   begin: begin ?? const Offset(1.0, 0.0),
@@ -594,6 +633,30 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                 ]),
           ],
         ),
+        // GoRoute(
+        //     path: 'merchant-main',
+        //     //  navigatorKey: _shellNavigatorKey,
+        //     name: AppRoutes.merchantHome.name,
+        //     pageBuilder: (context, state) {
+        //       final animationController = AnimationController(
+        //         vsync: ticker,
+        //       );
+        //       // Make sure to dispose the controller after the transition is complete
+        //       animationController.addStatusListener((status) {
+        //         if (status == AnimationStatus.completed ||
+        //             status == AnimationStatus.dismissed) {
+        //           animationController.dispose();
+        //         }
+        //       });
+        //       return AppRouterTransitions.slideTransition(
+        //         key: state.pageKey,
+        //         child: MerchantMainScreen(),
+        //         animation: animationController,
+        //         begin: const Offset(1.0, 0.0),
+        //       );
+        //     }),
+        //    routes: [],
+
         GoRoute(
           path: '/:lang/splash-screen',
           parentNavigatorKey: _rootNavigatorKey,
@@ -651,31 +714,31 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           name: AppRoutes.offlineScreen.name,
           builder: (context, state) => const OfflineScreen(),
         ),
-        GoRoute(
-          path: '/:lang/stores',
-          parentNavigatorKey: _rootNavigatorKey,
-          name: AppRoutes.stores.name,
-          pageBuilder: (context, state) {
-            Offset? begin = state.extra as Offset?;
+        // GoRoute(
+        //   path: '/:lang/stores',
+        //   parentNavigatorKey: _rootNavigatorKey,
+        //   name: AppRoutes.stores.name,
+        //   pageBuilder: (context, state) {
+        //     Offset? begin = state.extra as Offset?;
 
-            final animationController = AnimationController(
-              vsync: ticker,
-            );
-            // Make sure to dispose the controller after the transition is complete
-            animationController.addStatusListener((status) {
-              if (status == AnimationStatus.completed ||
-                  status == AnimationStatus.dismissed) {
-                animationController.dispose();
-              }
-            });
-            return AppRouterTransitions.slideTransition(
-              key: state.pageKey,
-              child: const MyStoresScreen(),
-              animation: animationController,
-              begin: begin ?? const Offset(1.0, 0.0),
-            );
-          },
-        ),
+        //     final animationController = AnimationController(
+        //       vsync: ticker,
+        //     );
+        //     // Make sure to dispose the controller after the transition is complete
+        //     animationController.addStatusListener((status) {
+        //       if (status == AnimationStatus.completed ||
+        //           status == AnimationStatus.dismissed) {
+        //         animationController.dispose();
+        //       }
+        //     });
+        //     return AppRouterTransitions.slideTransition(
+        //       key: state.pageKey,
+        //       child: const MyStoresScreen(),
+        //       animation: animationController,
+        //       begin: begin ?? const Offset(1.0, 0.0),
+        //     );
+        //   },
+        // ),
       ],
       debugLogDiagnostics: true,
       errorBuilder: (context, state) => const NotFoundScreen(),

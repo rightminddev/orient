@@ -11,31 +11,40 @@ class ComponenetsScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/buttons');
-                },
-                child: Text('buttons'),
-              ),
-              SizedBox(height: AppSizes.s12),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/image_with_title');
-                },
-                child: Text('image with title'),
-              ),
-              SizedBox(height: AppSizes.s12),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/comment_widget');
-                },
-                child: Text('comment widget'),
-              ),
-            ],
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/buttons');
+                  },
+                  child: Text('buttons'),
+                ),
+                SizedBox(height: AppSizes.s12),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/image_with_title');
+                  },
+                  child: Text('image with title'),
+                ),
+                SizedBox(height: AppSizes.s12),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/comment_widget');
+                  },
+                  child: Text('comment widget'),
+                ),
+                SizedBox(height: AppSizes.s12),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/order_widget');
+                  },
+                  child: Text('orders widget'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

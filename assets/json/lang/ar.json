@@ -96,5 +96,6 @@
   "thisAccountHasBeenBlocked": "تم حظر هذا الحساب!",
   "thisAccountHasBeenScheduledForDeletion": "تم جدولة هذا الحساب للحذف!",
   "myStores": "متاجري",
-  "availabilityOfProducts": "المنتجات المتوفرة"
+  "availabilityOfProducts": "المنتجات المتوفرة",
+  "orderDetails": "تفاصيل الطلب"
 }

@@ -37,70 +37,8 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
   Widget build(BuildContext context) {
     return TemplatePage(
       backgroundColor: Colors.white,
-      /*
-          bottomAppbarWidget: PreferredSize(
-            preferredSize: const Size.fromHeight(AppSizes.s70),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.s12, vertical: AppSizes.s12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onChanged: viewModel.updateSearchQuery,
-                      decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.search),
-                          hintText: 'Search by name',
-                          fillColor:
-                              Theme.of(context).primaryColor.withOpacity(0.05),
-                          suffixIcon: IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed:
-                                  viewModel.releaseSearchValuesAndFilters),
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(AppSizes.s8)),
-                    ),
-                  ),
-                  gapW4,
-                  IconButton(
-                    icon: Image.asset(
-                      AppImages.profileFilter,
-                      width: AppSizes.s22,
-                      height: AppSizes.s22,
-                      fit: BoxFit.cover,
-                    ),
-                    onPressed: () async =>
-                        await viewModel.showDepartmentFilterModal(context),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          */
       pageContext: context,
-      //  title: 'EMPLOYEES LIST',
-
       title: widget.storeModel.name ?? '',
-      //   controller: controller,
-      // appBar: AppBar(
-      //   title: Text(
-      //     AppStrings.myStores.tr(),
-      //     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-      //           fontWeight: FontWeight.w700,
-      //           color: Color(0xFF224982),
-      //         ),
-      //     textAlign: TextAlign.center,
-      //     maxLines: 2,
-      //     overflow: TextOverflow.ellipsis,
-      //     // fontSize: 16,
-      //     // fontFamily: 'Poppins',
-      //     // fontWeight: FontWeight.w700,
-      //     // height: 0.09,
-      //     // letterSpacing: 1,
-      //   ),
-      // ),
-      // bodyWithoutScroll: false,
-
       body: GradientBgImage(
         child: SingleChildScrollView(
           child: Column(

@@ -5,9 +5,10 @@ import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/merchant/stores/models/my_stores_action_model.dart';
+import 'package:orient/merchant/stores/views/available_products_screen.dart';
 
 import '../../../common_modules_widgets/template_page.widget.dart';
-import '../../../components/gradient_bg_image.dart';
+import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../models/stores/store_model.dart';
 
 class MyStoreActionsScreen extends StatefulWidget {
@@ -101,75 +102,96 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
       // bodyWithoutScroll: false,
 
       body: GradientBgImage(
-        child: Column(
-          children: [
-            GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 0.8,
-              children: getMyStoresAction.map((element) {
-                return GestureDetector(
-                  onTap: () {
-                    context.pushNamed(element.goToLocation);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 36, vertical: 42),
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 18),
+              GridView.count(
+                primary: false,
+                shrinkWrap: true,
+                //  padding: const EdgeInsets.symmetric(horizontal: 24),
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                crossAxisCount: 2,
+                // crossAxisCount: 2,
+                childAspectRatio: 0.8,
+                children: getMyStoresAction.map((element) {
+                  return GestureDetector(
+                    onTap: () {
+                      //TODO: update this
+                      // await context.pushNamed(AppRoutes.storeActions.name,
+                      //     extra: element,
+                      //     pathParameters: {
+                      //       'lang': context.locale.languageCode
+                      //     });
+
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AvailableProductsScreen(
+                              storeId: widget.storeModel.id!),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 12),
+                      decoration: ShapeDecoration(
+                        color: AppThemeService
+                            .colorPalette.tertiaryColorBackground.color,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        shadows: const [
+                          BoxShadow(
+                            color: Color(0x0C000000),
+                            blurRadius: 14.10,
+                            offset: Offset(0, 1),
+                            spreadRadius: 0,
+                          )
+                        ],
                       ),
-                      shadows: [
-                        BoxShadow(
-                          color: Color(0x0C000000),
-                          blurRadius: 14.10,
-                          offset: Offset(0, 1),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        SvgPicture.asset(
-                          element.icon,
-                          colorFilter: ColorFilter.mode(
-                            Color(AppColors.oc2),
-                            BlendMode.srcIn,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            element.icon,
+                            colorFilter: const ColorFilter.mode(
+                              Color(AppColors.oc2),
+                              BlendMode.srcIn,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: AppSizes.s8),
-                        Text(
-                          element.title,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppThemeService
-                                    .colorPalette.secondaryTextColor.color,
-                              ),
-                        ),
-                        SizedBox(height: AppSizes.s8),
-                        Text(
-                          element.subtitle,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF1B1B1B),
-                            fontSize: 10,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                            height: 0.13,
+                          const SizedBox(height: AppSizes.s8),
+                          Text(
+                            element.title,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppThemeService
+                                      .colorPalette.secondaryTextColor.color,
+                                ),
                           ),
-                        ),
-                      ],
+                          Text(
+                            element.subtitle,
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: AppThemeService.colorPalette
+                                          .quaternaryTextColor.color,
+                                    ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            )
-          ],
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );

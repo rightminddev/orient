@@ -21,7 +21,7 @@ List<MyStoresActionModel> getMyStoresAction = [
       subtitle: 'The orders requested from you through the application',
       goToLocation: ''),
   MyStoresActionModel(
-      icon: AppIcons.continueShoppingCart,
+      icon: AppIcons.availableShoppingCart,
       title: 'Availability of products',
       subtitle: 'Select the products you have available for sale online',
       goToLocation: ''),

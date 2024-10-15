@@ -11,6 +11,7 @@ class TemplatePage extends StatelessWidget {
   final Widget? floatingActionButton;
   final Color? backgroundColor;
   final PreferredSizeWidget? bottomAppbarWidget;
+  final Widget? bottomSheet;
 
   /// used if you want to active [PULLTOREFRESH] option to page.
   final Future<void> Function()? onRefresh;
@@ -19,6 +20,7 @@ class TemplatePage extends StatelessWidget {
       this.actions,
       this.bottomAppbarWidget,
       this.backgroundColor,
+      this.bottomSheet,
       required this.pageContext,
       required this.title,
       required this.body,
@@ -28,8 +30,12 @@ class TemplatePage extends StatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       backgroundColor: backgroundColor,
       floatingActionButton: floatingActionButton,
+      bottomSheet: bottomSheet,
       appBar: AppBar(
         actions: actions,
         backgroundColor:

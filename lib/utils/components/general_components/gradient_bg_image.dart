@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
 
-import '../constants/app_sizes.dart';
+import '../../../constants/app_sizes.dart';
 
 class GradientBgImage extends StatelessWidget {
   final Widget child;
-  const GradientBgImage({super.key, required this.child});
+  final EdgeInsets? padding;
+  const GradientBgImage({super.key, required this.child, this.padding});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.s24, vertical: AppSizes.s24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: const Alignment(-1, 0),
@@ -24,7 +23,11 @@ class GradientBgImage extends StatelessWidget {
           ],
         ),
       ),
-      child: child,
+      child: Padding(
+          padding: padding ??
+              const EdgeInsets.symmetric(
+                  horizontal: AppSizes.s24, vertical: AppSizes.s24),
+          child: child),
     );
   }
 }

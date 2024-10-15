@@ -1,10 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:orient/modules/components/subviews/comment_screen.dart';
-import 'package:orient/modules/components/views/componenets_screen.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
-import 'modules/components/subviews/button_screen.dart';
-import 'modules/components/subviews/image_with_title_screen.dart';
 import 'platform/platform_is.dart';
 import 'routing/app_router.dart';
 import 'package:flutter/gestures.dart';
@@ -20,14 +16,14 @@ class MyApp extends StatelessWidget {
     final appGoRouter = goRouter(context);
     return MaterialApp.router(
       title: 'Orient',
-      restorationScopeId: 'app',debugShowCheckedModeBanner: false,
+      restorationScopeId: 'app',
+      debugShowCheckedModeBanner: false,
       routerDelegate: appGoRouter.routerDelegate,
       routeInformationParser: appGoRouter.routeInformationParser,
       routeInformationProvider: appGoRouter.routeInformationProvider,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      debugShowCheckedModeBanner:false,
       themeMode: ThemeMode.light,
       theme: AppThemeService.getTheme(isDark: false, context: context),
       darkTheme: AppThemeService.getTheme(isDark: true, context: context),
@@ -50,7 +46,7 @@ class MyApp extends StatelessWidget {
     //   theme: AppThemeService.getTheme(isDark: false, context: context),
     //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
     //   scrollBehavior: AppScrollBehavior(),
-    //   home: const ComponenetsScreen(),
+    //   home: const AvailableProductsScreen(),
     // );
   }
 }

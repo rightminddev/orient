@@ -311,6 +311,8 @@ abstract class EndpointServices {
             name: name,
             method: 'GET',
             url: '${AppConstants.baseUrl}/rm_ecommarce/v1/stores');
+      case EndpointsNames.avaialbleProducts:
+        return EndPoint(name: name, method: 'GET', url: '/stock/availability');
     }
   }
 }

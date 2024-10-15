@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orient/components/button_widget.dart';
+import 'package:orient/utils/components/general_components/button_widget.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/settings/app_icons.dart';
 

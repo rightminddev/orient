@@ -189,7 +189,38 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                       begin: begin ?? const Offset(1.0, 0.0),
                     );
                   },
-                )
+                ),
+                GoRoute(
+                  path: 'store-actions',
+                  parentNavigatorKey: _shellNavigatorKey,
+                  name: AppRoutes.storeActions.name,
+                  pageBuilder: (context, state) {
+                    Offset? begin = (state.extra
+                        as Map<String, dynamic>)['offset'] as Offset?;
+
+                    StoreModel storeModel = (state.extra
+                        as Map<String, dynamic>)['storeModel'] as StoreModel;
+                    final animationController = AnimationController(
+                      vsync: ticker,
+                    );
+                    // Make sure to dispose the controller after the transition is complete
+                    animationController.addStatusListener((status) {
+                      if (status == AnimationStatus.completed ||
+                          status == AnimationStatus.dismissed) {
+                        animationController.dispose();
+                      }
+                    });
+
+                    return AppRouterTransitions.slideTransition(
+                      key: state.pageKey,
+                      child: MyStoreActionsScreen(
+                        storeModel: storeModel,
+                      ),
+                      animation: animationController,
+                      begin: begin ?? const Offset(1.0, 0.0),
+                    );
+                  },
+                ),
               ],
             ),
             GoRoute(
@@ -359,37 +390,6 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   child: FingerprintScreen(
                     empId: employeeId,
                     empName: employeeName,
-                  ),
-                  animation: animationController,
-                  begin: begin ?? const Offset(1.0, 0.0),
-                );
-              },
-            ),
-            GoRoute(
-              path: '/:lang/store-actions',
-              parentNavigatorKey: _shellNavigatorKey,
-              name: AppRoutes.storeActions.name,
-              pageBuilder: (context, state) {
-                Offset? begin =
-                    (state.extra as Map<String, dynamic>)['offset'] as Offset?;
-
-                StoreModel storeModel = (state.extra
-                    as Map<String, dynamic>)['storeModel'] as StoreModel;
-                final animationController = AnimationController(
-                  vsync: ticker,
-                );
-                // Make sure to dispose the controller after the transition is complete
-                animationController.addStatusListener((status) {
-                  if (status == AnimationStatus.completed ||
-                      status == AnimationStatus.dismissed) {
-                    animationController.dispose();
-                  }
-                });
-
-                return AppRouterTransitions.slideTransition(
-                  key: state.pageKey,
-                  child: MyStoreActionsScreen(
-                    storeModel: storeModel,
                   ),
                   animation: animationController,
                   begin: begin ?? const Offset(1.0, 0.0),

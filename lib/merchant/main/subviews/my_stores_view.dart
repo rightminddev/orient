@@ -6,14 +6,15 @@ import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/merchant/stores/views/my_stores_actions_screen.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
 import 'package:orient/utils/media_query_values.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
-import '../../../components/custom_list_tile_widget.dart';
-import '../../../components/gradient_bg_image.dart';
+import '../../../utils/components/general_components/custom_list_tile_widget.dart';
+import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../models/stores/store_model.dart';
 import '../../../routing/app_router.dart';
 import '../../stores/view_models/stores.viewmodel.dart';
@@ -124,11 +125,19 @@ class _MyStoresViewState extends State<MyStoresView> {
                     children: viewModel.myStores.map((element) {
                       return GestureDetector(
                         onTap: () async {
-                          await context.pushNamed(AppRoutes.storeActions.name,
-                              extra: element,
-                              pathParameters: {
-                                'lang': context.locale.languageCode
-                              });
+                          //TODO: update this
+                          // await context.pushNamed(AppRoutes.storeActions.name,
+                          //     extra: element,
+                          //     pathParameters: {
+                          //       'lang': context.locale.languageCode
+                          //     });
+
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MyStoreActionsScreen(storeModel: element),
+                            ),
+                          );
                         },
                         child: CustomListTileWidget(
                           image: AppImages.storeDefault,

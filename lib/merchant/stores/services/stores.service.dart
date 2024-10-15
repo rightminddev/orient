@@ -23,6 +23,41 @@ abstract class StoresService {
     return response;
   }
 
+  static Future<OperationResult<Map<String, dynamic>>> getAvailableProducts({
+    required BuildContext context,
+    int? id,
+  }) async {
+    final String url = id != null
+        ? '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}'
+        : '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/:storeId${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
+    final response = await HttpApiService().get<Map<String, dynamic>>(
+      url,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+
+  static Future<OperationResult<Map<String, dynamic>>> updateAvailableProducts({
+    required BuildContext context,
+    required int id,
+    required Map<String, dynamic> data,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
+
+    //stock/availability
+    final response = await HttpApiService().post<Map<String, dynamic>>(
+      url,
+      data,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+
   /// Get specific employee data by ID
   /// EmployeeService.getEmployeeData(
   ///   context: context,

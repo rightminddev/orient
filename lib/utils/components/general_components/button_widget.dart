@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 
-import '../constants/app_colors.dart';
+import '../../../constants/app_colors.dart';
 
 class ButtonWidget extends StatelessWidget {
   final VoidCallback? onPressed;

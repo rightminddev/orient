@@ -12,6 +12,7 @@ enum EndpointsNames {
   generalSettings,
   userSettings,
   updateDeviceInfo,
+  avaialbleProducts,
   updatePassword,
   updateNotification,
   home,

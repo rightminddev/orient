@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orient/components/comment_widget.dart';
+import 'package:orient/utils/components/general_components/comment_widget.dart';
 
 class CommentScreen extends StatelessWidget {
   const CommentScreen({super.key});

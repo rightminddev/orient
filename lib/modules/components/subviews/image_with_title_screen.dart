@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orient/components/custom_list_tile_widget.dart';
+import 'package:orient/utils/components/general_components/custom_list_tile_widget.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 

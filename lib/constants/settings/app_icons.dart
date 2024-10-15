@@ -11,4 +11,6 @@ class AppIcons {
   static const String bag = 'assets/icons/bag.svg';
 
   static const String edit = 'assets/icons/edit.svg';
+  static const String availableShoppingCart =
+      'assets/icons/available-shopping-cart.svg';
 }

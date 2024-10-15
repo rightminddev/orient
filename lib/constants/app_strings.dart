@@ -106,4 +106,5 @@ abstract class AppStrings {
   static const thisAccountHasBeenScheduledForDeletion =
       'thisAccountHasBeenScheduledForDeletion';
   static const myStores = 'myStores';
+  static const availabilityOfProducts = 'availabilityOfProducts';
 }

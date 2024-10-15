@@ -143,28 +143,31 @@ class OnBoardingScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                CustomElevatedButton(
-                                    onPressed: () async =>
-                                        viewModel.goNext(context),
-                                    title: AppStrings.next.tr(),
-                                    width: AppSizes.s150,
-                                    isPrimaryBackground: true,
-                                    isFuture: false),
-                                TextButton(
-                                  onPressed: () => viewModel.skip(context),
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize:
-                                        const Size(AppSizes.s150, AppSizes.s50),
+                                Expanded(
+                                  child: CustomElevatedButton(
+                                      onPressed: () async =>
+                                          viewModel.goNext(context),
+                                      title: AppStrings.next.tr(),
+                                      isPrimaryBackground: true,
+                                      isFuture: false),
+                                ),
+                                Expanded(
+                                  child: TextButton(
+                                    onPressed: () => viewModel.skip(context),
+                                    style: ElevatedButton.styleFrom(
+                                      fixedSize:
+                                          const Size(AppSizes.s150, AppSizes.s50),
+                                    ),
+                                    child: Text(AppStrings.skip.tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary)),
                                   ),
-                                  child: Text(AppStrings.skip.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary)),
                                 ),
                               ],
                             ),

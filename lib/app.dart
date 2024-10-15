@@ -20,13 +20,14 @@ class MyApp extends StatelessWidget {
     final appGoRouter = goRouter(context);
     return MaterialApp.router(
       title: 'Orient',
-      restorationScopeId: 'app',
+      restorationScopeId: 'app',debugShowCheckedModeBanner: false,
       routerDelegate: appGoRouter.routerDelegate,
       routeInformationParser: appGoRouter.routeInformationParser,
       routeInformationProvider: appGoRouter.routeInformationProvider,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      debugShowCheckedModeBanner:false,
       themeMode: ThemeMode.light,
       theme: AppThemeService.getTheme(isDark: false, context: context),
       darkTheme: AppThemeService.getTheme(isDark: true, context: context),

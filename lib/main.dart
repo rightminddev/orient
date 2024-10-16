@@ -60,47 +60,8 @@ void main() async {
             create: (_) => MainScreenViewModel(),
           ),
         ],
-        child: const MyApp2(),
-        // child: const MyApp(),
+        // child: const MyApp2(),
+        child: const MyApp(),
       )));
 }
 
-class MyApp2 extends StatelessWidget {
-  const MyApp2({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TestApp(),
-    );
-  }
-}
-
-class TestApp extends StatelessWidget {
-  const TestApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              gapH36,
-              // PostWidget(),
-              // gapH16,
-              // PostWidget(),
-              // gapH16,
-              // PostWidget(),
-              // gapH16,
-              // PostWidget(),
-              // gapH16,
-              // PostWidget(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

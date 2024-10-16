@@ -5,6 +5,7 @@ enum EndpointsNames {
   authentication,
   registration,
   device,
+  myOrders,
   updateInfo,
   registrationFields,
   forgetPassword,

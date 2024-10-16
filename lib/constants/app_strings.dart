@@ -108,4 +108,5 @@ abstract class AppStrings {
   static const myStores = 'myStores';
   static const availabilityOfProducts = 'availabilityOfProducts';
   static const orderDetails = 'orderDetails';
+  static const myOrders = 'myOrders';
 }

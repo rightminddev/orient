@@ -97,5 +97,6 @@
   "thisAccountHasBeenScheduledForDeletion": "تم جدولة هذا الحساب للحذف!",
   "myStores": "متاجري",
   "availabilityOfProducts": "المنتجات المتوفرة",
-  "orderDetails": "تفاصيل الطلب"
+  "orderDetails": "تفاصيل الطلب",
+  "myOrders": "طلباتي"
 }

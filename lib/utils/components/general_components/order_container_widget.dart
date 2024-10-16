@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/general_services/app_theme.service.dart';
 
+import '../../../merchant/orders/views/order_details_screen.dart';
+import '../../../models/orders/order_model.dart';
 import 'button_widget.dart';
 
 class OrderContainerWidget extends StatelessWidget {
-  const OrderContainerWidget({super.key});
+  final OrderModel orderModel;
+  final int storeId;
+  const OrderContainerWidget(
+      {super.key, required this.orderModel, required this.storeId});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        shadows: [
+        shadows: const [
           BoxShadow(
             color: Color(0x0C000000),
             blurRadius: 10,
@@ -30,28 +36,36 @@ class OrderContainerWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'ORDER №1947034',
-            style: TextStyle(
-              color: Color(0xFFE6007E),
-              fontSize: 15,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
+            'ORDER № ${orderModel.uuid}',
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  color: AppThemeService.colorPalette.secondaryTextColor.color,
+                  height: 0,
+                  letterSpacing: 0,
+                ),
           ),
           TitleWithDataWidget(
-            data: '05-12-2023',
+            data: orderModel.date ?? '',
             title: 'Date',
           ),
           TitleWithDataWidget(
-            data: '950.0 EGP',
+            data: '${orderModel.total} EGP', //TODO: currency
             title: 'Total Amount',
           ),
+          const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ButtonWidget(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => OrderDetailsScreen(
+                        storeId: storeId,
+                        orderId: orderModel.id ?? 0,
+                      ),
+                    ),
+                  );
+                },
                 borderSide:
                     const BorderSide(width: 1, color: Color(AppColors.oc1)),
                 padding: const EdgeInsets.symmetric(
@@ -61,15 +75,11 @@ class OrderContainerWidget extends StatelessWidget {
                 backgroundColor: Colors.transparent,
               ),
               Text(
-                'DELIVERED',
+                orderModel.status ?? '',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF2AA952),
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF2AA952),
+                    ),
               ),
             ],
           )
@@ -91,21 +101,16 @@ class TitleWithDataWidget extends StatelessWidget {
       children: [
         Text(
           '$title: ',
-          style: TextStyle(
-            color: Color(0xFFE6007E),
-            fontSize: 12,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700,
-          ),
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: AppThemeService.colorPalette.secondaryTextColor.color,
+              ),
         ),
         Text(
           data,
-          style: TextStyle(
-            color: Color(0xFF464646),
-            fontSize: 14,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w400,
-          ),
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                color: AppThemeService.colorPalette.quaternaryTextColor.color,
+              ),
         ),
       ],
     );

@@ -13,4 +13,6 @@ class AppIcons {
   static const String edit = 'assets/icons/edit.svg';
   static const String availableShoppingCart =
       'assets/icons/available-shopping-cart.svg';
+
+  static const String info = 'assets/icons/info.svg';
 }

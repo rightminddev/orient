@@ -97,5 +97,6 @@
   "thisAccountHasBeenScheduledForDeletion": "This Account has been Scheduled for Deletion!",
   "myStores": "My stores",
   "availabilityOfProducts": "Availability of products",
-  "orderDetails": "Order Details"
+  "orderDetails": "Order Details",
+  "myOrders": "My Orders"
 }

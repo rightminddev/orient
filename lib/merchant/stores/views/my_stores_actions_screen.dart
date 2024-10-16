@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/merchant/orders/views/my_orders_screen.dart';
 import 'package:orient/merchant/stores/models/my_stores_action_model.dart';
 import 'package:orient/merchant/stores/views/available_products_screen.dart';
 
@@ -63,10 +64,19 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //       'lang': context.locale.languageCode
                       //     });
 
+                      // available products
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AvailableProductsScreen(
+                      //         storeId: widget.storeModel.id!),
+                      //   ),
+                      // );
+
+                      // orders
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AvailableProductsScreen(
-                              storeId: widget.storeModel.id!),
+                          builder: (context) =>
+                              MyOrdersScreen(storeId: widget.storeModel.id!),
                         ),
                       );
                     },

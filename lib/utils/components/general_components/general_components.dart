@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
 Widget defaultTapBarItem(
@@ -65,19 +64,20 @@ Widget defaultTapBarItem(
 Widget defaultBottomNavigationBar(
     {required List<String>? items,
     final Function? onTapItem,
-    double? tapBarItemsWidth}) {
-  var selectIndex = 0;
+    double? tapBarItemsWidth,
+    int? selectIndex,
+    }) {
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
-      double itemWidth =
-          (tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 1) /
-                  items!.length -
-              6;
+      double containerWidth = tapBarItemsWidth ?? MediaQuery.sizeOf(context).width;
+      double itemWidth = containerWidth / items!.length * 0.9;
+      double itemHeight = itemWidth * 1;
+      double itemRadius = itemWidth / 2;
       return Center(
         child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7.5),
-            height: 81.0,
-            width: tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 1,
+            height: itemHeight + 15,
+            width: containerWidth,
             decoration: BoxDecoration(
                 color: const Color(0xff0D3B6F),
                 borderRadius: BorderRadius.circular(50)),
@@ -90,20 +90,22 @@ Widget defaultBottomNavigationBar(
                   onTap: () {
                     setState(() {
                       selectIndex = index;
+                      if (onTapItem != null) {
+                        onTapItem!(index);
+                      }
                     });
-                    if (onTapItem != null) {
-                      onTapItem!(index);
-                    }
+                    print(selectIndex);
+                    print(index);
                   },
                   child: Container(
                       width: itemWidth,
-                      height: itemWidth,
+                      height: itemHeight,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           color: (selectIndex == index)
                               ? const Color(0xffFFFFFF)
                               : Colors.transparent,
-                          borderRadius: BorderRadius.circular(itemWidth)),
+                          borderRadius: BorderRadius.circular(itemRadius)),
                       child: SvgPicture.asset(
                         items[index],
                         color: (selectIndex == index)
@@ -251,7 +253,7 @@ Widget defaultProfileContainer({
   required BuildContext? context,
 }) {
   return Container(
-    color: Colors.black,
+    color: Colors.transparent,
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -290,7 +292,7 @@ Widget defaultProfileContainer({
           width: 10,
         ),
         Container(
-          width: MediaQuery.sizeOf(context!).width * 0.7,
+          width: MediaQuery.sizeOf(context!).width * 0.3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -335,9 +337,12 @@ Widget defaultViewProductGrid(
       required String? productPrice,
       required String? productImageUrl,
       String? discountPrice,
-      double? containerWidth}) {
+      double? containerWidth,
+      double? containerHeight,
+    }) {
   return Container(
-    width: containerWidth ?? 170,
+    width: containerWidth ?? 150,
+    height: containerHeight ?? 218,
     decoration: BoxDecoration(
       color: const Color(0xffFFFFFF),
       borderRadius: BorderRadius.circular(10),

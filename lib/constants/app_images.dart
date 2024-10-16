@@ -101,4 +101,7 @@ abstract class AppImages {
       '$_penaltiesAndRewardsImagesDirectory/penalty.png';
   static const String reward =
       '$_penaltiesAndRewardsImagesDirectory/reward.png';
+  static const String messagesImage =
+      'assets/images/alerts_images/messages.png';
+
 }

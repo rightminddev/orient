@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+
   flutter_localizations:
     sdk: flutter
   flutter_web_plugins:
@@ -100,6 +102,13 @@ dependencies:
   equatable: 2.0.5
   # QR code scanner that can be embedded inside flutter. It uses zxing in Android and MTBBarcode scanner in iOS.
   qr_code_scanner: 1.0.1
+  #package to show video
+  chewie: ^1.8.5
+  video_player: ^2.9.2
+
+  #  show image in full screen
+  full_screen_image: ^2.0.0
+
   # Flutter plugin to scan for nearby visible WiFi access points.
   # wifi_scan: 0.4.1
   # Flutter plugin for connecting and communicating with Bluetooth Low Energy devices, on Android and iOS

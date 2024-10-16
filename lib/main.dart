@@ -1,5 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
+import 'package:orient/common_modules_widgets/request_card.widget.dart';
+import 'package:orient/common_modules_widgets/template_page.widget.dart';
+import 'package:orient/constants/app_colors.dart';
+import 'package:orient/constants/app_images.dart';
+import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/models/request.model.dart';
+import 'package:orient/utils/animated_custom_dropdown/custom_dropdown.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
 import 'firebase_options.dart';
@@ -14,6 +21,7 @@ import 'modules/main_screen/view_models/main_viewmodel.dart';
 import 'platform/platform_is.dart';
 
 GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // register global error handlers to catch , handle and repoting on any kind of error or exception appear in the application
@@ -52,6 +60,47 @@ void main() async {
             create: (_) => MainScreenViewModel(),
           ),
         ],
-        child: const MyApp(),
+        child: const MyApp2(),
+        // child: const MyApp(),
       )));
+}
+
+class MyApp2 extends StatelessWidget {
+  const MyApp2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: TestApp(),
+    );
+  }
+}
+
+class TestApp extends StatelessWidget {
+  const TestApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              gapH36,
+              // PostWidget(),
+              // gapH16,
+              // PostWidget(),
+              // gapH16,
+              // PostWidget(),
+              // gapH16,
+              // PostWidget(),
+              // gapH16,
+              // PostWidget(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

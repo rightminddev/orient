@@ -40,6 +40,7 @@ class StoreActionsViewModel extends ChangeNotifier {
       final result = await StoresService.updateAvailableProducts(
           context: context, id: id, data: addedToStock.toJson());
       //TODO: add bottom sheet for success or fail
+
       if (result.success && result.data != null) {
         // (result.data?['products'] ?? []).forEach((v) {
         //   products.add(ProductModel.fromJson(v));
@@ -102,7 +103,7 @@ class StoreActionsViewModel extends ChangeNotifier {
         createStoreModel.locationsAddress?.ar = locationData.displayName;
         createStoreModel.locationsAddress?.en = locationData.displayName;
         createStoreModel.googleMapUrl =
-            'https://nominatim.openstreetmap.org/reverse?lat=$lat&lon=$lon&format=json';
+            'https://nominatim.openstreetmap.org/reverse?lat=$lat&lon=$lon';
         return true;
       } else {
         return false;

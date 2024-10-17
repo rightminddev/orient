@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:orient/models/availability/availability_model.dart';
 import 'package:orient/models/products/product_model.dart';
 import 'package:orient/models/stores/store_model.dart';
 import '../services/stores.service.dart';
@@ -7,8 +6,6 @@ import '../services/stores.service.dart';
 class StoresViewModel extends ChangeNotifier {
   List<StoreModel> myStores = List.empty(growable: true);
   List<ProductModel> products = List.empty(growable: true);
-  AvailabilityModel addedToStock =
-      AvailabilityModel(products: List.empty(growable: true));
 
   bool isLoading = true;
   void updateLoadingStatus({required bool laodingValue}) {

@@ -106,15 +106,20 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                           ...viewModel.products.map((element) {
                             return ProductContainerWithTextFieldWidget(
                               onQuantitySubmitted: (value) {
-                                final index = viewModel.addedToStock.products!
+                                final index = storeActionsViewModel
+                                    .addedToStock.products!
                                     .indexWhere(
                                         (e) => e.productId == element.id);
                                 if (index == -1) {
-                                  viewModel.addedToStock.products!
+                                  storeActionsViewModel.addedToStock.products!
                                       .add(AddedProductsModel(
                                     productId: element.id,
                                     quantity: int.parse(value),
                                   ));
+                                } else {
+                                  storeActionsViewModel.addedToStock.products!
+                                      .elementAt(index)
+                                      .quantity = int.parse(value);
                                 }
                               },
                               stock: element.stock,

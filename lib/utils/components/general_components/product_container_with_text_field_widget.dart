@@ -148,7 +148,7 @@ class _ProductContainerWithTextFieldWidgetState
                     fontWeight: FontWeight.w400,
                     height: 0.11,
                   ),
-                  onSubmitted: (value) {
+                  onChanged: (value) {
                     final isInt = int.tryParse(value);
 
                     if (isInt != null &&

@@ -66,6 +66,7 @@ class AuthenticationViewModel extends ChangeNotifier {
   }
 
   Future<void> login({required BuildContext context}) async {
+    print("request login /////1221");
     if (isPhoneLogin && phoneController.text.isEmpty) {
       AlertsService.warning(
           title: AppStrings.phoneNumber.tr(),
@@ -73,13 +74,16 @@ class AuthenticationViewModel extends ChangeNotifier {
           message: AppStrings.phoneNumberIsRequired.tr());
       return;
     }
+    print("request login /////13333333");
     if (formKey.currentState?.validate() == true) {
+      print("request login /////44444444");
       final appConfigServiceProvider =
           Provider.of<AppConfigService>(context, listen: false);
       final completePhoneNumber = (countryCodeController.text.isEmpty
               ? '+02'
               : countryCodeController.text + phoneController.text)
           .trim();
+      print("request login /////");
       OperationResult<Map<String, dynamic>> result =
           await AuthenticationService.login(
               context: context,
@@ -89,6 +93,7 @@ class AuthenticationViewModel extends ChangeNotifier {
               deviceInformation:
                   appConfigServiceProvider.deviceInformation.toMap());
 
+      print("response login /////");
       if (result.success &&
           result.data != null &&
           (result.data?.isNotEmpty ?? false)) {

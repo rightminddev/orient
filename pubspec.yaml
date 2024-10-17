@@ -11,20 +11,19 @@ dependencies:
   auto_animated: 3.2.0
   auto_size_text: 3.0.0
   cached_network_image: 3.3.1
-  clipboard: 0.1.3
   collection: 1.18.0
   connectivity_plus: ^6.0.5
   cupertino_icons: 1.0.6
   device_info_plus: ^11.0.0
   dio: 5.5.0
   easy_localization: 3.0.7
-  equatable: 2.0.5
   file_picker: ^8.1.2
   firebase_core: ^3.6.0
   firebase_messaging: ^15.1.3
   flutter:
     sdk: flutter
-  flutter_blue_plus: 1.32.12
+
+
   flutter_localizations:
     sdk: flutter
   flutter_map: ^7.0.2
@@ -36,6 +35,26 @@ dependencies:
   font_awesome_flutter: 10.7.0
   go_router: 14.2.0
   graphview: 1.2.0
+  # QR.Flutter is a Flutter library for simple and fast QR code rendering via a Widget or custom painter.
+  qr_flutter: 4.1.0
+  # A flutter package that helps copy text to clipboard and paste from clipboard.
+  clipboard: 0.1.3
+  # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
+  equatable: 2.0.5
+  # QR code scanner that can be embedded inside flutter. It uses zxing in Android and MTBBarcode scanner in iOS.
+  qr_code_scanner: 1.0.1
+  #package to show video
+  chewie: ^1.8.5
+  video_player: ^2.9.2
+
+  #  show image in full screen
+  full_screen_image: ^2.0.0
+
+  # Flutter plugin to scan for nearby visible WiFi access points.
+  # wifi_scan: 0.4.1
+  # Flutter plugin for connecting and communicating with Bluetooth Low Energy devices, on Android and iOS
+  flutter_blue_plus: 1.32.12
+  # Lightweight and blazing fast key-value database written in pure Dart. Strongly encrypted using AES-256.
   hive: 2.2.3
   html: 0.15.4
   http: ^1.2.2
@@ -55,8 +74,6 @@ dependencies:
   permission_handler: 11.3.1
   photo_view: ^0.14.0
   provider: 6.1.2
-  qr_code_scanner: 1.0.1
-  qr_flutter: 4.1.0
   rename: 3.0.2
   shared_preferences: 2.2.3
   soundpool: 2.4.1

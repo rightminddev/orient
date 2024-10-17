@@ -35,10 +35,12 @@ abstract class ValidationService {
     // Example: Password should be at least 8 characters with one uppercase letter, one lowercase letter, one number, and one special character
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-    RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value)) {
-      return 'Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character';
-    }
+    ///
+    ///
+    // RegExp regex = RegExp(pattern);
+    // if (!regex.hasMatch(value)) {
+    //   return 'Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character';
+    // }
     return null;
   }
 

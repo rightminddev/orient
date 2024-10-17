@@ -236,6 +236,33 @@ class HttpApiService implements BackEndServicesInterface {
   }
 
   @override
+  Future<OperationResult<T>> patch<T>(String url, Map? data,
+      {required String dataKey,
+      Map<String, String>? header,
+      bool? checkOnTokenExpiration = true,
+      bool? allData = false,
+      required BuildContext context}) async {
+    try {
+      final response = await http.patch(
+        _getUri(url),
+        headers: ApiServiceHelpers.buildHeaders(
+            additionalHeaders: header, context: context),
+        body: jsonEncode(data),
+      );
+      return _handleResponse(
+          response: response,
+          applyTokenLogic: checkOnTokenExpiration!,
+          dataKey: dataKey,
+          allData: allData,
+          context: context);
+    } catch (err, t) {
+      debugPrint(
+          '--------- Failed put() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      return OperationResult(success: false, message: err.toString());
+    }
+  }
+
+  @override
   Future<OperationResult<T>> delete<T>(String url, Map data,
       {required String dataKey,
       Map<String, String>? header,

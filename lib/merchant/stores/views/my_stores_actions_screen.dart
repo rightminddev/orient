@@ -74,19 +74,19 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       // );
 
                       // orders
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         MyOrdersScreen(storeId: widget.storeModel.id!),
-                      //   ),
-                      // );
-                      // edit store
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                              EditStoreScreen(storeModel: widget.storeModel),
+                              MyOrdersScreen(storeId: widget.storeModel.id!),
                         ),
                       );
+                      // edit store
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>
+                      //         EditStoreScreen(storeModel: widget.storeModel),
+                      //   ),
+                      // );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

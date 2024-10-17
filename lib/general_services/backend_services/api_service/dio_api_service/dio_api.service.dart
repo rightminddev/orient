@@ -301,4 +301,30 @@ class DioApiService implements BackEndServicesInterface {
       );
     }
   }
+
+  @override
+  Future<OperationResult<T>> patch<T>(String url, Map data,
+      {required String dataKey,
+      Map<String, String>? header,
+      bool checkOnTokenExpiration = true,
+      required BuildContext context}) async {
+    try {
+      final response = await Dio().patch(
+        url,
+        data: jsonEncode(data),
+        options: Options(
+            headers: ApiServiceHelpers.buildHeaders(
+                additionalHeaders: header, context: context)),
+      );
+      return _handleResponse(
+          response: response,
+          applyTokenLogic: checkOnTokenExpiration,
+          context: context,
+          dataKey: dataKey);
+    } catch (err, t) {
+      debugPrint(
+          '--------- Failed put() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      return OperationResult(success: false, message: err.toString());
+    }
+  }
 }

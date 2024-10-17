@@ -7,9 +7,15 @@ import 'package:provider/provider.dart';
 
 import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../constants/app_sizes.dart';
+import '../../../constants/settings/app_icons.dart';
+import '../../../utils/components/general_components/all_bottom_sheet.dart';
+import '../../../utils/components/general_components/button_widget.dart';
 import '../../../utils/components/general_components/general_components.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../utils/components/general_components/text_with_space_between.dart';
+import '../../stores/view_models/stores.actions.viewmodel.dart';
+import '../models/order_status.dart';
+import '../view_models/orders.actions.viewmodel.dart';
 import '../view_models/orders.viewmodel.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
@@ -26,11 +32,12 @@ class OrderDetailsScreen extends StatefulWidget {
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   final ScrollController controller = ScrollController();
   late final OrdersViewModel viewModel;
-
+  late final OrderActionsViewModel orderActionsViewModel;
   @override
   void initState() {
     super.initState();
     viewModel = OrdersViewModel();
+    orderActionsViewModel = OrderActionsViewModel();
     viewModel.initializeOrderDetailsScreen(
         context, widget.storeId, widget.orderId);
   }
@@ -48,6 +55,83 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       child: TemplatePage(
         backgroundColor: Colors.white,
         pageContext: context,
+        bottomSheet: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: 16),
+          decoration: ShapeDecoration(
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            shadows: [
+              BoxShadow(
+                color: Color(0x19000000),
+                blurRadius: 11,
+                offset: Offset(0, -4),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ButtonWidget(
+                onPressed: () async {
+                  await defaultActionBottomSheet(
+                    context: context,
+                    buttonText: "Change",
+                    viewCheckIcon: false,
+                    viewDropDownButton: true,
+                    dropDownValue: orderActionsViewModel.orderStatus,
+                    dropDownTitle: 'status',
+                    dropDownItems: orderStatusMap
+                        .map(
+                          (index, element) => MapEntry(
+                            index,
+                            DropdownMenuItem<String>(
+                              onTap: () {
+                                orderActionsViewModel.orderStatus =
+                                    orderStatusApiKeys[index];
+                              },
+                              value: element,
+                              child: Text(
+                                element,
+                                style: TextStyle(
+                                  color: Color(0xFF464646),
+                                  fontSize: 12,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0.11,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        .values
+                        .toList(),
+                    dropDownOnChanged: (value) {
+                      // orderActionsViewModel.orderStatus =
+                      //     orderStatusApiKeys[index];
+                    },
+                    onTapButton: () {
+                      if (orderActionsViewModel.orderStatus != null) {
+                        orderActionsViewModel.updateOrderStatus(
+                            context, widget.orderId, widget.storeId);
+                      }
+                    },
+                  );
+                },
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.s48, vertical: AppSizes.s16),
+                title: "Actions",
+                svgIcon: AppIcons.info,
+              ),
+            ],
+          ),
+        ),
         onRefresh: () async => await viewModel.initializeOrderDetailsScreen(
             context, widget.storeId, widget.orderId),
         title: AppStrings.orderDetails.tr(),

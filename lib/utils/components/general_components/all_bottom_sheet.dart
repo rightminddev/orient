@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 
 defaultActionBottomSheet(
-    {required BuildContext? context,
-      required String? title,
-      required String? subTitle,
-      required String? buttonText,
-      bool viewCheckIcon = false,
-      bool viewDropDownButton = false,
-      String? dropDownValue,
-      String? dropDownTitle,
-      List<DropdownMenuItem<String>>? dropDownItems,
-      void Function(String?)? dropDownOnChanged,
-      Widget? headerIcon,
-      double? bottomSheetHeight,
-      void Function()? onTapButton}) =>
+        {required BuildContext? context,
+        String? title,
+        String? subTitle,
+        required String? buttonText,
+        bool viewCheckIcon = false,
+        bool viewDropDownButton = false,
+        String? dropDownValue,
+        String? dropDownTitle,
+        List<DropdownMenuItem<String>>? dropDownItems,
+        void Function(String?)? dropDownOnChanged,
+        Widget? headerIcon,
+        double? bottomSheetHeight,
+        void Function()? onTapButton}) =>
     showModalBottomSheet(
       context: context!,
       shape: const RoundedRectangleBorder(
@@ -31,11 +31,11 @@ defaultActionBottomSheet(
             ),
           ),
           width: double.infinity,
-          height: (bottomSheetHeight != null)
-              ? bottomSheetHeight
-              : (viewDropDownButton == false)
-              ? MediaQuery.sizeOf(context).height * 0.45
-              : MediaQuery.sizeOf(context).height * 0.51,
+          // height: (bottomSheetHeight != null)
+          //     ? bottomSheetHeight
+          //     : (viewDropDownButton == false)
+          //     ? MediaQuery.sizeOf(context).height * 0.45
+          //     : MediaQuery.sizeOf(context).height * 0.51,
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -46,30 +46,32 @@ defaultActionBottomSheet(
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    Container(
-                      width: 88,
-                      height: 88,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xffE6007E).withOpacity(0.1),
-                      ),
-                      child: Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xffE6007E),
-                          ),
-                          child: headerIcon),
-                    ),
+                    headerIcon != null
+                        ? Container(
+                            width: 88,
+                            height: 88,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xffE6007E).withOpacity(0.1),
+                            ),
+                            child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xffE6007E),
+                                ),
+                                child: headerIcon),
+                          )
+                        : SizedBox.shrink(),
                     if (viewCheckIcon == true)
                       const Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: CircleAvatar(
                           radius: 10,
-                          backgroundColor: const Color(0xff38CF71),
+                          backgroundColor: Color(0xff38CF71),
                           child: Icon(
                             Icons.check,
-                            color: const Color(0xffFFFFFF),
+                            color: Color(0xffFFFFFF),
                             size: 12,
                           ),
                         ),
@@ -77,20 +79,20 @@ defaultActionBottomSheet(
                   ],
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  title!.toUpperCase(),
-                  style: const TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w600,
-                    fontSize: 24,
-                    color: Color(0xffE6007E),
+                if (title != null)
+                  Text(
+                    title.toUpperCase(),
+                    style: const TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 24,
+                      color: Color(0xffE6007E),
+                    ),
                   ),
-                ),
                 const SizedBox(height: 10),
-                SizedBox(
-                  height: 31,
-                  child: Text(
-                    subTitle!,
+                if (subTitle != null)
+                  Text(
+                    subTitle,
                     style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -98,7 +100,6 @@ defaultActionBottomSheet(
                         fontFamily: "Poppins"),
                     textAlign: TextAlign.center,
                   ),
-                ),
                 const SizedBox(height: 30),
                 if (viewDropDownButton == true)
                   Stack(

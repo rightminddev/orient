@@ -44,9 +44,24 @@ abstract class OrdersService {
     return response;
   }
 
-  /// Get specific employee data by ID
-  /// EmployeeService.getEmployeeData(
-  ///   context: context,
-  ///   employeeId: 'employee_id',
-  /// );
+  static Future<OperationResult<Map<String, dynamic>>> updateOrderStatus({
+    required BuildContext context,
+    required int orderId,
+    required int storeId,
+    required String status,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$storeId/${EndpointServices.getApiEndpoint(EndpointsNames.myOrders).url}/$orderId?status=$status';
+//api/rm_ecommarce/v1/stores/:storeId/orders/:orderId?status=
+    //stock/availability
+
+    final response = await HttpApiService().patch<Map<String, dynamic>>(
+      url,
+      null,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
 }

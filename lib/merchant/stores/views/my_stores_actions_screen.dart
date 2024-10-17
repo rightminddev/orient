@@ -7,6 +7,7 @@ import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/merchant/orders/views/my_orders_screen.dart';
 import 'package:orient/merchant/stores/models/my_stores_action_model.dart';
 import 'package:orient/merchant/stores/views/available_products_screen.dart';
+import 'package:orient/merchant/stores/views/edit_store_screen.dart';
 
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
@@ -65,12 +66,12 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //     });
 
                       // available products
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => AvailableProductsScreen(
-                              storeId: widget.storeModel.id!),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AvailableProductsScreen(
+                      //         storeId: widget.storeModel.id!),
+                      //   ),
+                      // );
 
                       // orders
                       // Navigator.of(context).push(
@@ -79,6 +80,13 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //         MyOrdersScreen(storeId: widget.storeModel.id!),
                       //   ),
                       // );
+                      // edit store
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              EditStoreScreen(storeModel: widget.storeModel),
+                        ),
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

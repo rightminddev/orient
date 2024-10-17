@@ -4,11 +4,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/info/countries/view_models/countries.viewmodel.dart';
 import 'package:orient/info/states/view_models/states.viewmodel.dart';
+import 'package:orient/models/stores/cities_model.dart';
 import 'package:orient/models/stores/country_model.dart';
 import 'package:orient/models/stores/create_edit_store_model.dart';
 import 'package:orient/models/stores/state_model.dart';
 import 'package:latlong2/latlong.dart' as latLng;
 import 'package:flutter_map/flutter_map.dart';
+import 'package:orient/models/stores/store_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_modules_widgets/template_page.widget.dart';
@@ -25,14 +27,15 @@ import '../widgets/city_drop_down_widget.dart';
 import '../widgets/country_drop_down_widget.dart';
 import '../widgets/state_drop_down_widget.dart';
 
-class CreateStoreScreen extends StatefulWidget {
-  const CreateStoreScreen({super.key});
+class EditStoreScreen extends StatefulWidget {
+  final StoreModel storeModel;
+  const EditStoreScreen({super.key, required this.storeModel});
 
   @override
-  State<CreateStoreScreen> createState() => _CreateStoreScreenState();
+  State<EditStoreScreen> createState() => _EditStoreScreenState();
 }
 
-class _CreateStoreScreenState extends State<CreateStoreScreen> {
+class _EditStoreScreenState extends State<EditStoreScreen> {
   late final StoreCreateEditModel storeCreateEditModel;
   late final CountriesViewModel countriesViewModel;
   late final StatesViewModel statesViewModel;
@@ -40,24 +43,81 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   final MapController mapController = MapController();
   final ValueNotifier<bool?> toggleCountrySelected = ValueNotifier<bool?>(null);
   final ValueNotifier<bool?> toggleStateSelected = ValueNotifier<bool?>(null);
-
   final ValueNotifier<String?> countrySelected = ValueNotifier<String?>(null);
   final ValueNotifier<String?> stateSelected = ValueNotifier<String?>(null);
+
   final ValueNotifier<latLng.LatLng> latLngSelected =
       ValueNotifier<latLng.LatLng>(latLng.LatLng(0, 0));
-  final TextEditingController countryCodeController = TextEditingController();
-  final TextEditingController nameEnController = TextEditingController();
-  final TextEditingController nameArController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-
+  late final TextEditingController countryCodeController;
+  late final TextEditingController nameEnController;
+  late final TextEditingController nameArController;
+  late final TextEditingController phoneController;
+  List<String> initialCitiesSelected = List.empty(growable: true);
   @override
   void initState() {
     super.initState();
+
+    countryCodeController = TextEditingController(
+        text: (widget.storeModel.countryKey ?? 0).toString());
+    nameEnController = TextEditingController(text: widget.storeModel.name);
+    nameArController = TextEditingController(text: widget.storeModel.name);
+    phoneController =
+        TextEditingController(text: widget.storeModel.phoneNumber.toString());
     storeCreateEditModel = StoreCreateEditModel();
     countriesViewModel = CountriesViewModel();
     statesViewModel = StatesViewModel();
     citiesViewModel = CitiesViewModel();
-    countriesViewModel.initializeCountries(context);
+    storeCreateEditModel.createEditStoreModel.id = widget.storeModel.id;
+    storeCreateEditModel.createEditStoreModel.name = NameModel(
+      ar: nameArController.text.trim(),
+      en: nameEnController.text.trim(),
+    );
+    storeCreateEditModel.createEditStoreModel.lat = widget.storeModel.lat;
+    storeCreateEditModel.createEditStoreModel.lng = widget.storeModel.lng;
+
+    storeCreateEditModel.createEditStoreModel.countryKey =
+        widget.storeModel.countryKey;
+    storeCreateEditModel.createEditStoreModel.phoneNumber =
+        widget.storeModel.phoneNumber.toString();
+
+    latLngSelected.value = latLng.LatLng(
+        double.parse(widget.storeModel.lat ?? '0'),
+        double.parse(widget.storeModel.lng ?? '0'));
+  }
+
+  @override
+  void didChangeDependencies() {
+    countriesViewModel.initializeCountries(context).then((_) {
+      final country = countriesViewModel.countries
+          .firstWhere((element) => element.id == widget.storeModel.countryId);
+      countrySelected.value = country.title;
+      storeCreateEditModel.createEditStoreModel.countryId =
+          (country.id ?? 0).toString();
+      statesViewModel.initializeStates(context, country.iso2 ?? '').then((_) {
+        final state = statesViewModel.states
+            .firstWhere((element) => element.id == widget.storeModel.stateId);
+        stateSelected.value = state.title;
+        storeCreateEditModel.createEditStoreModel.stateId =
+            (state.id ?? 0).toString();
+        citiesViewModel.initializeCities(context, state.id ?? 0).then((_) {
+          List<CitiesModel> storeCities = List.empty(growable: true);
+          final cities = citiesViewModel.cities;
+          for (var element in widget.storeModel.cities ?? []) {
+            storeCities.add(cities.firstWhere((city) => element.id == city.id));
+          }
+          storeCreateEditModel.createEditStoreModel.cities = storeCities
+              .map((element) => (element.id ?? 0).toString())
+              .toList();
+          initialCitiesSelected = storeCities
+              .map((element) => (element.title ?? 0).toString())
+              .toList();
+
+          toggleStateSelected.value = true;
+        });
+      });
+    });
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -79,6 +139,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
       countrySelected.value = element.title;
       storeCreateEditModel.createEditStoreModel.countryId =
           (element.id ?? 0).toString();
+      storeCreateEditModel.createEditStoreModel.countryKey = element.phoneCode;
       storeCreateEditModel.createEditStoreModel.stateId = null;
       stateSelected.value = null;
 
@@ -130,7 +191,8 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
           return TemplatePage(
             backgroundColor: Colors.white,
             pageContext: context,
-            title: AppStrings.addStore.tr(),
+            //TODO : update this
+            title: "Update store",
             bottomSheet: Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -183,13 +245,13 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                               : int.parse(countryCodeController.text.trim());
                           storeCreateEditModel.createEditStoreModel
                               .phoneNumber = phoneController.text.trim();
-                          storeCreateEditModel.addStore(context);
+                          storeCreateEditModel.updateStore(context);
                         }
                       });
                     },
                     padding: const EdgeInsets.symmetric(
                         horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                    title: "Create store",
+                    title: "Update store",
                     svgIcon: AppIcons.checkMarkDashed,
                   ),
                 ],
@@ -206,35 +268,34 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                   controller: nameEnController,
                   hintText: "name in english",
                 ),
-
                 PhoneNumberField(
                   controller: phoneController,
                   countryCodeController: countryCodeController,
+                  initialCountry: widget.storeModel.country?.iso2,
                 ),
                 CountryDropDownWidget(
                   countrySelected: countrySelected,
                   countries: countriesViewModel.countries,
                   onTap: setCountryChanged,
                 ),
-
                 ValueListenableBuilder(
                   valueListenable: toggleCountrySelected,
                   builder: (context, isSelected, child) {
                     return StateDropDownWidget(
                       stateSelected: stateSelected,
                       states: statesViewModel.states,
-                      isSelected: isSelected,
+                      isSelected: true,
                       onTap: setStateChanged,
                     );
                   },
                 ),
-
                 ValueListenableBuilder(
                   valueListenable: toggleStateSelected,
                   builder: (context, isSelected, child) {
                     return CityDropDownWidget(
                       isSelected: isSelected,
                       cities: citiesViewModel.cities,
+                      initialItems: initialCitiesSelected,
                       onListChanged: (element) {
                         storeCreateEditModel.createEditStoreModel.cities =
                             element;
@@ -242,48 +303,40 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                     );
                   },
                 ),
-                //Kl5szmd17siMI3P1iIb4gqz_wld1388qWUq88pgIU4Q
                 ValueListenableBuilder(
-                  valueListenable: toggleStateSelected,
-                  builder: (context, isSelected, child) {
-                    return isSelected != null //    latLngSelected.value
-                        ? ValueListenableBuilder(
-                            valueListenable: latLngSelected,
-                            builder: (context, positionSelected, child) {
-                              return SizedBox(
-                                height: 250,
-                                child: FlutterMap(
-                                  mapController: mapController,
-                                  options: MapOptions(
-                                    initialCenter: positionSelected,
-                                    initialZoom: 5.0,
-                                    onTap: (_, latlong) {
-                                      latLngSelected.value = latlong;
-                                      // mapController.move(latlong, 5.0);
-                                    },
-                                  ),
-                                  children: [
-                                    TileLayer(
-                                      urlTemplate:
-                                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                      subdomains: ['a', 'b', 'c'],
-                                    ),
-                                    MarkerLayer(
-                                      markers: [
-                                        Marker(
-                                          width: 20.0,
-                                          height: 20.0,
-                                          point: positionSelected,
-                                          child: FlutterLogo(),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          )
-                        : SizedBox.shrink();
+                  valueListenable: latLngSelected,
+                  builder: (context, positionSelected, child) {
+                    return SizedBox(
+                      height: 250,
+                      child: FlutterMap(
+                        mapController: mapController,
+                        options: MapOptions(
+                          initialCenter: positionSelected,
+                          initialZoom: 5.0,
+                          onTap: (_, latlong) {
+                            latLngSelected.value = latlong;
+                            // mapController.move(latlong, 5.0);
+                          },
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            subdomains: ['a', 'b', 'c'],
+                          ),
+                          MarkerLayer(
+                            markers: [
+                              Marker(
+                                width: 20.0,
+                                height: 20.0,
+                                point: positionSelected,
+                                child: FlutterLogo(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 ),
               ],

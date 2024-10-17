@@ -75,6 +75,26 @@ abstract class StoresService {
     return response;
   }
 
+  static Future<OperationResult<Map<String, dynamic>>> updateStore({
+    required BuildContext context,
+    required Map<String, dynamic> data,
+    required int id,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id/update';
+//https://lab.r-m.dev/api/rm_ecommarce/v1/stores/3/update
+    //stock/availability
+
+    final response = await HttpApiService().put<Map<String, dynamic>>(
+      url,
+      data,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+
   /// Get specific employee data by ID
   /// EmployeeService.getEmployeeData(
   ///   context: context,

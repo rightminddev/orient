@@ -1,4 +1,5 @@
-class CreateStoreModel {
+class CreateEditStoreModel {
+  int? id;
   NameModel? name;
   int? countryKey;
   String? phoneNumber;
@@ -11,7 +12,8 @@ class CreateStoreModel {
   String? locationType;
   String? googleMapUrl;
 
-  CreateStoreModel({
+  CreateEditStoreModel({
+    this.id,
     this.name,
     this.countryKey,
     this.phoneNumber,
@@ -28,7 +30,7 @@ class CreateStoreModel {
     // "google_map_url": "https://www.google.com/maps"
   });
 
-  CreateStoreModel.fromJson(Map<String, dynamic> json) {
+  CreateEditStoreModel.fromJson(Map<String, dynamic> json) {
     name = json['name'] != null ? NameModel.fromJson(json['name']) : null;
     countryKey = json['country_key'];
     phoneNumber = json['phone_number'];

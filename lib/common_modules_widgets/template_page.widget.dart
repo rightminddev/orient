@@ -76,7 +76,7 @@ class TemplatePage extends StatelessWidget {
                 ],
               ),
             )
-          : body,
+          : SafeArea(child: body),
     );
   }
 }

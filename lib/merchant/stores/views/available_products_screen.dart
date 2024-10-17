@@ -12,6 +12,7 @@ import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/button_widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../utils/components/general_components/product_container_with_text_field_widget.dart';
+import '../view_models/stores.actions.viewmodel.dart';
 import '../view_models/stores.viewmodel.dart';
 
 class AvailableProductsScreen extends StatefulWidget {
@@ -26,11 +27,13 @@ class AvailableProductsScreen extends StatefulWidget {
 class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
   final ScrollController controller = ScrollController();
   late final StoresViewModel viewModel;
+  late final StoreActionsViewModel storeActionsViewModel;
 
   @override
   void initState() {
     super.initState();
     viewModel = StoresViewModel();
+    storeActionsViewModel = StoreActionsViewModel();
     viewModel.initializeAvailableProductsScreen(context, widget.storeId);
   }
 
@@ -72,7 +75,8 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
             children: [
               ButtonWidget(
                 onPressed: () {
-                  viewModel.updateAvailableProducts(context, widget.storeId);
+                  storeActionsViewModel.updateAvailableProducts(
+                      context, widget.storeId);
                 },
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.s48, vertical: AppSizes.s16),

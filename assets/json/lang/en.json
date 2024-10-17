@@ -98,5 +98,6 @@
   "myStores": "My stores",
   "availabilityOfProducts": "Availability of products",
   "orderDetails": "Order Details",
-  "myOrders": "My Orders"
+  "myOrders": "My Orders",
+  "addStore": "Add Store"
 }

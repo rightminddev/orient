@@ -613,6 +613,7 @@ class HttpApiService implements BackEndServicesInterface {
           headers: ApiServiceHelpers.buildHeaders(
               additionalHeaders: header, context: context));
       httpClient.close();
+
       if (response.statusCode != 200) {
         if (response.statusCode == 401 &&
             BackEndServicesInterface.unauthrizedCallback != null) {
@@ -635,6 +636,51 @@ class HttpApiService implements BackEndServicesInterface {
       }
       return ApiServiceHelpers.parseResponse(
           responseJsonData: r, dataKey: dataKey);
+    } catch (err, t) {
+      debugPrint(
+          '--------- Failed getDynamic() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      return OperationResult(success: false, message: err.toString());
+    }
+  }
+
+  /// this is for getting lat and long for map display
+  static Future<OperationResult<dynamic>> getMapLatAndLong(
+      String url, BuildContext context,
+      {required String dataKey,
+      Map<String, String>? header,
+      bool? checkOnTokenExpiration = true}) async {
+    try {
+      // first : refresh access token using refresh token
+      var validateTokensResult =
+          await ApiServiceHelpers.checkExpirationOfTokens(
+              checkOnTokenExpiration: checkOnTokenExpiration!,
+              context: context);
+      if (validateTokensResult.success == false) {
+        return validateTokensResult;
+      }
+      debugPrint('GET --------------------- ${(_getUri(url)).toString()}');
+      var httpClient = http.Client();
+      var response = await httpClient.get(_getUri(url),
+          headers: ApiServiceHelpers.buildHeaders(
+              additionalHeaders: header, context: context));
+      httpClient.close();
+      if (response.statusCode != 200) {
+        if (response.statusCode == 401 &&
+            BackEndServicesInterface.unauthrizedCallback != null) {
+          BackEndServicesInterface.unauthrizedCallback
+              ?.call(response.statusCode);
+        }
+        return OperationResult(
+            success: false, message: 'Result code = ${response.statusCode}');
+      }
+      String reply = response.body;
+      if (reply.isEmpty) {
+        return OperationResult(success: false, message: 'Result is empty');
+      }
+      return OperationResult(
+        success: true,
+        data: jsonDecode(reply),
+      );
     } catch (err, t) {
       debugPrint(
           '--------- Failed getDynamic() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');

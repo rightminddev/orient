@@ -29,12 +29,6 @@ class StoresViewModel extends ChangeNotifier {
     updateLoadingStatus(laodingValue: false);
   }
 
-  Future<void> updateAvailableProducts(BuildContext context, int id) async {
-    updateLoadingStatus(laodingValue: true);
-    await _updateAvailableProducts(context, id);
-    updateLoadingStatus(laodingValue: false);
-  }
-
   Future<void> _getMyStores(BuildContext context) async {
     try {
       final result = await StoresService.getMyStores(context: context);
@@ -59,23 +53,6 @@ class StoresViewModel extends ChangeNotifier {
         (result.data?['products'] ?? []).forEach((v) {
           products.add(ProductModel.fromJson(v));
         });
-      }
-      debugPrint(products.length.toString());
-    } catch (err, t) {
-      debugPrint(
-          "error while getting Employee Details  ${err.toString()} at :- $t");
-    }
-  }
-
-  Future<void> _updateAvailableProducts(BuildContext context, int id) async {
-    try {
-      final result = await StoresService.updateAvailableProducts(
-          context: context, id: id, data: addedToStock.toJson());
-      //TODO: add bottom sheet for success or fail
-      if (result.success && result.data != null) {
-        // (result.data?['products'] ?? []).forEach((v) {
-        //   products.add(ProductModel.fromJson(v));
-        // });
       }
       debugPrint(products.length.toString());
     } catch (err, t) {

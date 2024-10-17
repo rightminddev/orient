@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../constants/app_constants.dart';
 import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
 import '../../../general_services/backend_services/get_endpoint.service.dart';
 import '../../../models/endpoint.model.dart';
@@ -58,9 +57,39 @@ abstract class StoresService {
     return response;
   }
 
+  static Future<OperationResult<Map<String, dynamic>>> addStore({
+    required BuildContext context,
+    required Map<String, dynamic> data,
+  }) async {
+    final String url =
+        EndpointServices.getApiEndpoint(EndpointsNames.myStores).url;
+
+    //stock/availability
+    final response = await HttpApiService().post<Map<String, dynamic>>(
+      url,
+      data,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+
   /// Get specific employee data by ID
   /// EmployeeService.getEmployeeData(
   ///   context: context,
   ///   employeeId: 'employee_id',
   /// );
+  static Future<OperationResult<dynamic>> getPlace({
+    required BuildContext context,
+    required String url,
+  }) async {
+    final response = await HttpApiService.getMapLatAndLong(
+      url,
+      context,
+      // allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
 }

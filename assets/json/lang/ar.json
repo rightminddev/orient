@@ -98,5 +98,6 @@
   "myStores": "متاجري",
   "availabilityOfProducts": "المنتجات المتوفرة",
   "orderDetails": "تفاصيل الطلب",
-  "myOrders": "طلباتي"
+  "myOrders": "طلباتي",
+  "addStore": "اضف متجر"
 }

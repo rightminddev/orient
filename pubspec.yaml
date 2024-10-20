@@ -130,6 +130,7 @@ flutter:
     - assets/images/alerts_images/
     - assets/images/svg/
     - assets/images/png/
+    - assets/icons/
     - assets/images/splash_images/
     - assets/images/general_images/
     - assets/images/onboarding_images/
@@ -143,6 +144,8 @@ flutter:
     - assets/images/company_info_images/
     - assets/images/fingerprints_images/     
     - assets/images/reward_penalties_images/
+    - assets/images/ecommerce/png/
+    - assets/images/ecommerce/svg/
 
   fonts:
     - family: Poppins

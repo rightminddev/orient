@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/modules/ecommerce/main_screen/main_screen.dart';
+import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import '../general_services/app_config.service.dart';
 import '../models/request.model.dart';
 import '../modules/authentication/views/login_screen.dart';
@@ -56,6 +58,8 @@ enum AppRoutes {
   payrollDetails,
   rewardsAndPenalties,
   addRewardsAndPenalties,
+  eCommerceMainScreen,
+  ecommerceSingleProductDetailScreen
 }
 
 const TestVSync ticker = TestVSync();
@@ -89,7 +93,7 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter goRouter(BuildContext context) => GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: '/${context.locale.languageCode}/splash-screen',
+      initialLocation: '/${context.locale.languageCode}/ecommerce',
       refreshListenable: Provider.of<AppConfigService>(context),
       redirect: (context, state) {
         final appConfigServiceProvider =
@@ -114,13 +118,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
       routes: [
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
-          builder: (context, state, child) => MainScreen(
-            key: UniqueKey(),
-            currentNavPage: state.fullPath == null
-                ? NavbarPages.home
-                : getNavbarPage(currentLocationRoute: state.fullPath!),
-            child: child,
-          ),
+          builder: (context, state, child) => ECommerceMainScreen(),
           routes: [
             GoRoute(
                 path: '/:lang',
@@ -589,6 +587,90 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                         );
                       }),
                 ]),
+            GoRoute(
+                path: '/:lang/ecommerce',
+                parentNavigatorKey: _shellNavigatorKey,
+                name: AppRoutes.eCommerceMainScreen.name,
+                pageBuilder: (context, state) {
+                  Offset? begin = state.extra as Offset?;
+                  final lang = state.uri.queryParameters['lang'];
+                  if (lang != null) {
+                    final locale = Locale(lang);
+                    context.setLocale(locale);
+                  }
+                  final animationController = AnimationController(
+                    vsync: ticker,
+                  );
+                  // Make sure to dispose the controller after the transition is complete
+                  animationController.addStatusListener((status) {
+                    if (status == AnimationStatus.completed ||
+                        status == AnimationStatus.dismissed) {
+                      animationController.dispose();
+                    }
+                  });
+                  return AppRouterTransitions.slideTransition(
+                    key: state.pageKey,
+                    child: ECommerceMainScreen(),
+                    animation: animationController,
+                    begin: begin ?? const Offset(1.0, 0.0),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'single-product',
+                    parentNavigatorKey: _shellNavigatorKey,
+                    name: AppRoutes.ecommerceSingleProductDetailScreen.name,
+                    pageBuilder: (context, state) {
+                      Offset? begin = state.extra as Offset?;
+                      final animationController = AnimationController(
+                        vsync: ticker,
+                      );
+                      // Make sure to dispose the controller after the transition is complete
+                      animationController.addStatusListener((status) {
+                        if (status == AnimationStatus.completed ||
+                            status == AnimationStatus.dismissed) {
+                          animationController.dispose();
+                        }
+                      });
+                      return AppRouterTransitions.slideTransition(
+                        key: state.pageKey,
+                        child: EcommerceSingleProductDetailScreen(),
+                        animation: animationController,
+                        begin: begin ?? const Offset(1.0, 0.0),
+                      );
+                    },
+                  )
+                ]
+            ),
+            // GoRoute(
+            //   path: '/:lang/ecommerce/single-product',
+            //   parentNavigatorKey: _shellNavigatorKey,
+            //   name: AppRoutes.ecommerceSingleProductDetailScreen.name,
+            //   pageBuilder: (context, state) {
+            //     Offset? begin = state.extra as Offset?;
+            //     final lang = state.uri.queryParameters['lang'];
+            //     if (lang != null) {
+            //       final locale = Locale(lang);
+            //       context.setLocale(locale);
+            //     }
+            //     final animationController = AnimationController(
+            //       vsync: ticker,
+            //     );
+            //     // Make sure to dispose the controller after the transition is complete
+            //     animationController.addStatusListener((status) {
+            //       if (status == AnimationStatus.completed ||
+            //           status == AnimationStatus.dismissed) {
+            //         animationController.dispose();
+            //       }
+            //     });
+            //     return AppRouterTransitions.slideTransition(
+            //       key: state.pageKey,
+            //       child: EcommerceSingleProductDetailScreen(),
+            //       animation: animationController,
+            //       begin: begin ?? const Offset(1.0, 0.0),
+            //     );
+            //   },
+            // ),
           ],
         ),
         GoRoute(
@@ -647,6 +729,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           name: AppRoutes.offlineScreen.name,
           builder: (context, state) => const OfflineScreen(),
         ),
+
       ],
       debugLogDiagnostics: true,
       errorBuilder: (context, state) => const NotFoundScreen(),

@@ -46,6 +46,8 @@ class StoresViewModel extends ChangeNotifier {
     try {
       final result = await StoresService.getAvailableProducts(
           context: context, id: id, search: search);
+      products = products.isNotEmpty ? List.empty(growable: true) : products;
+
       if (result.success && result.data != null) {
         (result.data?['products'] ?? []).forEach((v) {
           products.add(ProductModel.fromJson(v));

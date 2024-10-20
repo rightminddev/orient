@@ -165,12 +165,14 @@ class DioApiService implements BackEndServicesInterface {
   Future<OperationResult<T>> get<T>(String url,
       {required String dataKey,
       Map<String, String>? header,
+      Map<String, dynamic>? data,
       bool? checkOnTokenExpiration = true,
       bool? allData = false,
       required BuildContext context}) async {
     try {
       final response = await Dio().get(
         url,
+        data: data,
         options: Options(
             headers: ApiServiceHelpers.buildHeaders(
                 additionalHeaders: header, context: context)),

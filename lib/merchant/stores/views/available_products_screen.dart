@@ -116,7 +116,9 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                               Icons.search,
                               color: Color(AppColors.oc2),
                             ),
-                            validator: (value) {},
+                            // validator: (value) {
+
+                            // },
                             keyboardType: TextInputType.text,
                             onFieldSubmitted: (value) {
                               viewModel.search = value;

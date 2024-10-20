@@ -66,12 +66,12 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //     });
 
                       // available products
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => AvailableProductsScreen(
-                      //         storeId: widget.storeModel.id!),
-                      //   ),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AvailableProductsScreen(
+                              storeId: widget.storeModel.id!),
+                        ),
+                      );
 
                       // orders
                       // Navigator.of(context).push(
@@ -81,12 +81,12 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //   ),
                       // );
                       // edit store
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CreateEditStoreScreen(
-                              storeModel: widget.storeModel),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => CreateEditStoreScreen(
+                      //         storeModel: widget.storeModel),
+                      //   ),
+                      // );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

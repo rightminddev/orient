@@ -32,6 +32,7 @@ abstract class StoresService {
         : '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/:storeId${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
     final response = await DioApiService().get<Map<String, dynamic>>(
       url,
+      data: {"search": search},
       context: context,
       allData: true,
       dataKey: 'data',

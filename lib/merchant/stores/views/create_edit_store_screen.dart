@@ -31,15 +31,15 @@ import '../widgets/custom_bottom_sheet_for_create_edit_store.dart';
 import '../widgets/map_widget.dart';
 import '../widgets/state_drop_down_widget.dart';
 
-class CreateStoreScreen extends StatefulWidget {
+class CreateEditStoreScreen extends StatefulWidget {
   final StoreModel? storeModel;
-  const CreateStoreScreen({super.key, this.storeModel});
+  const CreateEditStoreScreen({super.key, this.storeModel});
 
   @override
-  State<CreateStoreScreen> createState() => _CreateStoreScreenState();
+  State<CreateEditStoreScreen> createState() => _CreateEditStoreScreenState();
 }
 
-class _CreateStoreScreenState extends State<CreateStoreScreen> {
+class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
   late final StoreCreateEditModel storeCreateEditModel;
   late final CountriesViewModel countriesViewModel;
   late final StatesViewModel statesViewModel;
@@ -311,7 +311,9 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                           return CityDropDownWidget(
                             isSelected: isSelected,
                             cities: citiesViewModel.cities,
-                            initialItems: initialCitiesSelected,
+                            initialItems: widget.storeModel != null
+                                ? initialCitiesSelected
+                                : [],
                             onListChanged: (element) {
                               storeCreateEditModel.createEditStoreModel.cities =
                                   element;

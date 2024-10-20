@@ -36,6 +36,7 @@ class CityDropDownWidget extends StatelessWidget {
         closedHeaderPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: const CustomDropdownDecoration(
+          //listItemDecoration: ListItemDecoration(),
           closedSuffixIcon: Icon(
             Icons.arrow_drop_down_sharp,
             color: Color(0xffE6007E),
@@ -45,6 +46,7 @@ class CityDropDownWidget extends StatelessWidget {
             color: Color(0xffE6007E),
           ),
           hintStyle: TextStyle(
+            overflow: TextOverflow.ellipsis,
             color: Color(0xFF464646),
             fontSize: 12,
             fontFamily: 'Poppins',
@@ -52,6 +54,7 @@ class CityDropDownWidget extends StatelessWidget {
             height: 0.11,
           ),
           listItemStyle: TextStyle(
+            overflow: TextOverflow.ellipsis,
             color: Color(0xFF464646),
             fontSize: 12,
             fontFamily: 'Poppins',
@@ -59,11 +62,12 @@ class CityDropDownWidget extends StatelessWidget {
             height: 0.11,
           ),
           headerStyle: TextStyle(
+            overflow: TextOverflow.ellipsis,
             color: Color(0xFF464646),
             fontSize: 12,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w400,
-            height: 0.11,
+            // height: 0.11,
           ),
         ),
       ),

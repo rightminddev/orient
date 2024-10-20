@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../../../general_services/backend_services/get_endpoint.service.dart';
 import '../../../models/endpoint.model.dart';
 import '../../../models/operation_result.model.dart';
@@ -15,7 +15,7 @@ abstract class AuthenticationService {
       "password": password,
       "device_info": deviceInformation
     };
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.createAuthentication)
             .url,
         body,
@@ -43,7 +43,7 @@ abstract class AuthenticationService {
       "department_id": departmentId,
       "device_info": deviceInformation
     };
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.registration).url, body,
         dataKey: 'data', allData: true, context: context);
   }

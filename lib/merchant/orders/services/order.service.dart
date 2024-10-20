@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../../../general_services/backend_services/get_endpoint.service.dart';
 import '../../../models/endpoint.model.dart';
 import '../../../models/operation_result.model.dart';
@@ -17,7 +17,7 @@ abstract class OrdersService {
   }) async {
     final String url =
         '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id/${EndpointServices.getApiEndpoint(EndpointsNames.myOrders).url}';
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       context: context,
       allData: true,
@@ -35,7 +35,7 @@ abstract class OrdersService {
         '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$storeId/${EndpointServices.getApiEndpoint(EndpointsNames.myOrders).url}/$orderId';
 
     //stock/availability
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       context: context,
       allData: true,
@@ -55,7 +55,7 @@ abstract class OrdersService {
 //api/rm_ecommarce/v1/stores/:storeId/orders/:orderId?status=
     //stock/availability
 
-    final response = await HttpApiService().patch<Map<String, dynamic>>(
+    final response = await DioApiService().patch<Map<String, dynamic>>(
       url,
       null,
       context: context,

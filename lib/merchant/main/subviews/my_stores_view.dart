@@ -6,7 +6,7 @@ import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
-import 'package:orient/merchant/stores/views/create_store_screen.dart';
+import 'package:orient/merchant/stores/views/create_edit_store_screen.dart';
 import 'package:orient/merchant/stores/views/my_stores_actions_screen.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
 import 'package:orient/utils/media_query_values.dart';
@@ -101,7 +101,7 @@ class _MyStoresViewState extends State<MyStoresView> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => CreateStoreScreen(),
+                builder: (context) => CreateEditStoreScreen(),
               ),
             );
           },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../../../general_services/backend_services/get_endpoint.service.dart';
 import '../../../models/endpoint.model.dart';
 import '../../../models/operation_result.model.dart';
@@ -13,7 +13,7 @@ abstract class StoresService {
   static Future<OperationResult<Map<String, dynamic>>> getMyStores({
     required BuildContext context,
   }) async {
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       EndpointServices.getApiEndpoint(EndpointsNames.myStores).url,
       context: context,
       allData: true,
@@ -30,7 +30,7 @@ abstract class StoresService {
     final String url = id != null
         ? '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}'
         : '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/:storeId${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       context: context,
       allData: true,
@@ -48,7 +48,7 @@ abstract class StoresService {
         '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
 
     //stock/availability
-    final response = await HttpApiService().post<Map<String, dynamic>>(
+    final response = await DioApiService().post<Map<String, dynamic>>(
       url,
       data,
       context: context,
@@ -66,7 +66,7 @@ abstract class StoresService {
         EndpointServices.getApiEndpoint(EndpointsNames.myStores).url;
 
     //stock/availability
-    final response = await HttpApiService().post<Map<String, dynamic>>(
+    final response = await DioApiService().post<Map<String, dynamic>>(
       url,
       data,
       context: context,
@@ -86,7 +86,7 @@ abstract class StoresService {
 //https://lab.r-m.dev/api/rm_ecommarce/v1/stores/3/update
     //stock/availability
 
-    final response = await HttpApiService().put<Map<String, dynamic>>(
+    final response = await DioApiService().put<Map<String, dynamic>>(
       url,
       data,
       context: context,
@@ -105,7 +105,7 @@ abstract class StoresService {
     required BuildContext context,
     required String url,
   }) async {
-    final response = await HttpApiService.getMapLatAndLong(
+    final response = await DioApiService.getMapLatAndLong(
       url,
       context,
       // allData: true,

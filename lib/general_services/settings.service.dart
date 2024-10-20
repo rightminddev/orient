@@ -10,7 +10,7 @@ import '../models/operation_result.model.dart';
 import '../models/settings/app_settings_model.dart';
 import '../models/settings/general_settings.model.dart';
 import 'app_config.service.dart';
-import 'backend_services/api_service/http_api_service/http_api.service.dart';
+import 'backend_services/api_service/dio_api_service/dio_api.service.dart';
 import 'backend_services/get_endpoint.service.dart';
 
 enum SettingsType {
@@ -86,7 +86,7 @@ abstract class AppSettingsService {
         // "token": AppConfigService.token,
         "device_id": appConfigServiceProvider.deviceInformation.deviceUniqueId
       };
-      result = await HttpApiService().post<Map<String, dynamic>>(
+      result = await DioApiService().post<Map<String, dynamic>>(
           EndpointServices.getApiEndpoint(EndpointsNames.startApp).url.trim(),
           body,
           context: context,
@@ -100,7 +100,7 @@ abstract class AppSettingsService {
         "type": settingTypeName,
         "last_update_date": lastUpdateDate
       };
-      result = await HttpApiService().post<Map<String, dynamic>>(
+      result = await DioApiService().post<Map<String, dynamic>>(
           EndpointServices.getApiEndpoint(EndpointsNames.userSettings)
               .url
               .trim(),

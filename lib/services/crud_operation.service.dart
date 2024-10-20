@@ -1,6 +1,6 @@
 import '../constants/app_constants.dart';
 import 'package:flutter/material.dart';
-import '../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../models/operation_result.model.dart';
 
 abstract class CrudOperationService {
@@ -19,8 +19,7 @@ abstract class CrudOperationService {
     required Map<String, dynamic> data,
   }) async {
     final url = '${AppConstants.baseUrl}/$slug/entities-operations';
-    final response = await HttpApiService().post<Map<String, dynamic>>(
-        url, data,
+    final response = await DioApiService().post<Map<String, dynamic>>(url, data,
         context: context, dataKey: 'data', allData: true);
     return response;
   }
@@ -45,7 +44,7 @@ abstract class CrudOperationService {
         ? '?${_buildQueryParameters(queryParams)}'
         : '';
     final url = '${AppConstants.baseUrl}/$slug/entities-operations$queryString';
-    final response = await HttpApiService().get<Map<String, dynamic>>(url,
+    final response = await DioApiService().get<Map<String, dynamic>>(url,
         context: context, allData: true, dataKey: 'data');
     return response;
   }
@@ -61,7 +60,7 @@ abstract class CrudOperationService {
         : '';
     final url =
         '${AppConstants.baseUrl}/$slug/entities-operations/$id$queryString';
-    final response = await HttpApiService().get<Map<String, dynamic>>(url,
+    final response = await DioApiService().get<Map<String, dynamic>>(url,
         context: context, allData: true, dataKey: 'data');
     return response;
   }
@@ -80,7 +79,7 @@ abstract class CrudOperationService {
     required Map<String, dynamic> data,
   }) async {
     final url = '${AppConstants.baseUrl}/$slug/entities-operations/$entityId';
-    final response = await HttpApiService().put<Map<String, dynamic>>(url, data,
+    final response = await DioApiService().put<Map<String, dynamic>>(url, data,
         context: context, dataKey: 'data', allData: true);
     return response;
   }
@@ -97,8 +96,7 @@ abstract class CrudOperationService {
     required String entityId,
   }) async {
     final url = '${AppConstants.baseUrl}/$slug/entities-operations/$entityId';
-    final response = await HttpApiService().delete<Map<String, dynamic>>(
-        url, {},
+    final response = await DioApiService().delete<Map<String, dynamic>>(url, {},
         dataKey: 'data', context: context, allData: true);
     return response;
   }

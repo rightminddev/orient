@@ -11,7 +11,7 @@ import 'package:orient/merchant/stores/views/available_products_screen.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../models/stores/store_model.dart';
-import 'create_store_screen.dart';
+import 'create_edit_store_screen.dart';
 
 class MyStoreActionsScreen extends StatefulWidget {
   final StoreModel storeModel;
@@ -83,8 +83,8 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       // edit store
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CreateStoreScreen(storeModel: widget.storeModel),
+                          builder: (context) => CreateEditStoreScreen(
+                              storeModel: widget.storeModel),
                         ),
                       );
                     },

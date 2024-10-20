@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/models/stores/state_model.dart';
 
 import '../../../utils/components/general_components/all_text_field.dart';
@@ -25,7 +27,7 @@ class StateDropDownWidget extends StatelessWidget {
         valueListenable: stateSelected,
         builder: (context, stateSelectedValue, child) {
           return defaultDropdownField(
-            title: 'store state',
+            title: AppStrings.storeGovernorate.tr(),
             value: stateSelectedValue,
             items: states
                 .map(

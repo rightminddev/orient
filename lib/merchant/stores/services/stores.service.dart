@@ -25,6 +25,7 @@ abstract class StoresService {
   static Future<OperationResult<Map<String, dynamic>>> getAvailableProducts({
     required BuildContext context,
     int? id,
+    String? search,
   }) async {
     final String url = id != null
         ? '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}'

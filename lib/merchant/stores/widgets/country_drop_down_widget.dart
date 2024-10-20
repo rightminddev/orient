@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 
 import '../../../models/stores/country_model.dart';
 import '../../../utils/components/general_components/all_text_field.dart';
@@ -19,32 +21,13 @@ class CountryDropDownWidget extends StatelessWidget {
       valueListenable: countrySelected,
       builder: (context, countrySelectedValue, child) {
         return defaultDropdownField(
-          title: 'store country',
+          title: AppStrings.storeCountry.tr(),
           value: countrySelectedValue,
           items: countries
               .map(
                 (element) => DropdownMenuItem<String>(
                   onTap: () {
                     onTap(element);
-                    // if (element.iso2 !=
-                    //     storeActionsViewModel.createStoreModel.countryId) {
-                    //   countrySelected.value = element.title;
-                    //   storeActionsViewModel.createStoreModel.countryId =
-                    //       element.iso2;
-                    //   storeActionsViewModel.createStoreModel.countryKey =
-                    //       element.phoneCode;
-
-                    //   statesViewModel
-                    //       .initializeStates(context, element.iso2 ?? '')
-                    //       .then((_) {
-                    //     toggleCountrySelected.value =
-                    //         toggleCountrySelected.value != null
-                    //             ? !toggleCountrySelected.value!
-                    //             : true;
-                    //   });
-                    // } else {
-                    //   //isCountrySelected.value = false;
-                    // }
                   },
                   value: element.title ?? '',
                   child: Text(

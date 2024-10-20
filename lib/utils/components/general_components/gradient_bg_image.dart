@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:orient/constants/app_colors.dart';
 
 import '../../../constants/app_sizes.dart';
 
@@ -12,6 +11,7 @@ class GradientBgImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        // color: Colors.amber,
         gradient: LinearGradient(
           begin: const Alignment(-1, 0),
           // radius: 0.54,

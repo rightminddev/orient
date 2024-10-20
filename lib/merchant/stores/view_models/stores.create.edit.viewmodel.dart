@@ -65,6 +65,7 @@ class StoreCreateEditModel extends ChangeNotifier {
 
       final result = await StoresService.getPlace(context: context, url: url);
       // mapPlaces = mapPlaces.isNotEmpty ? List.empty(growable: true) : mapPlaces;
+
       if (result.success && result.data != null) {
         locationData = MapPlaceModel.fromJson(result.data);
 

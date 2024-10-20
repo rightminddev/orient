@@ -6,7 +6,7 @@ import '../services/stores.service.dart';
 class StoresViewModel extends ChangeNotifier {
   List<StoreModel> myStores = List.empty(growable: true);
   List<ProductModel> products = List.empty(growable: true);
-
+  String? search;
   bool isLoading = true;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
@@ -44,8 +44,8 @@ class StoresViewModel extends ChangeNotifier {
 
   Future<void> _getAvailableProducts(BuildContext context, int id) async {
     try {
-      final result =
-          await StoresService.getAvailableProducts(context: context, id: id);
+      final result = await StoresService.getAvailableProducts(
+          context: context, id: id, search: search);
       if (result.success && result.data != null) {
         (result.data?['products'] ?? []).forEach((v) {
           products.add(ProductModel.fromJson(v));

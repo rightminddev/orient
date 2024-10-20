@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
+import '../../../utils/components/general_components/all_text_field.dart';
 import '../../../utils/components/general_components/button_widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../utils/components/general_components/product_container_with_text_field_widget.dart';
@@ -26,6 +28,8 @@ class AvailableProductsScreen extends StatefulWidget {
 
 class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
   final ScrollController controller = ScrollController();
+  final TextEditingController searchController = TextEditingController();
+
   late final StoresViewModel viewModel;
   late final StoreActionsViewModel storeActionsViewModel;
 
@@ -40,6 +44,7 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
   @override
   void dispose() {
     controller.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -80,7 +85,7 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                 },
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                title: "Update",
+                title: AppStrings.update.tr(),
                 svgIcon: AppIcons.checkMarkDashed,
               ),
             ],
@@ -103,6 +108,22 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                       child: Column(
                         children: [
                           SizedBox(height: 18),
+                          defaultTextFormField(
+                            controller: searchController,
+                            hintText: AppStrings.search.tr(),
+                            textInputAction: TextInputAction.search,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Color(AppColors.oc2),
+                            ),
+                            validator: (value) {},
+                            keyboardType: TextInputType.text,
+                            onFieldSubmitted: (value) {
+                              viewModel.search = value;
+                              viewModel.initializeAvailableProductsScreen(
+                                  context, widget.storeId);
+                            },
+                          ),
                           ...viewModel.products.map((element) {
                             return ProductContainerWithTextFieldWidget(
                               onQuantitySubmitted: (value) {

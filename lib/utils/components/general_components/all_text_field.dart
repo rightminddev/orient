@@ -8,9 +8,11 @@ Widget defaultTextFormField(
     Widget? suffixIcon,
     Widget? prefixIcon,
     String? Function(String?)? validator,
+    void Function(String?)? onFieldSubmitted,
     EdgeInsets? padding,
     TextInputType? keyboardType,
     int maxLines = 1,
+    TextInputAction? textInputAction,
     List<BoxShadow>? boxShadow}) {
   return Container(
     height: 48,
@@ -42,6 +44,8 @@ Widget defaultTextFormField(
           contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
         ),
         keyboardType: keyboardType ?? TextInputType.text,
+        textInputAction: textInputAction ?? TextInputAction.done,
+        onFieldSubmitted: onFieldSubmitted,
         validator: validator),
   );
 }
@@ -116,12 +120,21 @@ Widget defaultDropdownField({
 }) {
   return Container(
     // height: 48,
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    decoration: BoxDecoration(
-      color: const Color(0xffFFFFFF),
-      borderRadius: BorderRadius.circular(8),
+    decoration: ShapeDecoration(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          width: 1,
+          strokeAlign: BorderSide.strokeAlignCenter,
+          color: Color(0xFFE3E4E5),
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
     ),
     child: DropdownButton<String>(
+      borderRadius: BorderRadius.circular(8),
+      focusColor: const Color(0xffFFFFFF),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       dropdownColor: Colors.white,
       icon: const Icon(
         Icons.arrow_drop_down_sharp,

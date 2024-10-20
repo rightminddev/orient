@@ -110,4 +110,28 @@ abstract class AppStrings {
   static const orderDetails = 'orderDetails';
   static const myOrders = 'myOrders';
   static const addStore = 'addStore';
+  static const search = 'search';
+  static const editStore = 'editStore';
+  static const update = 'update';
+  static const date = 'date';
+  static const totalAmount = 'totalAmount';
+  static const details = 'details';
+  static const orderInformation = 'orderInformation';
+  static const actions = 'actions';
+  static const changes = 'changes';
+  static const status = 'status';
+  static const calculateThePrice = 'calculateThePrice';
+  static const addRequest = 'addRequest';
+  static const completeTheOrder = 'completeTheOrder';
+  static const totalPrice = 'totalPrice';
+  static const subtotal = 'subtotal';
+  static const successful = 'successful';
+  static const yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp =
+      'yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp';
+  static const goToHome = 'goToHome';
+  static const storeNameInArabic = 'storeNameInArabic';
+  static const storeNameInEnglish = 'storeNameInEnglish';
+  static const storeCountry = 'storeCountry';
+  static const storeGovernorate = 'storeGovernorate';
+  static const createStore = 'createStore';
 }

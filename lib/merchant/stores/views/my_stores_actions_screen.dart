@@ -7,11 +7,11 @@ import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/merchant/orders/views/my_orders_screen.dart';
 import 'package:orient/merchant/stores/models/my_stores_action_model.dart';
 import 'package:orient/merchant/stores/views/available_products_screen.dart';
-import 'package:orient/merchant/stores/views/edit_store_screen.dart';
 
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../models/stores/store_model.dart';
+import 'create_store_screen.dart';
 
 class MyStoreActionsScreen extends StatefulWidget {
   final StoreModel storeModel;
@@ -74,19 +74,19 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       // );
 
                       // orders
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MyOrdersScreen(storeId: widget.storeModel.id!),
-                        ),
-                      );
-                      // edit store
                       // Navigator.of(context).push(
                       //   MaterialPageRoute(
                       //     builder: (context) =>
-                      //         EditStoreScreen(storeModel: widget.storeModel),
+                      //         MyOrdersScreen(storeId: widget.storeModel.id!),
                       //   ),
                       // );
+                      // edit store
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CreateStoreScreen(storeModel: widget.storeModel),
+                        ),
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

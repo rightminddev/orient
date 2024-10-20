@@ -2,13 +2,16 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/validation_service.dart';
 import 'package:orient/info/countries/view_models/countries.viewmodel.dart';
 import 'package:orient/info/states/view_models/states.viewmodel.dart';
+import 'package:orient/models/stores/cities_model.dart';
 import 'package:orient/models/stores/country_model.dart';
 import 'package:orient/models/stores/create_edit_store_model.dart';
 import 'package:orient/models/stores/state_model.dart';
 import 'package:latlong2/latlong.dart' as latLng;
 import 'package:flutter_map/flutter_map.dart';
+import 'package:orient/models/stores/store_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_modules_widgets/template_page.widget.dart';
@@ -20,13 +23,17 @@ import '../../../info/cities/view_models/cities.viewmodel.dart';
 import '../../../modules/authentication/views/widgets/phone_number_field.dart';
 import '../../../utils/components/general_components/all_text_field.dart';
 import '../../../utils/components/general_components/button_widget.dart';
+import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../view_models/stores.create.edit.viewmodel.dart';
 import '../widgets/city_drop_down_widget.dart';
 import '../widgets/country_drop_down_widget.dart';
+import '../widgets/custom_bottom_sheet_for_create_edit_store.dart';
+import '../widgets/map_widget.dart';
 import '../widgets/state_drop_down_widget.dart';
 
 class CreateStoreScreen extends StatefulWidget {
-  const CreateStoreScreen({super.key});
+  final StoreModel? storeModel;
+  const CreateStoreScreen({super.key, this.storeModel});
 
   @override
   State<CreateStoreScreen> createState() => _CreateStoreScreenState();
@@ -40,16 +47,20 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   final MapController mapController = MapController();
   final ValueNotifier<bool?> toggleCountrySelected = ValueNotifier<bool?>(null);
   final ValueNotifier<bool?> toggleStateSelected = ValueNotifier<bool?>(null);
+  final initialZoom = 2.0;
 
   final ValueNotifier<String?> countrySelected = ValueNotifier<String?>(null);
   final ValueNotifier<String?> stateSelected = ValueNotifier<String?>(null);
   final ValueNotifier<latLng.LatLng> latLngSelected =
       ValueNotifier<latLng.LatLng>(latLng.LatLng(0, 0));
-  final TextEditingController countryCodeController = TextEditingController();
-  final TextEditingController nameEnController = TextEditingController();
-  final TextEditingController nameArController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  late final TextEditingController countryCodeController;
+  late final TextEditingController nameEnController;
+  late final TextEditingController nameArController;
+  late final TextEditingController phoneController;
+  List<String> initialCitiesSelected = List.empty(growable: true);
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  int? countryCode;
   @override
   void initState() {
     super.initState();
@@ -57,7 +68,80 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
     countriesViewModel = CountriesViewModel();
     statesViewModel = StatesViewModel();
     citiesViewModel = CitiesViewModel();
-    countriesViewModel.initializeCountries(context);
+    if (widget.storeModel != null) {
+      countryCodeController = TextEditingController(
+          text: (widget.storeModel?.countryKey ?? 0).toString());
+      nameEnController = TextEditingController(text: widget.storeModel!.name);
+      nameArController = TextEditingController(text: widget.storeModel!.name);
+      phoneController = TextEditingController(
+          text: widget.storeModel!.phoneNumber.toString());
+
+      storeCreateEditModel.createEditStoreModel.id = widget.storeModel!.id;
+      storeCreateEditModel.createEditStoreModel.name = NameModel(
+        ar: nameArController.text.trim(),
+        en: nameEnController.text.trim(),
+      );
+      storeCreateEditModel.createEditStoreModel.lat = widget.storeModel!.lat;
+      storeCreateEditModel.createEditStoreModel.lng = widget.storeModel!.lng;
+
+      storeCreateEditModel.createEditStoreModel.countryKey =
+          widget.storeModel!.countryKey;
+      storeCreateEditModel.createEditStoreModel.phoneNumber =
+          widget.storeModel!.phoneNumber.toString();
+
+      latLngSelected.value = latLng.LatLng(
+          double.parse(widget.storeModel!.lat ?? '0'),
+          double.parse(widget.storeModel!.lng ?? '0'));
+    } else {
+      countryCodeController = TextEditingController(text: '+20');
+      nameEnController = TextEditingController();
+      nameArController = TextEditingController();
+      phoneController = TextEditingController();
+
+      storeCreateEditModel.createEditStoreModel.name = NameModel(
+        ar: nameArController.text.trim(),
+        en: nameEnController.text.trim(),
+      );
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (widget.storeModel != null) {
+      countriesViewModel.initializeCountries(context).then((_) {
+        final country = countriesViewModel.countries.firstWhere(
+            (element) => element.id == widget.storeModel!.countryId);
+        countrySelected.value = country.title;
+        storeCreateEditModel.createEditStoreModel.countryId =
+            (country.id ?? 0).toString();
+        statesViewModel.initializeStates(context, country.iso2 ?? '').then((_) {
+          final state = statesViewModel.states.firstWhere(
+              (element) => element.id == widget.storeModel!.stateId);
+          stateSelected.value = state.title;
+          storeCreateEditModel.createEditStoreModel.stateId =
+              (state.id ?? 0).toString();
+          citiesViewModel.initializeCities(context, state.id ?? 0).then((_) {
+            List<CitiesModel> storeCities = List.empty(growable: true);
+            final cities = citiesViewModel.cities;
+            for (var element in widget.storeModel!.cities ?? []) {
+              storeCities
+                  .add(cities.firstWhere((city) => element.id == city.id));
+            }
+            storeCreateEditModel.createEditStoreModel.cities = storeCities
+                .map((element) => (element.id ?? 0).toString())
+                .toList();
+            initialCitiesSelected = storeCities
+                .map((element) => (element.title ?? 0).toString())
+                .toList();
+
+            toggleStateSelected.value = true;
+          });
+        });
+      });
+    } else {
+      countriesViewModel.initializeCountries(context);
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -79,6 +163,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
       countrySelected.value = element.title;
       storeCreateEditModel.createEditStoreModel.countryId =
           (element.id ?? 0).toString();
+      countryCode = element.phoneCode;
       storeCreateEditModel.createEditStoreModel.stateId = null;
       stateSelected.value = null;
 
@@ -107,7 +192,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
       storeCreateEditModel.getPlaceByName(context, element.title!).then((_) {
         toggleStateSelected.value != null
-            ? mapController.move(storeCreateEditModel.finalLatLng, 5.0)
+            ? mapController.move(storeCreateEditModel.finalLatLng, initialZoom)
             : null;
         latLngSelected.value = storeCreateEditModel.finalLatLng;
       });
@@ -121,6 +206,18 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
     } else {}
   }
 
+  bool checkValidation() {
+    if (widget.storeModel != null) {
+      return true;
+    } else {
+      if (countryCode == int.parse(countryCodeController.text.substring(1))) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -130,163 +227,124 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
           return TemplatePage(
             backgroundColor: Colors.white,
             pageContext: context,
-            title: AppStrings.addStore.tr(),
-            bottomSheet: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              decoration: const ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                shadows: [
-                  BoxShadow(
-                    color: Color(0x19000000),
-                    blurRadius: 11,
-                    offset: Offset(0, -4),
-                    spreadRadius: 0,
+            title: widget.storeModel != null
+                ? AppStrings.editStore.tr()
+                : AppStrings.addStore.tr(),
+            bottomSheet: CustomBottomSheetForCreateEditStore(
+              onPressed: () {
+                if (_formKey.currentState!.validate() && checkValidation()) {
+                  storeCreateEditModel
+                      .getPlaceByLatAndLong(
+                    context,
+                    latLngSelected.value.latitude,
+                    latLngSelected.value.longitude,
                   )
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ButtonWidget(
-                    onPressed: () {
-                      storeCreateEditModel
-                          .getPlaceByLatAndLong(
-                        context,
-                        latLngSelected.value.latitude,
-                        latLngSelected.value.longitude,
-                      )
-                          .then((value) {
-                        if (value == true) {
-                          storeCreateEditModel.createEditStoreModel.name =
-                              NameModel(
-                            ar: nameArController.text.trim(),
-                            en: nameEnController.text.trim(),
-                          );
-                          storeCreateEditModel.createEditStoreModel.lat =
-                              latLngSelected.value.latitude.toString();
-                          storeCreateEditModel.createEditStoreModel.lng =
-                              latLngSelected.value.longitude.toString();
+                      .then((value) {
+                    if (value == true) {
+                      storeCreateEditModel.createEditStoreModel.name =
+                          NameModel(
+                        ar: nameArController.text.trim(),
+                        en: nameEnController.text.trim(),
+                      );
+                      storeCreateEditModel.createEditStoreModel.lat =
+                          latLngSelected.value.latitude.toString();
+                      storeCreateEditModel.createEditStoreModel.lng =
+                          latLngSelected.value.longitude.toString();
 
-                          log(countryCodeController.text.trim());
-
-                          storeCreateEditModel.createEditStoreModel
-                              .countryKey = countryCodeController
-                                  .text.isEmpty
-                              ? 20
-                              : int.parse(countryCodeController.text.trim());
-                          storeCreateEditModel.createEditStoreModel
-                              .phoneNumber = phoneController.text.trim();
-                          storeCreateEditModel.addStore(context);
-                        }
-                      });
-                    },
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                    title: "Create store",
-                    svgIcon: AppIcons.checkMarkDashed,
-                  ),
-                ],
-              ),
+                      storeCreateEditModel.createEditStoreModel.countryKey =
+                          int.parse(countryCodeController.text.trim());
+                      storeCreateEditModel.createEditStoreModel.phoneNumber =
+                          phoneController.text.trim();
+                      widget.storeModel != null
+                          ? storeCreateEditModel.updateStore(context)
+                          : storeCreateEditModel.addStore(context);
+                    }
+                  });
+                }
+              },
+              title: widget.storeModel != null
+                  ? AppStrings.editStore.tr()
+                  : AppStrings.createStore.tr(),
             ),
-            body: Column(
-              children: [
-                SizedBox(height: 24),
-                defaultTextFormField(
-                  controller: nameArController,
-                  hintText: "name in arabic",
-                ),
-                defaultTextFormField(
-                  controller: nameEnController,
-                  hintText: "name in english",
-                ),
+            body: GradientBgImage(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 24),
+                      defaultTextFormField(
+                        controller: nameArController,
+                        hintText: AppStrings.storeNameInArabic.tr(),
+                        validator: ValidationService.validateRequired,
+                      ),
+                      defaultTextFormField(
+                        controller: nameEnController,
+                        hintText: AppStrings.storeNameInEnglish.tr(),
+                        validator: ValidationService.validateRequired,
+                      ),
+                      PhoneNumberField(
+                        controller: phoneController,
+                        countryCodeController: countryCodeController,
+                      ),
+                      CountryDropDownWidget(
+                        countrySelected: countrySelected,
+                        countries: countriesViewModel.countries,
+                        onTap: setCountryChanged,
+                      ),
 
-                PhoneNumberField(
-                  controller: phoneController,
-                  countryCodeController: countryCodeController,
-                ),
-                CountryDropDownWidget(
-                  countrySelected: countrySelected,
-                  countries: countriesViewModel.countries,
-                  onTap: setCountryChanged,
-                ),
+                      ValueListenableBuilder(
+                        valueListenable: toggleCountrySelected,
+                        builder: (context, isSelected, child) {
+                          return StateDropDownWidget(
+                            stateSelected: stateSelected,
+                            states: statesViewModel.states,
+                            isSelected: isSelected,
+                            onTap: setStateChanged,
+                          );
+                        },
+                      ),
 
-                ValueListenableBuilder(
-                  valueListenable: toggleCountrySelected,
-                  builder: (context, isSelected, child) {
-                    return StateDropDownWidget(
-                      stateSelected: stateSelected,
-                      states: statesViewModel.states,
-                      isSelected: isSelected,
-                      onTap: setStateChanged,
-                    );
-                  },
-                ),
-
-                ValueListenableBuilder(
-                  valueListenable: toggleStateSelected,
-                  builder: (context, isSelected, child) {
-                    return CityDropDownWidget(
-                      isSelected: isSelected,
-                      cities: citiesViewModel.cities,
-                      onListChanged: (element) {
-                        storeCreateEditModel.createEditStoreModel.cities =
-                            element;
-                      },
-                    );
-                  },
-                ),
-                //Kl5szmd17siMI3P1iIb4gqz_wld1388qWUq88pgIU4Q
-                ValueListenableBuilder(
-                  valueListenable: toggleStateSelected,
-                  builder: (context, isSelected, child) {
-                    return isSelected != null //    latLngSelected.value
-                        ? ValueListenableBuilder(
-                            valueListenable: latLngSelected,
-                            builder: (context, positionSelected, child) {
-                              return SizedBox(
-                                height: 250,
-                                child: FlutterMap(
-                                  mapController: mapController,
-                                  options: MapOptions(
-                                    initialCenter: positionSelected,
-                                    initialZoom: 5.0,
-                                    onTap: (_, latlong) {
-                                      latLngSelected.value = latlong;
-                                      // mapController.move(latlong, 5.0);
-                                    },
-                                  ),
-                                  children: [
-                                    TileLayer(
-                                      urlTemplate:
-                                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                      subdomains: ['a', 'b', 'c'],
-                                    ),
-                                    MarkerLayer(
-                                      markers: [
-                                        Marker(
-                                          width: 20.0,
-                                          height: 20.0,
-                                          point: positionSelected,
-                                          child: FlutterLogo(),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
+                      ValueListenableBuilder(
+                        valueListenable: toggleStateSelected,
+                        builder: (context, isSelected, child) {
+                          return CityDropDownWidget(
+                            isSelected: isSelected,
+                            cities: citiesViewModel.cities,
+                            initialItems: initialCitiesSelected,
+                            onListChanged: (element) {
+                              storeCreateEditModel.createEditStoreModel.cities =
+                                  element;
                             },
-                          )
-                        : SizedBox.shrink();
-                  },
+                          );
+                        },
+                      ),
+                      //Kl5szmd17siMI3P1iIb4gqz_wld1388qWUq88pgIU4Q
+                      ValueListenableBuilder(
+                        valueListenable: toggleStateSelected,
+                        builder: (context, isSelected, child) {
+                          return isSelected != null //    latLngSelected.value
+                              ? ValueListenableBuilder(
+                                  valueListenable: latLngSelected,
+                                  builder: (context, positionSelected, child) {
+                                    return MapWidget(
+                                      mapController: mapController,
+                                      positionSelected: positionSelected,
+                                      initialZoom: initialZoom,
+                                      onMapTap: (_, latlong) {
+                                        latLngSelected.value = latlong;
+                                        // mapController.move(latlong, 5.0);
+                                      },
+                                    );
+                                  },
+                                )
+                              : SizedBox.shrink();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
           );
         },

@@ -32,35 +32,40 @@ class CityDropDownWidget extends StatelessWidget {
                 .toString());
           }
           onListChanged(ids);
-
-          //  log('changing value to: $value');
-
-          // return defaultDropdownField(
-          //   title: 'store state',
-          //   value: stateSelectedValue,
-          //   items: cities
-          //       .map(
-          //         (element) => DropdownMenuItem<String>(
-          //           onTap: () {
-          //             onTap(element);
-          //           },
-          //           value: element.title ?? '',
-          //           child: Text(
-          //             element.title ?? '',
-          //             style: TextStyle(
-          //               color: Color(0xFF464646),
-          //               fontSize: 12,
-          //               fontFamily: 'Poppins',
-          //               fontWeight: FontWeight.w400,
-          //               height: 0.11,
-          //             ),
-          //           ),
-          //         ),
-          //       )
-          //       .toList(),
-          //   onChanged: (value) {},
-          // );
         },
+        closedHeaderPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: const CustomDropdownDecoration(
+          closedSuffixIcon: Icon(
+            Icons.arrow_drop_down_sharp,
+            color: Color(0xffE6007E),
+          ),
+          expandedSuffixIcon: Icon(
+            Icons.arrow_drop_up_sharp,
+            color: Color(0xffE6007E),
+          ),
+          hintStyle: TextStyle(
+            color: Color(0xFF464646),
+            fontSize: 12,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+            height: 0.11,
+          ),
+          listItemStyle: TextStyle(
+            color: Color(0xFF464646),
+            fontSize: 12,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+            height: 0.11,
+          ),
+          headerStyle: TextStyle(
+            color: Color(0xFF464646),
+            fontSize: 12,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+            height: 0.11,
+          ),
+        ),
       ),
     );
   }

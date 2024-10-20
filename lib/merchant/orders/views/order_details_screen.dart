@@ -82,11 +82,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 onPressed: () async {
                   await defaultActionBottomSheet(
                     context: context,
-                    buttonText: "Change",
+                    buttonText: AppStrings.changes.tr(),
                     viewCheckIcon: false,
                     viewDropDownButton: true,
                     dropDownValue: orderActionsViewModel.orderStatus,
-                    dropDownTitle: 'status',
+                    dropDownTitle: AppStrings.status.tr(),
                     dropDownItems: orderStatusMap
                         .map(
                           (index, element) => MapEntry(
@@ -199,7 +199,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         }).values,
                         const SizedBox(height: 12),
                         Text(
-                          'ORDER INFORMATION',
+                          AppStrings.orderInformation.tr(),
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: AppThemeService
@@ -210,7 +210,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ),
                         const SizedBox(height: 12),
                         TextWithSpaceBetween(
-                          textOnLeft: 'Total Amount',
+                          textOnLeft: AppStrings.totalAmount.tr(),
                           textOnLeftFontColor: AppThemeService
                               .colorPalette.quaternaryTextColor.color,
                           textOnLeftFontSize: 14,

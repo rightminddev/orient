@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
-import 'package:orient/merchant/orders/views/my_orders_screen.dart';
 import 'package:orient/merchant/stores/models/my_stores_action_model.dart';
 import 'package:orient/merchant/stores/views/available_products_screen.dart';
 
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../models/stores/store_model.dart';
-import 'create_edit_store_screen.dart';
 
 class MyStoreActionsScreen extends StatefulWidget {
   final StoreModel storeModel;
@@ -57,7 +54,7 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                 childAspectRatio: 0.8,
                 children: getMyStoresAction.map((element) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       //TODO: update this
                       // await context.pushNamed(AppRoutes.storeActions.name,
                       //     extra: element,
@@ -66,12 +63,12 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //     });
 
                       // available products
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => AvailableProductsScreen(
-                              storeId: widget.storeModel.id!),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AvailableProductsScreen(
+                      //         storeId: widget.storeModel.id!),
+                      //   ),
+                      // );
 
                       // orders
                       // Navigator.of(context).push(
@@ -87,6 +84,16 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //         storeModel: widget.storeModel),
                       //   ),
                       // );
+
+                      // ADD REQUEST
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AvailableProductsScreen(
+                            storeId: widget.storeModel.id!,
+                            isInAvailable: false,
+                          ),
+                        ),
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

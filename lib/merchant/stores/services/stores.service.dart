@@ -24,12 +24,11 @@ abstract class StoresService {
 
   static Future<OperationResult<Map<String, dynamic>>> getAvailableProducts({
     required BuildContext context,
-    int? id,
+    required int id,
     String? search,
   }) async {
-    final String url = id != null
-        ? '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}'
-        : '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/:storeId${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
     final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       data: {"search": search},
@@ -47,6 +46,44 @@ abstract class StoresService {
   }) async {
     final String url =
         '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
+
+    //stock/availability
+    final response = await DioApiService().post<Map<String, dynamic>>(
+      url,
+      data,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+
+  static Future<OperationResult<Map<String, dynamic>>> calculateOrders({
+    required BuildContext context,
+    required int id,
+    required Map<String, dynamic> data,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.calculateOrder).url}';
+
+    //stock/availability
+    final response = await DioApiService().post<Map<String, dynamic>>(
+      url,
+      data,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+
+  static Future<OperationResult<Map<String, dynamic>>> completeOrders({
+    required BuildContext context,
+    required int id,
+    required Map<String, dynamic> data,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.completeOrder).url}';
 
     //stock/availability
     final response = await DioApiService().post<Map<String, dynamic>>(

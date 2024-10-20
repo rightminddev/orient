@@ -4,12 +4,13 @@ import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
-import 'package:orient/models/availability/availability_model.dart';
+import 'package:orient/models/request/request_model.dart';
 import 'package:orient/utils/media_query_values.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
+import '../../../models/products/add_product_model.dart';
 import '../../../utils/components/general_components/all_text_field.dart';
 import '../../../utils/components/general_components/button_widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
@@ -18,8 +19,13 @@ import '../view_models/stores.actions.viewmodel.dart';
 import '../view_models/stores.viewmodel.dart';
 
 class AvailableProductsScreen extends StatefulWidget {
+  final bool isInAvailable;
   final int storeId;
-  const AvailableProductsScreen({super.key, required this.storeId});
+  const AvailableProductsScreen({
+    super.key,
+    required this.storeId,
+    this.isInAvailable = true,
+  });
 
   @override
   State<AvailableProductsScreen> createState() =>
@@ -57,8 +63,8 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
         pageContext: context,
         bottomSheet: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(vertical: 16),
-          decoration: ShapeDecoration(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: const ShapeDecoration(
             color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -80,8 +86,13 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
             children: [
               ButtonWidget(
                 onPressed: () {
-                  storeActionsViewModel.updateAvailableProducts(
-                      context, widget.storeId);
+                  if (widget.isInAvailable == true) {
+                    storeActionsViewModel.updateAvailableProducts(
+                        context, widget.storeId);
+                  } else {
+                    storeActionsViewModel.calculateOrders(
+                        context, widget.storeId);
+                  }
                 },
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.s48, vertical: AppSizes.s16),
@@ -91,7 +102,9 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
             ],
           ),
         ),
-        title: AppStrings.availabilityOfProducts.tr(),
+        title: widget.isInAvailable == true
+            ? AppStrings.availabilityOfProducts.tr()
+            : AppStrings.addRequest.tr(),
         body: Consumer<StoresViewModel>(
           builder: (context, viewModel, child) => viewModel.isLoading
               ? const LoadingPageWidget(
@@ -107,12 +120,12 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          SizedBox(height: 18),
+                          const SizedBox(height: 18),
                           defaultTextFormField(
                             controller: searchController,
                             hintText: AppStrings.search.tr(),
                             textInputAction: TextInputAction.search,
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.search,
                               color: Color(AppColors.oc2),
                             ),
@@ -129,20 +142,38 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                           ...viewModel.products.map((element) {
                             return ProductContainerWithTextFieldWidget(
                               onQuantitySubmitted: (value) {
-                                final index = storeActionsViewModel
-                                    .addedToStock.products!
-                                    .indexWhere(
-                                        (e) => e.productId == element.id);
-                                if (index == -1) {
-                                  storeActionsViewModel.addedToStock.products!
-                                      .add(AddedProductsModel(
-                                    productId: element.id,
-                                    quantity: int.parse(value),
-                                  ));
+                                if (widget.isInAvailable == true) {
+                                  final index = storeActionsViewModel
+                                      .addedToStock.items!
+                                      .indexWhere(
+                                          (e) => e.productId == element.id);
+                                  if (index == -1) {
+                                    storeActionsViewModel.addedToStock.items!
+                                        .add(AddedProductsModel(
+                                      productId: element.id,
+                                      quantity: int.parse(value),
+                                    ));
+                                  } else {
+                                    storeActionsViewModel.addedToStock.items!
+                                        .elementAt(index)
+                                        .quantity = int.parse(value);
+                                  }
                                 } else {
-                                  storeActionsViewModel.addedToStock.products!
-                                      .elementAt(index)
-                                      .quantity = int.parse(value);
+                                  final index = storeActionsViewModel
+                                      .requestedOrders.items!
+                                      .indexWhere(
+                                          (e) => e.productId == element.id);
+                                  if (index == -1) {
+                                    storeActionsViewModel.requestedOrders.items!
+                                        .add(AddedProductsModel(
+                                      productId: element.id,
+                                      quantity: int.parse(value),
+                                    ));
+                                  } else {
+                                    storeActionsViewModel.requestedOrders.items!
+                                        .elementAt(index)
+                                        .quantity = int.parse(value);
+                                  }
                                 }
                               },
                               stock: element.stock,
@@ -153,7 +184,7 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                                   element.mainCover?.elementAt(0).thumbnail,
                             );
                           }),
-                          SizedBox(height: 64),
+                          const SizedBox(height: 64),
                         ],
                       ),
                     ),

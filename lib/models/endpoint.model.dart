@@ -61,7 +61,9 @@ enum EndpointsNames {
   empEvaluation,
   summaryReport,
   activateTfa,
-  myStores
+  myStores,
+  calculateOrder,
+  completeOrder,
 }
 
 class EndPoint {

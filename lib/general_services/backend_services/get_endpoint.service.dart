@@ -315,6 +315,12 @@ abstract class EndpointServices {
         return EndPoint(name: name, method: 'GET', url: 'orders');
       case EndpointsNames.avaialbleProducts:
         return EndPoint(name: name, method: 'GET', url: '/stock/availability');
+      case EndpointsNames.calculateOrder:
+        return EndPoint(
+            name: name, method: 'GET', url: '/stock/orders/calculate-order');
+      case EndpointsNames.completeOrder:
+        return EndPoint(
+            name: name, method: 'GET', url: '/stock/orders/complete-order');
     }
   }
 }

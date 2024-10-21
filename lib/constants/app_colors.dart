@@ -28,4 +28,12 @@ abstract class AppColors {
   static const int inputHintColor = 0xff231F20;
   static const int inputLabelColor = 0xffDFDFDF;
   static const int inputTextColor = 0xff231F20;
+
+  //grideview background color
+  static const int oC1Color = 0xff0D3B6F;
+  static const int oC2Color = 0xffE6007E;
+  static const int yellowColor = 0xffEFDF00;
+  static const int grey1Color = 0xff4A4A4A;
+  static const int black1Color = 0xff1B1B1B;
+  static const int red1Color = 0xffA60B0B;
 }

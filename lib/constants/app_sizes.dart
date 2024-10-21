@@ -10,6 +10,7 @@ abstract class AppSizes {
   static const s5 = 5.0;
   static const s6 = 6.0;
   static const s8 = 8.0;
+  static const s9 = 9.0;
   static const s10 = 10.0;
   static const s12 = 12.0;
   static const s13 = 13.0;
@@ -31,12 +32,17 @@ abstract class AppSizes {
   static const s45 = 45.0;
   static const s48 = 48.0;
   static const s50 = 50.0;
+  static const s53 = 53.0;
   static const s55 = 55.0;
   static const s60 = 60.0;
+
+  static const s44 = 66.0;
+  static const s46 = 46.0;
   static const s64 = 64.0;
   static const s70 = 70.0;
   static const s75 = 75.0;
   static const s80 = 80.0;
+  static const s82 = 82.0;
   static const s88 = 88.0;
   static const s90 = 90.0;
   static const s100 = 100.0;
@@ -63,7 +69,9 @@ abstract class AppSizes {
 /// Constant gap widths
 const gapW4 = SizedBox(width: AppSizes.s4);
 const gapW8 = SizedBox(width: AppSizes.s8);
+const gapW10 = SizedBox(width: AppSizes.s10);
 const gapW12 = SizedBox(width: AppSizes.s12);
+const gapW14 = SizedBox(width: AppSizes.s14);
 const gapW16 = SizedBox(width: AppSizes.s16);
 const gapW20 = SizedBox(width: AppSizes.s20);
 const gapW24 = SizedBox(width: AppSizes.s24);
@@ -75,6 +83,7 @@ const gapW64 = SizedBox(width: AppSizes.s64);
 const gapH4 = SizedBox(height: AppSizes.s4);
 const gapH6 = SizedBox(height: AppSizes.s6);
 const gapH8 = SizedBox(height: AppSizes.s8);
+const gapH10 = SizedBox(height: AppSizes.s10);
 const gapH12 = SizedBox(height: AppSizes.s12);
 const gapH14 = SizedBox(height: AppSizes.s14);
 const gapH16 = SizedBox(height: AppSizes.s16);
@@ -87,3 +96,4 @@ const gapH32 = SizedBox(height: AppSizes.s32);
 const gapH36 = SizedBox(height: AppSizes.s36);
 const gapH48 = SizedBox(height: AppSizes.s48);
 const gapH64 = SizedBox(height: AppSizes.s64);
+const gapH82 = SizedBox(height: AppSizes.s82);

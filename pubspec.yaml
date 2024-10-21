@@ -140,7 +140,8 @@ flutter:
     - assets/images/company_info_images/
     - assets/images/fingerprints_images/     
     - assets/images/reward_penalties_images/
-
+    - assets/images/painter_main_screen_images/
+    - assets/images/teams_images/
   fonts:
     - family: Poppins
       fonts:

@@ -1,12 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../../constants/app_images.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../constants/app_strings.dart';
 import '../../../general_services/app_theme.service.dart';
 import '../../../modules/main_screen/views/widgets/custom_bottom_nav_item.widget.dart';
-import '../../../routing/app_router.dart';
 import '../subviews/home_view.dart';
 import '../subviews/my_stores_view.dart';
 

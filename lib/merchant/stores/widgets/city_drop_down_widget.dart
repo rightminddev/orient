@@ -1,7 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/stores/cities_model.dart';
+import '../../../models/info/cities_model.dart';
 
 class CityDropDownWidget extends StatelessWidget {
   final bool? isSelected;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orient/models/stores/country_model.dart';
+import 'package:orient/models/info/country_model.dart';
 import '../../../services/crud_operation.service.dart';
 
 class CountriesViewModel extends ChangeNotifier {

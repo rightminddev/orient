@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/stores/state_model.dart';
+import '../../../models/info/state_model.dart';
 import '../../../services/crud_operation.service.dart';
 
 class StatesViewModel extends ChangeNotifier {

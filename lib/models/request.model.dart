@@ -1,5 +1,5 @@
 import 'department.model.dart';
-import 'stores/country_key_model.dart';
+import 'info/country_key_model.dart';
 
 class RequestModel {
   final int? id;

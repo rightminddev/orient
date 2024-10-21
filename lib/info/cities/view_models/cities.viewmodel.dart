@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../models/stores/cities_model.dart';
+import '../../../models/info/cities_model.dart';
 import '../../../services/crud_operation.service.dart';
 
 class CitiesViewModel extends ChangeNotifier {

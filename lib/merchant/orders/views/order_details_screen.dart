@@ -13,7 +13,6 @@ import '../../../utils/components/general_components/button_widget.dart';
 import '../../../utils/components/general_components/general_components.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../utils/components/general_components/text_with_space_between.dart';
-import '../../stores/view_models/stores.actions.viewmodel.dart';
 import '../models/order_status.dart';
 import '../view_models/orders.actions.viewmodel.dart';
 import '../view_models/orders.viewmodel.dart';
@@ -57,8 +56,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         pageContext: context,
         bottomSheet: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(vertical: 16),
-          decoration: ShapeDecoration(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: const ShapeDecoration(
             color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -99,7 +98,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                               value: element,
                               child: Text(
                                 element,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xFF464646),
                                   fontSize: 12,
                                   fontFamily: 'Poppins',

@@ -9,7 +9,6 @@ import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../utils/components/general_components/order_container_widget.dart';
-import 'order_details_screen.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   final int storeId;

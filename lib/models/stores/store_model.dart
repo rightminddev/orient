@@ -1,9 +1,9 @@
-import 'cities_model.dart';
-import 'country_model.dart';
+import '../info/cities_model.dart';
+import '../info/country_model.dart';
 import 'location_type_model.dart';
-import 'manager_model.dart';
-import 'owner_mode;.dart';
-import 'state_model.dart';
+import '../people/manager_model.dart';
+import '../people/owner_model.dart';
+import '../info/state_model.dart';
 
 class StoreModel {
   int? id;

@@ -1,4 +1,4 @@
-import 'permissions_model.dart';
+import '../stores/permissions_model.dart';
 
 class ManagersModel {
   int? id;

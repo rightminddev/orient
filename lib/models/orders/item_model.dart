@@ -1,4 +1,4 @@
-import 'image_model.dart';
+import '../general/image_model.dart';
 
 class ItemModel {
   int? id;

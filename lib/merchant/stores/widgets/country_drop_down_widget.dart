@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
 
-import '../../../models/stores/country_model.dart';
+import '../../../models/info/country_model.dart';
 import '../../../utils/components/general_components/all_text_field.dart';
 
 class CountryDropDownWidget extends StatelessWidget {

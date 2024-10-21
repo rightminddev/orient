@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/components/general_components/product_container_with_text_field_widget.dart';
-
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 

@@ -64,23 +64,30 @@ enum EndpointsNames {
   myStores,
   calculateOrder,
   completeOrder,
+  showTeam,
+  topRated,
+  team,
+  deleteMember,
+  leaveTeam,
+  teamApproveRequest,
+  teamJoin,
 }
 
 class EndPoint {
   final EndpointsNames name;
-  final String method;
+  // final String method;
   final String url;
 
-  EndPoint({required this.name, required this.method, required this.url});
+  EndPoint({required this.name, required this.url});
 
   EndPoint copyWith({
     EndpointsNames? name,
-    String? method,
+    // String? method,
     String? url,
   }) {
     return EndPoint(
       name: name ?? this.name,
-      method: method ?? this.method,
+      //   method: method ?? this.method,
       url: url?.trim() ?? this.url.trim(),
     );
   }
@@ -89,12 +96,12 @@ class EndPoint {
   bool operator ==(covariant EndPoint other) {
     if (identical(this, other)) return true;
 
-    return other.name == name && other.method == method && other.url == url;
+    return other.name == name && other.url == url;
   }
 
   @override
-  int get hashCode => name.hashCode ^ method.hashCode ^ url.hashCode;
+  int get hashCode => name.hashCode ^ url.hashCode;
 
   @override
-  String toString() => 'EndPoint(name: $name, method: $method, url: $url)';
+  String toString() => 'EndPoint(name: $name,url: $url)';
 }

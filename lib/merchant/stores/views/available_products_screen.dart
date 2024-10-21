@@ -4,7 +4,6 @@ import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
-import 'package:orient/models/request/request_model.dart';
 import 'package:orient/utils/media_query_values.dart';
 import 'package:provider/provider.dart';
 

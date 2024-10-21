@@ -12,6 +12,7 @@ import '../../../utils/components/general_components/all_bottom_sheet.dart';
 import '../../../utils/components/general_components/button_widget.dart';
 import '../../../utils/components/general_components/general_components.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
+import '../../../utils/components/general_components/order_container_widget.dart';
 import '../../../utils/components/general_components/text_with_space_between.dart';
 import '../models/order_status.dart';
 import '../view_models/orders.actions.viewmodel.dart';
@@ -32,6 +33,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   final ScrollController controller = ScrollController();
   late final OrdersViewModel viewModel;
   late final OrderActionsViewModel orderActionsViewModel;
+  late final ValueNotifier<OrderStatus?> orderStatus =
+      ValueNotifier<OrderStatus?>(null);
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +48,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   void dispose() {
     controller.dispose();
+    orderStatus.dispose();
     super.dispose();
   }
 
@@ -79,38 +84,15 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             children: [
               ButtonWidget(
                 onPressed: () async {
-                  await defaultActionBottomSheet(
+                  await orderStatusActionBottomSheet(
                     context: context,
                     buttonText: AppStrings.changes.tr(),
-                    viewCheckIcon: false,
-                    viewDropDownButton: true,
-                    dropDownValue: orderActionsViewModel.orderStatus,
+                    orderActionsViewModel: orderActionsViewModel,
                     dropDownTitle: AppStrings.status.tr(),
-                    dropDownItems: orderStatusMap
-                        .map(
-                          (index, element) => MapEntry(
-                            index,
-                            DropdownMenuItem<String>(
-                              onTap: () {
-                                orderActionsViewModel.orderStatus =
-                                    orderStatusApiKeys[index];
-                              },
-                              value: element,
-                              child: Text(
-                                element,
-                                style: const TextStyle(
-                                  color: Color(0xFF464646),
-                                  fontSize: 12,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0.11,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                        .values
-                        .toList(),
+                    onItemTap: (value) {
+                      orderActionsViewModel.orderStatus =
+                          orderStatusApiKeys[value];
+                    },
                     dropDownOnChanged: (value) {
                       // orderActionsViewModel.orderStatus =
                       //     orderStatusApiKeys[index];
@@ -147,15 +129,38 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 18),
-                        TextWithSpaceBetween(
-                          textOnLeft: 'ORDER № ${viewModel.orderDetails.uuid}',
-                          textOnRight: viewModel.orderDetails.date ?? '',
+                        Text(
+                          'ORDER № ${viewModel.orderDetails.uuid}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(
+                                color: AppThemeService
+                                    .colorPalette.secondaryTextColor.color,
+                                height: 0,
+                                letterSpacing: 0,
+                              ),
                         ),
                         const SizedBox(height: 12),
-                        TrackingOrderTextWidget(
-                          textOnLeft: viewModel.orderDetails.uuid ?? '',
-                          textOnRight: viewModel.orderDetails.status ?? '',
+                        TitleWithDataWidget(
+                          data: viewModel.orderDetails.date ?? '',
+                          title: 'Date',
                         ),
+                        const SizedBox(height: 12),
+                        TitleWithDataWidget(
+                          data:
+                              '${viewModel.orderDetails.total} EGP', //TODO: currency
+                          title: 'Total Amount',
+                        ),
+                        const SizedBox(height: 12),
+                        TitleWithDataWidget(
+                          data: viewModel.orderDetails.status ?? '',
+                          title: 'Status',
+                        ),
+                        // TrackingOrderTextWidget(
+                        //   textOnLeft: viewModel.orderDetails.uuid ?? '',
+                        //   textOnRight: viewModel.orderDetails.status ?? '',
+                        // ),
                         const SizedBox(height: 12),
                         ...(viewModel.orderDetails.items ?? [])
                             .asMap()
@@ -217,8 +222,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           textOnRightFontColor: AppThemeService
                               .colorPalette.tertiaryTextColor.color,
                           textOnRightFontSize: 14,
-                          textOnRight:
-                              (viewModel.orderDetails.total ?? 0).toString(),
+                          textOnRight: '${viewModel.orderDetails.total} EGP',
                         ),
                       ],
                     ),

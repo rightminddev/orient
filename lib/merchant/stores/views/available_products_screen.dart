@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../models/products/add_product_model.dart';
+import '../../../models/request/request_model.dart';
 import '../../../utils/components/general_components/all_text_field.dart';
 import '../../../utils/components/general_components/button_widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
@@ -37,7 +38,7 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
 
   late final StoresViewModel viewModel;
   late final StoreActionsViewModel storeActionsViewModel;
-
+  List<AddedProductsModel> orders = List.empty(growable: true);
   @override
   void initState() {
     super.initState();
@@ -82,28 +83,36 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
           ),
           // child: Consumer<StoreActionsViewModel>(
           //   builder: (context, viewModel, child) {
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ButtonWidget(
-                onPressed: () {
-                  if (widget.isInAvailable == true) {
-                    storeActionsViewModel.updateAvailableProducts(
-                        context, widget.storeId);
-                  } else {
-                    storeActionsViewModel.calculateOrders(
-                        context, widget.storeId);
-                  }
-                },
-                // isLoading: viewModel.isLoading,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                title: widget.isInAvailable == true
-                    ? AppStrings.update.tr()
-                    : AppStrings.calculateThePrice.tr(),
-                svgIcon: AppIcons.checkMarkDashed,
-              ),
-            ],
+          child: ChangeNotifierProvider(
+            create: (_) => storeActionsViewModel,
+            child: Consumer<StoreActionsViewModel>(
+              builder: (context, viewModel, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ButtonWidget(
+                      onPressed: () {
+                        if (widget.isInAvailable == true) {
+                          storeActionsViewModel.updateAvailableProducts(
+                              context, widget.storeId);
+                        } else {
+                          storeActionsViewModel.calculateOrders(
+                              context, storeActionsViewModel, widget.storeId);
+                        }
+                      },
+                      isLoading: viewModel.isLoading,
+                      // isLoading: viewModel.isLoading,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppSizes.s48, vertical: AppSizes.s16),
+                      title: widget.isInAvailable == true
+                          ? AppStrings.update.tr()
+                          : AppStrings.calculateThePrice.tr(),
+                      svgIcon: AppIcons.checkMarkDashed,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           //   },
           // ),
@@ -145,50 +154,71 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                                 context, widget.storeId);
                           },
                         ),
-                        ...viewModel.products.map((element) {
-                          return ProductContainerWithTextFieldWidget(
-                            onQuantitySubmitted: (value) {
-                              if (widget.isInAvailable == true) {
-                                final index = storeActionsViewModel
-                                    .addedToStock.items!
-                                    .indexWhere(
-                                        (e) => e.productId == element.id);
-                                if (index == -1) {
-                                  storeActionsViewModel.addedToStock.items!
-                                      .add(AddedProductsModel(
-                                    productId: element.id,
-                                    quantity: int.parse(value),
-                                  ));
+                        ...viewModel.products.asMap().map((index, element) {
+                          return MapEntry(
+                            index,
+                            ProductContainerWithTextFieldWidget(
+                              onQuantitySubmitted: (value) {
+                                if (widget.isInAvailable == true) {
+                                  final index = storeActionsViewModel
+                                      .addedToStock.items!
+                                      .indexWhere(
+                                          (e) => e.productId == element.id);
+                                  if (index == -1) {
+                                    storeActionsViewModel.addedToStock.items!
+                                        .add(AddedProductsModel(
+                                      productId: element.id,
+                                      quantity: int.parse(value),
+                                    ));
+                                    orders.add(AddedProductsModel(
+                                      productId: element.id,
+                                      quantity: int.parse(value),
+                                    ));
+                                  } else {
+                                    storeActionsViewModel.addedToStock.items!
+                                        .elementAt(index)
+                                        .quantity = int.parse(value);
+                                    orders.elementAt(index).quantity =
+                                        int.parse(value);
+                                  }
                                 } else {
-                                  storeActionsViewModel.addedToStock.items!
-                                      .elementAt(index)
-                                      .quantity = int.parse(value);
+                                  final index = storeActionsViewModel
+                                      .requestedOrders.items!
+                                      .indexWhere(
+                                          (e) => e.productId == element.id);
+                                  if (index == -1) {
+                                    storeActionsViewModel.requestedOrders.items!
+                                        .add(AddedProductsModel(
+                                      productId: element.id,
+                                      quantity: int.parse(value),
+                                    ));
+                                    orders.add(AddedProductsModel(
+                                      productId: element.id,
+                                      quantity: int.parse(value),
+                                    ));
+                                  } else {
+                                    storeActionsViewModel.requestedOrders.items!
+                                        .elementAt(index)
+                                        .quantity = int.parse(value);
+                                    orders.elementAt(index).quantity =
+                                        int.parse(value);
+                                  }
                                 }
-                              } else {
-                                final index = storeActionsViewModel
-                                    .requestedOrders.items!
-                                    .indexWhere(
-                                        (e) => e.productId == element.id);
-                                if (index == -1) {
-                                  storeActionsViewModel.requestedOrders.items!
-                                      .add(AddedProductsModel(
-                                    productId: element.id,
-                                    quantity: int.parse(value),
-                                  ));
-                                } else {
-                                  storeActionsViewModel.requestedOrders.items!
-                                      .elementAt(index)
-                                      .quantity = int.parse(value);
-                                }
-                              }
-                            },
-                            stock: element.stock,
-                            title: element.title,
-                            price: (element.merchantsPrice ?? 0).toString(),
-                            unit: element.merchantsUnit,
-                            imageUrl: element.mainCover?.elementAt(0).thumbnail,
+                              },
+                              stock: orders.elementAtOrNull(index)?.productId ==
+                                      element.id
+                                  ? orders.elementAt(index).quantity
+                                  : widget.isInAvailable == true
+                                      ? element.stock
+                                      : 0,
+                              title: element.title,
+                              price: (element.merchantsPrice ?? 0).toString(),
+                              unit: element.merchantsUnit,
+                              imageUrl:
+                                  element.mainCover?.elementAt(0).thumbnail,
+                            ),
                           );
-                        }),
+                        }).values,
                         const SizedBox(height: 64),
                       ],
                     ),

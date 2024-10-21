@@ -95,12 +95,12 @@ class _MyStoresViewState extends State<MyStoresView> {
         floatingActionButton: CustomFloatingActionButton(
           iconPath: AppImages.addFloatingActionButtonIcon,
           onPressed: () {
-            context.goNamed(AppRoutes.addStore.name);
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) => CreateEditStoreScreen(),
-            //   ),
-            // );
+            // context.goNamed(AppRoutes.addStore.name);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CreateEditStoreScreen(),
+              ),
+            );
           },
           tagSuffix: 'add',
           height: AppSizes.s16,

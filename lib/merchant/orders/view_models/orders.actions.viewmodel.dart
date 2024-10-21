@@ -4,7 +4,7 @@ import '../services/order.service.dart';
 class OrderActionsViewModel extends ChangeNotifier {
   String? orderStatus;
 
-  bool isLoading = true;
+  bool isLoading = false;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
     notifyListeners();
@@ -35,6 +35,7 @@ class OrderActionsViewModel extends ChangeNotifier {
       );
 
       if (result.success && result.data != null) {
+        Navigator.of(context).pop();
         // (result.data?['orders'] ?? []).forEach((v) {
         //   myOrders.add(OrderModel.fromJson(v));
         // });

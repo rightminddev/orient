@@ -12,7 +12,7 @@ class StoreCreateEditModel extends ChangeNotifier {
   MapPlaceModel locationData = MapPlaceModel();
 
   latLng.LatLng finalLatLng = latLng.LatLng(0, 0);
-  bool isLoading = true;
+  bool isLoading = false;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
     notifyListeners();

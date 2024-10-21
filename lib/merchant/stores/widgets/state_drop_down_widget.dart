@@ -23,35 +23,38 @@ class StateDropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: isSelected != null ? false : true,
-      child: ValueListenableBuilder(
-        valueListenable: stateSelected,
-        builder: (context, stateSelectedValue, child) {
-          return defaultDropdownField(
-            title: AppStrings.storeGovernorate.tr(),
-            value: stateSelectedValue,
-            items: states
-                .map(
-                  (element) => DropdownMenuItem<String>(
-                    onTap: () {
-                      onTap(element);
-                    },
-                    value: element.title ?? '',
-                    child: Text(
-                      element.title ?? '',
-                      style: TextStyle(
-                        color: Color(0xFF464646),
-                        fontSize: 12,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w400,
-                        height: 0.11,
+      child: Opacity(
+        opacity: isSelected == true ? 1 : 0.5,
+        child: ValueListenableBuilder(
+          valueListenable: stateSelected,
+          builder: (context, stateSelectedValue, child) {
+            return defaultDropdownField(
+              title: AppStrings.storeGovernorate.tr(),
+              value: stateSelectedValue,
+              items: states
+                  .map(
+                    (element) => DropdownMenuItem<String>(
+                      onTap: () {
+                        onTap(element);
+                      },
+                      value: element.title ?? '',
+                      child: Text(
+                        element.title ?? '',
+                        style: TextStyle(
+                          color: Color(0xff191C1F),
+                          fontSize: 12,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                          height: 0.11,
+                        ),
                       ),
                     ),
-                  ),
-                )
-                .toList(),
-            onChanged: (value) {},
-          );
-        },
+                  )
+                  .toList(),
+              onChanged: (value) {},
+            );
+          },
+        ),
       ),
     );
   }

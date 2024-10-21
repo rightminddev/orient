@@ -5,25 +5,26 @@ import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 
-Widget defaultTextFormField(
-    {TextEditingController? controller,
-    String? hintText,
-    Widget? suffixIcon,
-    Widget? prefixIcon,
-    String? Function(String?)? validator,
-    TextInputType? keyboardType,
-    int maxLines = 1,
-    List<BoxShadow>? boxShadow,
-    double? containerHeight,
-    Color? borderColor,
-    TextInputAction? textInputAction,
-    void Function(String)? onFieldSubmitted}) {
+Widget defaultTextFormField({
+  TextEditingController? controller,
+  String? hintText,
+  Widget? suffixIcon,
+  Widget? prefixIcon,
+  String? Function(String?)? validator,
+  TextInputType? keyboardType,
+  int maxLines = 1,
+  List<BoxShadow>? boxShadow,
+  double? containerHeight,
+  Color? borderColor,
+  TextInputAction? textInputAction,
+  void Function(String)? onFieldSubmitted,
+  void Function(String)? onChanged,
+}) {
   return Container(
-    height: containerHeight ?? 48,
+    // height: containerHeight ?? 48,
     alignment: Alignment.center,
-    margin: const EdgeInsets.symmetric(vertical: AppSizes.s8),
-    padding: EdgeInsets.symmetric(
-        horizontal: 16, vertical: (maxLines! > 1) ? 16 : 0),
+    // margin: const EdgeInsets.symmetric(vertical: AppSizes.s8),
+
     decoration: ShapeDecoration(
       color: AppThemeService.colorPalette.tertiaryColorBackground.color,
       shape: RoundedRectangleBorder(
@@ -45,25 +46,36 @@ Widget defaultTextFormField(
     child: TextFormField(
       controller: controller,
       maxLines: maxLines,
+      onChanged: onChanged,
       textInputAction: textInputAction,
+      style: TextStyle(
+        fontFamily: "Poppins",
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: Color(0xff464646),
+      ),
       decoration: InputDecoration(
-        labelText: hintText ?? "Input",
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 16, vertical: hintText != null ? 16 : 8),
+        labelText: hintText,
         labelStyle: const TextStyle(
-            fontFamily: "Poppins",
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: Color(0xff191C1F)),
+          fontFamily: "Poppins",
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: Color(0xff191C1F),
+        ),
         hintStyle: const TextStyle(
-            fontFamily: "Poppins",
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: Color(0xff464646)),
+          fontFamily: "Poppins",
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: Color(0xff464646),
+        ),
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         border: InputBorder.none,
         disabledBorder: InputBorder.none,
         enabledBorder: InputBorder.none,
-        contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+        // contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
       ),
       keyboardType: keyboardType ?? TextInputType.text,
       validator: validator,
@@ -176,31 +188,51 @@ Widget defaultDropdownField(
     required items,
     required void Function(String?)? onChanged}) {
   return Container(
-    height: 48,
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    decoration: BoxDecoration(
-      color: const Color(0xffFFFFFF),
-      borderRadius: BorderRadius.circular(8),
+    // height: containerHeight ?? 48,
+    alignment: Alignment.center,
+    // margin: const EdgeInsets.symmetric(vertical: AppSizes.s8),
+
+    decoration: ShapeDecoration(
+      color: AppThemeService.colorPalette.tertiaryColorBackground.color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.s8),
+        side: const BorderSide(
+          color: Color(0xffE3E5E5),
+          width: 1.0,
+        ),
+      ),
+      shadows: const [
+        BoxShadow(
+          color: Color(0x0C000000),
+          blurRadius: 10,
+          offset: Offset(0, 1),
+          spreadRadius: 0,
+        )
+      ],
     ),
     child: DropdownButton<String>(
-        dropdownColor: Colors.white,
-        icon: const Icon(
-          Icons.arrow_drop_down_sharp,
-          color: Color(0xffE6007E),
+      borderRadius: BorderRadius.circular(AppSizes.s8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      dropdownColor: Colors.white,
+      icon: const Icon(
+        Icons.arrow_drop_down_sharp,
+        color: Color(0xffE6007E),
+      ),
+      isExpanded: isExpanded ?? true,
+      value: value,
+      hint: Text(
+        title!,
+        style: const TextStyle(
+          fontFamily: "Poppins",
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: Color(0xff191C1F),
         ),
-        isExpanded: isExpanded ?? true,
-        value: value,
-        hint: Text(
-          title!,
-          style: const TextStyle(
-              fontFamily: "Poppins",
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff464646)),
-        ),
-        items: items,
-        underline: const SizedBox.shrink(),
-        onChanged: onChanged),
+      ),
+      items: items,
+      underline: const SizedBox.shrink(),
+      onChanged: onChanged,
+    ),
   );
 }
 

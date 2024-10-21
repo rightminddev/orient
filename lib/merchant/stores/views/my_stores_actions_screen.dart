@@ -49,8 +49,8 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                 primary: false,
                 shrinkWrap: true,
                 //  padding: const EdgeInsets.symmetric(horizontal: 24),
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 4,
                 crossAxisCount: 2,
                 // crossAxisCount: 2,
                 childAspectRatio: 0.8,
@@ -139,6 +139,7 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                                       .colorPalette.secondaryTextColor.color,
                                 ),
                           ),
+                          SizedBox(height: 4),
                           Text(
                             element.subtitle,
                             textAlign: TextAlign.center,

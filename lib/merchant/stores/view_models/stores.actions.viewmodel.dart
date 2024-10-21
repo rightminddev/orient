@@ -11,7 +11,9 @@ import '../services/stores.service.dart';
 class StoreActionsViewModel extends ChangeNotifier {
   AvailabilityModel addedToStock =
       AvailabilityModel(items: List.empty(growable: true));
-  bool isLoading = true;
+  bool isLoading = false;
+  bool isLoadingDialog = false;
+
   RequestModel requestedOrders =
       RequestModel(items: List.empty(growable: true));
   int subTotal = 0;
@@ -22,16 +24,28 @@ class StoreActionsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateLoadingDialogStatus({required bool laodingValue}) {
+    isLoadingDialog = laodingValue;
+    notifyListeners();
+  }
+
   Future<void> updateAvailableProducts(BuildContext context, int id) async {
     updateLoadingStatus(laodingValue: true);
     await _updateAvailableProducts(context, id);
     updateLoadingStatus(laodingValue: false);
   }
 
-  Future<void> calculateOrders(BuildContext context, int id) async {
+  Future<void> calculateOrders(BuildContext context,
+      StoreActionsViewModel storeActionsViewModel, int id) async {
     updateLoadingStatus(laodingValue: true);
-    await _calculateOrders(context, id);
+    await _calculateOrders(context, storeActionsViewModel, id);
     updateLoadingStatus(laodingValue: false);
+  }
+
+  Future<void> completeOrders(BuildContext context, int id) async {
+    updateLoadingDialogStatus(laodingValue: true);
+    await _completeOrders(context, id);
+    updateLoadingDialogStatus(laodingValue: false);
   }
 
   Future<void> _updateAvailableProducts(BuildContext context, int id) async {
@@ -52,7 +66,8 @@ class StoreActionsViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _calculateOrders(BuildContext context, int id) async {
+  Future<void> _calculateOrders(BuildContext context,
+      StoreActionsViewModel storeActionsViewModel, int id) async {
     try {
       final result = await StoresService.calculateOrders(
           context: context, id: id, data: requestedOrders.toJson());
@@ -65,10 +80,11 @@ class StoreActionsViewModel extends ChangeNotifier {
         await completeOrderActionBottomSheet(
             context: context,
             subTotal: subTotal,
+            storeActionsViewModel: storeActionsViewModel,
             discount: discount,
             total: total,
             onTapButton: () async {
-              await _completeOrders(context, id);
+              await completeOrders(context, id);
             });
       }
       //   debugPrint(products.length.toString());

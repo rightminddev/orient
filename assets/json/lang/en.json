@@ -122,5 +122,6 @@
   "storeNameInEnglish": "Store name in English",
   "storeCountry": "Store Country",
   "storeGovernorate": "Store Governorate",
-  "createStore": "Create Store"
+  "createStore": "Create Store",
+  "storeCity": "Store City"
 }

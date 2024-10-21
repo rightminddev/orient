@@ -9,10 +9,13 @@ class CountryDropDownWidget extends StatelessWidget {
   final ValueNotifier<String?> countrySelected;
   final List<CountryModel> countries;
   final void Function(CountryModel) onTap;
+  final bool? isSelected;
+
   const CountryDropDownWidget(
       {super.key,
       required this.countrySelected,
       required this.countries,
+      required this.isSelected,
       required this.onTap});
 
   @override
@@ -20,30 +23,33 @@ class CountryDropDownWidget extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: countrySelected,
       builder: (context, countrySelectedValue, child) {
-        return defaultDropdownField(
-          title: AppStrings.storeCountry.tr(),
-          value: countrySelectedValue,
-          items: countries
-              .map(
-                (element) => DropdownMenuItem<String>(
-                  onTap: () {
-                    onTap(element);
-                  },
-                  value: element.title ?? '',
-                  child: Text(
-                    element.title ?? '',
-                    style: TextStyle(
-                      color: Color(0xFF464646),
-                      fontSize: 12,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                      height: 0.11,
+        return Opacity(
+          opacity: isSelected == true ? 1 : 0.5,
+          child: defaultDropdownField(
+            title: AppStrings.storeCountry.tr(),
+            value: countrySelectedValue,
+            items: countries
+                .map(
+                  (element) => DropdownMenuItem<String>(
+                    onTap: () {
+                      onTap(element);
+                    },
+                    value: element.title ?? '',
+                    child: Text(
+                      element.title ?? '',
+                      style: TextStyle(
+                        color: Color(0xFF464646),
+                        fontSize: 12,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
+                        height: 0.11,
+                      ),
                     ),
                   ),
-                ),
-              )
-              .toList(),
-          onChanged: (value) {},
+                )
+                .toList(),
+            onChanged: (value) {},
+          ),
         );
       },
     );

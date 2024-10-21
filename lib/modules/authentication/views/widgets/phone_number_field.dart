@@ -52,9 +52,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
           if (val == null || val.number.isEmpty) {
             return AppStrings.pleaseEnterValidPhoneNumber.tr();
           }
-          if (val.number.length < minLength || val.number.length > maxLength) {
-            return AppStrings.pleaseEnterValidPhoneNumber.tr();
-          }
+          //? does it needed??
+          // if (val.number.length < minLength || val.number.length > maxLength) {
+          //   return AppStrings.pleaseEnterValidPhoneNumber.tr();
+          // }
           return null;
         },
         onCountryChanged: (country) {

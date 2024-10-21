@@ -7,7 +7,7 @@ class StoresViewModel extends ChangeNotifier {
   List<StoreModel> myStores = List.empty(growable: true);
   List<ProductModel> products = List.empty(growable: true);
   String? search;
-  bool isLoading = true;
+  bool isLoading = false;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
     notifyListeners();

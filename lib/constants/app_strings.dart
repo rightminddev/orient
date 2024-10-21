@@ -134,4 +134,5 @@ abstract class AppStrings {
   static const storeCountry = 'storeCountry';
   static const storeGovernorate = 'storeGovernorate';
   static const createStore = 'createStore';
+  static const storeCity = 'storeCity';
 }

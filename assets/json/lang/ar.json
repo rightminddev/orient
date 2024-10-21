@@ -122,5 +122,6 @@
   "storeNameInEnglish": "اسم المتجر باللغة الانجليزية",
   "storeCountry": "بلد المتجر",
   "storeGovernorate": "محافظة المتجر",
-  "createStore": "أضف متجر"
+  "createStore": "أضف متجر",
+  "storeCity": "متجر المدينة"
 }

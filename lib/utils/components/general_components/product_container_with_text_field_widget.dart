@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
+import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/media_query_values.dart';
+
+import '../../../constants/app_strings.dart';
 
 class ProductContainerWithTextFieldWidget extends StatefulWidget {
   const ProductContainerWithTextFieldWidget(
@@ -85,7 +88,6 @@ class _ProductContainerWithTextFieldWidgetState
               ),
               const SizedBox(width: 16),
               Expanded(
-                flex: 3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,9 +131,30 @@ class _ProductContainerWithTextFieldWidgetState
                         ),
                       ],
                     ),
+                    SizedBox(height: 8),
+                    defaultTextFormField(
+                      controller: controller,
+                      //   hintText: 'units',
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        final isInt = int.tryParse(value);
+
+                        if (isInt != null &&
+                            isInt >= 0 &&
+                            widget.onQuantitySubmitted != null) {
+                          isStockValueError.value = false;
+                          widget.onQuantitySubmitted!(value);
+                        } else if (isInt == null &&
+                            widget.onQuantitySubmitted != null) {
+                          isStockValueError.value = true;
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
+              /*
               Expanded(
                 child: TextField(
                   controller: controller,
@@ -172,6 +195,7 @@ class _ProductContainerWithTextFieldWidgetState
                   ),
                 ),
               ),
+              */
             ],
           ),
         );

@@ -7,10 +7,12 @@ import '../../../utils/components/general_components/button_widget.dart';
 class CustomBottomSheetForCreateEditStore extends StatelessWidget {
   final VoidCallback onPressed;
   final String title;
+  final bool isLoading;
   const CustomBottomSheetForCreateEditStore({
     super.key,
     required this.onPressed,
     required this.title,
+    required this.isLoading,
   });
 
   @override
@@ -39,6 +41,7 @@ class CustomBottomSheetForCreateEditStore extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ButtonWidget(
+            isLoading: isLoading,
             onPressed: onPressed,
             padding: const EdgeInsets.symmetric(
                 horizontal: AppSizes.s48, vertical: AppSizes.s16),

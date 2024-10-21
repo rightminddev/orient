@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_strings.dart';
 
 class CartViewPromoWidget extends StatelessWidget {
   const CartViewPromoWidget({super.key});
@@ -9,7 +11,7 @@ class CartViewPromoWidget extends StatelessWidget {
     return Row(
       children: [
         Text(
-          "Promo code :    ".toUpperCase(),
+          "${AppStrings.promoCode.tr()} :    ".toUpperCase(),
           style:const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 14,

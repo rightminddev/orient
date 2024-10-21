@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_bottomsheet_location_widget.dart';
 
 class CheckoutLocationWidget extends StatelessWidget {
@@ -41,9 +43,9 @@ class CheckoutLocationWidget extends StatelessWidget {
                 },
               );
             },
-            child:const Text(
-              'CHANGE',
-              style: TextStyle(color: Color(0xffE6007E), fontWeight: FontWeight.w500, fontSize: 12),
+            child: Text(
+              AppStrings.change.tr().toUpperCase(),
+              style: const TextStyle(color: Color(0xffE6007E), fontWeight: FontWeight.w500, fontSize: 12),
             ),
           ),
         ],

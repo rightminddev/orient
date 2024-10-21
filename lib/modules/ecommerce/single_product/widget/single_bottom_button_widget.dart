@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
-
+import 'package:go_router/go_router.dart';
 class SingleBottomButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,9 @@ class SingleBottomButtonWidget extends StatelessWidget {
             children: [
               Container(
                 height: 26,
-                child: const Text(
-                  "TOTAL PRICE",
-                  style: TextStyle(
+                child: Text(
+                  AppStrings.totalPrice.tr().toUpperCase(),
+                  style:const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
                       color: Color(0xff1B1B1B)
@@ -49,10 +50,12 @@ class SingleBottomButtonWidget extends StatelessWidget {
             ],
           ),
           ButtonWidget(
-            title: 'Add to cart'.toUpperCase(),
+            title: AppStrings.addToCart.tr().toUpperCase(),
             svgIcon: "assets/images/ecommerce/svg/bag.svg",
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> ECommerceShoppingCart()));
+              context.pushNamed(AppRoutes.eCommerceShoppingCartView.name,
+                  pathParameters: {'lang': context.locale.languageCode});
+              //Navigator.push(context, MaterialPageRoute(builder: (context)=> ECommerceShoppingCart()));
             },
             padding: const EdgeInsets.symmetric(horizontal: 35,),
             fontSize: 12,

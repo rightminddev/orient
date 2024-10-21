@@ -61,12 +61,11 @@ Widget defaultTapBarItem(
     },
   );
 }
-
 Widget defaultBottomNavigationBar(
     {required List<String>? items,
-    final Function? onTapItem,
-    double? tapBarItemsWidth,
-    int? selectIndex,
+      final Function? onTapItem,
+      double? tapBarItemsWidth,
+      int? selectIndex,
     }) {
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
@@ -119,6 +118,22 @@ Widget defaultBottomNavigationBar(
     },
   );
 }
+// Widget defaultBottomNavigationBar(
+//     {required List<String>? items,
+//       void Function(int? index)? onTap,
+//     double? tapBarItemsWidth,
+//     int? selectIndex,
+//       BuildContext? context
+//     }) {
+//   double containerWidth = tapBarItemsWidth ?? MediaQuery.sizeOf(context!).width;
+//   double itemWidth = containerWidth / items!.length * 0.9;
+//   double itemHeight = itemWidth * 1;
+//   double itemRadius = itemWidth / 2;
+//   int? selectIndex;
+//   return StatefulBuilder(
+//       builder: (context),
+//   )
+// }
 
 Widget defaultProductContainer(
     {Color? containerColor,

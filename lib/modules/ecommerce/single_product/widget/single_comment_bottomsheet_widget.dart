@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_constants.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_sizes_widget.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/comment_widget.dart';
@@ -57,7 +60,7 @@ class _SingleCommentBottomsheetWidgetState extends State<SingleCommentBottomshee
               Container(
                 alignment: Alignment.center,
                   width: 120,
-                  child: Text("Comments".toUpperCase(), style:const TextStyle(color: Color(0xffEE3F80), fontSize: 14, fontWeight: FontWeight.w600),)),
+                  child: Text(AppStrings.comments.tr().toUpperCase(), style:const TextStyle(color: Color(0xffEE3F80), fontSize: 14, fontWeight: FontWeight.w600),)),
               Expanded(
                 child: Container(
                   height: 1,
@@ -102,7 +105,7 @@ class _SingleCommentBottomsheetWidgetState extends State<SingleCommentBottomshee
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 15),
                   alignment: Alignment.center,
-                  child: Text("Add New Comment".toUpperCase(), style:const TextStyle(color: Color(0xffEE3F80), fontSize: 12, fontWeight: FontWeight.w600),)),
+                  child: Text(AppStrings.addNewComment.tr().toUpperCase(), style:const TextStyle(color: Color(0xffEE3F80), fontSize: 12, fontWeight: FontWeight.w600),)),
               Expanded(
                 child: Container(
                   height: 1,
@@ -113,11 +116,11 @@ class _SingleCommentBottomsheetWidgetState extends State<SingleCommentBottomshee
           ),
           SizedBox(height: 10,),
           defaultCommentTextFormField(
-            hintText: "Type your message".toUpperCase(),
+            hintText: AppStrings.typeYourMessage.tr().toUpperCase(),
             maxLines: 1,
             controller: commentController,
             viewDropDownRates: true,
-            dropDownItems: ['1', '2', '3'].map((e){
+            dropDownItems: ['1', '2', '3', '4', '5'].map((e){
               return DropdownMenuItem(
                 value: e.toString(),
                 child: Row(
@@ -151,7 +154,7 @@ class _SingleCommentBottomsheetWidgetState extends State<SingleCommentBottomshee
               ],
             ),
           ),
-          SizedBox(height: 30,)
+          const SizedBox(height: 30,)
         ],
       ),
     );

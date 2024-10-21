@@ -36,7 +36,8 @@ class MyApp extends StatelessWidget {
     // );
       MaterialApp.router(
       title: 'Orient',
-      restorationScopeId: 'app',debugShowCheckedModeBanner: false,
+      restorationScopeId: 'app',
+      debugShowCheckedModeBanner: false,
       routerDelegate: appGoRouter.routerDelegate,
       routeInformationParser: appGoRouter.routeInformationParser,
       routeInformationProvider: appGoRouter.routeInformationProvider,

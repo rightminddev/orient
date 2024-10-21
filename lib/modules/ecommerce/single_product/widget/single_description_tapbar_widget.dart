@@ -5,11 +5,11 @@ class SingleDescriptionTapbarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: const Text(
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      child: Text(
         "Super Seal 123 is a highly developed product that absorbs deeply into the substrate...",
-        style: const TextStyle(fontSize: 14),
+        style: TextStyle(fontSize: 14),
       ),
     );
   }

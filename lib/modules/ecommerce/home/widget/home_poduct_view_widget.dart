@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
@@ -20,7 +21,7 @@ class HomePoductViewWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Recommended for you".toUpperCase(),
+                Text(AppStrings.recommendedForYou.tr().toUpperCase(),
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
@@ -29,7 +30,7 @@ class HomePoductViewWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text("see more".toUpperCase(),
+                    Text(AppStrings.seeMore.tr().toUpperCase(),
                       style:const TextStyle(
                           color: Color(0xff1B1B1B),
                           fontSize: 8,
@@ -61,19 +62,11 @@ class HomePoductViewWidget extends StatelessWidget {
                           spreadRadius: 1,
                         )
                       ],
-                      onTap: ()async{
-                        try {
-                          await context.pushNamed(
-                            AppRoutes.ecommerceSingleProductDetailScreen.name,
-                            pathParameters: {
-                              'lang': context.locale.languageCode,
-                            },
-                          );
-                        } catch (e) {
-                          print("Navigation error: $e");
-                        }
+                      onTap: (){
+                        context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
+                            pathParameters: {'lang': context.locale.languageCode});
+                    //  Navigator.push(context, MaterialPageRoute(builder: (context)=> EcommerceSingleProductDetailScreen()));
                       }
-                        //Navigator.push(context, MaterialPageRoute(builder: (context)=> EcommerceSingleProductDetailScreen()));
                   ),
                   SizedBox(width: 10,),
                   defaultViewProductGrid(

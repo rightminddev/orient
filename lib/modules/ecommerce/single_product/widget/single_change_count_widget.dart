@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 
 class SingleChangeCountWidget extends StatefulWidget {
   const SingleChangeCountWidget({super.key});
@@ -16,7 +18,7 @@ class _SingleChangeCountWidgetState extends State<SingleChangeCountWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("COUNT:", style: TextStyle(
+           Text("${AppStrings.count.tr().toUpperCase()}:", style:const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 14,
               color: Color(0xff1B1B1B)

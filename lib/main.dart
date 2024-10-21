@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
+import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
 import 'firebase_options.dart';
@@ -50,6 +51,9 @@ void main() async {
           ),
           ChangeNotifierProvider<MainScreenViewModel>(
             create: (_) => MainScreenViewModel(),
+          ),
+          ChangeNotifierProvider<EcommerceMainScreenViewModel>(
+            create: (_) => EcommerceMainScreenViewModel(),
           ),
         ],
         child: const MyApp(),

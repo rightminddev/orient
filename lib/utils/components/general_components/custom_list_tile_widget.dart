@@ -124,18 +124,21 @@ class CustomListTileWidget extends StatelessWidget {
                                 ),
                       ),
                       subtitle != null
-                          ? Text(
-                              subtitle!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall
-                                  ?.copyWith(
-                                    fontWeight: subtitleFontWeight,
-                                    color: subtitleFontColor ??
-                                        AppThemeService.colorPalette
-                                            .quaternaryTextColor.color,
-                                    fontSize: subtitleFontSize,
-                                  ),
+                          ? Padding(
+                              padding: EdgeInsets.only(top: 4),
+                              child: Text(
+                                subtitle!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displaySmall
+                                    ?.copyWith(
+                                      fontWeight: subtitleFontWeight,
+                                      color: subtitleFontColor ??
+                                          AppThemeService.colorPalette
+                                              .quaternaryTextColor.color,
+                                      fontSize: subtitleFontSize,
+                                    ),
+                              ),
                             )
                           : const SizedBox.shrink(),
                     ],

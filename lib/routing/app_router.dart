@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/merchant/main/views/merchant_main_screen.dart';
+import 'package:orient/merchant/stores/views/create_edit_store_screen.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_screen.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import '../general_services/app_config.service.dart';
@@ -40,7 +41,7 @@ import '../modules/requests/views/requests_calendar_screen.dart';
 
 enum AppRoutes {
   home,
-  merchantHome,
+  addStore,
   splash,
   onboarding,
   login,
@@ -124,7 +125,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
       routes: [
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
-          builder: (context, state, child) => ECommerceMainScreen(),
+          builder: (context, state, child) => MerchantMainScreen(),
           routes: [
             GoRoute(
               path: '/:lang',
@@ -216,6 +217,29 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   },
                 ),
               ],
+            ),
+            GoRoute(
+              path: '/add-store',
+              parentNavigatorKey: _shellNavigatorKey,
+              name: AppRoutes.addStore.name,
+              pageBuilder: (context, state) {
+                final animationController = AnimationController(
+                  vsync: ticker,
+                );
+                // Make sure to dispose the controller after the transition is complete
+                animationController.addStatusListener((status) {
+                  if (status == AnimationStatus.completed ||
+                      status == AnimationStatus.dismissed) {
+                    animationController.dispose();
+                  }
+                });
+                return AppRouterTransitions.slideTransition(
+                  key: state.pageKey,
+                  child: CreateEditStoreScreen(),
+                  animation: animationController,
+                  begin: const Offset(1.0, 0.0),
+                );
+              },
             ),
             GoRoute(
                 path: '/:lang/requests/:type',
@@ -678,62 +702,9 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                       );
                     },
                   )
-                ]
-            ),
-            // GoRoute(
-            //   path: '/:lang/ecommerce/single-product',
-            //   parentNavigatorKey: _shellNavigatorKey,
-            //   name: AppRoutes.ecommerceSingleProductDetailScreen.name,
-            //   pageBuilder: (context, state) {
-            //     Offset? begin = state.extra as Offset?;
-            //     final lang = state.uri.queryParameters['lang'];
-            //     if (lang != null) {
-            //       final locale = Locale(lang);
-            //       context.setLocale(locale);
-            //     }
-            //     final animationController = AnimationController(
-            //       vsync: ticker,
-            //     );
-            //     // Make sure to dispose the controller after the transition is complete
-            //     animationController.addStatusListener((status) {
-            //       if (status == AnimationStatus.completed ||
-            //           status == AnimationStatus.dismissed) {
-            //         animationController.dispose();
-            //       }
-            //     });
-            //     return AppRouterTransitions.slideTransition(
-            //       key: state.pageKey,
-            //       child: EcommerceSingleProductDetailScreen(),
-            //       animation: animationController,
-            //       begin: begin ?? const Offset(1.0, 0.0),
-            //     );
-            //   },
-            // ),
+                ]),
           ],
         ),
-        // GoRoute(
-        //     path: 'merchant-main',
-        //     //  navigatorKey: _shellNavigatorKey,
-        //     name: AppRoutes.merchantHome.name,
-        //     pageBuilder: (context, state) {
-        //       final animationController = AnimationController(
-        //         vsync: ticker,
-        //       );
-        //       // Make sure to dispose the controller after the transition is complete
-        //       animationController.addStatusListener((status) {
-        //         if (status == AnimationStatus.completed ||
-        //             status == AnimationStatus.dismissed) {
-        //           animationController.dispose();
-        //         }
-        //       });
-        //       return AppRouterTransitions.slideTransition(
-        //         key: state.pageKey,
-        //         child: MerchantMainScreen(),
-        //         animation: animationController,
-        //         begin: const Offset(1.0, 0.0),
-        //       );
-        //     }),
-        //    routes: [],
 
         GoRoute(
           path: '/:lang/splash-screen',

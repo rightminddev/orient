@@ -44,7 +44,7 @@ class TemplatePage extends StatelessWidget {
           title,
           style: Theme.of(pageContext)
               .textTheme
-              .displayLarge
+              .headlineSmall
               ?.copyWith(color: Theme.of(pageContext).colorScheme.primary),
         ),
         bottom: bottomAppbarWidget,
@@ -53,15 +53,10 @@ class TemplatePage extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSizes.s10),
                 child: InkWell(
                   onTap: () => pageContext.pop(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(pageContext).primaryColor),
-                    child: const Icon(
-                      Icons.arrow_back_sharp,
-                      color: Colors.white,
-                      size: AppSizes.s18,
-                    ),
+                  child: Icon(
+                    Icons.arrow_back_sharp,
+                    color: Theme.of(pageContext).primaryColor,
+                    size: AppSizes.s18,
                   ),
                 ),
               )

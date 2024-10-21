@@ -24,40 +24,45 @@ class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
     return Scaffold(
       body: Column(
         children: [
-        Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          if(selectIndexs == 0)Container(
-              height: MediaQuery.sizeOf(context).height * 1,
-              child: ECommerceHomeScreen()
-          ), if(selectIndexs == 1)Container(
-              height: MediaQuery.sizeOf(context).height * 1,
-              child: ECommerceHomeScreen()
-          ), if(selectIndexs == 2)Container(
-              height: MediaQuery.sizeOf(context).height * 1,
-              child: ECommerceHomeScreen()
-          ), if(selectIndexs == 3)Container(
-              height: MediaQuery.sizeOf(context).height * 1,
-              child:const ECommerceSearchScreen()
-          ), if(selectIndexs == 4)Container(
-              height: MediaQuery.sizeOf(context).height * 1,
-              child: ECommerceHomeScreen()
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30,),
-            child: defaultBottomNavigationBar(
-                items: navs,
-                tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
-                selectIndex: selectIndexs,
-                onTapItem: (index){
-                  setState(() {
-                    selectIndexs = index;
-                  });
-                }
-            ),
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              if (selectIndexs == 0)
+                Container(
+                    height: MediaQuery.sizeOf(context).height * 1,
+                    child: ECommerceHomeScreen()),
+              if (selectIndexs == 1)
+                Container(
+                    height: MediaQuery.sizeOf(context).height * 1,
+                    child: ECommerceHomeScreen()),
+              if (selectIndexs == 2)
+                Container(
+                    height: MediaQuery.sizeOf(context).height * 1,
+                    child: ECommerceHomeScreen()),
+              if (selectIndexs == 3)
+                Container(
+                    height: MediaQuery.sizeOf(context).height * 1,
+                    child: const ECommerceSearchScreen()),
+              if (selectIndexs == 4)
+                Container(
+                    height: MediaQuery.sizeOf(context).height * 1,
+                    child: ECommerceHomeScreen()),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 30,
+                ),
+                child: defaultBottomNavigationBar(
+                    items: navs,
+                    tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
+                    selectIndex: selectIndexs,
+                    onTapItem: (index) {
+                      setState(() {
+                        selectIndexs = index;
+                      });
+                    }),
+              )
+            ],
           )
-        ],
-      )
         ],
       ),
     );

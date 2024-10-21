@@ -57,14 +57,16 @@ class _ProductContainerWithTextFieldWidgetState
       valueListenable: isStockValueError,
       builder: (context, value, child) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           decoration: ShapeDecoration(
             color: widget.containerColor ?? const Color(0xffFFFFFF),
             shadows: widget.boxShadow,
             shape: RoundedRectangleBorder(
               side: BorderSide(
-                color:
-                    value == true ? Color(AppColors.red1) : Colors.transparent,
+                color: value == true
+                    ? const Color(AppColors.red1)
+                    : Colors.transparent,
                 width: value == true ? 2 : 0,
               ),
               borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
@@ -81,7 +83,7 @@ class _ProductContainerWithTextFieldWidgetState
                 width: context.width * 0.2,
                 radius: 16,
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 flex: 3,
                 child: Column(
@@ -110,7 +112,7 @@ class _ProductContainerWithTextFieldWidgetState
                               fontWeight: FontWeight.w500,
                               fontSize: 13),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
                           '/ ${widget.unit}',
                           maxLines: 1,
@@ -141,12 +143,11 @@ class _ProductContainerWithTextFieldWidgetState
                   keyboardType: TextInputType.number,
                   // maxLines: null,
                   // minLines: null,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF1B1B1B),
                     fontSize: 15,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w400,
-                    height: 0.11,
                   ),
                   onChanged: (value) {
                     final isInt = int.tryParse(value);
@@ -166,8 +167,8 @@ class _ProductContainerWithTextFieldWidgetState
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 16),
                   ),
                 ),
               ),

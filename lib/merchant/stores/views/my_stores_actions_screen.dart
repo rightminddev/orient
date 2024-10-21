@@ -9,6 +9,8 @@ import 'package:orient/merchant/stores/views/available_products_screen.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../models/stores/store_model.dart';
+import '../../orders/views/my_orders_screen.dart';
+import 'create_edit_store_screen.dart';
 
 class MyStoreActionsScreen extends StatefulWidget {
   final StoreModel storeModel;
@@ -78,22 +80,22 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                       //   ),
                       // );
                       // edit store
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => CreateEditStoreScreen(
-                      //         storeModel: widget.storeModel),
-                      //   ),
-                      // );
-
-                      // ADD REQUEST
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AvailableProductsScreen(
-                            storeId: widget.storeModel.id!,
-                            isInAvailable: false,
-                          ),
+                          builder: (context) => CreateEditStoreScreen(
+                              storeModel: widget.storeModel),
                         ),
                       );
+
+                      // ADD REQUEST
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AvailableProductsScreen(
+                      //       storeId: widget.storeModel.id!,
+                      //       isInAvailable: false,
+                      //     ),
+                      //   ),
+                      // );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

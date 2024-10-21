@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/custom_floating_action_button.widget.dart';
 import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
+import '../../../routing/app_router.dart';
 import '../../../utils/components/general_components/custom_list_tile_widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../stores/view_models/stores.viewmodel.dart';
@@ -94,11 +95,12 @@ class _MyStoresViewState extends State<MyStoresView> {
         floatingActionButton: CustomFloatingActionButton(
           iconPath: AppImages.addFloatingActionButtonIcon,
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => CreateEditStoreScreen(),
-              ),
-            );
+            context.goNamed(AppRoutes.addStore.name);
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => CreateEditStoreScreen(),
+            //   ),
+            // );
           },
           tagSuffix: 'add',
           height: AppSizes.s16,

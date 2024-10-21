@@ -26,7 +26,7 @@ class ButtonWidget extends StatelessWidget {
     this.borderSide = BorderSide.none,
     this.padding,
     required this.title,
-    this.isLoading = true,
+    this.isLoading = false,
     this.svgIcon,
     this.svgIconColor,
     this.fontColor,
@@ -37,7 +37,7 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: isLoading == true ? onPressed : null,
+      onPressed: isLoading == false ? onPressed : null,
       style: ButtonStyle(
         elevation: WidgetStateProperty.all(0),
         padding: WidgetStateProperty.all(
@@ -64,7 +64,7 @@ class ButtonWidget extends StatelessWidget {
       //     side: borderSide,
       //   ),
       // ),
-      child: isLoading == true
+      child: isLoading == false
           ? Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

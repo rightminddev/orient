@@ -26,7 +26,7 @@ class GradientBgImage extends StatelessWidget {
       child: Padding(
           padding: padding ??
               const EdgeInsets.symmetric(
-                  horizontal: AppSizes.s24, vertical: AppSizes.s24),
+                  horizontal: AppSizes.s20, vertical: AppSizes.s24),
           child: child),
     );
   }

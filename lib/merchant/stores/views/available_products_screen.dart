@@ -80,6 +80,8 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
               )
             ],
           ),
+          // child: Consumer<StoreActionsViewModel>(
+          //   builder: (context, viewModel, child) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -93,13 +95,18 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                         context, widget.storeId);
                   }
                 },
+                // isLoading: viewModel.isLoading,
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                title: AppStrings.update.tr(),
+                title: widget.isInAvailable == true
+                    ? AppStrings.update.tr()
+                    : AppStrings.calculateThePrice.tr(),
                 svgIcon: AppIcons.checkMarkDashed,
               ),
             ],
           ),
+          //   },
+          // ),
         ),
         title: widget.isInAvailable == true
             ? AppStrings.availabilityOfProducts.tr()
@@ -111,81 +118,79 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                   height: AppSizes.s75,
                 )
               : GradientBgImage(
-                  padding: EdgeInsets.zero,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: context.viewInsets.bottom,
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 18),
-                          defaultTextFormField(
-                            controller: searchController,
-                            hintText: AppStrings.search.tr(),
-                            textInputAction: TextInputAction.search,
-                            prefixIcon: const Icon(
-                              Icons.search,
-                              color: Color(AppColors.oc2),
-                            ),
-                            // validator: (value) {
-
-                            // },
-                            keyboardType: TextInputType.text,
-                            onFieldSubmitted: (value) {
-                              viewModel.search = value;
-                              viewModel.initializeAvailableProductsScreen(
-                                  context, widget.storeId);
-                            },
+                  // padding: EdgeInsets.only(
+                  //   bottom: context.viewInsets.bottom,
+                  //   left: 8,
+                  //   right: 8,
+                  // ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        //  const SizedBox(height: 18),
+                        defaultTextFormField(
+                          controller: searchController,
+                          hintText: AppStrings.search.tr(),
+                          textInputAction: TextInputAction.search,
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Color(AppColors.oc2),
                           ),
-                          ...viewModel.products.map((element) {
-                            return ProductContainerWithTextFieldWidget(
-                              onQuantitySubmitted: (value) {
-                                if (widget.isInAvailable == true) {
-                                  final index = storeActionsViewModel
-                                      .addedToStock.items!
-                                      .indexWhere(
-                                          (e) => e.productId == element.id);
-                                  if (index == -1) {
-                                    storeActionsViewModel.addedToStock.items!
-                                        .add(AddedProductsModel(
-                                      productId: element.id,
-                                      quantity: int.parse(value),
-                                    ));
-                                  } else {
-                                    storeActionsViewModel.addedToStock.items!
-                                        .elementAt(index)
-                                        .quantity = int.parse(value);
-                                  }
+                          // validator: (value) {
+
+                          // },
+                          keyboardType: TextInputType.text,
+                          onFieldSubmitted: (value) {
+                            viewModel.search = value;
+                            viewModel.initializeAvailableProductsScreen(
+                                context, widget.storeId);
+                          },
+                        ),
+                        ...viewModel.products.map((element) {
+                          return ProductContainerWithTextFieldWidget(
+                            onQuantitySubmitted: (value) {
+                              if (widget.isInAvailable == true) {
+                                final index = storeActionsViewModel
+                                    .addedToStock.items!
+                                    .indexWhere(
+                                        (e) => e.productId == element.id);
+                                if (index == -1) {
+                                  storeActionsViewModel.addedToStock.items!
+                                      .add(AddedProductsModel(
+                                    productId: element.id,
+                                    quantity: int.parse(value),
+                                  ));
                                 } else {
-                                  final index = storeActionsViewModel
-                                      .requestedOrders.items!
-                                      .indexWhere(
-                                          (e) => e.productId == element.id);
-                                  if (index == -1) {
-                                    storeActionsViewModel.requestedOrders.items!
-                                        .add(AddedProductsModel(
-                                      productId: element.id,
-                                      quantity: int.parse(value),
-                                    ));
-                                  } else {
-                                    storeActionsViewModel.requestedOrders.items!
-                                        .elementAt(index)
-                                        .quantity = int.parse(value);
-                                  }
+                                  storeActionsViewModel.addedToStock.items!
+                                      .elementAt(index)
+                                      .quantity = int.parse(value);
                                 }
-                              },
-                              stock: element.stock,
-                              title: element.title,
-                              price: (element.merchantsPrice ?? 0).toString(),
-                              unit: element.merchantsUnit,
-                              imageUrl:
-                                  element.mainCover?.elementAt(0).thumbnail,
-                            );
-                          }),
-                          const SizedBox(height: 64),
-                        ],
-                      ),
+                              } else {
+                                final index = storeActionsViewModel
+                                    .requestedOrders.items!
+                                    .indexWhere(
+                                        (e) => e.productId == element.id);
+                                if (index == -1) {
+                                  storeActionsViewModel.requestedOrders.items!
+                                      .add(AddedProductsModel(
+                                    productId: element.id,
+                                    quantity: int.parse(value),
+                                  ));
+                                } else {
+                                  storeActionsViewModel.requestedOrders.items!
+                                      .elementAt(index)
+                                      .quantity = int.parse(value);
+                                }
+                              }
+                            },
+                            stock: element.stock,
+                            title: element.title,
+                            price: (element.merchantsPrice ?? 0).toString(),
+                            unit: element.merchantsUnit,
+                            imageUrl: element.mainCover?.elementAt(0).thumbnail,
+                          );
+                        }),
+                        const SizedBox(height: 64),
+                      ],
                     ),
                   ),
                 ),

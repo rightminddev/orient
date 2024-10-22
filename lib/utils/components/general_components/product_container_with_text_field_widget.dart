@@ -166,11 +166,19 @@ class _ProductContainerWithTextFieldWidgetState
                   keyboardType: TextInputType.number,
                   // maxLines: null,
                   // minLines: null,
+<<<<<<< HEAD
                   style: const TextStyle(
+=======
+                  style: TextStyle(
+>>>>>>> origin/amr_branch
                     color: Color(0xFF1B1B1B),
                     fontSize: 15,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w400,
+<<<<<<< HEAD
+=======
+                    height: 0.11,
+>>>>>>> origin/amr_branch
                   ),
                   onChanged: (value) {
                     final isInt = int.tryParse(value);

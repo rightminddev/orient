@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
 
@@ -17,7 +19,7 @@ class HomeBestOfferProduct extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("BESt OFFERS".toUpperCase(),
+                Text(AppStrings.bestOffers.tr().toUpperCase(),
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
@@ -26,7 +28,7 @@ class HomeBestOfferProduct extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text("see more".toUpperCase(),
+                    Text(AppStrings.seeMore.tr().toUpperCase(),
                       style:const TextStyle(
                           color: Color(0xff1B1B1B),
                           fontSize: 8,

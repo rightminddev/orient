@@ -12,10 +12,12 @@ abstract class StoresService {
   /// );
   static Future<OperationResult<Map<String, dynamic>>> getMyStores({
     required BuildContext context,
+    Map<String, dynamic>? queryParameters,
   }) async {
     final response = await DioApiService().get<Map<String, dynamic>>(
       EndpointServices.getApiEndpoint(EndpointsNames.myStores).url,
       context: context,
+      queryParameters: queryParameters,
       allData: true,
       dataKey: 'data',
     );
@@ -26,12 +28,14 @@ abstract class StoresService {
     required BuildContext context,
     required int id,
     String? search,
+    Map<String, dynamic>? queryParameters,
   }) async {
     final String url =
         '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.avaialbleProducts).url}';
     final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       data: {"search": search},
+      queryParameters: queryParameters,
       context: context,
       allData: true,
       dataKey: 'data',

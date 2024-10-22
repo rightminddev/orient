@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 
 class SingleDetailsAndColorsWidget extends StatelessWidget {
   const SingleDetailsAndColorsWidget({super.key});
@@ -21,16 +23,16 @@ class SingleDetailsAndColorsWidget extends StatelessWidget {
           children: [
             const Icon(Icons.star, color: Color(0xffE6007E), size: 20,),
             const SizedBox(width: 5),
-            Text("4.1 (578 Reviews)",
+            Text("4.1 (578 ${AppStrings.reviews.tr().toUpperCase()})",
               style: TextStyle(
                   color: const Color(0xff1B1B1B).withOpacity(0.5),
                   fontWeight: FontWeight.w400,
                   fontSize: 11
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
-              "Show Review".toUpperCase(),
+              AppStrings.showReview.tr().toUpperCase(),
               style: const TextStyle(
                   color:  Color(0xffE6007E),
                   fontSize: 11,
@@ -40,7 +42,7 @@ class SingleDetailsAndColorsWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        const Text("COLOURS:",style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Color(0xff1B1B1B)),),
+        Text("${AppStrings.colors.tr().toUpperCase()}:",style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Color(0xff1B1B1B)),),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +61,7 @@ class SingleDetailsAndColorsWidget extends StatelessWidget {
       final Color? color
       ){
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 7),
+      margin:const EdgeInsets.symmetric(horizontal: 7),
       width: 25,
       height: 25,
       decoration: BoxDecoration(

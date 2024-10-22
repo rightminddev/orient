@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 
 class CartEnterPromoWidget extends StatelessWidget {
   TextEditingController promoCodeController = TextEditingController();
@@ -16,7 +18,7 @@ class CartEnterPromoWidget extends StatelessWidget {
       child: TextFormField(
         controller: promoCodeController,
         decoration: InputDecoration(
-          hintText: "Enter your promo code",
+          hintText: AppStrings.enterYourPromoCode.tr().toUpperCase(),
           labelStyle:  const TextStyle(
               fontFamily: "Poppins",
               fontSize: 12,

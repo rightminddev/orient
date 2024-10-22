@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/checkout/checkout_screen.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
 
@@ -29,9 +31,9 @@ class CartBottomButtonWidget extends StatelessWidget {
             children: [
               Container(
                 height: 26,
-                child: const Text(
-                  "TOTAL PRICE",
-                  style: TextStyle(
+                child:  Text(
+                  AppStrings.totalPrice.tr().toUpperCase(),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
                       color: Color(0xff1B1B1B)
@@ -49,7 +51,7 @@ class CartBottomButtonWidget extends StatelessWidget {
             ],
           ),
           ButtonWidget(
-            title: 'Proceed to checkout'.toUpperCase(),
+            title: AppStrings.proceedToCheckout.tr().toUpperCase(),
             svgIcon: "assets/images/ecommerce/svg/cart.svg",
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context)=> ECommerceCheckoutScreen()));

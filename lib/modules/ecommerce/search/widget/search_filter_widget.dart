@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_sizes_widget.dart';
 
 class SearchFilterWidget extends StatefulWidget {
@@ -24,25 +26,25 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
       alignment: Alignment.topCenter,
       child: Column(
         children: [
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Center(
             child:Container(
               width: 63,
               height: 5,
               decoration: BoxDecoration(
-                color: Color(0xffB9C0C9),
+                color:const Color(0xffB9C0C9),
                 borderRadius: BorderRadius.circular(100)
               ),
             ) ,
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                defaultTitleText(title: "PRODUCTS CATEGORY"),
+                defaultTitleText(title: AppStrings.productsCategory.tr()),
                 const SizedBox(height: 15),
                 GridView.builder(
                   shrinkWrap: true,
@@ -85,7 +87,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                   ),
                 ),
                 const SizedBox(height: 30,),
-                defaultTitleText(title: "PRODUCTS COLORS"),
+                defaultTitleText(title: AppStrings.productsColors.tr()),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -100,20 +102,20 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                   ],
                 ),
                 const SizedBox(height: 40,),
-                defaultTitleText(title: "PRODUCTS COLORS"),
+                defaultTitleText(title: AppStrings.productsSize.tr()),
                 const SizedBox(height: 0),
                 SingleSizesWidget(viewSize: false,),
                 const SizedBox(height: 30,),
-                defaultTitleText(title: "Price Range"),
+                defaultTitleText(title: AppStrings.priceRange.tr()),
                 const SizedBox(height: 15),
                 Row(
                   children: [
                     defaultTextFormField(
-                      hintText: "Min price",
+                      hintText: AppStrings.minPrice.tr().toUpperCase(),
                     ),
                    const SizedBox(width: 10,),
                     defaultTextFormField(
-                      hintText: "Max price",
+                      hintText: AppStrings.maxPrice.tr().toUpperCase(),
                     ),
                   ],
                 ),
@@ -133,13 +135,13 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                           border: Border.all(color: const Color(0xff0D3B6F)),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        padding:const EdgeInsets.symmetric(horizontal: 40),
                         child: Text(
-                          "clear".toUpperCase(),
+                          AppStrings.clear.tr().toUpperCase(),
                           style:const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: const Color(0xff0D3B6F)
+                              color: Color(0xff0D3B6F)
                           ),
                         ),
                       ),
@@ -160,7 +162,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                             SvgPicture.asset("assets/images/ecommerce/svg/apply_filter.svg"),
                             const SizedBox(width: 15,),
                             Text(
-                              "Apply Filter".toUpperCase(),
+                              AppStrings.applyFilter.tr().toUpperCase(),
                               style:const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
@@ -188,9 +190,9 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
       height: 48,
       width: 120,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 10,),
+      padding:const EdgeInsets.symmetric(horizontal: 10,),
       decoration: BoxDecoration(
-          color: Color(0xffFFFFFF),
+          color:const Color(0xffFFFFFF),
           borderRadius: BorderRadius.circular(3),
           border: Border.all(color: Colors.grey.withOpacity(0.3)),
       ),
@@ -222,7 +224,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   Widget defaultTitleText({
      title
 })=> Text(
-      "$title".toUpperCase(),
+      title.toUpperCase(),
       style: const TextStyle(
           color: Color(0xff0D3B6F),
           fontWeight: FontWeight.w500,
@@ -233,7 +235,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
       final Color? color
       ){
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4),
+      margin:const EdgeInsets.symmetric(horizontal: 4),
       width: 25,
       height: 25,
       decoration: BoxDecoration(

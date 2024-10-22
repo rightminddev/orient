@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_strings.dart';
 
 class CartItemViewWidget extends StatefulWidget {
   const CartItemViewWidget({super.key});
@@ -60,7 +62,7 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: [
-                     Text("SUBTOTAL".toUpperCase(),
+                     Text(AppStrings.subtotal.tr().toUpperCase(),
                      style: const TextStyle(
                        fontWeight: FontWeight.w400,
                        fontSize: 15,

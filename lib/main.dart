@@ -1,12 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
-import 'package:orient/common_modules_widgets/request_card.widget.dart';
-import 'package:orient/common_modules_widgets/template_page.widget.dart';
-import 'package:orient/constants/app_colors.dart';
-import 'package:orient/constants/app_images.dart';
-import 'package:orient/constants/app_sizes.dart';
-import 'package:orient/models/request.model.dart';
-import 'package:orient/utils/animated_custom_dropdown/custom_dropdown.dart';
+import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
 import 'firebase_options.dart';
@@ -17,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'merchant/main/view_models/merchant_main_view_model.dart';
 import 'modules/main_screen/view_models/main_viewmodel.dart';
 import 'platform/platform_is.dart';
 
@@ -59,9 +54,14 @@ void main() async {
           ChangeNotifierProvider<MainScreenViewModel>(
             create: (_) => MainScreenViewModel(),
           ),
+          ChangeNotifierProvider<EcommerceMainScreenViewModel>(
+            create: (_) => EcommerceMainScreenViewModel(),
+          ),
+          ChangeNotifierProvider<MerchantMainViewModel>(
+            create: (_) => MerchantMainViewModel(),
+          ),
         ],
         // child: const MyApp2(),
         child: const MyApp(),
       )));
 }
-

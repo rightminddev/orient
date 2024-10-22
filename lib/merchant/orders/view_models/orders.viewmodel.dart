@@ -5,8 +5,18 @@ import '../services/order.service.dart';
 class OrdersViewModel extends ChangeNotifier {
   List<OrderModel> myOrders = List.empty(growable: true);
   OrderModel orderDetails = OrderModel();
+  int pageNumber = 1;
+  int count = 0;
+  bool isLoading = false;
+  bool hasMoreData(int length) {
+    if (pageNumber < count) {
+      pageNumber = pageNumber + 1;
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-  bool isLoading = true;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
     notifyListeners();

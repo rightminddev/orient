@@ -1,12 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/cart/widget/cart_bottom_button_widget.dart';
 import 'package:orient/modules/ecommerce/cart/widget/cart_enter_promo_widget.dart';
 import 'package:orient/modules/ecommerce/cart/widget/cart_item_view_widget.dart';
 import 'package:orient/modules/ecommerce/cart/widget/cart_view_promo_widget.dart';
+import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 
 class ECommerceShoppingCart extends StatefulWidget {
+  bool mainScreen = false;
+  ECommerceShoppingCart({required this.mainScreen});
   @override
   State<ECommerceShoppingCart> createState() => _ECommerceShoppingCartState();
 }
@@ -15,10 +21,10 @@ class _ECommerceShoppingCartState extends State<ECommerceShoppingCart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF4F7FF),
+      backgroundColor: const Color(0xffFFFFFF),
         appBar: AppBar(
           title: Text(
-            'cart'.toUpperCase(),
+            AppStrings.cart.tr().toUpperCase(),
             style: const TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
           ),
           centerTitle: true,
@@ -28,7 +34,12 @@ class _ECommerceShoppingCartState extends State<ECommerceShoppingCart> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Color(0xff224982)),
             onPressed: () {
-              Navigator.pop(context);
+              if(widget.mainScreen == true){
+                context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+                    pathParameters: {'lang': context.locale.languageCode});
+              }else{
+                Navigator.pop(context);
+              }
             },
           ),
         ),
@@ -54,7 +65,7 @@ class _ECommerceShoppingCartState extends State<ECommerceShoppingCart> {
                       SvgPicture.asset("assets/images/svg/vocher.svg"),
                       const SizedBox(width: 12,),
                       Text(
-                        "Special discount on large quantities".toUpperCase(),
+                        AppStrings.specialDiscountOnLargeQuantities.tr().toUpperCase(),
                         style: const TextStyle(
                           color: Color(0xff1B1B1B),
                           fontSize: 10,

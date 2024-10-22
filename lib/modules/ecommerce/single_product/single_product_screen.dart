@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_bottom_button_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_change_count_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_comment_bottomsheet_widget.dart';
@@ -16,9 +18,9 @@ class EcommerceSingleProductDetailScreen extends StatefulWidget {
 class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProductDetailScreen> {
   int selectIndex = 0;
   List<String> tapBarItems = [
-    "Description",
-    "Calc",
-    "tech PDF",
+    AppStrings.description.tr(),
+    AppStrings.calc.tr(),
+    AppStrings.techPdf.tr(),
   ];
   @override
   Widget build(BuildContext context) {

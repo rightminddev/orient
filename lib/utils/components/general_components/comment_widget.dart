@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orient/utils/components/general_components/button_widget.dart';
-import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/settings/app_icons.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/utils/cached_network_image_widget.dart';
 import 'package:orient/utils/media_query_values.dart';
-
-import '../../cached_network_image_widget.dart';
 
 class CommentWidget extends StatelessWidget {
   final String image;
@@ -79,26 +76,44 @@ class CommentWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          isImageUrl == true
-              ? CachedNetWokImageWidget(
-                  url: image,
-                  width: imageRadius != null
-                      ? imageRadius! * 2
-                      : context.width * 0.15,
-                  height: imageRadius != null
-                      ? imageRadius! * 2
-                      : context.width * 0.15,
-                  radius: imageRadius ?? context.width * 0.08,
-                )
-              : Image.asset(
-                  image,
-                  width: imageRadius != null
-                      ? imageRadius! * 2
-                      : context.width * 0.15,
-                  height: imageRadius != null
-                      ? imageRadius! * 2
-                      : context.width * 0.15,
-                ),
+          Container(
+            width: context.width * 0.15,
+            height: context.width * 0.15,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [Color(0xffE6007E), Color(0xff224982)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(63),
+                child: isImageUrl == true
+                    ? CachedNetWokImageWidget(
+                        url: image,
+                        width: imageRadius != null
+                            ? imageRadius! * 2
+                            : context.width * 0.15,
+                        height: imageRadius != null
+                            ? imageRadius! * 2
+                            : context.width * 0.15,
+                        radius: imageRadius ?? context.width * 0.08,
+                      )
+                    : Image.asset(
+                        image,
+                        width: imageRadius != null
+                            ? imageRadius! * 2
+                            : context.width * 0.15,
+                        height: imageRadius != null
+                            ? imageRadius! * 2
+                            : context.width * 0.15,
+                      ),
+              ),
+            ),
+          ),
           const SizedBox(width: AppSizes.s12),
           Expanded(
             child: Column(
@@ -151,6 +166,9 @@ class CommentWidget extends StatelessWidget {
                     )
                   ],
                 ),
+                SizedBox(
+                  height: comment != null ? 5 : 0,
+                ),
                 comment != null
                     ? Text(
                         comment!,
@@ -163,12 +181,15 @@ class CommentWidget extends StatelessWidget {
                             ),
                       )
                     : SizedBox.shrink(),
+                SizedBox(
+                  height: rate != null ? 5 : 0,
+                ),
                 rate != null
                     ? Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 1),
                         decoration: ShapeDecoration(
-                          color: Color(0xFFFFFABA),
+                          color: Color(0xffFFFABB),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(AppSizes.s18),
                           ),
@@ -191,7 +212,6 @@ class CommentWidget extends StatelessWidget {
                             ),
                             SvgPicture.asset(
                               AppIcons.star,
-                              fit: BoxFit.scaleDown,
                             ),
                           ],
                         ),

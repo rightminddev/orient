@@ -1,7 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orient/constants/app_sizes.dart';
-import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
 
@@ -44,11 +43,11 @@ class _CheckoutBottomsheetEditLocationWidgetState extends State<CheckoutBottomsh
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                defaultTextFormField(hintText: "Phone", containerHeight: 64),
-                defaultTextFormField(hintText: "Address", containerHeight: 64),
-                defaultTextFormField(hintText: "Country", containerHeight: 64),
-                defaultTextFormField(hintText: "State/Province/Region", containerHeight: 64),
-                defaultTextFormField(hintText: "City", containerHeight: 64),
+                defaultTextFormField(hintText: AppStrings.phone.tr().toUpperCase(), containerHeight: 64),
+                defaultTextFormField(hintText: AppStrings.address.tr().toUpperCase(), containerHeight: 64),
+                defaultTextFormField(hintText: AppStrings.country.tr().toUpperCase(), containerHeight: 64),
+                defaultTextFormField(hintText: AppStrings.stateProvinceRegion.tr().toUpperCase(), containerHeight: 64),
+                defaultTextFormField(hintText: AppStrings.city.tr().toUpperCase(), containerHeight: 64),
               ],
             ),
           ),
@@ -61,7 +60,7 @@ class _CheckoutBottomsheetEditLocationWidgetState extends State<CheckoutBottomsh
                 },
                 padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
                 svgIcon: "assets/images/ecommerce/svg/verifiy.svg",
-                title: "Save Changes"
+                title: AppStrings.saveChanges.tr().toUpperCase()
             ),
           )
         ],

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
 
@@ -30,7 +32,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Subtotal".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
+                Text(AppStrings.subtotal.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
                 Text("30000 EGP".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
               ],
             ),
@@ -40,8 +42,8 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Subtotal".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
-                Text("30000 EGP".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                Text(AppStrings.shippingFees.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
+                Text("4521 EGP".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
               ],
             ),
           ),
@@ -57,9 +59,9 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                   children: [
                     Container(
                       height: 26,
-                      child: const Text(
-                        "TOTAL PRICE",
-                        style: TextStyle(
+                      child: Text(
+                        AppStrings.totalPrice.tr().toUpperCase(),
+                        style:const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 11,
                             color: Color(0xff1B1B1B)
@@ -77,14 +79,14 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                   ],
                 ),
                 ButtonWidget(
-                  title: 'checkout'.toUpperCase(),
+                  title: AppStrings.checkout.tr().toUpperCase(),
                   svgIcon: "assets/images/ecommerce/svg/verifiy.svg",
                   onPressed: () {
                     defaultActionBottomSheet(
                       context: context,
-                      title: "SUCCESSFUL !",
-                      buttonText: "Continue shopping",
-                      subTitle: "Your order will be delivered soon. Thank you for choosing our app!",
+                      title: "${AppStrings.successful.tr().toUpperCase()} !",
+                      buttonText: AppStrings.continueShopping.tr().toUpperCase(),
+                      subTitle: AppStrings.yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp.tr().toUpperCase(),
                       viewCheckIcon: true,
                       onTapButton: (){Navigator.pop(context);},
                       headerIcon: SvgPicture.asset("assets/images/ecommerce/svg/cart_success.svg", height: 42, width: 40,)

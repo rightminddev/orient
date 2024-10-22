@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
 import 'package:orient/models/request/request_model.dart';
+import 'package:orient/routing/app_router.dart';
 import '../../../models/availability/availability_model.dart';
 import '../../../utils/components/general_components/all_bottom_sheet.dart';
 import '../services/stores.service.dart';
@@ -116,7 +118,10 @@ class StoreActionsViewModel extends ChangeNotifier {
           buttonText: AppStrings.goToHome.tr(),
           viewCheckIcon: false,
           viewDropDownButton: false,
-          onTapButton: () {},
+          onTapButton: () {
+            context.goNamed(AppRoutes.merchantHomeScreen.name,
+                pathParameters: {'lang': context.locale.languageCode});
+          },
         );
       }
       //   debugPrint(products.length.toString());

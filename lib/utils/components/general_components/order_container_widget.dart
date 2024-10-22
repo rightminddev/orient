@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/routing/app_router.dart';
 
-import '../../../merchant/orders/views/order_details_screen.dart';
 import '../../../models/orders/order_model.dart';
 import 'button_widget.dart';
 
@@ -57,13 +59,27 @@ class OrderContainerWidget extends StatelessWidget {
             children: [
               ButtonWidget(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => OrderDetailsScreen(
-                        storeId: storeId,
-                        orderId: orderModel.id ?? 0,
-                      ),
-                    ),
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => OrderDetailsScreen(
+                  //       storeId: storeId,
+                  //       orderId: orderModel.id ?? 0,
+                  //     ),
+                  //   ),
+                  // );
+                  Offset begin = const Offset(1.0, 0.0);
+                  context.pushNamed(
+                    AppRoutes.orderDetails.name,
+                    pathParameters: {
+                      'lang': context.locale.languageCode,
+                      "id": orderModel.id.toString(),
+                      "orderId": orderModel.id.toString(),
+                      "storeId": storeId.toString(),
+                    },
+                    queryParameters: {
+                      'lang': context.locale.languageCode,
+                    },
+                    extra: begin,
                   );
                 },
                 borderSide:

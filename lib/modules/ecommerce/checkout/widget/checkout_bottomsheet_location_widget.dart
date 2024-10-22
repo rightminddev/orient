@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_bottomsheet_edit_location_widget.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
@@ -84,7 +86,7 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
                ),
                 const SizedBox(height: 20,),
                 ButtonWidget(
-                  title: "ADD address".toUpperCase(),
+                  title: AppStrings.addAddress.tr().toUpperCase(),
                   svgIcon: "assets/images/ecommerce/svg/add.svg",
                   onPressed: (){
                     Navigator.pop(context);
@@ -140,7 +142,7 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
               const SizedBox(width: 20,),
               GestureDetector(
                 onTap: onTapEdit,
-                child: Text("Edit".toUpperCase(),
+                child: Text(AppStrings.edit.tr().toUpperCase(),
                   style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -172,7 +174,7 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
                       size: 12,
                     ),
                   ),
-                  Text("Use this address".toUpperCase(),
+                  Text(AppStrings.addAddress.tr().toUpperCase(),
                   style: const TextStyle(
                     color: Color(0xffFFFFFF),
                     fontWeight:FontWeight.w500,

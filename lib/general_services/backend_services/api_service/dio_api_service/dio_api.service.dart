@@ -166,6 +166,7 @@ class DioApiService implements BackEndServicesInterface {
       {required String dataKey,
       Map<String, String>? header,
       Map<String, dynamic>? data,
+      Map<String, dynamic>? queryParameters,
       bool? checkOnTokenExpiration = true,
       bool? allData = false,
       required BuildContext context}) async {
@@ -173,6 +174,7 @@ class DioApiService implements BackEndServicesInterface {
       final response = await Dio().get(
         url,
         data: data,
+        queryParameters: queryParameters,
         options: Options(
             headers: ApiServiceHelpers.buildHeaders(
                 additionalHeaders: header, context: context)),

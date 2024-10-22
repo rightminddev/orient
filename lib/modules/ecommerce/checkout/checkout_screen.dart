@@ -1,7 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_bottom_button_widget.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_location_widget.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_orderlist_widget.dart';
@@ -18,10 +17,11 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffFFFFFF),
       appBar: AppBar(
-        title: const Text(
-          'CHECKOUT',
-          style: TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
+        title:  Text(
+          AppStrings.checkout.tr().toUpperCase(),
+          style:const TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
         ),
         centerTitle: true,
         elevation: 0,
@@ -42,15 +42,15 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                defaultHeaderText(title: "SHIPPING ADDRESS"),
+                defaultHeaderText(title: AppStrings.shippingAddress.tr().toUpperCase()),
                 const SizedBox(height: 15),
                 const CheckoutLocationWidget(),
                 const SizedBox(height: 16),
-                defaultHeaderText(title: "PAYMENT METHODS"),
+                defaultHeaderText(title: AppStrings.paymentMethods.tr().toUpperCase()),
                 const SizedBox(height: 8),
                 CheckoutPaymentWidget(),
                 const SizedBox(height: 16),
-                defaultHeaderText(title: "ORDER LIST"),
+                defaultHeaderText(title: AppStrings.orderList.tr().toUpperCase()),
                 const SizedBox(height: 8),
                 CheckoutOrderListWidget(),
               ],

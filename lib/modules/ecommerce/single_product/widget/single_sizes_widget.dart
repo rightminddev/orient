@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 
 class SingleSizesWidget extends StatefulWidget {
   bool? viewSize = true;
-   SingleSizesWidget({this.viewSize});
+   SingleSizesWidget({super.key, this.viewSize});
 
   @override
   State<SingleSizesWidget> createState() => _SingleSizesWidgetState();
@@ -24,7 +26,7 @@ class _SingleSizesWidgetState extends State<SingleSizesWidget> {
       child: Row(
         mainAxisAlignment: (widget.viewSize == true)? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
-         if(widget.viewSize == true) const Text("SIZE:", style: TextStyle(
+         if(widget.viewSize == true) Text("${AppStrings.size.tr().toUpperCase()}:", style: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 14,
               color: Color(0xff1B1B1B)

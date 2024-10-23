@@ -5,6 +5,7 @@ import 'shipping_info_model.dart';
 class OrderModel {
   int? id;
   String? status;
+  String? merchantStatus;
   String? uuid;
   int? subTotal;
   int? discountTotal;
@@ -16,23 +17,26 @@ class OrderModel {
   List<ItemModel>? items;
   ShippingInfoModel? shippingInfo;
 
-  OrderModel(
-      {this.id,
-      this.status,
-      this.uuid,
-      this.subTotal,
-      this.discountTotal,
-      this.feesTotal,
-      this.taxesTotal,
-      this.shippingCost,
-      this.total,
-      this.date,
-      this.items,
-      this.shippingInfo});
+  OrderModel({
+    this.id,
+    this.status,
+    this.merchantStatus,
+    this.uuid,
+    this.subTotal,
+    this.discountTotal,
+    this.feesTotal,
+    this.taxesTotal,
+    this.shippingCost,
+    this.total,
+    this.date,
+    this.items,
+    this.shippingInfo,
+  });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
+    merchantStatus = json['merchant_status'];
     uuid = json['uuid'];
     subTotal = json['sub_total'];
     discountTotal = json['discount_total'];
@@ -56,6 +60,7 @@ class OrderModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['status'] = status;
+    data['merchant_status'] = merchantStatus;
     data['uuid'] = uuid;
     data['sub_total'] = subTotal;
     data['discount_total'] = discountTotal;

@@ -1,13 +1,13 @@
-class CitiesModel {
+class CityModel {
   int? id;
   String? title;
   String? state;
   int? stateId;
   int? status;
 
-  CitiesModel({this.id, this.title, this.state, this.stateId, this.status});
+  CityModel({this.id, this.title, this.state, this.stateId, this.status});
 
-  CitiesModel.fromJson(Map<String, dynamic> json) {
+  CityModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     state = json['state'];

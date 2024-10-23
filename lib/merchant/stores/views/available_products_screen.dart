@@ -246,8 +246,10 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                                 title: element.title,
                                 price: (element.merchantsPrice ?? 0).toString(),
                                 unit: element.merchantsUnit,
-                                imageUrl:
-                                    element.mainCover?.elementAt(0).thumbnail,
+                                imageUrl: element.mainCover != null &&
+                                        element.mainCover!.isNotEmpty
+                                    ? element.mainCover?.elementAt(0).thumbnail
+                                    : '',
                               ),
                             );
                           })

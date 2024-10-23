@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/validation_service.dart';
 import 'package:orient/info/countries/view_models/countries.viewmodel.dart';
 import 'package:orient/info/states/view_models/states.viewmodel.dart';
-import 'package:orient/models/info/cities_model.dart';
+import 'package:orient/models/info/city_model.dart';
 import 'package:orient/models/info/country_model.dart';
 import 'package:orient/models/stores/create_edit_store_model.dart';
 import 'package:orient/models/info/state_model.dart';
@@ -122,19 +123,19 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
           storeCreateEditModel.createEditStoreModel.stateId =
               (state.id ?? 0).toString();
           citiesViewModel.initializeCities(context, state.id ?? 0).then((_) {
-            List<CitiesModel> storeCities = List.empty(growable: true);
+            CityModel storeCities = CityModel();
             final cities = citiesViewModel.cities;
-            for (var element in widget.storeModel!.cities ?? []) {
-              storeCities
-                  .add(cities.firstWhere((city) => element.id == city.id));
-            }
-            storeCreateEditModel.createEditStoreModel.cities = storeCities
-                .map((element) => (element.id ?? 0).toString())
-                .toList();
-            initialCitiesSelected = storeCities
-                .map((element) => (element.title ?? 0).toString())
-                .toList();
-            citySelected.value = citiesViewModel.cities.elementAt(0).title;
+
+            storeCities = cities
+                .firstWhere((city) => widget.storeModel?.cityId == city.id);
+
+            // storeCreateEditModel.createEditStoreModel.cityId = storeCities
+            //     .map((element) => (element.id ?? 0).toString())
+            //     .toList();
+            // initialCitiesSelected = storeCities
+            //     .map((element) => (element.title ?? 0).toString())
+            //     .toList();
+            citySelected.value = storeCities.title;
             toggleStateSelected.value = true;
           });
         });
@@ -171,8 +172,7 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
         citiesViewModel.cities = List.empty(growable: true);
       }
 
-      storeCreateEditModel.createEditStoreModel.cities =
-          List.empty(growable: true);
+      storeCreateEditModel.createEditStoreModel.cityId = null;
       countrySelected.value = element.title;
       storeCreateEditModel.createEditStoreModel.countryId =
           (element.id ?? 0).toString();
@@ -183,7 +183,7 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
         toggleCountrySelected.value = true;
         stateSelected.value = null;
         storeCreateEditModel.createEditStoreModel.stateId = null;
-        storeCreateEditModel.createEditStoreModel.cities = null;
+        storeCreateEditModel.createEditStoreModel.cityId = null;
 
         // toggleCountrySelected.value = toggleCountrySelected.value != null
         //     ? !toggleCountrySelected.value!
@@ -213,12 +213,11 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
             : null;
         latLngSelected.value = storeCreateEditModel.finalLatLng;
       });
-      storeCreateEditModel.createEditStoreModel.cities =
-          List.empty(growable: true);
+      storeCreateEditModel.createEditStoreModel.cityId = null;
       citiesViewModel.initializeCities(context, element.id ?? 0).then((_) {
         citySelected.value = null;
         toggleStateSelected.value = true;
-        storeCreateEditModel.createEditStoreModel.cities = null;
+        storeCreateEditModel.createEditStoreModel.cityId = null;
       });
     } else {}
   }
@@ -277,6 +276,12 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
                           : storeCreateEditModel.addStore(context);
                     }
                   });
+                } else {
+                  AlertsService.warning(
+                    context: context,
+                    message: AppStrings.formIsInvalid.tr(),
+                    title: AppStrings.formValidation.tr(),
+                  );
                 }
               },
               isLoading: viewModel.isLoading,
@@ -343,9 +348,8 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
                       citySelected: citySelected,
                       cities: citiesViewModel.cities,
                       setCityChanged: (element) {
-                        storeCreateEditModel.createEditStoreModel.cities = [
-                          element.title ?? ''
-                        ];
+                        storeCreateEditModel.createEditStoreModel.cityId =
+                            (element.id ?? 0).toString();
                         citySelected.value = element.title;
 
                         // storeCreateEditModel.createEditStoreModel.cities =

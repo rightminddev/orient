@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../models/info/cities_model.dart';
+import '../../../models/info/city_model.dart';
 import '../../../services/crud_operation.service.dart';
 
 class CitiesViewModel extends ChangeNotifier {
-  List<CitiesModel> cities = List.empty(growable: true);
+  List<CityModel> cities = List.empty(growable: true);
   bool isLoading = true;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
@@ -34,7 +34,7 @@ class CitiesViewModel extends ChangeNotifier {
 
       if (result.success && result.data != null) {
         (result.data?['data'] ?? []).forEach((v) {
-          cities.add(CitiesModel.fromJson(v));
+          cities.add(CityModel.fromJson(v));
         });
       }
 

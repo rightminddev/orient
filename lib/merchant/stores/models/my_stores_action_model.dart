@@ -1,3 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/app.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
 import 'package:orient/routing/app_router.dart';
 
@@ -21,40 +24,40 @@ class MyStoresActionModel {
 List<MyStoresActionModel> getMyStoresAction = [
   MyStoresActionModel(
     icon: AppIcons.bag,
-    title: 'VIEW\nORDERS',
-    subtitle: 'The orders requested from you through the application',
+    title: AppStrings.viewOrders.tr().toUpperCase(),
+    subtitle: AppStrings.theOrdersRequestedFromYouThroughTheApplication.tr(),
     goToLocation: AppRoutes.merchantStoreOrders.name,
     pathParameters: {},
     queryParameters: {},
   ),
   MyStoresActionModel(
     icon: AppIcons.availableShoppingCart,
-    title: 'AVAILABILITY OF PRODUCTS',
-    subtitle: 'Select the products you have available for sale online',
+    title: AppStrings.availabilityOfProducts.tr().toUpperCase(),
+    subtitle: AppStrings.selectTheProductsYouHaveAvailableForSaleOnline.tr(),
     goToLocation: AppRoutes.storeAvailableProducts.name,
     pathParameters: {},
     queryParameters: {"isInAvailable": "true"},
   ),
   MyStoresActionModel(
     icon: AppIcons.addReqShoppingCart,
-    title: 'ADD\nREQUEST',
-    subtitle: 'Order products for your store from the company\'s stores',
+    title: AppStrings.addRequestCap.tr(),
+    subtitle: AppStrings.orderProductsForYourStoreFromTheCompanysStores.tr(),
     goToLocation: AppRoutes.storeAvailableProducts.name,
     pathParameters: {},
     queryParameters: {"isInAvailable": "false"},
   ),
   MyStoresActionModel(
     icon: AppIcons.notes,
-    title: 'GET MY INVOICES',
-    subtitle: 'View your previous Invoices with Orient',
+    title: AppStrings.getMyInvoices.tr().toUpperCase(),
+    subtitle: AppStrings.viewYourPreviousInvoicesWithOrient.tr(),
     goToLocation: '',
     pathParameters: {},
     queryParameters: {},
   ),
   MyStoresActionModel(
     icon: AppIcons.edit,
-    title: 'EDIT\nSTORE',
-    subtitle: 'Edit this store\'s data',
+    title: AppStrings.editStore.tr().toUpperCase(),
+    subtitle: AppStrings.editThisStoresData.tr(),
     goToLocation: AppRoutes.editStore.name,
     pathParameters: {},
     queryParameters: {},

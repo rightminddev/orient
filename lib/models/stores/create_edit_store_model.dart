@@ -5,7 +5,7 @@ class CreateEditStoreModel {
   String? phoneNumber;
   String? countryId;
   String? stateId;
-  List<String>? cities;
+  String? cityId;
   String? lng;
   String? lat;
   NameModel? locationsAddress;
@@ -19,7 +19,7 @@ class CreateEditStoreModel {
     this.phoneNumber,
     this.countryId,
     this.stateId,
-    this.cities,
+    this.cityId,
     this.lng,
     this.lat,
     this.locationsAddress,
@@ -36,7 +36,7 @@ class CreateEditStoreModel {
     phoneNumber = json['phone_number'];
     countryId = json['country_id'];
     stateId = json['state_id'];
-    cities = json['cities'].cast<String>();
+    cityId = json['cities'];
     lng = json['lng'];
     lat = json['lat'];
     locationsAddress = json['locations_address'] != null
@@ -55,7 +55,7 @@ class CreateEditStoreModel {
     data['phone_number'] = phoneNumber;
     data['country_id'] = countryId;
     data['state_id'] = stateId;
-    data['cities'] = cities;
+    data['city_id'] = cityId;
     data['lng'] = lng;
     data['lat'] = lat;
     if (locationsAddress != null) {

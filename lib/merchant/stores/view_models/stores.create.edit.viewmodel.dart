@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/models/stores/create_edit_store_model.dart';
+import '../../../general_services/alert_service/alerts.service.dart';
 import '../../../models/stores/map_place_model.dart';
 import '../services/stores.service.dart';
 import 'package:latlong2/latlong.dart' as latLng;
@@ -113,11 +116,17 @@ class StoreCreateEditModel extends ChangeNotifier {
       final result = await StoresService.addStore(
           context: context, data: createEditStoreModel.toJson());
 
-      //TODO: add bottom sheet for success or fail
       if (result.success && result.data != null) {
-        // (result.data?['products'] ?? []).forEach((v) {
-        //   products.add(ProductModel.fromJson(v));
-        // });
+        AlertsService.info(
+            title: AppStrings.information.tr(),
+            context: context,
+            message: result.message ?? AppStrings.createdSuccessfully.tr());
+      } else {
+        AlertsService.error(
+            title: AppStrings.failed.tr(),
+            context: context,
+            message:
+                result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
       }
     } catch (err, t) {
       debugPrint(
@@ -133,12 +142,17 @@ class StoreCreateEditModel extends ChangeNotifier {
         id: createEditStoreModel.id!,
       );
 
-      //TODO: add bottom sheet for success or fail
-
       if (result.success && result.data != null) {
-        // (result.data?['products'] ?? []).forEach((v) {
-        //   products.add(ProductModel.fromJson(v));
-        // });
+        AlertsService.info(
+            title: AppStrings.information.tr(),
+            context: context,
+            message: result.message ?? AppStrings.updatedSuccessfully.tr());
+      } else {
+        AlertsService.error(
+            title: AppStrings.failed.tr(),
+            context: context,
+            message:
+                result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
       }
     } catch (err, t) {
       debugPrint(

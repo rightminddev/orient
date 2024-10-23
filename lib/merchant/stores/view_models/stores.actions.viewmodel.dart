@@ -6,6 +6,7 @@ import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
 import 'package:orient/models/request/request_model.dart';
 import 'package:orient/routing/app_router.dart';
+import '../../../general_services/alert_service/alerts.service.dart';
 import '../../../models/availability/availability_model.dart';
 import '../../../utils/components/general_components/all_bottom_sheet.dart';
 import '../services/stores.service.dart';
@@ -60,6 +61,16 @@ class StoreActionsViewModel extends ChangeNotifier {
         // (result.data?['products'] ?? []).forEach((v) {
         //   products.add(ProductModel.fromJson(v));
         // });
+        context.pop();
+        AlertsService.info(
+            title: AppStrings.information.tr(),
+            context: context,
+            message: result.message ?? AppStrings.updatedSuccessfully.tr());
+      } else {
+        AlertsService.error(
+            title: AppStrings.failed.tr(),
+            context: context,
+            message: result.message ?? AppStrings.failedPleaseTryAgain.tr());
       }
       //   debugPrint(products.length.toString());
     } catch (err, t) {

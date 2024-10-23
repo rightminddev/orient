@@ -5,13 +5,10 @@ import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
-import 'package:orient/merchant/stores/views/create_edit_store_screen.dart';
-import 'package:orient/merchant/stores/views/my_stores_actions_screen.dart';
 import 'package:orient/models/stores/store_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_modules_widgets/custom_floating_action_button.widget.dart';
-import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../routing/app_router.dart';
 import '../../../utils/components/general_components/custom_list_tile_widget.dart';
@@ -166,7 +163,9 @@ class _MerchantStoresScreenState extends State<MerchantStoresScreen> {
                           child: CustomListTileWidget(
                             image: AppImages.storeDefault,
                             isImageUrl: false,
-                            title: element.name ?? '',
+                            title: context.locale.languageCode == 'en'
+                                ? element.names?.en ?? ''
+                                : element.names?.ar ?? '',
                             subtitle:
                                 '${element.state?.title}, ${element.country?.title}',
                             titleFontColor: AppThemeService

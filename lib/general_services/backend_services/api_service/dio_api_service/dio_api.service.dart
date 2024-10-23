@@ -56,8 +56,13 @@ class DioApiService implements BackEndServicesInterface {
           }
         }
         if (json is Map == false) {
-          return OperationResult<T>(
-              success: true, message: 'Get Data Successfully', data: reply);
+          if (reply["status"] == true) {
+            return OperationResult<T>(
+                success: true, message: 'Get Data Successfully', data: reply);
+          } else {
+            return OperationResult<T>(
+                success: false, message: reply["message"]);
+          }
         }
         return ApiServiceHelpers.parseResponse<T>(
             responseJsonData: reply, dataKey: dataKey, allData: allData);

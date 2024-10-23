@@ -99,15 +99,24 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     },
                     onTapButton: () {
                       if (orderActionsViewModel.orderStatus != null) {
-                        orderActionsViewModel.updateOrderStatus(
-                            context, widget.orderId, widget.storeId);
+                        orderActionsViewModel
+                            .updateOrderStatus(
+                                context, widget.orderId, widget.storeId)
+                            .then(
+                          (value) {
+                            if (value == true) {
+                              viewModel.orderDetails.status =
+                                  orderStatusMap[orderStatus.value];
+                            }
+                          },
+                        );
                       }
                     },
                   );
                 },
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                title: "Actions",
+                title: AppStrings.actions.tr(),
                 svgIcon: AppIcons.info,
               ),
             ],
@@ -130,7 +139,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       children: [
                         const SizedBox(height: 18),
                         Text(
-                          'ORDER № ${viewModel.orderDetails.uuid}',
+                          '${AppStrings.orderNo.tr()} ${viewModel.orderDetails.uuid}',
                           style: Theme.of(context)
                               .textTheme
                               .displayMedium
@@ -144,18 +153,26 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         const SizedBox(height: 12),
                         TitleWithDataWidget(
                           data: viewModel.orderDetails.date ?? '',
-                          title: 'Date',
+                          title: AppStrings.date.tr(),
                         ),
                         const SizedBox(height: 12),
                         TitleWithDataWidget(
                           data:
                               '${viewModel.orderDetails.total} EGP', //TODO: currency
-                          title: 'Total Amount',
+                          title: AppStrings.totalAmount.tr(),
                         ),
                         const SizedBox(height: 12),
                         TitleWithDataWidget(
-                          data: viewModel.orderDetails.status ?? '',
-                          title: 'Status',
+                          data: (orderStatusApiKeys.containsValue(
+                                      viewModel.orderDetails.merchantStatus)
+                                  ? orderStatusMap[orderStatusApiKeys.entries
+                                      .firstWhere((value) =>
+                                          value.value ==
+                                          viewModel.orderDetails.merchantStatus)
+                                      .key]
+                                  : viewModel.orderDetails.merchantStatus) ??
+                              '',
+                          title: AppStrings.status.tr(),
                         ),
                         // TrackingOrderTextWidget(
                         //   textOnLeft: viewModel.orderDetails.uuid ?? '',
@@ -177,7 +194,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     price: element.priceAfterDiscount != null
                                         ? '${element.priceAfterDiscount} EGP'
                                         : '${element.price} EGP',
-                                    unit: 'UNITS: ${element.quantity}',
+                                    unit:
+                                        '${AppStrings.units.tr()}: ${element.quantity}',
                                     showDiscountPrice:
                                         element.priceAfterDiscount != null
                                             ? true

@@ -7,7 +7,6 @@ import 'package:orient/modules/main_screen/views/widgets/custom_bottom_nav_item.
 import 'package:orient/routing/app_router.dart';
 import 'package:provider/provider.dart';
 import '../../../general_services/app_theme.service.dart';
-import '../../../utils/components/general_components/general_components.dart';
 import '../view_models/merchant_main_view_model.dart';
 
 //MerchantMainScreen

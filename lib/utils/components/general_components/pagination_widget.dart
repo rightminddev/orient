@@ -113,7 +113,7 @@ class _PaginationWidgetState extends State<PaginationWidget> {
                         CircularProgressIndicator(),
                       ],
                     ),
-                  SizedBox(height: 32),
+                  //   SizedBox(height: 32),
                 ],
               ),
               // if (optionToJumpToTop.value && widget.showFloatingButton == true)

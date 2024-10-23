@@ -209,12 +209,13 @@ Future<void> orderStatusActionBottomSheet(
           //     : (viewDropDownButton == false)
           //     ? MediaQuery.sizeOf(context).height * 0.45
           //     : MediaQuery.sizeOf(context).height * 0.51,
-          alignment: Alignment.center,
+          //alignment: Alignment.center,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Stack(
                   children: [
@@ -262,7 +263,7 @@ Future<void> orderStatusActionBottomSheet(
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 ChangeNotifierProvider<OrderActionsViewModel>(
                   create: (_) => orderActionsViewModel!,
                   child: Consumer<OrderActionsViewModel>(
@@ -278,25 +279,6 @@ Future<void> orderStatusActionBottomSheet(
                     },
                   ),
                 ),
-                // GestureDetector(
-                //   onTap: onTapButton,
-                //   child: Container(
-                //     height: 50,
-                //     width: 225,
-                //     alignment: Alignment.center,
-                //     decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.circular(50),
-                //         color: const Color(0xff0D3B6F)),
-                //     child: Text(
-                //       buttonText!.toUpperCase(),
-                //       style: const TextStyle(
-                //           fontSize: 12,
-                //           fontWeight: FontWeight.w500,
-                //           color: Color(0xffFFFFFF),
-                //           fontFamily: "Poppins"),
-                //     ),
-                //   ),
-                // )
               ],
             ),
           ),

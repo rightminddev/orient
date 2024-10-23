@@ -81,15 +81,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
 
-import '../../../models/info/cities_model.dart';
+import '../../../models/info/city_model.dart';
 import '../../../utils/components/general_components/all_text_field.dart';
 
 class CityDropDownWidget extends StatelessWidget {
   final bool? isSelected;
 
   final ValueNotifier<String?> citySelected;
-  final List<CitiesModel> cities;
-  final void Function(CitiesModel) setCityChanged;
+  final List<CityModel> cities;
+  final void Function(CityModel) setCityChanged;
 
   const CityDropDownWidget({
     super.key,

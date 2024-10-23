@@ -1,25 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/media_query_values.dart';
 
-import '../../../constants/app_strings.dart';
-
 class ProductContainerWithTextFieldWidget extends StatefulWidget {
-  const ProductContainerWithTextFieldWidget(
-      {super.key,
-      this.stock,
-      this.containerColor,
-      this.bookmarkColor,
-      this.borderRadius,
-      this.boxShadow,
-      this.title,
-      this.price,
-      this.unit,
-      this.onQuantitySubmitted,
-      this.imageUrl});
-
   final Color? containerColor;
   final Color? bookmarkColor;
   final double? borderRadius;
@@ -29,8 +16,20 @@ class ProductContainerWithTextFieldWidget extends StatefulWidget {
   final void Function(String)? onQuantitySubmitted;
   final String? unit;
   final int? stock;
-
   final String? imageUrl;
+  const ProductContainerWithTextFieldWidget({
+    super.key,
+    this.stock,
+    this.containerColor,
+    this.bookmarkColor,
+    this.borderRadius,
+    this.boxShadow,
+    this.title,
+    this.price,
+    this.unit,
+    this.onQuantitySubmitted,
+    this.imageUrl,
+  });
 
   @override
   State<ProductContainerWithTextFieldWidget> createState() =>
@@ -64,7 +63,14 @@ class _ProductContainerWithTextFieldWidgetState
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           decoration: ShapeDecoration(
             color: widget.containerColor ?? const Color(0xffFFFFFF),
-            shadows: widget.boxShadow,
+            shadows: [
+              BoxShadow(
+                color: Color(0x0C000000),
+                blurRadius: 10,
+                offset: Offset(0, 1),
+                spreadRadius: 0,
+              )
+            ],
             shape: RoundedRectangleBorder(
               side: BorderSide(
                 color: value == true
@@ -90,17 +96,18 @@ class _ProductContainerWithTextFieldWidgetState
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.title!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                          color: Color(0xffE6007E),
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13),
+                        color: Color(0xffE6007E),
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
                     ),
                     Row(
                       children: [
@@ -131,25 +138,47 @@ class _ProductContainerWithTextFieldWidgetState
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    defaultTextFormField(
-                      controller: controller,
-                      //   hintText: 'units',
-                      textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        final isInt = int.tryParse(value);
+                    //  SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            AppStrings.units.tr(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              // decoration: TextDecoration.lineThrough,
+                              // decorationColor: Colors.grey,
+                              // decorationThickness: 2,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: defaultTextFormField(
+                            controller: controller,
+                            hasShadows: false,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              final isInt = int.tryParse(value);
 
-                        if (isInt != null &&
-                            isInt >= 0 &&
-                            widget.onQuantitySubmitted != null) {
-                          isStockValueError.value = false;
-                          widget.onQuantitySubmitted!(value);
-                        } else if (isInt == null &&
-                            widget.onQuantitySubmitted != null) {
-                          isStockValueError.value = true;
-                        }
-                      },
+                              if (isInt != null &&
+                                  isInt >= 0 &&
+                                  widget.onQuantitySubmitted != null) {
+                                isStockValueError.value = false;
+                                widget.onQuantitySubmitted!(value);
+                              } else if (isInt == null &&
+                                  widget.onQuantitySubmitted != null) {
+                                isStockValueError.value = true;
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -175,10 +204,6 @@ class _ProductContainerWithTextFieldWidgetState
                     fontSize: 15,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w400,
-<<<<<<< HEAD
-=======
-                    height: 0.11,
->>>>>>> origin/amr_branch
                   ),
                   onChanged: (value) {
                     final isInt = int.tryParse(value);

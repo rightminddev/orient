@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
-import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 
 Widget defaultTextFormField({
   TextEditingController? controller,
@@ -19,6 +18,7 @@ Widget defaultTextFormField({
   TextInputAction? textInputAction,
   void Function(String)? onFieldSubmitted,
   void Function(String)? onChanged,
+  bool hasShadows = true,
 }) {
   return Container(
     // height: containerHeight ?? 48,
@@ -34,14 +34,16 @@ Widget defaultTextFormField({
           width: 1.0,
         ),
       ),
-      shadows: const [
-        BoxShadow(
-          color: Color(0x0C000000),
-          blurRadius: 10,
-          offset: Offset(0, 1),
-          spreadRadius: 0,
-        )
-      ],
+      shadows: hasShadows == true
+          ? const [
+              BoxShadow(
+                color: Color(0x0C000000),
+                blurRadius: 10,
+                offset: Offset(0, 1),
+                spreadRadius: 0,
+              )
+            ]
+          : [],
     ),
     child: TextFormField(
       controller: controller,

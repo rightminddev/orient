@@ -11,7 +11,7 @@ class StoresViewModel extends ChangeNotifier {
   int count = 0;
   bool isLoading = false;
   bool hasMoreData(int length) {
-    if (pageNumber < count) {
+    if (length < count) {
       pageNumber = pageNumber + 1;
       return true;
     } else {
@@ -50,7 +50,7 @@ class StoresViewModel extends ChangeNotifier {
               : List.empty(growable: true)
           : List.empty(growable: true);
       if (result.success && result.data != null) {
-        //   count = result.data?['count'];
+        count = result.data?['count'];
 
         (result.data?['stores'] ?? []).forEach((v) {
           myStores.add(StoreModel.fromJson(v));

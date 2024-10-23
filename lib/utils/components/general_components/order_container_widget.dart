@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/routing/app_router.dart';
 
+import '../../../merchant/orders/models/order_status.dart';
 import '../../../models/orders/order_model.dart';
 import 'button_widget.dart';
 
@@ -18,6 +20,7 @@ class OrderContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
       decoration: ShapeDecoration(
         color: Colors.white,
@@ -86,14 +89,20 @@ class OrderContainerWidget extends StatelessWidget {
                     const BorderSide(width: 1, color: Color(AppColors.oc1)),
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                title: "Details",
+                title: AppStrings.details.tr(),
                 fontColor: const Color(AppColors.oc1),
                 backgroundColor: Colors.transparent,
               ),
               Text(
-                orderModel.status ?? '',
+                (orderStatusApiKeys.containsValue(orderModel.merchantStatus)
+                        ? orderStatusMap[orderStatusApiKeys.entries
+                            .firstWhere((value) =>
+                                value.value == orderModel.merchantStatus)
+                            .key]
+                        : orderModel.merchantStatus) ??
+                    '',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: const Color(0xFF2AA952),
                     ),
               ),

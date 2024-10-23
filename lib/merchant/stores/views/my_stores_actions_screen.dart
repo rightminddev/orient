@@ -6,14 +6,11 @@ import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/merchant/stores/models/my_stores_action_model.dart';
-import 'package:orient/merchant/stores/views/available_products_screen.dart';
 import 'package:orient/routing/app_router.dart';
 
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
 import '../../../models/stores/store_model.dart';
-import '../../orders/views/my_orders_screen.dart';
-import 'create_edit_store_screen.dart';
 
 class MyStoreActionsScreen extends StatefulWidget {
   final StoreModel storeModel;
@@ -62,7 +59,9 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
     return TemplatePage(
       backgroundColor: Colors.white,
       pageContext: context,
-      title: widget.storeModel.name ?? '',
+      title: context.locale.languageCode == 'en'
+          ? widget.storeModel.names?.en ?? ''
+          : widget.storeModel.names?.ar ?? '',
       body: GradientBgImage(
         child: SingleChildScrollView(
           child: Column(
@@ -71,8 +70,8 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
               GridView.count(
                 primary: false,
                 shrinkWrap: true,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 4,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 8,
                 crossAxisCount: 2,
                 // crossAxisCount: 2,
                 childAspectRatio: 0.8,
@@ -94,23 +93,6 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                             ? {"storeModel": widget.storeModel}
                             : null,
                       );
-
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => CreateEditStoreScreen(
-                      //         storeModel: widget.storeModel),
-                      //   ),
-                      // );
-
-                      // ADD REQUEST
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => AvailableProductsScreen(
-                      //       storeId: widget.storeModel.id!,
-                      //       isInAvailable: false,
-                      //     ),
-                      //   ),
-                      // );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -147,7 +129,7 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .headlineSmall
+                                .bodyMedium
                                 ?.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: AppThemeService

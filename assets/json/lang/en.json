@@ -183,5 +183,8 @@
   "viewYourPreviousInvoicesWithOrient": "View Your Previous Invoices With Orient",
   "getMyInvoices": "Get My Invoices",
   "editThisStoresData": "Edit This Store's Data",
-  "addRequestCap": "ADD\nREQUEST"
+  "addRequestCap": "ADD\nREQUEST",
+  "customerId": "Customer ID",
+  "customerName": "Customer Name",
+  "discount": "Discount"
 }

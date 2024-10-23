@@ -52,9 +52,9 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
             body: GradientBgImage(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 0),
                   PaginationWidget(
                     currentCount: viewModel.pageNumber,
                     isLoading: viewModel.isLoading,

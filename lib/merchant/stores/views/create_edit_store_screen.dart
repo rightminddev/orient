@@ -128,7 +128,8 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
 
             storeCities = cities
                 .firstWhere((city) => widget.storeModel?.cityId == city.id);
-
+            storeCreateEditModel.createEditStoreModel.cityId =
+                (storeCities.id ?? 0).toString();
             // storeCreateEditModel.createEditStoreModel.cityId = storeCities
             //     .map((element) => (element.id ?? 0).toString())
             //     .toList();
@@ -142,7 +143,15 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
       });
     } else {
       countriesViewModel.initializeCountries(context).then((_) {
+        final country = countriesViewModel.countries
+            .firstWhere((element) => element.title?.toLowerCase() == 'egypt');
+        countrySelected.value = country.title;
+        storeCreateEditModel.createEditStoreModel.countryId =
+            (country.id ?? 0).toString();
         areCountriesLoaded.value = true;
+        statesViewModel.initializeStates(context, country.iso2 ?? '').then((_) {
+          toggleCountrySelected.value = true;
+        });
       });
     }
     super.didChangeDependencies();

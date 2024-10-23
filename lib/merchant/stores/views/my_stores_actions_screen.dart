@@ -71,7 +71,7 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                 primary: false,
                 shrinkWrap: true,
                 crossAxisSpacing: 16,
-                mainAxisSpacing: 8,
+                mainAxisSpacing: 16,
                 crossAxisCount: 2,
                 // crossAxisCount: 2,
                 childAspectRatio: 0.8,
@@ -132,6 +132,7 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                                 .bodyMedium
                                 ?.copyWith(
                                   fontWeight: FontWeight.w700,
+                                  height: 1.1,
                                   color: AppThemeService
                                       .colorPalette.secondaryTextColor.color,
                                 ),

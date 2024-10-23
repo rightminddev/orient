@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:orient/common_modules_widgets/main_app_fab_widget/main_app_fab.widget.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/models/stores/create_edit_store_model.dart';
 import '../../../general_services/alert_service/alerts.service.dart';
@@ -117,8 +119,9 @@ class StoreCreateEditModel extends ChangeNotifier {
           context: context, data: createEditStoreModel.toJson());
 
       if (result.success && result.data != null) {
-        AlertsService.info(
-            title: AppStrings.information.tr(),
+        context.pop();
+        AlertsService.success(
+            title: AppStrings.success.tr(),
             context: context,
             message: result.message ?? AppStrings.createdSuccessfully.tr());
       } else {
@@ -143,8 +146,9 @@ class StoreCreateEditModel extends ChangeNotifier {
       );
 
       if (result.success && result.data != null) {
-        AlertsService.info(
-            title: AppStrings.information.tr(),
+        context.pop();
+        AlertsService.success(
+            title: AppStrings.success.tr(),
             context: context,
             message: result.message ?? AppStrings.updatedSuccessfully.tr());
       } else {

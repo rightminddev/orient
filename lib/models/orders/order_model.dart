@@ -16,7 +16,8 @@ class OrderModel {
   String? date;
   List<ItemModel>? items;
   ShippingInfoModel? shippingInfo;
-
+  String? customerName;
+  int? customerId;
   OrderModel({
     this.id,
     this.status,
@@ -31,6 +32,8 @@ class OrderModel {
     this.date,
     this.items,
     this.shippingInfo,
+    this.customerName,
+    this.customerId,
   });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
@@ -54,6 +57,8 @@ class OrderModel {
     shippingInfo = json['shipping_info'] != null
         ? ShippingInfoModel.fromJson(json['shipping_info'])
         : null;
+    customerName = json['customer_name'];
+    customerId = json['customer_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -75,6 +80,8 @@ class OrderModel {
     if (shippingInfo != null) {
       data['shipping_info'] = shippingInfo!.toJson();
     }
+    data['customer_name'] = customerName;
+    data['customer_id'] = customerId;
     return data;
   }
 }

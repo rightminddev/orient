@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:orient/common_modules_widgets/loading_page.widget.dart';
+import 'package:orient/constants/app_sizes.dart';
 
 class PaginationWidget extends StatefulWidget {
   final bool isLoading;
@@ -90,10 +92,13 @@ class _PaginationWidgetState extends State<PaginationWidget> {
                   widget.isLoading && widget.currentCount == 1
                       ? const Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Center(child: CircularProgressIndicator()),
+                              LoadingPageWidget(
+                                reverse: true,
+                                height: AppSizes.s75,
+                              )
                             ],
                           ),
                         )

@@ -127,8 +127,9 @@ class _MerchantStoresScreenState extends State<MerchantStoresScreen> {
 
           body: GradientBgImage(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 0),
+                const SizedBox(height: 0),
                 PaginationWidget(
                   currentCount: viewModel.pageNumber,
                   isLoading: viewModel.isLoading,

@@ -138,6 +138,7 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                 //       const SizedBox(height: 24),
                 //  const SizedBox(height: 18),
                 defaultTextFormField(
+                  hasShadows: false,
                   controller: searchController,
                   hintText: AppStrings.search.tr(),
                   textInputAction: TextInputAction.search,
@@ -184,6 +185,13 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                       children: storesViewModel.products
                           .asMap()
                           .map((index, element) {
+                            final isOrderUpdatedIndex = orders.indexWhere(
+                                (order) => order.productId == element.id);
+                            int? quantity = isOrderUpdatedIndex >= 0
+                                ? orders
+                                    .elementAtOrNull(isOrderUpdatedIndex)
+                                    ?.quantity
+                                : null;
                             return MapEntry(
                               index,
                               ProductContainerWithTextFieldWidget(
@@ -236,13 +244,16 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                                     }
                                   }
                                 },
-                                stock:
-                                    orders.elementAtOrNull(index)?.productId ==
-                                            element.id
-                                        ? orders.elementAt(index).quantity
-                                        : widget.isInAvailable == true
-                                            ? element.stock
-                                            : 0,
+                                stock: quantity ??
+                                    (widget.isInAvailable == true
+                                        ? element.stock
+                                        : 0),
+                                // orders.elementAtOrNull(index)?.productId ==
+                                //         element.id
+                                //     ? orders.elementAt(index).quantity
+                                //     : widget.isInAvailable == true
+                                //         ? element.stock
+                                //         : 0,
                                 title: element.title,
                                 price: (element.merchantsPrice ?? 0).toString(),
                                 unit: element.merchantsUnit,

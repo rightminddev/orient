@@ -41,8 +41,8 @@ class OrderActionsViewModel extends ChangeNotifier {
 
       if (result.success && result.data != null) {
         context.pop();
-        AlertsService.info(
-            title: AppStrings.information.tr(),
+        AlertsService.success(
+            title: AppStrings.success.tr(),
             context: context,
             message: result.message ?? AppStrings.updatedSuccessfully.tr());
         return true;

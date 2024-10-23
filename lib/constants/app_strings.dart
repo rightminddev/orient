@@ -199,4 +199,8 @@ abstract class AppStrings {
       'viewYourPreviousInvoicesWithOrient';
   static const getMyInvoices = 'getMyInvoices';
   static const editThisStoresData = 'editThisStoresData';
+  static const addRequestCap = 'addRequestCap';
+  static const customerId = 'customerId';
+  static const customerName = 'customerName';
+  static const discount = 'discount';
 }

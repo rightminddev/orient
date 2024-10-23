@@ -5,7 +5,6 @@ import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:provider/provider.dart';
 
-import '../../../common_modules_widgets/loading_page.widget.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../constants/settings/app_icons.dart';
 import '../../../utils/components/general_components/all_bottom_sheet.dart';
@@ -17,6 +16,7 @@ import '../../../utils/components/general_components/text_with_space_between.dar
 import '../models/order_status.dart';
 import '../view_models/orders.actions.viewmodel.dart';
 import '../view_models/orders.viewmodel.dart';
+import '../widgets/order_details_loading_page.widget.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final int storeId;
@@ -128,8 +128,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         body: GradientBgImage(
           child: Consumer<OrdersViewModel>(
             builder: (context, viewModel, child) => viewModel.isLoading
-                ? const LoadingPageWidget(
-                    reverse: true,
+                ? const OrderDetailsLoadingPage(
                     height: AppSizes.s75,
                   )
                 : SingleChildScrollView(
@@ -229,6 +228,32 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     height: 0,
                                     letterSpacing: 0,
                                   ),
+                        ),
+                        const SizedBox(height: 12),
+                        TextWithSpaceBetween(
+                          textOnLeft: AppStrings.customerName.tr(),
+                          textOnLeftFontColor: AppThemeService
+                              .colorPalette.quaternaryTextColor.color,
+                          textOnLeftFontSize: 14,
+                          textOnLeftFontWeight: FontWeight.w400,
+                          textOnRightFontColor: AppThemeService
+                              .colorPalette.tertiaryTextColor.color,
+                          textOnRightFontSize: 14,
+                          textOnRight:
+                              viewModel.orderDetails.customerName ?? '',
+                        ),
+                        const SizedBox(height: 12),
+                        TextWithSpaceBetween(
+                          textOnLeft: AppStrings.customerId.tr(),
+                          textOnLeftFontColor: AppThemeService
+                              .colorPalette.quaternaryTextColor.color,
+                          textOnLeftFontSize: 14,
+                          textOnLeftFontWeight: FontWeight.w400,
+                          textOnRightFontColor: AppThemeService
+                              .colorPalette.tertiaryTextColor.color,
+                          textOnRightFontSize: 14,
+                          textOnRight: (viewModel.orderDetails.customerId ?? 0)
+                              .toString(),
                         ),
                         const SizedBox(height: 12),
                         TextWithSpaceBetween(

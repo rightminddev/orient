@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/merchant/orders/widgets/order_details_loading_page.widget.dart';
 
 class MerchantHomeScreen extends StatelessWidget {
   const MerchantHomeScreen({super.key});
@@ -9,6 +11,9 @@ class MerchantHomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            OrderDetailsLoadingPage(
+              height: AppSizes.s75,
+            )
             // ProductContainerWithTextFieldWidget(
             //   title: 'PUTTY (ACRYLIC 1000) 233',
             //   price: '250.0',

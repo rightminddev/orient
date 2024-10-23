@@ -145,7 +145,7 @@ Future<void> defaultActionBottomSheet(
                   isLoading: isLoading,
                   padding: const EdgeInsets.symmetric(
                       horizontal: AppSizes.s48, vertical: AppSizes.s16),
-                  title: AppStrings.completeTheOrder.tr(),
+                  title: buttonText ?? '',
                   svgIcon: AppIcons.checkMarkDashed,
                 ),
                 // GestureDetector(
@@ -319,7 +319,7 @@ Future<void> completeOrderActionBottomSheet({
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'SUBTOTAL',
+                        AppStrings.subtotal.tr().toUpperCase(),
                         style: TextStyle(
                           color: Color(0xFF0D3B6F),
                           fontSize: 14,
@@ -344,7 +344,7 @@ Future<void> completeOrderActionBottomSheet({
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'DISCOUNT',
+                        AppStrings.discount.tr().toUpperCase(),
                         style: TextStyle(
                           color: Color(0xFF0D3B6F),
                           fontSize: 14,
@@ -367,7 +367,7 @@ Future<void> completeOrderActionBottomSheet({
                   ),
                   SizedBox(height: 24),
                   Text(
-                    'TOTAL PRICE',
+                    AppStrings.totalPrice.tr().toUpperCase(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF1B1B1B),

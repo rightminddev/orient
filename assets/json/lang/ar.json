@@ -183,5 +183,8 @@
   "viewYourPreviousInvoicesWithOrient": "عرض الفواتير السابقة الخاصة بك مع Orient",
   "getMyInvoices": "احصل على فواتيري",
   "editThisStoresData": "تعديل بيانات هذا المتجر",
-  "addRequestCap": "إضافة طلب"
+  "addRequestCap": "إضافة طلب",
+  "customerId": "معرف العميل",
+  "customerName": "اسم العميل",
+  "discount": "الخصم"
 }

@@ -15,4 +15,5 @@ class AppIcons {
       'assets/icons/available-shopping-cart.svg';
 
   static const String info = 'assets/icons/info.svg';
+  static const String successRequest = 'assets/icons/success-request.svg';
 }

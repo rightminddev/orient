@@ -74,7 +74,7 @@ class OnboardingViewModel extends ChangeNotifier {
             debugPrint('Failed to send saved fingerprints to server $ex');
           }
 
-          context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+          context.goNamed(AppRoutes.merchantHomeScreen.name,
               pathParameters: {'lang': context.locale.languageCode});
           return;
         } else {
@@ -189,6 +189,9 @@ class OnboardingViewModel extends ChangeNotifier {
     }
   }
 
-  void skip(BuildContext context) => context.goNamed(AppRoutes.login.name,
+  // void skip(BuildContext context) => context.goNamed(AppRoutes.login.name,
+  //     pathParameters: {'lang': context.locale.languageCode});
+
+  void skip(BuildContext context) => context.goNamed(AppRoutes.stores.name,
       pathParameters: {'lang': context.locale.languageCode});
 }

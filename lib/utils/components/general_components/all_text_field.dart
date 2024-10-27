@@ -107,49 +107,49 @@ Widget defaultCommentTextFormField({
                     controller: controller,
                     maxLines: maxLines,
                     decoration: InputDecoration(
-                      hintText: hintText,
-                      labelStyle: const TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff191C1F)
-                      ),
-                      hintStyle: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff464646).withOpacity(0.5)
-                      ),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none
+                        hintText: hintText,
+                        labelStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff191C1F)
+                        ),
+                        hintStyle: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff464646).withOpacity(0.5)
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+                        enabledBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none
                     ),
                     keyboardType: keyboardType,
                     validator: validator
                 ),
               ),
-          if(viewDropDownRates == true)Container(
-            height: 26,
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color:const Color(0xffFFFABB),
-              borderRadius: BorderRadius.circular(18.5),
-            ),
-            child: DropdownButton<String>(
-                dropdownColor: Colors.white,
-                icon:const Icon(Icons.arrow_drop_down_sharp, color: Color(0xffE6007E),),
-                isExpanded: false,
-                hint: dropDownHint,
-                items: dropDownItems,
-                value: dropDownValue,
-                underline: const SizedBox.shrink(),
-                onChanged: dropDownOnChanged
-            ),
-          ),
+              if(viewDropDownRates == true)Container(
+                height: 26,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color:const Color(0xffFFFABB),
+                  borderRadius: BorderRadius.circular(18.5),
+                ),
+                child: DropdownButton<String>(
+                    dropdownColor: Colors.white,
+                    icon:const Icon(Icons.arrow_drop_down_sharp, color: Color(0xffE6007E),),
+                    isExpanded: false,
+                    hint: dropDownHint,
+                    items: dropDownItems,
+                    value: dropDownValue,
+                    underline: const SizedBox.shrink(),
+                    onChanged: dropDownOnChanged
+                ),
+              ),
             ],
           ),
         ),

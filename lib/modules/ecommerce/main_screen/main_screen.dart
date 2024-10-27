@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 class ECommerceMainScreen extends StatefulWidget {
   final EcommerceNavbarPages ecommerceNavbarPages;
   final Widget child;
-  ECommerceMainScreen({super.key ,required this.ecommerceNavbarPages, required this.child});
+  ECommerceMainScreen(
+      {super.key, required this.ecommerceNavbarPages, required this.child});
   @override
   State<ECommerceMainScreen> createState() => _ECommerceMainScreenState();
 }
@@ -41,33 +42,41 @@ class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
             items: navs,
             selectIndex: selectIndexs,
             tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
-            onTapItem: (index){
+            onTapItem: (index) {
               setState(() {
                 selectIndexs = index;
               });
-              if(index == 0){
+              if (index == 0) {
                 viewModel.onItemTapped(
-                    context: context, page: EcommerceNavbarPages.eCommerceHomeScreen);
-                print(index);
-              } if(index == 1){
-                viewModel.onItemTapped(
-                    context: context, page: EcommerceNavbarPages.ecommerceTestScreen);
-              } if(index == 2){
-                viewModel.onItemTapped(
-                    context: context, page: EcommerceNavbarPages.eCommerceShoppingCart);
-                print(index);
-              } if(index == 3){
-                viewModel.onItemTapped(
-                    context: context, page: EcommerceNavbarPages.eCommerceSearchScreen);
-                print(index);
-              } if(index == 4){
-                viewModel.onItemTapped(
-                    context: context, page: EcommerceNavbarPages.eCommerceMoreScreen);
+                    context: context,
+                    page: EcommerceNavbarPages.eCommerceHomeScreen);
                 print(index);
               }
-            }
-        ),
-        ),
+              if (index == 1) {
+                viewModel.onItemTapped(
+                    context: context,
+                    page: EcommerceNavbarPages.ecommerceTestScreen);
+              }
+              if (index == 2) {
+                viewModel.onItemTapped(
+                    context: context,
+                    page: EcommerceNavbarPages.eCommerceShoppingCart);
+                print(index);
+              }
+              if (index == 3) {
+                viewModel.onItemTapped(
+                    context: context,
+                    page: EcommerceNavbarPages.eCommerceSearchScreen);
+                print(index);
+              }
+              if (index == 4) {
+                viewModel.onItemTapped(
+                    context: context,
+                    page: EcommerceNavbarPages.eCommerceMoreScreen);
+                print(index);
+              }
+            }),
+      ),
     );
   }
 }

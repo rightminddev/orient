@@ -26,7 +26,7 @@ class ButtonWidget extends StatelessWidget {
     this.borderSide = BorderSide.none,
     this.padding,
     required this.title,
-    this.isLoading = true,
+    this.isLoading = false,
     this.svgIcon,
     this.svgIconColor,
     this.fontColor,
@@ -36,36 +36,36 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: isLoading == true ? onPressed : null,
-      style: ButtonStyle(
-        elevation: WidgetStateProperty.all(0),
-        padding: WidgetStateProperty.all(
-          padding ??
-              EdgeInsets.symmetric(
-                  horizontal: AppSizes.s18, vertical: AppSizes.s12),
-        ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-            side: borderSide,
-          ),
-        ),
-        backgroundColor: WidgetStateProperty.all(
-          backgroundColor ?? Color(AppColors.oc1),
-        ),
-      ),
-      // child: Container(
-      //padding: padding ?? EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-      // decoration: ShapeDecoration(
-      //   color: backgroundColor ?? AppColors.whiteBackground,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(borderRadius ?? 6),
-      //     side: borderSide,
-      //   ),
-      // ),
-      child: isLoading == true
-          ? Row(
+    return isLoading == false
+        ? ElevatedButton(
+            onPressed: isLoading == false ? onPressed : null,
+            style: ButtonStyle(
+              elevation: WidgetStateProperty.all(0),
+              padding: WidgetStateProperty.all(
+                padding ??
+                    EdgeInsets.symmetric(
+                        horizontal: AppSizes.s18, vertical: AppSizes.s12),
+              ),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  side: borderSide,
+                ),
+              ),
+              backgroundColor: WidgetStateProperty.all(
+                backgroundColor ?? Color(AppColors.oc1),
+              ),
+            ),
+            // child: Container(
+            //padding: padding ?? EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            // decoration: ShapeDecoration(
+            //   color: backgroundColor ?? AppColors.whiteBackground,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(borderRadius ?? 6),
+            //     side: borderSide,
+            //   ),
+            // ),
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -92,13 +92,29 @@ class ButtonWidget extends StatelessWidget {
                             AppThemeService.colorPalette.quinaryTextColor.color,
                         fontSize: fontSize,
                       ),
+                  // textStyle: AppTextStyle.textStyle(
+                  //   color: childColor ?? AppColors.white,
+                  //   fontSize: AppFontSize.text16,
+                  //   fontWeight: AppFontWeight.bold,
+                  //   height: 0.10,
+                  // ),
                 ),
               ],
             )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
-      // ),
-    );
+
+            // ),
+            )
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: CircularProgressIndicator(
+                  color:
+                      AppThemeService.colorPalette.primaryColorBackground.color,
+                ),
+              ),
+            ],
+          );
   }
 }

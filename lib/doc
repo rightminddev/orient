@@ -1,0 +1,6 @@
+custom_elevated_button.widget.dart == button for every click on app
+CustomFloatingActionButton == button floating for every click on app
+LanguageDropdownButton == for select language
+LoadingPageWidget(height, reverse) == shimmer loading ListTitle >> take height  and reverce
+NotificationCard(title) == notification shape
+PayrollsAndPenaltiesRewardsLoadingScreensWidget() loading ===

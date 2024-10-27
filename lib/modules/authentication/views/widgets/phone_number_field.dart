@@ -52,9 +52,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
           if (val == null || val.number.isEmpty) {
             return AppStrings.pleaseEnterValidPhoneNumber.tr();
           }
-          if (val.number.length < minLength || val.number.length > maxLength) {
-            return AppStrings.pleaseEnterValidPhoneNumber.tr();
-          }
+          //? is it needed??
+          // if (val.number.length < minLength || val.number.length > maxLength) {
+          //   return AppStrings.pleaseEnterValidPhoneNumber.tr();
+          // }
           return null;
         },
         onCountryChanged: (country) {
@@ -65,7 +66,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
           widget.countryCodeController.text = '+${country.dialCode}';
         },
         disableAutoFillHints: false,
-        disableLengthCheck: false,
+        disableLengthCheck: true,
         keyboardType: TextInputType.phone,
         flagsButtonMargin: const EdgeInsets.symmetric(
           horizontal: AppSizes.s12,

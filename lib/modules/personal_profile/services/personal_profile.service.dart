@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../../../general_services/backend_services/get_endpoint.service.dart';
 import '../../../models/endpoint.model.dart';
 import '../../../models/operation_result.model.dart';
@@ -14,7 +14,7 @@ abstract class PersonalProfileService {
     Map<String, dynamic> body = {
       "password": newPassword,
     };
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
       EndpointServices.getApiEndpoint(EndpointsNames.updatePassword).url,
       body,
       dataKey: 'data',
@@ -27,7 +27,7 @@ abstract class PersonalProfileService {
   static Future<OperationResult<Map<String, dynamic>>> activateTfa(
       {required BuildContext context}) async {
     final url = EndpointServices.getApiEndpoint(EndpointsNames.activateTfa).url;
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
         url, {"type": "activate", "tfa": "1"},
         context: context, dataKey: 'data', allData: true);
   }
@@ -65,7 +65,7 @@ abstract class PersonalProfileService {
     }
 
     // Send request
-    return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+    return await DioApiService().postWithFormData<Map<String, dynamic>>(
       EndpointServices.getApiEndpoint(EndpointsNames.updateInfo).url,
       context: context,
       requestData,
@@ -80,7 +80,7 @@ abstract class PersonalProfileService {
   static Future<OperationResult<void>> logout({
     required BuildContext context,
   }) async {
-    return await HttpApiService().post<void>(
+    return await DioApiService().post<void>(
         EndpointServices.getApiEndpoint(EndpointsNames.logOut).url, {},
         context: context, allData: true, dataKey: 'data');
   }
@@ -90,7 +90,7 @@ abstract class PersonalProfileService {
     required BuildContext context,
     required String password,
   }) async {
-    return await HttpApiService().postWithFormData<void>(
+    return await DioApiService().postWithFormData<void>(
         EndpointServices.getApiEndpoint(EndpointsNames.removeAccount).url,
         {'password': password},
         context: context,

@@ -33,7 +33,11 @@ abstract class BackEndServicesInterface {
       Map<String, String>? header,
       bool checkOnTokenExpiration = true,
       required BuildContext context});
-
+  Future<OperationResult<T>> patch<T>(String url, Map data,
+      {required String dataKey,
+      Map<String, String>? header,
+      bool checkOnTokenExpiration = true,
+      required BuildContext context});
   Future<OperationResult<T>> delete<T>(String url, Map data,
       {required String dataKey,
       Map<String, String>? header,

@@ -17,10 +17,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'merchant/main/view_models/merchant_main_view_model.dart';
 import 'modules/main_screen/view_models/main_viewmodel.dart';
 import 'platform/platform_is.dart';
 
 GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // register global error handlers to catch , handle and repoting on any kind of error or exception appear in the application
@@ -71,7 +73,11 @@ void main() async {
           ),ChangeNotifierProvider<HomeProvider>(
             create: (_) => HomeProvider(),
           ),
+          ChangeNotifierProvider<MerchantMainViewModel>(
+            create: (_) => MerchantMainViewModel(),
+          ),
         ],
+        // child: const MyApp2(),
         child: const MyApp(),
       )));
 }

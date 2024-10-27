@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../general_services/backend_services/get_endpoint.service.dart';
 import '../general_services/connections.service.dart';
 import '../general_services/db_hive.service.dart';
@@ -18,7 +18,7 @@ abstract class FingerprintService {
   }) async {
     final url =
         '${EndpointServices.getApiEndpoint(EndpointsNames.getFingerprint).url}/$id';
-    return await HttpApiService().get<Map<String, dynamic>>(
+    return await DioApiService().get<Map<String, dynamic>>(
       url,
       dataKey: 'data',
       context: context,
@@ -72,7 +72,7 @@ abstract class FingerprintService {
     final url = queryParams.isEmpty ? baseUrl : '$baseUrl?$queryParams';
 
     // Send the request
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       dataKey: 'data',
       context: context,
@@ -110,7 +110,7 @@ abstract class FingerprintService {
   }) async {
     final url = EndpointServices.getApiEndpoint(EndpointsNames.fingerprint).url;
     final requestBody = {'fingerprints': fingerprints};
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
       url,
       requestBody,
       context: context,
@@ -133,7 +133,7 @@ abstract class FingerprintService {
       'finger_day': '2024-08-11 16:00',
     };
     if (await ConnectionsService.isOnline() == true) {
-      return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+      return await DioApiService().postWithFormData<Map<String, dynamic>>(
         url,
         context: context,
         formData,
@@ -170,7 +170,7 @@ abstract class FingerprintService {
           DateFormat('yyyy-MM-dd HH:mm').format(fingerDay ?? DateTime.now()),
     };
     if (await ConnectionsService.isOnline() == true) {
-      return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+      return await DioApiService().postWithFormData<Map<String, dynamic>>(
           url, requestBody,
           context: context, dataKey: 'data', allData: true, files: files);
     } else {
@@ -203,7 +203,7 @@ abstract class FingerprintService {
           DateFormat('yyyy-MM-dd HH:mm').format(fingerDay ?? DateTime.now()),
     };
     if (await ConnectionsService.isOnline() == true) {
-      return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+      return await DioApiService().postWithFormData<Map<String, dynamic>>(
         url,
         context: context,
         formData,
@@ -237,7 +237,7 @@ abstract class FingerprintService {
           DateFormat('yyyy-MM-dd HH:mm').format(fingerDay ?? DateTime.now()),
     };
     if (await ConnectionsService.isOnline() == true) {
-      return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+      return await DioApiService().postWithFormData<Map<String, dynamic>>(
           url, requestBody,
           context: context, dataKey: 'data', allData: true, files: files);
     } else {
@@ -266,7 +266,7 @@ abstract class FingerprintService {
           DateFormat('yyyy-MM-dd HH:mm').format(fingerDay ?? DateTime.now()),
     };
     if (await ConnectionsService.isOnline() == true) {
-      return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+      return await DioApiService().postWithFormData<Map<String, dynamic>>(
           url, requestBody,
           context: context, dataKey: 'data', allData: true, files: files);
     } else {
@@ -295,7 +295,7 @@ abstract class FingerprintService {
           DateFormat('yyyy-MM-dd HH:mm').format(fingerDay ?? DateTime.now()),
     };
     if (await ConnectionsService.isOnline() == true) {
-      return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+      return await DioApiService().postWithFormData<Map<String, dynamic>>(
           url, requestBody,
           context: context, dataKey: 'data', allData: true, files: files);
     } else {

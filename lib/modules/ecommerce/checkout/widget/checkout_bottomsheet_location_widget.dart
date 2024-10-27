@@ -4,8 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_bottomsheet_edit_location_widget.dart';
+import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
+import 'package:provider/provider.dart';
 
 class CheckoutBottomsheetLocationWidget extends StatefulWidget {
   const CheckoutBottomsheetLocationWidget({super.key});
@@ -18,90 +22,118 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
  int? selectIndex;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-          color: Color(0xffFFFFFF)
-      ),
-      width: double.infinity,
-      height: MediaQuery.sizeOf(context).height * 0.8,
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: [
-          const SizedBox(height: 10,),
-          Center(
-            child:Container(
-              width: 63,
-              height: 5,
-              decoration: BoxDecoration(
-                  color: Color(0xffB9C0C9),
-                  borderRadius: BorderRadius.circular(100)
+    return Consumer<CheckoutControllerProvider>(
+      builder: (context, value, child) {
+        return Consumer<HomeViewModel>(
+          builder: (context, values, child) {
+            return (value.isPrepareCheckoutLoading)?
+            SingleChildScrollView(
+              child: HomeLoadingPage(viewAppbar: false,),
+            )
+                :Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+                  color: Color(0xffFFFFFF)
               ),
-            ) ,
-          ),
-          const SizedBox(height: 10,),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-               Container(
-                 height: MediaQuery.sizeOf(context).height * 0.62,
-                 child: ListView.separated(
-                   separatorBuilder: (context, index)=> const SizedBox.shrink(),
-                   itemBuilder: (context, index)=> defaultLocationContainer(
-                     context: context,
-                     use: (selectIndex == index + 1) ? true : false,
-                     onTap: (){
-                       if(selectIndex == index + 1){
-                         print("yes");
-                         setState(() {
-                           selectIndex = 0;
-                           print(selectIndex);
-                         });
-                       }else{
-                         setState(() {
-                           selectIndex = index+1;
-                           print(selectIndex);
-                         });
-                       }
-                     },
-                     onTapEdit: ()async{
-                       Navigator.pop(context);
-                       return await showModalBottomSheet(
-                         context: context,
-                         isScrollControlled: true,
-                         shape: const RoundedRectangleBorder(
-                           borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-                         ),
-                         builder: (BuildContext context) {
-                           return const CheckoutBottomsheetEditLocationWidget();
-                         },
-                       );
-                     }
-                   ),
-                   itemCount: 10,
-                 ),
-               ),
-                const SizedBox(height: 20,),
-                ButtonWidget(
-                  title: AppStrings.addAddress.tr().toUpperCase(),
-                  svgIcon: "assets/images/ecommerce/svg/add.svg",
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                  padding:const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+              width: double.infinity,
+              height: MediaQuery.sizeOf(context).height * 0.8,
+              alignment: Alignment.topCenter,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10,),
+                  Center(
+                    child:Container(
+                      width: 63,
+                      height: 5,
+                      decoration: BoxDecoration(
+                          color: Color(0xffB9C0C9),
+                          borderRadius: BorderRadius.circular(100)
+                      ),
+                    ) ,
+                  ),
+                  const SizedBox(height: 10,),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: MediaQuery.sizeOf(context).height * 0.62,
+                          child: ListView.separated(
+                            separatorBuilder: (context, index)=> const SizedBox.shrink(),
+                            itemBuilder: (context, index)=> defaultLocationContainer(
+                                context: context,
+                                use: (selectIndex == index + 1) ? true : false,
+                                onTap: (){
+                                  if(selectIndex == index + 1){
+                                    print("yes");
+                                    setState(() {
+                                      selectIndex = 0;
+                                      print(selectIndex);
+                                    });
+                                  }else{
+                                    setState(() {
+                                      selectIndex = index+1;
+                                      print(selectIndex);
+                                    });
+                                  }
+                                  value.addAddressCheckout(
+                                      context: context,
+                                      phone: value.checkoutUserAddress[index]['phone'],
+                                      address: value.checkoutUserAddress[index]['address'],
+                                      user_id: values.userSettings!.userId,
+                                      state_id: value.checkoutUserAddress[index]['state_id'],
+                                      city_id: value.checkoutUserAddress[index]['city_id'],
+                                      country_key: value.checkoutUserAddress[index]['country_key'],
+                                      country_id: value.checkoutUserAddress[index]['country_id']
+                                  );
+                                },
+                                location: value.checkoutUserAddress[index]['address'],
+                                onTapEdit: ()async{
+                                  Navigator.pop(context);
+
+                                }
+                            ),
+                            itemCount: value.checkoutUserAddress.length,
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
+                        ButtonWidget(
+                          title: AppStrings.addAddress.tr().toUpperCase(),
+                          svgIcon: "assets/images/ecommerce/svg/add.svg",
+                          onPressed: ()async{
+                            await showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+                              ),
+                              builder: (BuildContext context) {
+                                return const CheckoutBottomsheetEditLocationWidget();
+                              },
+                            );
+                            Navigator.pop(context);
+                          },
+                          padding:const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
+
+    //   ChangeNotifierProvider(create: (context)=> CheckoutControllerProvider()..getPrepareCheckout(context: context),
+    // child:
+    // );
   }
 
-  Widget defaultLocationContainer({context, bool use = false, void Function()? onTap, void Function()? onTapEdit})=>  GestureDetector(
+  Widget defaultLocationContainer({context,location, bool use = false, void Function()? onTap, void Function()? onTapEdit})=>  GestureDetector(
     onTap: onTap,
     child: Container(
       margin: const EdgeInsets.symmetric(vertical: AppSizes.s8),
@@ -131,8 +163,8 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
               const SizedBox(width: 10,),
               Container(
                 width: MediaQuery.sizeOf(context).width * 0.5,
-                child: const Text("90th Street, 5th settlement, New Cairo, Egypt.",
-                  style: TextStyle(
+                child:  Text(location,
+                  style:const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: Color(0xff1B1B1B)

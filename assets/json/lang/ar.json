@@ -73,7 +73,9 @@
   "verifyViaAuthenticationApp": "التحقق عبر تطبيق المصادقة",
   "verifyVia": "التحقق عبر ",
   "failed": "فشل!",
+  "paymentFailed": "فشل الدفع!",
   "success": "نجاح!",
+  "repayment": "اعادة الدفع",
   "warning": "تحذير!",
   "error": "خطأ!",
   "informational": "معلومات!",
@@ -144,5 +146,12 @@
   "saveChanges" : "حفظ التغيرات",
   "addAddress" : "اضافة عنوان",
   "edit" : "تعديل",
-  "useThisAddress" : "استخدام هذا العنوان"
+  "useThisAddress" : "استخدام هذا العنوان",
+  "discount" : "الخصم",
+  "numberOfMeters" : "ادخل عدد الامتار",
+  "sheets" : "صفيحه",
+  "type" : "النوع",
+  "colorTrend" : "اتجاه اللون",
+  "all" : "الكل",
+  "theNumberOfPaintSheetsUsedIs" : "عدد صفائح الطلاء المستخدمة هو"
 }

@@ -4,7 +4,9 @@ import '../../../../../general_services/layout.service.dart';
 import '../../../../../utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
 class HomeLoadingPage extends StatelessWidget {
-  const HomeLoadingPage({super.key});
+  bool viewAppbar = true;
+  bool? onlyViewOne = false;
+   HomeLoadingPage({super.key, required this.viewAppbar, this.onlyViewOne});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,35 @@ class HomeLoadingPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+         if(viewAppbar == true) Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ShimmerAnimatedLoading(
+                width: LayoutService.getWidth(context) / 3,
+                height: AppSizes.s28,
+              ),
+              ShimmerAnimatedLoading(
+                width: LayoutService.getWidth(context) / 4,
+                height: AppSizes.s28,
+              ),
+            ],
+          ),
+          if(viewAppbar == true)  const SizedBox(height: 16,),
+         if(viewAppbar == true) Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ShimmerAnimatedLoading(
+                width: LayoutService.getWidth(context) / 3,
+                height: AppSizes.s28,
+              ),
+              ShimmerAnimatedLoading(
+                width: LayoutService.getWidth(context) / 4,
+                height: AppSizes.s28,
+              ),
+            ],
+          ),
+          if(viewAppbar == true)  const SizedBox(height: 16,),
+         if(viewAppbar == true) Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ShimmerAnimatedLoading(
@@ -29,7 +59,7 @@ class HomeLoadingPage extends StatelessWidget {
           ),
           gapH16,
           ...List.generate(
-              5,
+              (onlyViewOne == true)? 1: 5,
               (index) => Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: AppSizes.s14, horizontal: AppSizes.s16),

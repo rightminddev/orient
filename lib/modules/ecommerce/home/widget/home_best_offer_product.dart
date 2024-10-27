@@ -11,7 +11,7 @@ class HomeBestOfferProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           Container(
@@ -61,7 +61,7 @@ class HomeBestOfferProduct extends StatelessWidget {
                         )
                       ],
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> EcommerceSingleProductDetailScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> EcommerceSingleProductDetailScreen(1)));
                       }
                   ),
                   SizedBox(width: 10,),
@@ -79,7 +79,7 @@ class HomeBestOfferProduct extends StatelessWidget {
                         )
                       ],
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> EcommerceSingleProductDetailScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> EcommerceSingleProductDetailScreen(1)));
                       }
                   ),
                 ],

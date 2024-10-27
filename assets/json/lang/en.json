@@ -9,6 +9,7 @@
   "yourPhone": "YOUR PHONE",
   "pleaseEnterValidPhoneNumber": "Please Enter Valid Phone Number !",
   "yourEmail": "Your Email",
+  "discount" : "Discount",
   "yourName": "Your Name",
   "password": "Password",
   "forgetPassword": "FORGET PASSWORD?",
@@ -143,5 +144,13 @@
   "saveChanges" : "Save Changes",
   "addAddress" : "Add Address",
   "edit" : "Edit",
-  "useThisAddress" : "Use this Address"
+  "useThisAddress" : "Use this Address",
+  "numberOfMeters" : "Enter Number Of Meters",
+  "sheets" : "sheets",
+  "type" : "Type",
+  "all" : "All",
+  "paymentFailed" : "Payment Failed",
+  "repayment" : "Repayment",
+  "colorTrend" : "Color Trend",
+  "theNumberOfPaintSheetsUsedIs" : "The number of paint sheets used is"
 }

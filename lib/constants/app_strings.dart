@@ -17,6 +17,7 @@ abstract class AppStrings {
   static const String createNewAccount = 'createNewAccount';
   static const String send = 'send';
   static const String code = 'code';
+  static const String type = 'type';
   static const String newPassword = 'newPassword';
   static const String smsActive = 'smsActive';
   static const String whatsAppActive = 'whatsAppActive';
@@ -40,6 +41,7 @@ abstract class AppStrings {
       'aVerificationCodeHasBeenSent';
   static const String didnotReciveCode = 'didnotReciveCode';
   static const String resendCode = 'resendCode';
+  static const String all = 'all';
   static const String niceToMeetYou = 'niceToMeetYou';
   static const String mineRequests = 'mineRequests';
   static const String teamRequests = 'teamRequests';
@@ -111,6 +113,7 @@ abstract class AppStrings {
   static const String metalPaints = 'metalPaints';
   static const String bestOffers = 'bestOffers';
   static const String shop = 'shop';
+  static const String colorTrend = 'colorTrend';
   static const String productsCategory = 'productsCategory';
   static const String productsColors = 'productsColors';
   static const String productsSize = 'productsSize';
@@ -134,6 +137,7 @@ abstract class AppStrings {
   static const String typeYourMessage = 'typeYourMessage';
   static const String cart = 'cart';
   static const String subtotal = 'subtotal';
+  static const String discount = 'discount';
   static const String promoCode = 'promoCode';
   static const String enterYourPromoCode = 'enterYourPromoCode';
   static const String specialDiscountOnLargeQuantities = 'specialDiscountOnLargeQuantities';
@@ -141,11 +145,13 @@ abstract class AppStrings {
   static const String checkout = 'checkout';
   static const String shippingAddress = 'shippingAddress';
   static const String paymentMethods = 'paymentMethods';
+  static const String paymentFailed = 'paymentFailed';
   static const String orderList = 'orderList';
   static const String change = 'change';
   static const String shippingFees = 'shippingFees';
   static const String successful = 'successful';
   static const String continueShopping = 'continueShopping';
+  static const String repayment = 'repayment';
   static const String yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp = 'yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp!';
   static const String phone = 'phone';
   static const String address = 'address';
@@ -156,4 +162,7 @@ abstract class AppStrings {
   static const String addAddress = 'addAddress';
   static const String edit = 'edit';
   static const String useThisAddress = 'useThisAddress';
+  static const String numberOfMeters = 'numberOfMeters';
+  static const String theNumberOfPaintSheetsUsedIs = 'theNumberOfPaintSheetsUsedIs';
+  static const String sheets = 'sheets';
 }

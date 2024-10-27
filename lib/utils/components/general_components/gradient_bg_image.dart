@@ -16,8 +16,8 @@ class GradientBgImage extends StatelessWidget {
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
           colors: [
-            Color(0xFFFF007A).withOpacity(.006),
-            Color(0xFF00A1FF).withOpacity(0.006)
+            Color(0xFFFF007A).withOpacity(0.03),
+            Color(0xFF00A1FF).withOpacity(0.03)
           ],
         ),
       ),

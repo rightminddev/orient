@@ -1,6 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
+import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
+import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
+import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
 import 'firebase_options.dart';
@@ -20,6 +26,7 @@ void main() async {
   // register global error handlers to catch , handle and repoting on any kind of error or exception appear in the application
   /// [ENABLED] IN RELEASE ( DISABLE IN DEVELOPMENT TIME TO APPEAR ANY ERROR APPEAR )
   // registerErrorHandlers();
+  await DioHelper.initail();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -48,12 +55,21 @@ void main() async {
         providers: [
           ChangeNotifierProvider<AppConfigService>(
             create: (_) => AppConfigService(),
+          ),ChangeNotifierProvider<CheckoutControllerProvider>(
+            create: (context) => CheckoutControllerProvider()..getPrepareCheckout(context: context),
+          ),ChangeNotifierProvider<HomeViewModel>(
+            create: (context) => HomeViewModel()..initializeHomeScreen(context),
           ),
           ChangeNotifierProvider<MainScreenViewModel>(
             create: (_) => MainScreenViewModel(),
           ),
+          ChangeNotifierProvider(create: (_) => PersonalProfileViewModel()),
           ChangeNotifierProvider<EcommerceMainScreenViewModel>(
             create: (_) => EcommerceMainScreenViewModel(),
+          ),ChangeNotifierProvider<SearchControllerProvider>(
+            create: (_) => SearchControllerProvider(),
+          ),ChangeNotifierProvider<HomeProvider>(
+            create: (_) => HomeProvider(),
           ),
         ],
         child: const MyApp(),

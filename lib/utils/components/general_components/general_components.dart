@@ -285,14 +285,14 @@ Widget defaultProfileContainer({
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(63),
               child: CachedNetworkImage(
                   imageUrl: imageUrl!,
                   fit: BoxFit.cover,
-                  height: 63,
-                  width: 63,
+                  height: 40,
+                  width: 40,
                   placeholder: (context, url) => const ShimmerAnimatedLoading(
                         width: 63.0,
                         height: 63,
@@ -354,6 +354,8 @@ Widget defaultViewProductGrid(
       required String? productImageUrl,
       required void Function()? onTap,
       String? discountPrice,
+      bool? showDiscount,
+      bool? showSale,
       double? containerWidth,
       double? containerHeight,
     }) {
@@ -361,6 +363,7 @@ Widget defaultViewProductGrid(
     onTap: onTap,
     child: Container(
       width: containerWidth ?? 150,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       height: containerHeight ?? 218,
       decoration: BoxDecoration(
         color: const Color(0xffFFFFFF),
@@ -373,7 +376,7 @@ Widget defaultViewProductGrid(
             alignment: Alignment.topLeft,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                 child: CachedNetworkImage(
                     imageUrl: productImageUrl!,
                     fit: BoxFit.cover,
@@ -388,7 +391,7 @@ Widget defaultViewProductGrid(
                       Icons.image_not_supported_outlined,
                     )),
               ),
-              Padding(
+             if(showSale == true) Padding(
                 padding: const EdgeInsets.only(top: 7, left: 22),
                 child: SvgPicture.asset(
                   'assets/images/svg/sale.svg',
@@ -427,7 +430,7 @@ Widget defaultViewProductGrid(
                   color: Color(0xff0D3B6F),
                   fontFamily: "Poppins"),
               children: <TextSpan>[
-                TextSpan(
+                if(showDiscount == true)  TextSpan(
                   text: discountPrice!,
                   style: const TextStyle(
                     color: Color(0xffE6007E),

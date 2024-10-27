@@ -18,9 +18,9 @@ Widget defaultTextFormField({
   Color? borderColor
 }){
   return Container(
-    height: containerHeight ?? 48,
+    height: containerHeight ?? 64,
     alignment: Alignment.center,
-    margin: const EdgeInsets.symmetric(vertical: AppSizes.s8),
+    margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
     padding: EdgeInsets.symmetric(horizontal: 16, vertical: (maxLines! > 1) ? 16: 0),
     decoration: ShapeDecoration(
       color: AppThemeService.colorPalette.tertiaryColorBackground.color,
@@ -61,6 +61,9 @@ Widget defaultTextFormField({
           prefixIcon: prefixIcon,
           border: InputBorder.none,
           disabledBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
         ),
@@ -81,6 +84,7 @@ Widget defaultCommentTextFormField({
   List<DropdownMenuItem<String>>? dropDownItems,
   Widget? dropDownHint,
   String? dropDownValue,
+  Color? borderColor,
   void Function(String?)?  dropDownOnChanged
 }){
   return Row(
@@ -93,6 +97,7 @@ Widget defaultCommentTextFormField({
           decoration: BoxDecoration(
               color: Color(0xffFFFFFF),
               borderRadius: BorderRadius.circular(100),
+              border: Border.all(color: borderColor ?? Colors.transparent),
               boxShadow: boxShadow
           ),
           child: Row(
@@ -116,6 +121,9 @@ Widget defaultCommentTextFormField({
                           color: Color(0xff464646).withOpacity(0.5)
                       ),
                       border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none
@@ -166,15 +174,31 @@ Widget defaultDropdownField({
   String? value,
   String? title,
   bool? isExpanded,
+  Color? borderColor,
   required items,
   required void Function(String?)? onChanged
 }){
   return  Container(
-    height: 48,
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    decoration: BoxDecoration(
-      color:const Color(0xffFFFFFF),
-      borderRadius: BorderRadius.circular(8),
+    height: 64,
+    alignment: Alignment.center,
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+    decoration: ShapeDecoration(
+      color: AppThemeService.colorPalette.tertiaryColorBackground.color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.s10),
+        side:  BorderSide(
+          color: borderColor ?? const Color(0xffE3E5E5),
+          width: 1.0,
+        ),
+      ),
+      shadows: const [
+        BoxShadow(
+          color: Color(0x0C000000),
+          blurRadius: 10,
+          offset: Offset(0, 1),
+          spreadRadius: 0,
+        )
+      ],
     ),
     child: DropdownButton<String>(
         dropdownColor: Colors.white,

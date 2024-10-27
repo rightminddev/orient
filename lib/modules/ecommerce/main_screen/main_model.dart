@@ -5,14 +5,10 @@ import 'package:orient/modules/eCommerce_more_screen.dart';
 import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
 import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
-import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
 import '../../../routing/app_router.dart';
-import '../../fingerprint/views/fingerprint_screen.dart';
 import '../../home/views/home_screen.dart';
-import '../../more/views/more_screen.dart';
-import '../../notifications/views/notifications_screen.dart';
-import '../../requests/views/requests_screen.dart';
+
 
 class EcommerceMainScreenViewModel extends ChangeNotifier {
   EcommerceNavbarPages currentPage = EcommerceNavbarPages.eCommerceHomeScreen;
@@ -53,7 +49,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case EcommerceNavbarPages.eCommerceShoppingCart:
         return ECommerceShoppingCart(mainScreen: true,);
       case EcommerceNavbarPages.eCommerceSearchScreen:
-        return const ECommerceSearchScreen();
+        return  ECommerceSearchScreen();
       case EcommerceNavbarPages.eCommerceMoreScreen:
         return EcommerceMoreScreen();
       default:

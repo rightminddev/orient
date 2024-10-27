@@ -61,6 +61,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
         settingsType: SettingsType.userSettings,
         context: context) as UserSettingsModel?;
     //set initial values for fields
+    print("USER -> ${userData!.name}");
     setInititalValues();
     updateLoading(false);
   }

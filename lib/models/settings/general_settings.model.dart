@@ -409,8 +409,8 @@ class ColorsModel {
 
 class CompanyContacts {
   final String? phone;
-  //final List<String?>? otherphones;
-  final String? otherphones;
+  final List<dynamic> otherphones;
+  //final String? otherphones;
   final String? whatassp;
   final String? whatsapp;
   final String? workingHours;
@@ -427,7 +427,7 @@ class CompanyContacts {
   CompanyContacts({
     this.phone,
     this.branches,
-    this.otherphones,
+    required this.otherphones,
     this.whatassp,
     this.whatsapp,
     this.workingHours,

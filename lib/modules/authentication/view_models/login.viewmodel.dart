@@ -639,6 +639,7 @@ class AuthenticationViewModel extends ChangeNotifier {
 
     if (result['token'] != null &&
         (((result['token'] as String?)?.isNotEmpty) ?? false)) {
+      print(result['token']);
       return await appConfigServiceProvider.setAuthenticationStatusWithToken(
           isLogin: true, token: result['token']);
     }

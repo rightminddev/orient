@@ -135,8 +135,6 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
           body: GradientBgImage(
             child: Column(
               children: [
-                //       const SizedBox(height: 24),
-                //  const SizedBox(height: 18),
                 defaultTextFormField(
                   hasShadows: false,
                   controller: searchController,

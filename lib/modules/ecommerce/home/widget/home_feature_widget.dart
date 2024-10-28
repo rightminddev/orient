@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
-import 'package:orient/modules/ecommerce/home/widget/claculate_show_dialog.dart';
+import 'package:orient/modules/ecommerce/home/widget/product_calculate.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';

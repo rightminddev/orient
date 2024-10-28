@@ -9,13 +9,16 @@ Widget defaultTextFormField({
   TextEditingController? controller,
   String? hintText,
   Widget? suffixIcon,
+  bool? hasShadows = true,
   Widget? prefixIcon,
   String? Function(String?)? validator,
   TextInputType? keyboardType,
   int maxLines = 1,
   List<BoxShadow>? boxShadow,
   double? containerHeight,
-  Color? borderColor
+  Color? borderColor,
+  TextInputAction? textInputAction,
+  void Function(String)? onFieldSubmitted
 }){
   return Container(
     height: containerHeight ?? 64,
@@ -31,18 +34,19 @@ Widget defaultTextFormField({
           width: 1.0,
         ),
       ),
-      shadows: const [
+      shadows:(hasShadows == true)? const [
         BoxShadow(
           color: Color(0x0C000000),
           blurRadius: 10,
           offset: Offset(0, 1),
           spreadRadius: 0,
         )
-      ],
+      ]: null,
     ),
     child: TextFormField(
         controller: controller,
         maxLines: maxLines,
+        textInputAction: textInputAction,
         decoration: InputDecoration(
           labelText: hintText ?? "Input",
           labelStyle: const TextStyle(
@@ -68,7 +72,8 @@ Widget defaultTextFormField({
           contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
         ),
         keyboardType: keyboardType ?? TextInputType.text,
-        validator: validator
+        validator: validator,
+      onFieldSubmitted: onFieldSubmitted,
     ),
   );
 }
@@ -107,49 +112,49 @@ Widget defaultCommentTextFormField({
                     controller: controller,
                     maxLines: maxLines,
                     decoration: InputDecoration(
-                        hintText: hintText,
-                        labelStyle: const TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff191C1F)
-                        ),
-                        hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff464646).withOpacity(0.5)
-                        ),
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none
+                      hintText: hintText,
+                      labelStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff191C1F)
+                      ),
+                      hintStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff464646).withOpacity(0.5)
+                      ),
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+                      enabledBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none
                     ),
                     keyboardType: keyboardType,
                     validator: validator
                 ),
               ),
-              if(viewDropDownRates == true)Container(
-                height: 26,
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: BoxDecoration(
-                  color:const Color(0xffFFFABB),
-                  borderRadius: BorderRadius.circular(18.5),
-                ),
-                child: DropdownButton<String>(
-                    dropdownColor: Colors.white,
-                    icon:const Icon(Icons.arrow_drop_down_sharp, color: Color(0xffE6007E),),
-                    isExpanded: false,
-                    hint: dropDownHint,
-                    items: dropDownItems,
-                    value: dropDownValue,
-                    underline: const SizedBox.shrink(),
-                    onChanged: dropDownOnChanged
-                ),
-              ),
+          if(viewDropDownRates == true)Container(
+            height: 26,
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              color:const Color(0xffFFFABB),
+              borderRadius: BorderRadius.circular(18.5),
+            ),
+            child: DropdownButton<String>(
+                dropdownColor: Colors.white,
+                icon:const Icon(Icons.arrow_drop_down_sharp, color: Color(0xffE6007E),),
+                isExpanded: false,
+                hint: dropDownHint,
+                items: dropDownItems,
+                value: dropDownValue,
+                underline: const SizedBox.shrink(),
+                onChanged: dropDownOnChanged
+            ),
+          ),
             ],
           ),
         ),
@@ -175,7 +180,7 @@ Widget defaultDropdownField({
   String? title,
   bool? isExpanded,
   Color? borderColor,
-  required items,
+  required  items,
   required void Function(String?)? onChanged
 }){
   return  Container(

@@ -67,7 +67,7 @@ class CartBottomButtonWidget extends StatelessWidget {
                         pathParameters: {'lang': context.locale.languageCode,
                         });
                   },
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: EdgeInsets.zero,
                   fontSize: 12,
                 ),
               ],

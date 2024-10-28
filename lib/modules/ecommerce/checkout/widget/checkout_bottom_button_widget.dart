@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/modules/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:orient/routing/app_router.dart';
@@ -138,18 +139,18 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                             if(value.isUpdateCartSuccess == true){
                               value.confirmOrder(
                                 context: context,
-                                country_id: value.userAddressModel!.userAddress!.countryId,
-                                city_id: value.userAddressModel!.userAddress!.cityId,
+                                country_id: CheckConst.userAddressModel!.countryId,
+                                city_id: CheckConst.userAddressModel!.cityId,
                                 email: values.userSettings!.email,
                                 name: values.userSettings!.name,
                                 phone: values.userSettings!.phone,
-                                address: value.userAddressModel!.userAddress!.address,
-                                country_key: value.userAddressModel!.userAddress!.countryKey,
-                                state_id: value.userAddressModel!.userAddress!.stateId,
+                                address: CheckConst.userAddressModel!.address,
+                                country_key: CheckConst.userAddressModel!.countryKey,
+                                state_id: CheckConst.userAddressModel!.stateId,
                               );
                             }
                           },
-                          padding: const EdgeInsets.symmetric(horizontal: 35,),
+                          padding: EdgeInsets.zero,
                           fontSize: 12,
                         ),
                       ],

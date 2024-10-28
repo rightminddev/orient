@@ -27,113 +27,117 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CheckoutControllerProvider>(
-      builder: (context, value, child) {
-        print("CHECK FROM CHECK -> ${CheckConst.paymentStatus}");
-        if (CheckConst.paymentStatus == 'failure') {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (CheckConst.paymentStatus == 'failure') {
-              defaultActionBottomSheet(
-                context: context,
-                title: "${AppStrings.failed.tr().toUpperCase()}!",
-                buttonText: AppStrings.repayment.tr().toUpperCase(),
-                subTitle: AppStrings.paymentFailed.tr().toUpperCase(),
-                viewCheckIcon: true,
-                onTapButton: () {
-                  value.setPaymentStatus(null);
-                  Navigator.pop(context);
-                },
-                headerIcon: SvgPicture.asset("assets/images/ecommerce/svg/failed.svg", height: 42, width: 40),
-              );
-            }
-          });
-        }
-        if (CheckConst.paymentStatus == 'success') {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (CheckConst.paymentStatus == 'failure') {
-              defaultActionBottomSheet(
-                context: context,
-                title: "${AppStrings.successful.tr().toUpperCase()}!",
-                buttonText: AppStrings.continueShopping.tr().toUpperCase(),
-                subTitle: AppStrings.yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp.tr().toUpperCase(),
-                viewCheckIcon: true,
-                onTapButton: () {
+    return ChangeNotifierProvider(
+      create: (context)=> CheckoutControllerProvider()..getPrepareCheckout(context: context),
+      child: Consumer<CheckoutControllerProvider>(
+        builder: (context, value, child) {
+          if (CheckConst.paymentStatus == 'failure') {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (CheckConst.paymentStatus == 'failure') {
+                defaultActionBottomSheet(
+                  context: context,
+                  title: "${AppStrings.failed.tr().toUpperCase()}!",
+                  buttonText: AppStrings.repayment.tr().toUpperCase(),
+                  subTitle: AppStrings.paymentFailed.tr().toUpperCase(),
+                  viewCheckIcon: true,
+                  onTapButton: () {
                     value.setPaymentStatus(null);
-                    context.goNamed(AppRoutes.eCommerceHomeScreen.name,
-                        pathParameters: {'lang': context.locale.languageCode});
-                },
-                headerIcon: SvgPicture.asset("assets/images/ecommerce/svg/cart_success.svg", height: 42, width: 40),
-              );
-            }
-          });
-        }
-        return Scaffold(
-            backgroundColor: const Color(0xffFFFFFF),
-            body:(value.isPrepareCheckoutLoading)?
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  HomeLoadingPage(viewAppbar: false,),
-                  HomeLoadingPage(viewAppbar: false,),
-                ],
-              ),
-            )
-                :Container(
-                  height: MediaQuery.sizeOf(context).height * 1,
-                  child: GradientBgImage(
-                                  padding: EdgeInsets.zero,
-                                  child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          color: Colors.transparent,
-                          height: 90,
-                          width: double.infinity,
-                          alignment: Alignment.bottomCenter,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.arrow_back, color: Color(0xff224982)),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              Text(
-                                AppStrings.checkout.tr().toUpperCase(),
-                                style:const TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              IconButton(
-                                  icon: const Icon(Icons.arrow_back, color: Colors.transparent),
-                                  onPressed: (){}
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 15,),
-                        defaultHeaderText(title: AppStrings.shippingAddress.tr().toUpperCase()),
-                        const SizedBox(height: 15),
-                        const CheckoutLocationWidget(),
-                        const SizedBox(height: 16),
-                        defaultHeaderText(title: AppStrings.paymentMethods.tr().toUpperCase()),
-                        const SizedBox(height: 8),
-                        CheckoutPaymentWidget(),
-                        const SizedBox(height: 16),
-                        defaultHeaderText(title: AppStrings.orderList.tr().toUpperCase()),
-                        const SizedBox(height: 8),
-                        CheckoutOrderListWidget(),
-                      ],
-                    ),
-                  ),
-                                  ),
-                                ),
+                    Navigator.pop(context);
+                  },
+                  headerIcon: SvgPicture.asset("assets/images/ecommerce/svg/failed.svg", height: 42, width: 40),
+                );
+                CheckConst.paymentStatus = 'none';
+              }
+            });
+          }
+          if (CheckConst.paymentStatus == 'success') {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (CheckConst.paymentStatus == 'success') {
+                defaultActionBottomSheet(
+                  context: context,
+                  title: "${AppStrings.successful.tr().toUpperCase()}!",
+                  buttonText: AppStrings.continueShopping.tr().toUpperCase(),
+                  subTitle: AppStrings.yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp.tr().toUpperCase(),
+                  viewCheckIcon: true,
+                  onTapButton: () {
+                      value.setPaymentStatus(null);
+                      context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+                          pathParameters: {'lang': context.locale.languageCode});
+                  },
+                  headerIcon: SvgPicture.asset("assets/images/ecommerce/svg/cart_success.svg", height: 42, width: 40),
+                );
+                CheckConst.paymentStatus = 'none';
+              }
+            });
+          }
+          return Scaffold(
+              backgroundColor: const Color(0xffFFFFFF),
+              body:(value.userAddressModel == null)?
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    HomeLoadingPage(viewAppbar: false,),
+                    HomeLoadingPage(viewAppbar: false,),
+                  ],
                 ),
-            bottomNavigationBar: (value.isPrepareCheckoutLoading)?Container(height: 180,) :const CheckoutBottomButtonWidget()
-        );
-      },
+              )
+                  :Container(
+                    height: MediaQuery.sizeOf(context).height * 1,
+                    child: GradientBgImage(
+                                    padding: EdgeInsets.zero,
+                                    child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            color: Colors.transparent,
+                            height: 90,
+                            width: double.infinity,
+                            alignment: Alignment.bottomCenter,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_back, color: Color(0xff224982)),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                Text(
+                                  AppStrings.checkout.tr().toUpperCase(),
+                                  style:const TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
+                                ),
+                                IconButton(
+                                    icon: const Icon(Icons.arrow_back, color: Colors.transparent),
+                                    onPressed: (){}
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 15,),
+                          defaultHeaderText(title: AppStrings.shippingAddress.tr().toUpperCase()),
+                          const SizedBox(height: 15),
+                          const CheckoutLocationWidget(),
+                          const SizedBox(height: 16),
+                          defaultHeaderText(title: AppStrings.paymentMethods.tr().toUpperCase()),
+                          const SizedBox(height: 8),
+                          CheckoutPaymentWidget(),
+                          const SizedBox(height: 16),
+                          defaultHeaderText(title: AppStrings.orderList.tr().toUpperCase()),
+                          const SizedBox(height: 8),
+                          CheckoutOrderListWidget(),
+                        ],
+                      ),
+                    ),
+                                    ),
+                                  ),
+                  ),
+              bottomNavigationBar: (value.isPrepareCheckoutLoading)?Container(height: 180,) :const CheckoutBottomButtonWidget()
+          );
+        },
+      ),
     );
   }
   Widget defaultHeaderText({title})=> Text(

@@ -76,11 +76,12 @@ class SingleDetailsAndColorsWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: (){
-                        singleProductProvider.changeColorIndex(index);
-                      },
+                        singleProductProvider.changeColorIndex(singleProductProvider.productAttributesColors[index]['id']);
+                        singleProductProvider.getOneProduct(context: context,crossSells: true, id: id, variation: true);
+                        },
                       child: defaultCircleColor(
                           Color(int.parse("0xff${singleProductProvider.productAttributesColors[index]['data']}")),
-                          (singleProductProvider.selectColorIndex == index)?const Color(0xffFFFFFF):Colors.transparent
+                          (singleProductProvider.productVariationsColor == singleProductProvider.productAttributesColors[index]['id'])?const Color(0xff000000):Colors.transparent
                       ),
                     ),
                     separatorBuilder: (context, index) =>const SizedBox.shrink(),
@@ -108,3 +109,4 @@ class SingleDetailsAndColorsWidget extends StatelessWidget {
     );
   }
 }
+//(singleProductProvider.selectColorIndex == index)?

@@ -1,35 +1,39 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
-import 'package:orient/modules/ecommerce/checkout/model/get_user_address.dart';
-import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
+import 'package:orient/modules/ecommerce/checkout/model/get_address_model.dart';
+import 'package:orient/modules/ecommerce/checkout/model/update_cart_model.dart';
 
 class CheckoutControllerProvider extends ChangeNotifier {
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  int? selectedPaymentId;
   bool isPrepareCheckoutSuccess =false;
   bool isAddAddressSuccess =false;
+  bool isUpdateAddressSuccess =false;
+  bool isGetAddressSuccess =false;
   bool isUpdateCartSuccess =false;
   bool isConfirmOrderSuccess =false;
   bool isPrepareCheckoutLoading = false;
   bool isConfirmOrderLoading = false;
   bool isUpdateCartLoading = false;
   bool isAddAddressLoading = false;
+  bool isGetAddressLoading = false;
+  bool isUpdateAddressLoading = false;
   String? paymentUrl;
   UserAddressModel? userAddressModel;
+  UpdateCartModel? updateCartModel;
   String? errorPrepareCheckoutMessage;
   String? errorConfirmOrderMessage;
   String? errorUpdateCartMessage;
   String? errorAddAddressMessage;
+  String? errorGetAddressMessage;
+  String? errorUpdateAddressMessage;
   List checkoutListItems = [];
   List checkoutPaymentMethods = [];
   List checkoutUserAddress = [];
+  List shippingAddresses = [];
   var checkoutSubtotal;
   var checkoutFees;
   var checkoutTotal;
@@ -38,7 +42,9 @@ class CheckoutControllerProvider extends ChangeNotifier {
    CheckConst.paymentStatus = status;
     notifyListeners();
   }
-
+  void updateScreen(){
+    notifyListeners();
+  }
   Future<void> getPrepareCheckout({required BuildContext context}) async {
     isPrepareCheckoutLoading = true;
     errorPrepareCheckoutMessage = null;
@@ -50,7 +56,6 @@ class CheckoutControllerProvider extends ChangeNotifier {
       );
       isPrepareCheckoutLoading = false;
       isPrepareCheckoutSuccess = true;
-      userAddressModel = UserAddressModel.fromJson(value.data);
       checkoutUserAddress = value.data['user_addresses'];
       checkoutListItems = value.data['cart']['items'];
       checkoutPaymentMethods = value.data['payment_methods'];
@@ -58,6 +63,14 @@ class CheckoutControllerProvider extends ChangeNotifier {
       checkoutFees = value.data['cart']['fees_total'];
       checkoutTotal = value.data['cart']['total'];
       checkoutDiscountTotal = value.data['cart']['discount_total'];
+      if(CheckConst.selectedPaymentId != null){
+      }else{
+        CheckConst.selectedPaymentId = value.data['payment_methods'][0]['id'];
+      }
+      userAddressModel = UserAddressModel.fromJson(value.data['user_address']);
+      CheckConst.userAddressModel = userAddressModel;
+      print("userAddressModel_>$userAddressModel");
+      print("userAddressModel_>${userAddressModel!.address}");
       notifyListeners();
     } catch (e) {
       isPrepareCheckoutLoading = false;
@@ -74,7 +87,7 @@ class CheckoutControllerProvider extends ChangeNotifier {
         url: "/shipping-addresses/entities-operations/store",
         context: context,
         data: {
-          "phone": phone,
+         if(phone != null) "phone": phone,
           "country_key": country_key,
           "address" : address,
           "city_id" : city_id,
@@ -83,12 +96,62 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "user_id" : user_id
         }
       );
+      userAddressModel!.id = value.data['id'];
+      userAddressModel!.address  = address;
       isAddAddressLoading = false;
       isAddAddressSuccess = true;
       notifyListeners();
     } catch (e) {
       isAddAddressLoading = false;
       errorAddAddressMessage = e.toString();
+      notifyListeners();
+    }
+  }
+  Future<void> getAddressCheckout({required BuildContext context,}) async {
+    isGetAddressLoading = true;
+    errorGetAddressMessage = null;
+    notifyListeners();
+    try {
+      var value = await DioHelper.getData(
+        url: "/shipping-addresses/entities-operations",
+        context: context,
+      );
+      shippingAddresses = value.data['data'];
+      isGetAddressLoading = false;
+      isAddAddressSuccess = true;
+      notifyListeners();
+    } catch (e) {
+      isGetAddressLoading = false;
+      errorGetAddressMessage = e.toString();
+      notifyListeners();
+    }
+  }
+  Future<void> updateAddressCheckout({required BuildContext context, phone, city_id, country_key, address, country_id, state_id, user_id, id }) async {
+    isUpdateAddressLoading = true;
+    errorUpdateAddressMessage = null;
+    notifyListeners();
+    try {
+      var value = await DioHelper.putData(
+        url: "/shipping-addresses/entities-operations/$id/update",
+        context: context,
+        data: {
+         if(phone != null) "phone": phone,
+          "country_key": country_key,
+          "address" : address,
+          "city_id" : city_id,
+          "country_id": country_id,
+          "state_id" : state_id,
+          "user_id" : user_id
+        }
+      );
+      userAddressModel!.id = id;
+      userAddressModel!.address = address;
+          isUpdateAddressLoading = false;
+      isUpdateAddressSuccess = true;
+      notifyListeners();
+    } catch (e) {
+      isUpdateAddressLoading = false;
+      errorUpdateAddressMessage = e.toString();
       notifyListeners();
     }
   }
@@ -112,6 +175,7 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "city_id" : city_id
         }
       );
+      CheckConst.selectedPaymentId = null;
       isConfirmOrderLoading = false;
       paymentUrl = value.data['url'];
       isConfirmOrderSuccess = true;
@@ -135,6 +199,7 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "payment_method_id" : payment_method_id
         }
       );
+      updateCartModel = UpdateCartModel.fromJson(value.data);
       isUpdateCartLoading = false;
       isUpdateCartSuccess = true;
       notifyListeners();

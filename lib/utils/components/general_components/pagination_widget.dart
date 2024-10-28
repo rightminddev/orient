@@ -33,7 +33,7 @@ class _PaginationWidgetState extends State<PaginationWidget> {
     widget.scrollController.addListener(() {
       if (widget.scrollController.hasClients) {
         if (widget.scrollController.position.pixels >=
-                widget.scrollController.position.maxScrollExtent &&
+            widget.scrollController.position.maxScrollExtent &&
             !widget.isLoading) {
           widget.paginationFetch.call();
           optionToJumpToTop.value = true;
@@ -91,24 +91,24 @@ class _PaginationWidgetState extends State<PaginationWidget> {
                 children: [
                   widget.isLoading && widget.currentCount == 1
                       ? const Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              LoadingPageWidget(
-                                reverse: true,
-                                height: AppSizes.s75,
-                              )
-                            ],
-                          ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        LoadingPageWidget(
+                          reverse: true,
+                          height: AppSizes.s75,
                         )
+                      ],
+                    ),
+                  )
                       : Expanded(
-                          flex: widget.flex,
-                          child: RefreshIndicator(
-                            onRefresh: () async => fetchData(),
-                            child: widget.scrollableWidget,
-                          ),
-                        ),
+                    flex: widget.flex,
+                    child: RefreshIndicator(
+                      onRefresh: () async => fetchData(),
+                      child: widget.scrollableWidget,
+                    ),
+                  ),
                   if (widget.isLoading && widget.currentCount > 1)
                     const Column(
                       mainAxisAlignment: MainAxisAlignment.center,

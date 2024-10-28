@@ -141,7 +141,6 @@ class OnboardingViewModel extends ChangeNotifier {
       // Initialize connections service
       await ConnectionsService.init();
 
-      // Initialize general settings and get app color themes and dynamic splash screen design
       await AppSettingsService.initializeGeneralSettings(
           settingType: SettingsType.startupSettings, context: context);
     } catch (e) {
@@ -189,9 +188,9 @@ class OnboardingViewModel extends ChangeNotifier {
     }
   }
 
-  // void skip(BuildContext context) => context.goNamed(AppRoutes.login.name,
-  //     pathParameters: {'lang': context.locale.languageCode});
-
-  void skip(BuildContext context) => context.goNamed(AppRoutes.stores.name,
+  void skip(BuildContext context) => context.goNamed(AppRoutes.login.name,
       pathParameters: {'lang': context.locale.languageCode});
+
+  // void skip(BuildContext context) => context.goNamed(AppRoutes.stores.name,
+  //     pathParameters: {'lang': context.locale.languageCode});
 }

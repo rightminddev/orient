@@ -6,7 +6,6 @@ import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/single_product/controller/single_product_controller.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_bottom_button_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_change_count_widget.dart';
-import 'package:orient/modules/ecommerce/single_product/widget/single_comment_bottomsheet_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_description_tapbar_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_details_and_colors_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_sizes_widget.dart';
@@ -39,7 +38,7 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
         return SafeArea(
           child: Scaffold(
               backgroundColor: const Color(0xffFFFFFF),
-              body: ( singleProductProvider.singleProductModel == null)?
+              body: (singleProductProvider.singleProductModel == null)?
               HomeLoadingPage(viewAppbar: true)
               :GradientBgImage(
                 padding: EdgeInsets.zero,
@@ -68,7 +67,7 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                           children: [
                             SingleDetailsAndColorsWidget(widget.id),
                             const SizedBox(height: 16),
-                            SingleSizesWidget(viewSize: true,),
+                            SingleSizesWidget(viewSize: true, id: widget.id,),
                             const SizedBox(height: 16),
                             const SingleChangeCountWidget(),
                             const SizedBox(

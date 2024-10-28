@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
@@ -23,7 +24,6 @@ class DioApiService implements BackEndServicesInterface {
   static Uri _getUri(String url) {
     return Uri.parse(url);
   }
-
   static Future<OperationResult<T>> _handleResponse<T>(
       {required Response response,
       required bool applyTokenLogic,
@@ -176,7 +176,15 @@ class DioApiService implements BackEndServicesInterface {
       bool? allData = false,
       required BuildContext context}) async {
     try {
-      final response = await Dio().get(
+      final dio = Dio();
+      dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        compact: false,
+      ));
+      final response = await dio.get(
         url,
         data: data,
         queryParameters: queryParameters,

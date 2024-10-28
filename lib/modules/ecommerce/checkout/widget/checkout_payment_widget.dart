@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,6 @@ class CheckoutPaymentWidget extends StatefulWidget {
 }
 
 class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
-  int? selectedPaymentIndex;
   @override
   Widget build(BuildContext context) {
     return Consumer<CheckoutControllerProvider>(
@@ -36,14 +36,14 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                 itemBuilder: (context, index)=>GestureDetector(
                   onTap: (){
                     setState(() {
-                      selectedPaymentIndex = index;
-                      value.selectedPaymentId = value.checkoutPaymentMethods[index]['id'];
+                      CheckConst.selectedPaymentId = value.checkoutPaymentMethods[index]['id'];
                     });
-                    if(value.userAddressModel!.userAddress!.id != null && value.checkoutPaymentMethods[index]['id'] != null) {
+                    print("CheckConst.selectedPaymentId -> ${CheckConst.selectedPaymentId }");
+                    if(CheckConst.userAddressModel!.id != null && CheckConst.selectedPaymentId != null) {
                       value.updateCart(
                           context: context,
-                          address_id: value.userAddressModel!.userAddress!.id,
-                          payment_method_id: value.checkoutPaymentMethods[index]['id']
+                          address_id: CheckConst.userAddressModel!.id,
+                          payment_method_id: CheckConst.selectedPaymentId
                       );
                     }
                   },
@@ -81,7 +81,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                           width: 18,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: (selectedPaymentIndex == index)?const Color(0xff027FEE) : Colors.transparent,
+                              color: (CheckConst.selectedPaymentId == value.checkoutPaymentMethods[index]['id'])?const Color(0xff027FEE) : Colors.transparent,
                               border: Border.all(color:const Color(0xff027FEE) )
                           ),
                         )

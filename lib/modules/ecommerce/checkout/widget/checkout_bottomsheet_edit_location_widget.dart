@@ -2,14 +2,31 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
+import 'package:orient/modules/ecommerce/checkout/widget/edit_create_addreess.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutBottomsheetEditLocationWidget extends StatefulWidget {
-  const CheckoutBottomsheetEditLocationWidget({super.key});
-
+  bool addAdress;
+  var countryIdModel;
+  var countryCodeModel;
+  var phoneModel;
+  var addressModel;
+  var stateIdModel;
+  var cityIdModel;
+  var id;
+  CheckoutBottomsheetEditLocationWidget({super.key,
+      required this.addAdress,
+      this.countryIdModel,
+      this.countryCodeModel,
+      this.phoneModel,
+      this.addressModel,
+      this.stateIdModel,
+      this.cityIdModel,
+      this.id});
   @override
   State<CheckoutBottomsheetEditLocationWidget> createState() => _CheckoutBottomsheetEditLocationWidgetState();
 }
@@ -18,81 +35,81 @@ class _CheckoutBottomsheetEditLocationWidgetState extends State<CheckoutBottomsh
   int? selectIndex;
   @override
   Widget build(BuildContext context) {
-    return Consumer<CheckoutControllerProvider>(
-      builder: (context, value, child) {
-        if (value.isAddAddressSuccess == true) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pop(context);
-            value.isAddAddressSuccess = false;
-          });
-        }
-        return Consumer<HomeViewModel>(
-          builder: (context, values, child) {
-            return Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-                  color: Color(0xffFFFFFF)
-              ),
-              width: double.infinity,
-              height: MediaQuery.sizeOf(context).height * 0.75,
-              alignment: Alignment.topCenter,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 10,),
-                  Center(
-                    child:Container(
-                      width: 63,
-                      height: 5,
-                      decoration: BoxDecoration(
-                          color: Color(0xffB9C0C9),
-                          borderRadius: BorderRadius.circular(100)
+    return ChangeNotifierProvider(
+      create: (context) => CheckoutControllerProvider(),
+      child: Consumer<CheckoutControllerProvider>(
+        builder: (context, value, child) {
+          print("STATE ID -> ${widget.stateIdModel}");
+          if (value.isAddAddressSuccess == true) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              CheckConst.userAddressModel!.id = widget.id;
+              value.updateCart(
+                  context: context,
+                  address_id: CheckConst.userAddressModel!.id,
+                  payment_method_id: CheckConst.selectedPaymentId);
+              Navigator.pop(context);
+              value.isAddAddressSuccess = false;
+            });
+          }
+          if (value.isUpdateAddressSuccess == true) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              CheckConst.userAddressModel!.id = widget.id;
+              value.updateCart(
+                  context: context,
+                  address_id: CheckConst.userAddressModel!.id,
+                  payment_method_id: CheckConst.selectedPaymentId);
+              Navigator.pop(context);
+              value.isUpdateAddressSuccess = false;
+            });
+          }
+          return Consumer<HomeViewModel>(
+            builder: (context, values, child) {
+              return Container(
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+                    color: Color(0xffFFFFFF)
+                ),
+                width: double.infinity,
+                height: MediaQuery.sizeOf(context).height * 0.75,
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 10,),
+                      Center(
+                        child:Container(
+                          width: 63,
+                          height: 5,
+                          decoration: BoxDecoration(
+                              color: Color(0xffB9C0C9),
+                              borderRadius: BorderRadius.circular(100)
+                          ),
+                        ) ,
                       ),
-                    ) ,
+                      const SizedBox(height: 10,),
+                      Padding(
+                        padding:const EdgeInsets.all(20.0),
+                        child: CreateEditAddressScreen(
+                          addAdress: widget.addAdress,
+                          id: widget.id,
+                          addressModel:widget.addressModel ,
+                          cityIdModel: widget.cityIdModel,
+                          countryCodeModel: widget.countryCodeModel,
+                          countryIdModel:widget.countryIdModel,
+                          phoneModel: widget.phoneModel,
+                          stateIdModel: widget.stateIdModel,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10,),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        defaultTextFormField(hintText: AppStrings.phone.tr().toUpperCase(), containerHeight: 64, controller: value.phoneController),
-                        defaultTextFormField(hintText: AppStrings.address.tr().toUpperCase(), containerHeight: 64, controller:value.addressController),
-                        defaultTextFormField(hintText: AppStrings.country.tr().toUpperCase(), containerHeight: 64),
-                        defaultTextFormField(hintText: AppStrings.stateProvinceRegion.tr().toUpperCase(), containerHeight: 64),
-                        defaultTextFormField(hintText: AppStrings.city.tr().toUpperCase(), containerHeight: 64),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  if(value.isAddAddressLoading)const CircularProgressIndicator(),
-                  if(!value.isAddAddressLoading) Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: ButtonWidget(
-                        onPressed: (){
-                          value.addAddressCheckout(
-                              context: context,
-                              phone: value.phoneController,
-                              address: value.addressController,
-                              user_id: values.userSettings!.userId,
-                              state_id: '1',
-                              city_id: '1',
-                              country_key: '20',
-                              country_id: '1'
-                          );
-                        },
-                        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
-                        svgIcon: "assets/images/ecommerce/svg/verifiy.svg",
-                        title: AppStrings.saveChanges.tr().toUpperCase()
-                    ),
-                  )
-                ],
-              ),
-            );
-          },
-        );
-      },
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
    
   }

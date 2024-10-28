@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/ecommerce/single_product/model/single_product_model.dart';
 
 class SingleProductProvider extends ChangeNotifier {
@@ -19,6 +20,9 @@ class SingleProductProvider extends ChangeNotifier {
  String? productReview_rate ;
  String? productReview_count ;
  String? productDecscription ;
+ List productVariations = [];
+ var productVariationsColor;
+ var productVariationsSize;
  String? productImage ;
  List comments = [];
  List productAttributesColors = [];
@@ -26,24 +30,34 @@ class SingleProductProvider extends ChangeNotifier {
  var count = 1;
   SingleProductModel? singleProductModel;
   int? selectColorIndex;
-  void changeColorIndex(index){
-    selectColorIndex = index;
+  void changeColorIndex(id){
+    productVariationsColor = id;
     notifyListeners();
   }
-  Future<void> getOneProduct({required BuildContext context, int? id, bool crossSells = false}) async {
+  void changeSizeIndex(id){
+    productVariationsSize = id;
+    notifyListeners();
+  }
+  Future<void> getOneProduct({required BuildContext context, int? id, bool crossSells = false, bool variation = false}) async {
     isLoading = true;
     errorMessage = null;
     notifyListeners();
     try {
       var values = await DioHelper.postData(
-        url: "/rm_ecommarce/v1/products/$id",
+        url: (variation == true) ?(CheckConst.productParentId != null)?"/rm_ecommarce/v1/products/${CheckConst.productParentId}":"/rm_ecommarce/v1/products/$id"  :"/rm_ecommarce/v1/products/$id",
         context: context,
         query: {
-        if(crossSells == true)  "with": "crossSells",
+         if(crossSells == true)  "with": "crossSells",
+         if(productVariationsColor != null)  "options[1]" : productVariationsColor,
+         if(productVariationsSize != null) "options[2]" : productVariationsSize
         },
       );
       print("VALUE ----> ${values.data}");
       singleProductModel = SingleProductModel.fromJson(values.data);
+      print("CheckConst.productParentId -----> ${CheckConst.productParentId}");
+      CheckConst.productParentId = values.data['product']['parent_id'];
+      print("CheckConst.productParentId -----> ${CheckConst.productParentId}");
+      productVariations = values.data['variations'];
       productName = values.data['product']['title'];
       productDecscription = values.data['product']['description'];
       productReview_rate = values.data['product']['review_rate'];
@@ -57,10 +71,28 @@ class SingleProductProvider extends ChangeNotifier {
       values.data['attributes'].forEach((e){
         if(e['slug'] == "wight"){
           productAttributesSizes = e['options'];
+          print("productAttributesSizes ---> $productAttributesSizes");
         }
       });
-      print("productAttributesColors ----> $productAttributesColors");
-      print("productAttributesSizes ----> $productAttributesSizes");
+      values.data['variations'][0].forEach((e){
+        if(e['attribute_id'] == 1){
+          productVariationsColor = e['option_id'];
+          print("productVariationsColor ---> $productVariationsColor");
+        }else if(e['attribute_id'] == 2){
+          productVariationsSize = e['option_id'];
+          print("productVariationsSize ---> $productVariationsSize");
+        }
+      });
+      values.data['variations'][1].forEach((e){
+        if(e['attribute_id'] == 1){
+          productVariationsColor = e['option_id'];
+          print("productVariationsColor ---> $productVariationsColor");
+        }else if(e['attribute_id'] == 2){
+          productVariationsSize = e['option_id'];
+          print("productVariationsSize ---> $productVariationsSize");
+        }
+      });
+
       isLoading = false;
       notifyListeners();
     } catch (e) {

@@ -93,27 +93,28 @@ class CommentWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(63),
                 child: isImageUrl == true
                     ? CachedNetWokImageWidget(
-                        url: image,
-                        width: imageRadius != null
-                            ? imageRadius! * 2
-                            : context.width * 0.15,
-                        height: imageRadius != null
-                            ? imageRadius! * 2
-                            : context.width * 0.15,
-                        radius: imageRadius ?? context.width * 0.08,
-                      )
+                  url: image,
+                  width: imageRadius != null
+                      ? imageRadius! * 2
+                      : context.width * 0.15,
+                  height: imageRadius != null
+                      ? imageRadius! * 2
+                      : context.width * 0.15,
+                  radius: imageRadius ?? context.width * 0.08,
+                )
                     : Image.asset(
-                        image,
-                        width: imageRadius != null
-                            ? imageRadius! * 2
-                            : context.width * 0.15,
-                        height: imageRadius != null
-                            ? imageRadius! * 2
-                            : context.width * 0.15,
-                      ),
+                  image,
+                  width: imageRadius != null
+                      ? imageRadius! * 2
+                      : context.width * 0.15,
+                  height: imageRadius != null
+                      ? imageRadius! * 2
+                      : context.width * 0.15,
+                ),
               ),
             ),
           ),
+
           const SizedBox(width: AppSizes.s12),
           Expanded(
             child: Column(
@@ -166,11 +167,8 @@ class CommentWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(
-                  height: comment != null ? 5 : 0,
-                ),
-                comment != null
-                    ? Text(
+                SizedBox(height:comment != null ? 5 : 0,),
+                comment != null ? Text(
                         comment!,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                               fontWeight: commentFontWeight,
@@ -179,13 +177,9 @@ class CommentWidget extends StatelessWidget {
                                       .colorPalette.tertiaryTextColor.color,
                               fontSize: commentFontSize ?? AppSizes.s10,
                             ),
-                      )
-                    : SizedBox.shrink(),
-                SizedBox(
-                  height: rate != null ? 5 : 0,
-                ),
-                rate != null
-                    ? Container(
+                      ) : SizedBox.shrink(),
+                SizedBox(height:rate != null ? 5 : 0,),
+                rate != null ? Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 1),
                         decoration: ShapeDecoration(
@@ -215,8 +209,7 @@ class CommentWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                      )
-                    : SizedBox.shrink(),
+                      ) : SizedBox.shrink(),
               ],
             ),
           ),

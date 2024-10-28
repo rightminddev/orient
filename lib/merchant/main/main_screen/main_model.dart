@@ -5,7 +5,6 @@ import 'package:orient/modules/eCommerce_more_screen.dart';
 import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
 import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
-import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
 import '../../../routing/app_router.dart';
 
@@ -50,7 +49,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
           mainScreen: true,
         );
       case EcommerceNavbarPages.eCommerceSearchScreen:
-        return const ECommerceSearchScreen();
+        return ECommerceSearchScreen();
       case EcommerceNavbarPages.eCommerceMoreScreen:
         return EcommerceMoreScreen();
       default:

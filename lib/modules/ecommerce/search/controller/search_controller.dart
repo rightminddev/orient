@@ -20,9 +20,29 @@ class SearchControllerProvider extends ChangeNotifier {
   List searchProductsAttributesSize= [];
   List ids = [];
   int? selectColorIndex;
+  int pageNumber = 1;
+  int count = 0;
   void changeColorIndex(index){
     selectColorIndex = index;
     notifyListeners();
+  }
+  bool isLoading = false;
+  void updateLoadingStatus({required bool laodingValue}) {
+    isLoading = laodingValue;
+    notifyListeners();
+  }
+  Future<void> initializeMyStoresScreen(BuildContext context) async {
+    updateLoadingStatus(laodingValue: true);
+    await getSearch(context: context);
+    updateLoadingStatus(laodingValue: false);
+  }
+  bool hasMoreData(int length) {
+    if (length < count) {
+      pageNumber = pageNumber + 1;
+      return true;
+    } else {
+      return false;
+    }
   }
   Future<void> getSearch({required BuildContext context, int? id, bool crossSells = false,
     category_id, price_from, price_to, bool addAll = false, colorId, sizeId,attributesColorId,attributesSizeId
@@ -35,6 +55,7 @@ class SearchControllerProvider extends ChangeNotifier {
         url: "/rm_ecommarce/v1/products/search",
         context: context,
         query: {
+          "page": pageNumber,
           if(crossSells == true)  "with": "crossSells",
           if(colorId != null && attributesColorId != null)"attributes[$attributesColorId]" : colorId,
           if(sizeId != null && attributesSizeId != null)"attributes[$attributesSizeId}]" : sizeId,
@@ -50,6 +71,7 @@ class SearchControllerProvider extends ChangeNotifier {
       SearchConstant.selectId = null;
       SearchConstant.minPriceController.clear();
       SearchConstant.maxPriceController.clear();
+      searchProduct = searchProduct.isNotEmpty ? pageNumber > 1 ? searchProduct : List.empty(growable: true): List.empty(growable: true);
       searchProduct = value.data['products'] ?? [];
       searchProductsCategories = value.data['categories'];
       value.data['attributes'].forEach((e){

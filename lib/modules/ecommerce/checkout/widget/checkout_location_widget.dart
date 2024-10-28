@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_bottomsheet_location_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class CheckoutLocationWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text((value.userAddressModel!.userAddress != null)?(value.userAddressModel!.userAddress!.address != null)?'${value.userAddressModel!.userAddress!.address}'.toUpperCase() : "" : "",
+                      Text((CheckConst.userAddressModel != null)?(CheckConst.userAddressModel!.address != null)?'${CheckConst.userAddressModel!.address}'.toUpperCase() : "" : "",
                         style:const TextStyle(color: Color(0xff1B1B1B), fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                     ],
@@ -43,20 +44,12 @@ class CheckoutLocationWidget extends StatelessWidget {
                         borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
                       ),
                       builder: (BuildContext context) {
-                        return const CheckoutBottomsheetLocationWidget();
+                        return CheckoutBottomsheetLocationWidget();
                       },
                     );
                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                       if(value.userAddressModel!.userAddress!.id != null && value.selectedPaymentId != null) {
-                         value.updateCart(
-                             context: context,
-                             address_id: value.userAddressModel!.userAddress!.id,
-                             payment_method_id: value.selectedPaymentId
-                         );
-                       }
-                       value.isPrepareCheckoutSuccess = false;
+                       value.updateScreen();
                      });
-                    // value.getPrepareCheckout(context: context);
                   },
                   child: Text(
                     AppStrings.change.tr().toUpperCase(),

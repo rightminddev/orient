@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
@@ -17,12 +18,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'merchant/main/view_models/merchant_main_view_model.dart';
 import 'modules/main_screen/view_models/main_viewmodel.dart';
 import 'platform/platform_is.dart';
 
 GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // register global error handlers to catch , handle and repoting on any kind of error or exception appear in the application
@@ -57,8 +56,6 @@ void main() async {
         providers: [
           ChangeNotifierProvider<AppConfigService>(
             create: (_) => AppConfigService(),
-          ),ChangeNotifierProvider<CheckoutControllerProvider>(
-            create: (context) => CheckoutControllerProvider()..getPrepareCheckout(context: context),
           ),ChangeNotifierProvider<HomeViewModel>(
             create: (context) => HomeViewModel()..initializeHomeScreen(context),
           ),
@@ -77,7 +74,6 @@ void main() async {
             create: (_) => MerchantMainViewModel(),
           ),
         ],
-        // child: const MyApp2(),
         child: const MyApp(),
       )));
 }

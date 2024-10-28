@@ -2,11 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/merchant/orders/view_models/orders.viewmodel.dart';
+import 'package:orient/utils/components/general_components/order_container_widget.dart';
 import 'package:provider/provider.dart';
-
 import '../../../common_modules_widgets/template_page.widget.dart';
 import '../../../utils/components/general_components/gradient_bg_image.dart';
-import '../../../utils/components/general_components/order_container_widget.dart';
 import '../../../utils/components/general_components/pagination_widget.dart';
 
 class MyOrdersScreen extends StatefulWidget {

@@ -79,9 +79,8 @@ class SingleBottomButtonWidget extends StatelessWidget {
                      id: id,
                      qty: value.count
                 );
-
               },
-              padding: const EdgeInsets.symmetric(horizontal: 35,),
+              padding: EdgeInsets.zero,
               fontSize: 12,
             ),
           ],

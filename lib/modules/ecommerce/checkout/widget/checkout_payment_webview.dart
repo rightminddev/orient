@@ -52,7 +52,7 @@ class _WebViewStackState extends State<WebViewStack> {
           },
           onNavigationRequest: (navigation) {
             final host = Uri.parse(navigation.url).host;
-            if (navigation.url.contains('Status=success')) {
+            if (navigation.url.contains('status=success')) {
               if (mounted) {
                 checkoutControllerProvider.setPaymentStatus('success');
                 if (Navigator.of(context).canPop()) {

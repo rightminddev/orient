@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 class SingleSizesWidget extends StatefulWidget {
   bool? viewSize = true;
-   SingleSizesWidget({super.key, this.viewSize});
+  int id;
+   SingleSizesWidget({super.key, this.viewSize, required this.id});
 
   @override
   State<SingleSizesWidget> createState() => _SingleSizesWidgetState();
@@ -40,9 +41,8 @@ class _SingleSizesWidgetState extends State<SingleSizesWidget> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index)=> GestureDetector(
                         onTap: (){
-                          setState(() {
-                            sizeIndex = index;
-                          });
+                          value.changeSizeIndex(value.productAttributesSizes[index]['id']);
+                          value.getOneProduct(context: context,crossSells: true, id: widget.id, variation: true);
                         },
                         child: Container(
                           margin:const EdgeInsets.symmetric(horizontal: 4),
@@ -50,12 +50,12 @@ class _SingleSizesWidgetState extends State<SingleSizesWidget> {
                           height: 30,
                           alignment: Alignment.center ,
                           decoration: BoxDecoration(
-                            color: (sizeIndex != index) ? Colors.transparent : const Color(0xffE6007E),
-                            border: Border.all(color:(sizeIndex != index) ? const Color(0xff000000).withOpacity(0.43): Colors.transparent),
+                            color: (value.productVariationsSize != value.productAttributesSizes[index]['id']) ? Colors.transparent : const Color(0xffE6007E),
+                            border: Border.all(color:(value.productVariationsSize != value.productAttributesSizes[index]['id']) ? const Color(0xff000000).withOpacity(0.43): Colors.transparent),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(value.productAttributesSizes[index]['title'], style: TextStyle(
-                              color: (sizeIndex != index) ?const Color(0xff1B1B1B) : const Color(0xffFFFFFF),
+                              color: (value.productVariationsSize != value.productAttributesSizes[index]['id']) ?const Color(0xff1B1B1B) : const Color(0xffFFFFFF),
                               fontSize: 8,
                               fontWeight: FontWeight.w500
                           ),),

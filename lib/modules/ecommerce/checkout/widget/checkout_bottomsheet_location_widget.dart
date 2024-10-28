@@ -5,6 +5,7 @@ import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_bottomsheet_edit_location_widget.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart';
@@ -12,8 +13,6 @@ import 'package:orient/utils/components/general_components/button_widget.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutBottomsheetLocationWidget extends StatefulWidget {
-  const CheckoutBottomsheetLocationWidget({super.key});
-
   @override
   State<CheckoutBottomsheetLocationWidget> createState() => _CheckoutBottomsheetLocationWidgetState();
 }
@@ -22,110 +21,131 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
  int? selectIndex;
   @override
   Widget build(BuildContext context) {
-    return Consumer<CheckoutControllerProvider>(
-      builder: (context, value, child) {
-        return Consumer<HomeViewModel>(
-          builder: (context, values, child) {
-            return (value.isPrepareCheckoutLoading)?
-            SingleChildScrollView(
-              child: HomeLoadingPage(viewAppbar: false,),
-            )
-                :Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-                  color: Color(0xffFFFFFF)
-              ),
-              width: double.infinity,
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              alignment: Alignment.topCenter,
-              child: Column(
-                children: [
-                  const SizedBox(height: 10,),
-                  Center(
-                    child:Container(
-                      width: 63,
-                      height: 5,
-                      decoration: BoxDecoration(
-                          color: Color(0xffB9C0C9),
-                          borderRadius: BorderRadius.circular(100)
-                      ),
-                    ) ,
-                  ),
-                  const SizedBox(height: 10,),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: MediaQuery.sizeOf(context).height * 0.62,
-                          child: ListView.separated(
-                            separatorBuilder: (context, index)=> const SizedBox.shrink(),
-                            itemBuilder: (context, index)=> defaultLocationContainer(
-                                context: context,
-                                use: (selectIndex == index + 1) ? true : false,
-                                onTap: (){
-                                  if(selectIndex == index + 1){
-                                    print("yes");
-                                    setState(() {
-                                      selectIndex = 0;
-                                      print(selectIndex);
-                                    });
-                                  }else{
-                                    setState(() {
-                                      selectIndex = index+1;
-                                      print(selectIndex);
-                                    });
-                                  }
-                                  value.addAddressCheckout(
-                                      context: context,
-                                      phone: value.checkoutUserAddress[index]['phone'],
-                                      address: value.checkoutUserAddress[index]['address'],
-                                      user_id: values.userSettings!.userId,
-                                      state_id: value.checkoutUserAddress[index]['state_id'],
-                                      city_id: value.checkoutUserAddress[index]['city_id'],
-                                      country_key: value.checkoutUserAddress[index]['country_key'],
-                                      country_id: value.checkoutUserAddress[index]['country_id']
-                                  );
-                                },
-                                location: value.checkoutUserAddress[index]['address'],
-                                onTapEdit: ()async{
-                                  Navigator.pop(context);
-
-                                }
-                            ),
-                            itemCount: value.checkoutUserAddress.length,
-                          ),
+    return ChangeNotifierProvider(
+      create: (context)=>CheckoutControllerProvider()..getAddressCheckout(context: context),
+      child: Consumer<CheckoutControllerProvider>(
+        builder: (context, value, child) {
+          return Consumer<HomeViewModel>(
+            builder: (context, values, child) {
+              print("REBUILD AGAIN");
+              return (value.isGetAddressLoading || value.isUpdateCartLoading)?
+              SingleChildScrollView(
+                child: HomeLoadingPage(viewAppbar: false,),
+              )
+                  :Container(
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+                    color: Color(0xffFFFFFF)
+                ),
+                width: double.infinity,
+                height: MediaQuery.sizeOf(context).height * 0.8,
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10,),
+                    Center(
+                      child:Container(
+                        width: 63,
+                        height: 5,
+                        decoration: BoxDecoration(
+                            color: Color(0xffB9C0C9),
+                            borderRadius: BorderRadius.circular(100)
                         ),
-                        const SizedBox(height: 20,),
-                        ButtonWidget(
-                          title: AppStrings.addAddress.tr().toUpperCase(),
-                          svgIcon: "assets/images/ecommerce/svg/add.svg",
-                          onPressed: ()async{
-                            await showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-                              ),
-                              builder: (BuildContext context) {
-                                return const CheckoutBottomsheetEditLocationWidget();
-                              },
-                            );
-                            Navigator.pop(context);
-                          },
-                          padding:const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                        ),
-                      ],
+                      ) ,
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
+                    const SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: MediaQuery.sizeOf(context).height * 0.62,
+                            child: ListView.separated(
+                              separatorBuilder: (context, index)=> const SizedBox.shrink(),
+                              itemBuilder: (context, index)=> defaultLocationContainer(
+                                  context: context,
+                                  use: (selectIndex == index + 1) ? true : false,
+                                  onTap: (){
+                                    if(selectIndex == index + 1){
+                                      print("yes");
+                                      setState(() {
+                                        selectIndex = 0;
+                                        print(selectIndex);
+                                      });
+                                    }else{
+                                      setState(() {
+                                        selectIndex = index+1;
+                                        print(selectIndex);
+                                      });
+                                    }
+                                    CheckConst.userAddressModel!.address = value.shippingAddresses[index]['address'];
+                                    CheckConst.userAddressModel!.id = value.shippingAddresses[index]['id'];
+                                    print("CheckConst.selectedPaymentId -> ${CheckConst.selectedPaymentId}");
+                                    CheckConst.selectedAddressId = value.shippingAddresses[index]['id'];
+                                    value.updateCart(
+                                        context: context,
+                                        address_id: CheckConst.userAddressModel!.id,
+                                        payment_method_id: CheckConst.selectedPaymentId);
+                                  },
+                                  location: value.shippingAddresses[index]['address'],
+                                  onTapEdit: ()async{
+                                    CheckConst.userAddressModel!.id = value.shippingAddresses[index]['id'];
+                                    await showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+                                      ),
+                                      builder: (BuildContext context) {
+                                        return CheckoutBottomsheetEditLocationWidget(
+                                          addAdress: false,
+                                          stateIdModel:value.shippingAddresses[index]['state_id'],
+                                          phoneModel: value.shippingAddresses[index]['phone'],
+                                          countryIdModel: value.shippingAddresses[index]['country_id'],
+                                          countryCodeModel:value.shippingAddresses[index]['country_key'] ,
+                                          cityIdModel:value.shippingAddresses[index]['city_id'],
+                                          id: value.shippingAddresses[index]['id'],
+                                          addressModel:value.shippingAddresses[index]['address'],
+                                        );
+                                      },
+                                    );
+                                    Navigator.pop(context);
+                                  }
+                              ),
+                              itemCount: value.shippingAddresses.length,
+                            ),
+                          ),
+                          const SizedBox(height: 20,),
+                          ButtonWidget(
+                            title: AppStrings.addAddress.tr().toUpperCase(),
+                            svgIcon: "assets/images/ecommerce/svg/add.svg",
+                            onPressed: ()async{
+                              await showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+                                ),
+                                builder: (BuildContext context) {
+                                  return CheckoutBottomsheetEditLocationWidget(addAdress: true,);
+                                },
+                              );
+                              Navigator.pop(context);
+                            },
+                            padding: EdgeInsets.zero,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
 
     //   ChangeNotifierProvider(create: (context)=> CheckoutControllerProvider()..getPrepareCheckout(context: context),

@@ -50,7 +50,7 @@ class HomeViewModel extends ChangeNotifier {
         settingsType: SettingsType.user2Settings,
         context: context) as UserSettings2Model;
     // get user requests
-    await _getAllUserRequests(context);
+    //await _getAllUserRequests(context);
     await _getUserNotification(context);
     // Checking for user BirthDate
     try {

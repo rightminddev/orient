@@ -57,6 +57,17 @@ class DioHelper{
     };
     return await dio!.post(url, queryParameters: query, data: data??null);
   }
+  static Future<Response> putData({ context ,@required url,@required Map<String, dynamic>? query, token, @required Map<String, dynamic>? data})async{
+    final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
+    dio!.options.headers = {
+      'Accept':'application/json',
+      'Content-Type': 'application/json',
+      'device-unique-id' : appConfigServiceProvider.deviceInformation.deviceUniqueId,
+      'Authorization': 'Bearer ${appConfigServiceProvider.token}',
+
+    };
+    return await dio!.put(url, queryParameters: query, data: data??null);
+  }
   static Future<Response> postFormData({@required url, formdata,@required Map<String, dynamic>? query, token, @required Map<String, dynamic>? data})async{
     dio!.options.headers = {
       'Accept':'application/json',

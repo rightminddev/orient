@@ -38,7 +38,7 @@ class HomePoductViewWidget extends StatelessWidget {
                             onTap: (){
                               context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
                                   pathParameters: {'lang': context.locale.languageCode,
-                                    'id' : ''
+                                    'id' : '-1'
                                   });
                             },
                             child: Text(AppStrings.seeMore.tr().toUpperCase(),

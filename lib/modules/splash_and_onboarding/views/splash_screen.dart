@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/layout.service.dart';
+import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_images.dart';
 import '../../../constants/app_sizes.dart';
@@ -18,13 +19,25 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late final OnboardingViewModel viewModel;
+  late final HomeViewModel homeViewModel;
   @override
   void initState() {
     super.initState();
+    homeViewModel = HomeViewModel();
     viewModel = OnboardingViewModel();
-    viewModel.initializeSplashScreen(context: context);
+    initializeHomeAndSplash();
   }
 
+  Future<void> initializeHomeAndSplash() async {
+    await homeViewModel.initializeHomeScreen(context);
+    if(homeViewModel.userSettings != null){
+      print("Model is -> ${homeViewModel.userSettings!.name}");
+    }
+    viewModel.initializeSplashScreen(
+      context: context,
+        role: (homeViewModel.userSettings != null)? homeViewModel.userSettings!.role : null
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<OnboardingViewModel>(

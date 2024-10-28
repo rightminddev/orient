@@ -59,8 +59,8 @@ class SearchControllerProvider extends ChangeNotifier {
           if(crossSells == true)  "with": "crossSells",
           if(colorId != null && attributesColorId != null)"attributes[$attributesColorId]" : colorId,
           if(sizeId != null && attributesSizeId != null)"attributes[$attributesSizeId}]" : sizeId,
-          if(SearchConstant.selectId != null)"category_id" : SearchConstant.selectId,
-          if(category_id != null && category_id != '')"category_id" : category_id,
+          if(SearchConstant.selectId != null && SearchConstant.selectId != '-1'&& SearchConstant.selectId != -1)"category_id" : SearchConstant.selectId,
+          if(category_id != null && category_id != '-1' && category_id != -1)"category_id" : category_id,
           if(SearchConstant.minPriceController.text.isNotEmpty)"price_from" : SearchConstant.minPriceController.text,
           if(SearchConstant.maxPriceController.text.isNotEmpty)"price_to" : SearchConstant.maxPriceController.text
         },

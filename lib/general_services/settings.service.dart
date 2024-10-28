@@ -25,12 +25,12 @@ abstract class AppSettingsService {
   static AppSettingsModel? getSettings(
       {required SettingsType settingsType, required BuildContext context}) {
     final appConfigServiceProvider =
-        Provider.of<AppConfigService>(context, listen: false);
+    Provider.of<AppConfigService>(context, listen: false);
     switch (settingsType) {
       case SettingsType.generalSettings:
       case SettingsType.startupSettings:
         final generalSettings =
-            appConfigServiceProvider.getSettings(type: settingsType);
+        appConfigServiceProvider.getSettings(type: settingsType);
         if (generalSettings == null) {
           appConfigServiceProvider.setSettings(
               type: settingsType, data: defaultGeneralSettings.toJson());
@@ -40,7 +40,7 @@ abstract class AppSettingsService {
 
       case SettingsType.userSettings:
         final userSettings =
-            appConfigServiceProvider.getSettings(type: settingsType);
+        appConfigServiceProvider.getSettings(type: settingsType);
         if (userSettings == null) {
           appConfigServiceProvider.setSettings(
               type: settingsType, data: defaultUserSettings.toJson());
@@ -50,7 +50,7 @@ abstract class AppSettingsService {
 
       case SettingsType.user2Settings:
         final user2Settings =
-            appConfigServiceProvider.getSettings(type: settingsType);
+        appConfigServiceProvider.getSettings(type: settingsType);
         if (user2Settings == null) {
           appConfigServiceProvider.setSettings(
               type: settingsType, data: defaultUserSettings2.toJson());
@@ -67,10 +67,10 @@ abstract class AppSettingsService {
   /// setting type [general_settings] || [user_settings] || [user2_settings]
   static Future<void> initializeGeneralSettings(
       {required SettingsType settingType,
-      bool? allData = false,
-      required BuildContext context}) async {
+        bool? allData = false,
+        required BuildContext context}) async {
     final appConfigServiceProvider =
-        Provider.of<AppConfigService>(context, listen: false);
+    Provider.of<AppConfigService>(context, listen: false);
     var settingsData = appConfigServiceProvider.getSettings(type: settingType);
     var lastUpdateDate = settingsData?.lastUpdateDate ?? "";
     OperationResult<Map<String, dynamic>> result;
@@ -143,8 +143,8 @@ abstract class AppSettingsService {
   static String? getGeneralScreenMessageByScreenId(
       {required String screenId, required BuildContext context}) {
     List<GeneralMessageByScreen>? list = (getSettings(
-            settingsType: SettingsType.generalSettings,
-            context: context) as GeneralSettingsModel)
+        settingsType: SettingsType.generalSettings,
+        context: context) as GeneralSettingsModel)
         .generalMessageByScreen;
     if (list == null || list.isEmpty) return null;
     for (var element in list) {

@@ -67,7 +67,7 @@ class ButtonWidget extends StatelessWidget {
       //     side: borderSide,
       //   ),
       // ),
-      child: (padding == null) ?SizedBox(
+      child: (padding == EdgeInsets.zero) ?SizedBox(
        height:buttonHeight ?? 50,
         width:buttonWidth?? 225,
         child: isLoading == true

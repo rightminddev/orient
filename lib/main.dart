@@ -1,12 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
-import 'package:orient/common_modules_widgets/request_card.widget.dart';
-import 'package:orient/common_modules_widgets/template_page.widget.dart';
-import 'package:orient/constants/app_colors.dart';
-import 'package:orient/constants/app_images.dart';
-import 'package:orient/constants/app_sizes.dart';
-import 'package:orient/models/request.model.dart';
-import 'package:orient/utils/animated_custom_dropdown/custom_dropdown.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
+import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
+import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
+import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
+import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
+import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
 import 'firebase_options.dart';
@@ -21,12 +22,12 @@ import 'modules/main_screen/view_models/main_viewmodel.dart';
 import 'platform/platform_is.dart';
 
 GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // register global error handlers to catch , handle and repoting on any kind of error or exception appear in the application
   /// [ENABLED] IN RELEASE ( DISABLE IN DEVELOPMENT TIME TO APPEAR ANY ERROR APPEAR )
   // registerErrorHandlers();
+  await DioHelper.initail();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -55,13 +56,24 @@ void main() async {
         providers: [
           ChangeNotifierProvider<AppConfigService>(
             create: (_) => AppConfigService(),
+          ),ChangeNotifierProvider<HomeViewModel>(
+            create: (context) => HomeViewModel()..initializeHomeScreen(context),
           ),
           ChangeNotifierProvider<MainScreenViewModel>(
             create: (_) => MainScreenViewModel(),
           ),
+          ChangeNotifierProvider(create: (_) => PersonalProfileViewModel()),
+          ChangeNotifierProvider<EcommerceMainScreenViewModel>(
+            create: (_) => EcommerceMainScreenViewModel(),
+          ),ChangeNotifierProvider<SearchControllerProvider>(
+            create: (_) => SearchControllerProvider(),
+          ),ChangeNotifierProvider<HomeProvider>(
+            create: (_) => HomeProvider(),
+          ),
+          ChangeNotifierProvider<MerchantMainViewModel>(
+            create: (_) => MerchantMainViewModel(),
+          ),
         ],
-        // child: const MyApp2(),
         child: const MyApp(),
       )));
 }
-

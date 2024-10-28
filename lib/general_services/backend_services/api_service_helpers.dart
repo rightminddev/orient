@@ -4,7 +4,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 import '../../models/operation_result.model.dart';
 import '../app_config.service.dart';
-import 'api_service/http_api_service/http_api.service.dart';
+import 'api_service/dio_api_service/dio_api.service.dart';
 import 'backend_services_interface.dart';
 
 abstract class ApiServiceHelpers {
@@ -70,7 +70,7 @@ abstract class ApiServiceHelpers {
       return OperationResult(
           success: false, message: "refreshTokenApiURL is null or empty");
     }
-    OperationResult result = await HttpApiService.getDynamic(
+    OperationResult result = await DioApiService.getDynamic(
         appConfigServiceProvider.refreshTokenApiUrl!, context,
         dataKey: dataKey, checkOnTokenExpiration: false);
     if (result.success) {

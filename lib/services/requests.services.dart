@@ -1,5 +1,5 @@
 import '../constants/app_sizes.dart';
-import '../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../general_services/backend_services/get_endpoint.service.dart';
 import '../models/endpoint.model.dart';
 import '../models/operation_result.model.dart';
@@ -153,7 +153,7 @@ abstract class RequestsServices {
     );
     final url = queryParams.isEmpty ? baseUrl : '$baseUrl&$queryParams';
 
-    final response = await HttpApiService().get<Map<String, dynamic>>(url,
+    final response = await DioApiService().get<Map<String, dynamic>>(url,
         dataKey: 'data', context: context, allData: true);
     return response;
   }
@@ -185,7 +185,7 @@ abstract class RequestsServices {
     final url = queryParams.isEmpty ? baseUrl : '$baseUrl?$queryParams';
 
     // Send request
-    final response = await HttpApiService().get<List<dynamic>>(url,
+    final response = await DioApiService().get<List<dynamic>>(url,
         dataKey: 'data',
         context: context,
         allData: true,
@@ -200,7 +200,7 @@ abstract class RequestsServices {
     required String requestId,
   }) async {
     final url = EndpointServices.getApiEndpoint(EndpointsNames.askRemember).url;
-    final response = await HttpApiService().post<Map<String, dynamic>>(
+    final response = await DioApiService().post<Map<String, dynamic>>(
         url, {'id': requestId},
         context: context, allData: true, dataKey: 'data');
     return response;
@@ -212,7 +212,7 @@ abstract class RequestsServices {
     required String requestId,
   }) async {
     final url = EndpointServices.getApiEndpoint(EndpointsNames.askIgnore).url;
-    final response = await HttpApiService().post<Map<String, dynamic>>(
+    final response = await DioApiService().post<Map<String, dynamic>>(
       url,
       {'id': requestId},
       context: context,
@@ -227,7 +227,7 @@ abstract class RequestsServices {
       {required BuildContext context,
       required Map<String, String> requestData,
       required List<FilePickerResult> files}) async {
-    return await HttpApiService().postWithFormData<Map<String, dynamic>>(
+    return await DioApiService().postWithFormData<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.empAddRequest).url,
         context: context,
         requestData,
@@ -240,7 +240,7 @@ abstract class RequestsServices {
   static Future<OperationResult<Map<String, dynamic>>> createNewRequest(
       {required BuildContext context,
       required Map<String, dynamic> requestData}) async {
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.empAddRequest).url,
         context: context,
         requestData,
@@ -257,7 +257,7 @@ abstract class RequestsServices {
   }) async {
     final url =
         EndpointServices.getApiEndpoint(EndpointsNames.managerAction).url;
-    final response = await HttpApiService().post<Map<String, dynamic>>(
+    final response = await DioApiService().post<Map<String, dynamic>>(
       url,
       {
         'request_id': requestId,
@@ -278,7 +278,7 @@ abstract class RequestsServices {
   }) async {
     final url =
         '${EndpointServices.getApiEndpoint(EndpointsNames.getEmployeeBalance).url}/$empId';
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       context: context,
       dataKey: 'data',

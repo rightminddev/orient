@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../../../general_services/backend_services/get_endpoint.service.dart';
 import '../../../models/endpoint.model.dart';
 import '../../../models/operation_result.model.dart';
@@ -16,7 +16,7 @@ abstract class ForgotPasswordService {
       "device_unique_id": deviceUniqueId,
     };
 
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.forgetPassword).url,
         context: context,
         body,
@@ -39,7 +39,7 @@ abstract class ForgotPasswordService {
       "device_unique_id": deviceUniqueId,
     };
 
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.forgetPassword).url,
         context: context,
         body,
@@ -66,7 +66,7 @@ abstract class ForgotPasswordService {
       "type": 'code',
     };
 
-    return await HttpApiService().post<Map<String, dynamic>>(
+    return await DioApiService().post<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.forgetPassword).url,
         body,
         context: context,

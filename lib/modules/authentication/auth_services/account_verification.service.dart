@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../constants/app_constants.dart';
-import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../../../models/operation_result.model.dart';
 
 abstract class AccountVerificationService {
@@ -10,7 +10,7 @@ abstract class AccountVerificationService {
       required BuildContext context}) async {
     final url =
         '${AppConstants.baseUrl}/rm_users/v1/account_verification/$uuid/send';
-    final response = await HttpApiService().post<Map<String, dynamic>>(
+    final response = await DioApiService().post<Map<String, dynamic>>(
         url,
         {
           "send_by": method,
@@ -30,7 +30,7 @@ abstract class AccountVerificationService {
           required BuildContext context}) async {
     final url =
         '${AppConstants.baseUrl}/rm_users/v1/account_verification/$uuid/validate';
-    final response = await HttpApiService().post<Map<String, dynamic>>(
+    final response = await DioApiService().post<Map<String, dynamic>>(
         url,
         {
           "send_by": method,

@@ -92,6 +92,7 @@ class AuthenticationViewModel extends ChangeNotifier {
               password: passwordController.text,
               deviceInformation:
                   appConfigServiceProvider.deviceInformation.toMap());
+
       print("response login /////");
       if (result.success &&
           result.data != null &&
@@ -638,6 +639,7 @@ class AuthenticationViewModel extends ChangeNotifier {
 
     if (result['token'] != null &&
         (((result['token'] as String?)?.isNotEmpty) ?? false)) {
+      print(result['token']);
       return await appConfigServiceProvider.setAuthenticationStatusWithToken(
           isLogin: true, token: result['token']);
     }
@@ -693,7 +695,8 @@ class AuthenticationViewModel extends ChangeNotifier {
       case AuthStatus.active:
         appConfigServiceProvider.setAuthenticationStatusWithToken(
             isLogin: true, token: result['token']);
-        context.goNamed(AppRoutes.home.name);
+        context.goNamed(AppRoutes.eCommerceHomeScreen.name);
+        //context.goNamed(AppRoutes.addStore.name);
         return;
       case AuthStatus.deactivated:
         AlertsService.info(

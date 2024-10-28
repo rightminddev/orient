@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Consumer<HomeViewModel>(
                 builder: (context, viewModel, child) => viewModel.isLoading
-                    ? const HomeLoadingPage()
+                    ?  HomeLoadingPage(viewAppbar: true,)
                     : Padding(
                         padding: const EdgeInsets.only(top: AppSizes.s12),
                         child: Column(

@@ -103,6 +103,7 @@ class MainScreenViewModel extends ChangeNotifier {
             extra: begin,
             pathParameters: {'lang': context.locale.languageCode});
         return;
+
       default:
         await context.pushNamed(AppRoutes.home.name,
             extra: begin,

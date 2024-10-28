@@ -1,8 +1,22 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/modules/components/views/componenets_screen.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
+import 'modules/components/subviews/button_screen.dart';
+import 'modules/components/subviews/comment_screen.dart';
+import 'modules/components/subviews/image_with_title_screen.dart';
+import 'modules/components/subviews/order_screen.dart';
+import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
+import 'package:orient/modules/ecommerce/checkout/checkout_screen.dart';
+import 'package:orient/modules/ecommerce/home/home_screen.dart';
+import 'package:orient/modules/ecommerce/search/search_screen.dart';
+import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
+import 'package:orient/modules/main_screen/views/main_screen.dart';
+import 'package:orient/routing/app_router.dart';
+import 'constants/app_images.dart';
+import 'general_services/app_theme.service.dart';
+import 'modules/ecommerce/main_screen/main_screen.dart';
 import 'platform/platform_is.dart';
-import 'routing/app_router.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +28,23 @@ class MyApp extends StatelessWidget {
     // precache spash screen image
     precacheImage(const AssetImage(AppImages.splashScreenBackground), context);
     final appGoRouter = goRouter(context);
-    return MaterialApp.router(
+    return
+    //   MaterialApp(
+    //   theme: AppThemeService.getTheme(isDark: false, context: context),
+    //   title: 'Orient',
+    //   locale: context.locale,
+    //   debugShowCheckedModeBanner: false,
+    //   themeMode: ThemeMode.light,
+    //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
+    //   scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
+    //   localizationsDelegates: context.localizationDelegates,
+    //   supportedLocales: context.supportedLocales,
+    //   home: ECommerceMainScreen()
+    // );
+      MaterialApp.router(
       title: 'Orient',
-      restorationScopeId: 'app',debugShowCheckedModeBanner: false,
+      restorationScopeId: 'app',
+      debugShowCheckedModeBanner: false,
       routerDelegate: appGoRouter.routerDelegate,
       routeInformationParser: appGoRouter.routeInformationParser,
       routeInformationProvider: appGoRouter.routeInformationProvider,
@@ -28,6 +56,26 @@ class MyApp extends StatelessWidget {
       darkTheme: AppThemeService.getTheme(isDark: true, context: context),
       scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
     );
+
+    // return MaterialApp(
+    //   title: 'Orient',
+    //   restorationScopeId: 'app',
+    //   routes: {
+    //     '/buttons': (context) => const ButtonsScreen(),
+    //     '/image_with_title': (context) => const ImageWithTitleScreen(),
+    //     '/comment_widget': (context) => const CommentScreen(),
+    //     '/order_widget': (context) => const OrderScreen(),
+    //   },
+    //   supportedLocales: const [
+    //     Locale('en', 'US'),
+    //     Locale('ar', 'EG'),
+    //   ],
+    //   themeMode: ThemeMode.light,
+    //   theme: AppThemeService.getTheme(isDark: false, context: context),
+    //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
+    //   scrollBehavior: AppScrollBehavior(),
+    //   home: const ComponenetsScreen(),
+    // );
   }
 }
 

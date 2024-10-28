@@ -6,8 +6,9 @@ import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dar
 Widget defaultTapBarItem(
     {required List<String>? items,
     final Function? onTapItem,
+      int? selectIndex,
     double? tapBarItemsWidth}) {
-  var selectIndex = 0;
+
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
       double itemWidth =
@@ -30,10 +31,10 @@ Widget defaultTapBarItem(
                   onTap: () {
                     setState(() {
                       selectIndex = index;
+                      if (onTapItem != null) {
+                        onTapItem!(index);
+                      }
                     });
-                    if (onTapItem != null) {
-                      onTapItem!(index);
-                    }
                   },
                   child: Container(
                     height: 32,
@@ -60,12 +61,11 @@ Widget defaultTapBarItem(
     },
   );
 }
-
 Widget defaultBottomNavigationBar(
     {required List<String>? items,
-    final Function? onTapItem,
-    double? tapBarItemsWidth,
-    int? selectIndex,
+      final Function? onTapItem,
+      double? tapBarItemsWidth,
+      int? selectIndex,
     }) {
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
@@ -118,6 +118,22 @@ Widget defaultBottomNavigationBar(
     },
   );
 }
+// Widget defaultBottomNavigationBar(
+//     {required List<String>? items,
+//       void Function(int? index)? onTap,
+//     double? tapBarItemsWidth,
+//     int? selectIndex,
+//       BuildContext? context
+//     }) {
+//   double containerWidth = tapBarItemsWidth ?? MediaQuery.sizeOf(context!).width;
+//   double itemWidth = containerWidth / items!.length * 0.9;
+//   double itemHeight = itemWidth * 1;
+//   double itemRadius = itemWidth / 2;
+//   int? selectIndex;
+//   return StatefulBuilder(
+//       builder: (context),
+//   )
+// }
 
 Widget defaultProductContainer(
     {Color? containerColor,
@@ -258,7 +274,7 @@ Widget defaultProfileContainer({
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          width: 63, // Set your desired size
+          width: 63,
           height: 63,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
@@ -269,14 +285,14 @@ Widget defaultProfileContainer({
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(63),
               child: CachedNetworkImage(
                   imageUrl: imageUrl!,
                   fit: BoxFit.cover,
-                  height: 63,
-                  width: 63,
+                  height: 40,
+                  width: 40,
                   placeholder: (context, url) => const ShimmerAnimatedLoading(
                         width: 63.0,
                         height: 63,
@@ -336,94 +352,101 @@ Widget defaultViewProductGrid(
       required String? productName,
       required String? productPrice,
       required String? productImageUrl,
+      required void Function()? onTap,
       String? discountPrice,
+      bool? showDiscount,
+      bool? showSale,
       double? containerWidth,
       double? containerHeight,
     }) {
-  return Container(
-    width: containerWidth ?? 150,
-    height: containerHeight ?? 218,
-    decoration: BoxDecoration(
-      color: const Color(0xffFFFFFF),
-      borderRadius: BorderRadius.circular(10),
-      boxShadow: boxShadow,
-    ),
-    child: Column(
-      children: [
-        Stack(
-          alignment: Alignment.topLeft,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                  imageUrl: productImageUrl!,
-                  fit: BoxFit.cover,
-                  height: 155,
-                  width: containerWidth ?? 170,
-                  placeholder: (context, url) =>  ShimmerAnimatedLoading(
-                    width: containerWidth ?? 170,
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: containerWidth ?? 150,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      height: containerHeight ?? 218,
+      decoration: BoxDecoration(
+        color: const Color(0xffFFFFFF),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: boxShadow,
+      ),
+      child: Column(
+        children: [
+          Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                child: CachedNetworkImage(
+                    imageUrl: productImageUrl!,
+                    fit: BoxFit.cover,
                     height: 155,
-                    circularRaduis: 10,
-                  ),
-                  errorWidget: (context, url, error) => const Icon(
-                    Icons.image_not_supported_outlined,
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 7, left: 22),
-              child: SvgPicture.asset(
-                'assets/images/svg/sale.svg',
+                    width: containerWidth ?? 170,
+                    placeholder: (context, url) =>  ShimmerAnimatedLoading(
+                      width: containerWidth ?? 170,
+                      height: 155,
+                      circularRaduis: 10,
+                    ),
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.image_not_supported_outlined,
+                    )),
               ),
-            )
-          ],
-        ),
-        Text(
-          productType!,
-          style: const TextStyle(
-            color: Color(0xffE6007E),
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.w400,
-            fontSize: 10,
-          ),
-        ),
-        SizedBox(
-          height: 20,
-          child: Text(
-            productName!,
-            maxLines: 1,
-            style: const TextStyle(
-              color: Color(0xff0D3B6F),
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        RichText(
-          text: TextSpan(
-            text: "$productPrice ",
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 11,
-                color: Color(0xff0D3B6F),
-                fontFamily: "Poppins"),
-            children: <TextSpan>[
-              TextSpan(
-                text: discountPrice!,
-                style: const TextStyle(
-                  color: Color(0xffE6007E),
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 10,
-                  decoration: TextDecoration.lineThrough,
-                  decorationColor: Color(0xffE6007E),
-                  decorationThickness: 2,
+             if(showSale == true) Padding(
+                padding: const EdgeInsets.only(top: 7, left: 22),
+                child: SvgPicture.asset(
+                  'assets/images/svg/sale.svg',
                 ),
-              ),
+              )
             ],
           ),
-        ),
-      ],
+          Text(
+            productType!,
+            style: const TextStyle(
+              color: Color(0xffE6007E),
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w400,
+              fontSize: 10,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+            child: Text(
+              productName!,
+              maxLines: 1,
+              style: const TextStyle(
+                color: Color(0xff0D3B6F),
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+              ),
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              text: "$productPrice ",
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 11,
+                  color: Color(0xff0D3B6F),
+                  fontFamily: "Poppins"),
+              children: <TextSpan>[
+                if(showDiscount == true)  TextSpan(
+                  text: discountPrice!,
+                  style: const TextStyle(
+                    color: Color(0xffE6007E),
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 10,
+                    decoration: TextDecoration.lineThrough,
+                    decorationColor: Color(0xffE6007E),
+                    decorationThickness: 2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

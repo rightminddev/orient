@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
+import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 class ImageGallerySlider extends StatefulWidget {
-  List<String> listImageUrl = [];
+  List? listImageUrl = [];
   ImageGallerySlider({super.key, required this.listImageUrl});
   @override
   _ImageGallerySliderState createState() => _ImageGallerySliderState();
@@ -49,18 +53,23 @@ class _ImageGallerySliderState extends State<ImageGallerySlider> {
         reverse: false,
         scrollDirection: Axis.horizontal,
         controller: _scrollController,
-        itemCount: widget.listImageUrl.length,
+        itemCount: widget.listImageUrl!.length,
         itemBuilder: (context, index) {
           double imageWidth = index % 2 == 0 ? 280.0 : 92.0;
           return Container(
             height: 200.0,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Image.asset(
-                widget.listImageUrl[index],
-                width: imageWidth,
-                fit: BoxFit.cover,
-              ),
+              child: CachedNetworkImage(
+                  imageUrl:widget.listImageUrl![index]['file'],
+                  width: imageWidth,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) =>
+                  const ShimmerAnimatedLoading(
+                    circularRaduis:
+                    AppSizes.s50,
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.image_not_supported_outlined,)),
             ),
           );
         },

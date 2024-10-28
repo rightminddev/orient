@@ -25,6 +25,7 @@ class ECommerceHomeScreen extends StatelessWidget {
       builder: (context, homeProvider, child) {
         return Consumer<HomeViewModel>(builder:
         (context, value, child) {
+
           return Scaffold(
             backgroundColor: Color(0xffFFFFFF),
             body: (!homeProvider.isLoading && value.userSettings != null)

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/models/settings/user_settings.model.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_constants.dart';
 import '../../../constants/app_images.dart';
@@ -47,8 +48,57 @@ class OnboardingViewModel extends ChangeNotifier {
     }
     return null;
   }
+  var userSettings;
+  Future<void> _initializeAppServices(
+      BuildContext context, AppConfigService appConfigService) async {
+    try {
+      // Precache logo image
+      await precacheImage(const AssetImage(AppImages.logo), context);
 
-  Future<void> initializeSplashScreen({required BuildContext context}) async {
+      // Initialize application services
+      await appConfigService.init();
+
+      // Initialize and set device information in local storage
+      DeviceInformationService.initializeAndSetDeviceInfo(context: context);
+
+      // Set base API URL
+      appConfigService.apiURL = AppConstants.baseUrl;
+
+      // Optional: Enable or disable checking for token expiration
+      appConfigService.checkOnTokenExpiration = false;
+
+      // Optional: Set refresh token API URL
+      appConfigService.refreshTokenApiUrl = AppConstants.refreshTokenBaseUrl;
+
+      // Optional: Set application name
+      appConfigService.appName =
+      await ApplicationInformationService.getAppName();
+
+      // Optional: Set application version
+      appConfigService.appVersion =
+      await ApplicationInformationService.getAppVersion();
+
+      // Optional: Set application build number
+      appConfigService.buildNumber =
+      await ApplicationInformationService.getAppBuildNumber();
+
+      // Optional: Set application package name
+      appConfigService.packageName =
+      await ApplicationInformationService.getAppPackageName();
+
+      await ConnectionsService.init();
+
+      await AppSettingsService.initializeGeneralSettings(
+          settingType: SettingsType.startupSettings, context: context);
+      userSettings =await AppSettingsService.getSettings(
+          settingsType: SettingsType.userSettings,
+          context: context) as UserSettingsModel;
+      print("UserSettingsModel----- > ${userSettings.name}");
+    } catch (e) {
+      debugPrint('Error initializing app services: $e');
+    }
+  }
+  Future<void> initializeSplashScreen({required BuildContext context, role}) async {
     final appConfigService =
         Provider.of<AppConfigService>(context, listen: false);
     try {
@@ -56,6 +106,7 @@ class OnboardingViewModel extends ChangeNotifier {
         await _initializeAppServices(context, appConfigService);
         if (appConfigService.isLogin && appConfigService.token.isNotEmpty) {
           // initializing notification service
+          //print("UserSettingsModel 2 ----- > ${userSettings.role[0]}");
           try {
             await PushNotificationService.init(
               context: context,
@@ -73,9 +124,20 @@ class OnboardingViewModel extends ChangeNotifier {
           } catch (ex) {
             debugPrint('Failed to send saved fingerprints to server $ex');
           }
-
-          context.goNamed(AppRoutes.merchantHomeScreen.name,
-              pathParameters: {'lang': context.locale.languageCode});
+              // context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+              //     pathParameters: {'lang': context.locale.languageCode});
+          if(role != null){
+            if(role!.contains('Customer')){
+              context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+                  pathParameters: {'lang': context.locale.languageCode});
+            } else if(role!.contains('Merchant') || role!.contains('traders') || role!.contains('admin')){
+              context.goNamed(AppRoutes.merchantHomeScreen.name,
+                  pathParameters: {'lang': context.locale.languageCode});
+            }else{
+              context.goNamed(AppRoutes.merchantHomeScreen.name,
+                  pathParameters: {'lang': context.locale.languageCode});
+            }
+          }
           return;
         } else {
           // check if there are features in the general setting to display it as an on boarding screen
@@ -101,52 +163,6 @@ class OnboardingViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _initializeAppServices(
-      BuildContext context, AppConfigService appConfigService) async {
-    try {
-      // Precache logo image
-      await precacheImage(const AssetImage(AppImages.logo), context);
-
-      // Initialize application services
-      await appConfigService.init();
-
-      // Initialize and set device information in local storage
-      DeviceInformationService.initializeAndSetDeviceInfo(context: context);
-
-      // Set base API URL
-      appConfigService.apiURL = AppConstants.baseUrl;
-
-      // Optional: Enable or disable checking for token expiration
-      appConfigService.checkOnTokenExpiration = false;
-
-      // Optional: Set refresh token API URL
-      appConfigService.refreshTokenApiUrl = AppConstants.refreshTokenBaseUrl;
-
-      // Optional: Set application name
-      appConfigService.appName =
-          await ApplicationInformationService.getAppName();
-
-      // Optional: Set application version
-      appConfigService.appVersion =
-          await ApplicationInformationService.getAppVersion();
-
-      // Optional: Set application build number
-      appConfigService.buildNumber =
-          await ApplicationInformationService.getAppBuildNumber();
-
-      // Optional: Set application package name
-      appConfigService.packageName =
-          await ApplicationInformationService.getAppPackageName();
-
-      // Initialize connections service
-      await ConnectionsService.init();
-
-      await AppSettingsService.initializeGeneralSettings(
-          settingType: SettingsType.startupSettings, context: context);
-    } catch (e) {
-      debugPrint('Error initializing app services: $e');
-    }
-  }
 
   Future<void> _precacheImages(
       BuildContext context, List<FeatureItem> features) async {

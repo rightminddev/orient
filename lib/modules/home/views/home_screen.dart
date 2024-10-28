@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return ChangeNotifierProvider<HomeViewModel>(
       create: (context) => viewModel,
       child: CoreMobileScaffold(

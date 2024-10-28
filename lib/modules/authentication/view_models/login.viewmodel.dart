@@ -78,20 +78,20 @@ class AuthenticationViewModel extends ChangeNotifier {
     if (formKey.currentState?.validate() == true) {
       print("request login /////44444444");
       final appConfigServiceProvider =
-          Provider.of<AppConfigService>(context, listen: false);
+      Provider.of<AppConfigService>(context, listen: false);
       final completePhoneNumber = (countryCodeController.text.isEmpty
-              ? '+02'
-              : countryCodeController.text + phoneController.text)
+          ? '+02'
+          : countryCodeController.text + phoneController.text)
           .trim();
       print("request login /////");
       OperationResult<Map<String, dynamic>> result =
-          await AuthenticationService.login(
-              context: context,
-              username:
-                  isPhoneLogin ? completePhoneNumber : emailController.text,
-              password: passwordController.text,
-              deviceInformation:
-                  appConfigServiceProvider.deviceInformation.toMap());
+      await AuthenticationService.login(
+          context: context,
+          username:
+          isPhoneLogin ? completePhoneNumber : emailController.text,
+          password: passwordController.text,
+          deviceInformation:
+          appConfigServiceProvider.deviceInformation.toMap());
 
       print("response login /////");
       if (result.success &&
@@ -103,7 +103,7 @@ class AuthenticationViewModel extends ChangeNotifier {
             title: AppStrings.failed.tr(),
             context: context,
             message:
-                result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
+            result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
       }
     } else {
       AlertsService.warning(
@@ -115,13 +115,13 @@ class AuthenticationViewModel extends ChangeNotifier {
 
   Future<void> showForgotPasswordModal({required BuildContext context}) async {
     OperationResult<Map<String, dynamic>>? result =
-        await ModalSheetHelper.showModalSheet(
-            context: context,
-            modalContent: ForgotPasswordModal(
-              isPhoneLogin: isPhoneLogin,
-            ),
-            height: LayoutService.getHeight(context) * 0.45,
-            title: AppStrings.forgetPassword.tr());
+    await ModalSheetHelper.showModalSheet(
+        context: context,
+        modalContent: ForgotPasswordModal(
+          isPhoneLogin: isPhoneLogin,
+        ),
+        height: LayoutService.getHeight(context) * 0.45,
+        title: AppStrings.forgetPassword.tr());
     if (result?.success ?? false) {
       // waiting till the modal closed smoothly then showing successfull slert
       Future.delayed(const Duration(seconds: 1));
@@ -129,19 +129,19 @@ class AuthenticationViewModel extends ChangeNotifier {
           title: AppStrings.success.tr(),
           context: context,
           message:
-              result?.message ?? AppStrings.passwordResetedPleaseLogin.tr());
+          result?.message ?? AppStrings.passwordResetedPleaseLogin.tr());
     }
   }
 
   Future<void> showCreateAccountModal({required BuildContext context}) async {
     OperationResult<Map<String, dynamic>>? result =
-        await ModalSheetHelper.showModalSheet(
-            context: context,
-            modalContent: const CreateAccountModal(),
-            title: AppStrings.createNewAccount.tr(),
-            height: MediaQuery.of(context).viewInsets.bottom > AppSizes.s32
-                ? LayoutService.getHeight(context) * 0.9
-                : LayoutService.getHeight(context) * 0.7);
+    await ModalSheetHelper.showModalSheet(
+        context: context,
+        modalContent: const CreateAccountModal(),
+        title: AppStrings.createNewAccount.tr(),
+        height: MediaQuery.of(context).viewInsets.bottom > AppSizes.s32
+            ? LayoutService.getHeight(context) * 0.9
+            : LayoutService.getHeight(context) * 0.7);
     if (result?.success ?? false) {
       // waiting till the modal closed smoothly then showing successfull slert
       Future.delayed(const Duration(seconds: 1));
@@ -149,20 +149,20 @@ class AuthenticationViewModel extends ChangeNotifier {
           title: AppStrings.success.tr(),
           context: context,
           message:
-              result?.message ?? AppStrings.userRegisteredPleaseLogin.tr());
+          result?.message ?? AppStrings.userRegisteredPleaseLogin.tr());
     }
   }
 
   Future<void> _show2FAVerificationPopup(
       {required BuildContext context,
-      required Map<String, dynamic> methods,
-      required String uuid}) async {
+        required Map<String, dynamic> methods,
+        required String uuid}) async {
     PageController pageController = PageController();
     TextEditingController codeController = TextEditingController();
     final GlobalKey<FormState> codeFormKey = GlobalKey<FormState>();
     String? choosenMethod;
     final appConfigServiceProvider =
-        Provider.of<AppConfigService>(context, listen: false);
+    Provider.of<AppConfigService>(context, listen: false);
 
     return await showDialog(
       context: context,
@@ -225,11 +225,11 @@ class AuthenticationViewModel extends ChangeNotifier {
                               onSelected: () async {
                                 AlertsService.showLoading(context);
                                 final result =
-                                    await TwoFactorAuthenticationService
-                                        .send2FAVerificationCode(
-                                            context: context,
-                                            uuid: uuid,
-                                            sendType: method.keys.first);
+                                await TwoFactorAuthenticationService
+                                    .send2FAVerificationCode(
+                                    context: context,
+                                    uuid: uuid,
+                                    sendType: method.keys.first);
                                 Navigator.pop(context);
 
                                 if (result.success && method.isNotEmpty) {
@@ -273,8 +273,8 @@ class AuthenticationViewModel extends ChangeNotifier {
                               .textTheme
                               .displaySmall
                               ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: AppSizes.s16),
+                              fontWeight: FontWeight.bold,
+                              fontSize: AppSizes.s16),
                           textAlign: TextAlign.center,
                         ),
                         gapH12,
@@ -311,13 +311,13 @@ class AuthenticationViewModel extends ChangeNotifier {
                             }
                             final result = await TwoFactorAuthenticationService
                                 .validate2FAVerificationCode(
-                                    uuid: uuid,
-                                    context: context,
-                                    code: codeController.text,
-                                    sendType: choosenMethod!,
-                                    deviceInformation: appConfigServiceProvider
-                                        .deviceInformation
-                                        .toMap());
+                                uuid: uuid,
+                                context: context,
+                                code: codeController.text,
+                                sendType: choosenMethod!,
+                                deviceInformation: appConfigServiceProvider
+                                    .deviceInformation
+                                    .toMap());
                             if (result.success &&
                                 (result.data?.isNotEmpty ?? false)) {
                               return await _handleLoginResponse(
@@ -356,17 +356,17 @@ class AuthenticationViewModel extends ChangeNotifier {
                                 .textTheme
                                 .displaySmall
                                 ?.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                           onPressed: () async {
                             AlertsService.showLoading(context);
                             final result = await TwoFactorAuthenticationService
                                 .send2FAVerificationCode(
-                                    context: context,
-                                    uuid: uuid,
-                                    sendType: choosenMethod ?? 'auth_app');
+                                context: context,
+                                uuid: uuid,
+                                sendType: choosenMethod ?? 'auth_app');
                             Navigator.pop(context);
                             if (!result.success) {
                               Navigator.pop(context);
@@ -394,14 +394,14 @@ class AuthenticationViewModel extends ChangeNotifier {
 
   Future<void> _showAccountVerificationPopup(
       {required BuildContext context,
-      required Map<String, dynamic> methods,
-      required String uuid}) async {
+        required Map<String, dynamic> methods,
+        required String uuid}) async {
     PageController pageController = PageController();
     TextEditingController codeController = TextEditingController();
     final GlobalKey<FormState> codeFormKey = GlobalKey<FormState>();
     String? choosenMethod;
     final appConfigServiceProvider =
-        Provider.of<AppConfigService>(context, listen: false);
+    Provider.of<AppConfigService>(context, listen: false);
     return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -465,9 +465,9 @@ class AuthenticationViewModel extends ChangeNotifier {
                                 AlertsService.showLoading(context);
                                 final result = await AccountVerificationService
                                     .accoutnVerification(
-                                        uuid: uuid,
-                                        method: method.keys.first,
-                                        context: context);
+                                    uuid: uuid,
+                                    method: method.keys.first,
+                                    context: context);
                                 Navigator.pop(context);
                                 if (result.success && method.isNotEmpty) {
                                   choosenMethod = method.keys.first;
@@ -511,9 +511,9 @@ class AuthenticationViewModel extends ChangeNotifier {
                               .textTheme
                               .displaySmall
                               ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: AppSizes.s18,
-                                  color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: AppSizes.s18,
+                              color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
                         gapH16,
@@ -551,13 +551,13 @@ class AuthenticationViewModel extends ChangeNotifier {
                             }
                             final result = await AccountVerificationService
                                 .validateAccoutnVerificationCode(
-                                    uuid: uuid,
-                                    context: context,
-                                    code: codeController.text,
-                                    method: choosenMethod!,
-                                    deviceInformation: appConfigServiceProvider
-                                        .deviceInformation
-                                        .toMap());
+                                uuid: uuid,
+                                context: context,
+                                code: codeController.text,
+                                method: choosenMethod!,
+                                deviceInformation: appConfigServiceProvider
+                                    .deviceInformation
+                                    .toMap());
                             if (result.success &&
                                 (result.data?.isNotEmpty ?? false)) {
                               return await _handleLoginResponse(
@@ -595,17 +595,17 @@ class AuthenticationViewModel extends ChangeNotifier {
                                 .textTheme
                                 .displaySmall
                                 ?.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                           onPressed: () async {
                             AlertsService.showLoading(context);
                             final result = await AccountVerificationService
                                 .accoutnVerification(
-                                    uuid: uuid,
-                                    method: choosenMethod ?? 'email',
-                                    context: context);
+                                uuid: uuid,
+                                method: choosenMethod ?? 'email',
+                                context: context);
                             Navigator.pop(context);
                             if (!result.success) {
                               Navigator.pop(context);
@@ -633,9 +633,9 @@ class AuthenticationViewModel extends ChangeNotifier {
 
   Future<void> _handleLoginResponse(
       {required Map<String, dynamic> result,
-      required BuildContext context}) async {
+        required BuildContext context}) async {
     final appConfigServiceProvider =
-        Provider.of<AppConfigService>(context, listen: false);
+    Provider.of<AppConfigService>(context, listen: false);
 
     if (result['token'] != null &&
         (((result['token'] as String?)?.isNotEmpty) ?? false)) {
@@ -690,7 +690,7 @@ class AuthenticationViewModel extends ChangeNotifier {
     }
     // Check on other login status
     AuthStatus authStatus =
-        _getAuthStatusFromString(status: result['login_status']);
+    _getAuthStatusFromString(status: result['login_status']);
     switch (authStatus) {
       case AuthStatus.active:
         appConfigServiceProvider.setAuthenticationStatusWithToken(

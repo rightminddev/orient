@@ -66,6 +66,7 @@ class AuthenticationViewModel extends ChangeNotifier {
   }
 
   Future<void> login({required BuildContext context}) async {
+    print("request login /////1221");
     if (isPhoneLogin && phoneController.text.isEmpty) {
       AlertsService.warning(
           title: AppStrings.phoneNumber.tr(),
@@ -73,21 +74,36 @@ class AuthenticationViewModel extends ChangeNotifier {
           message: AppStrings.phoneNumberIsRequired.tr());
       return;
     }
+    print("request login /////13333333");
     if (formKey.currentState?.validate() == true) {
+      print("request login /////44444444");
       final appConfigServiceProvider =
           Provider.of<AppConfigService>(context, listen: false);
       final completePhoneNumber = (countryCodeController.text.isEmpty
               ? '+02'
               : countryCodeController.text + phoneController.text)
           .trim();
+      print("request login /////");
+      print("completePhoneNumber ${completePhoneNumber}");
+      print("emailController ${emailController.text}");
+      print("passwordController ${passwordController.text}");
+      //print(
+        //  "Device Info: ${appConfigServiceProvider.deviceInformation.toMap()}");
       OperationResult<Map<String, dynamic>> result =
           await AuthenticationService.login(
               context: context,
               username:
                   isPhoneLogin ? completePhoneNumber : emailController.text,
               password: passwordController.text,
-              deviceInformation:
-                  appConfigServiceProvider.deviceInformation.toMap());
+              deviceInformation: {
+                "device_unique_id":"f0878566-ce28-4fb6-841f-36cf04dad33e",
+                "operating_system":"android",
+                "operating_system_version":"QSR1.190920.001",
+                "type":"phone"
+              });
+      // appConfigServiceProvider.deviceInformation.toMap());
+
+      print("response login /////");
       if (result.success &&
           result.data != null &&
           (result.data?.isNotEmpty ?? false)) {
@@ -688,7 +704,8 @@ class AuthenticationViewModel extends ChangeNotifier {
       case AuthStatus.active:
         appConfigServiceProvider.setAuthenticationStatusWithToken(
             isLogin: true, token: result['token']);
-        context.goNamed(AppRoutes.home.name);
+        //context.goNamed(AppRoutes.home.name);
+        context.goNamed(AppRoutes.merchantHome.name);
         return;
       case AuthStatus.deactivated:
         AlertsService.info(

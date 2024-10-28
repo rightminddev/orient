@@ -189,6 +189,9 @@ class OnboardingViewModel extends ChangeNotifier {
     }
   }
 
-  void skip(BuildContext context) => context.goNamed(AppRoutes.login.name,
+  // void skip(BuildContext context) => context.goNamed(AppRoutes.login.name,
+  //     pathParameters: {'lang': context.locale.languageCode});
+
+  void skip(BuildContext context) => context.goNamed(AppRoutes.stores.name,
       pathParameters: {'lang': context.locale.languageCode});
 }

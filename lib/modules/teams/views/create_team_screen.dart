@@ -21,7 +21,7 @@ class CreateTeamScreen extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(40.0)),
             boxShadow: [
               BoxShadow(
-                color: Color(000000), // Adjust opacity as needed
+                color: Color(0x00000000), // Adjust opacity as needed
                 spreadRadius: 0,
                 blurRadius: 11,
                 offset: Offset(0, -4), // Shadow position

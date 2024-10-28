@@ -493,14 +493,14 @@ abstract class MainFabServices {
       // Initialize a GlobalKey for the QRView widget
       final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
       // Use a Navigator to push a full-screen scanner widget
-      final result = await Navigator.push<String?>(
-        context,
-        MaterialPageRoute(
-          builder: (context) => QRScannerView(qrKey: qrKey),
-        ),
-      );
+      // final result = await Navigator.push<String?>(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => QRScannerView(qrKey: qrKey),
+      //   ),
+      // );
       // If scanning was successful, return the scanned text
-      return result;
+    //  return result;
     } catch (e) {
       // Handle any errors, return null in case of an error
       debugPrint('Error scanning QR code: $e');
@@ -510,5 +510,6 @@ abstract class MainFabServices {
           title: 'Error');
       return null;
     }
+    return null;
   }
 }

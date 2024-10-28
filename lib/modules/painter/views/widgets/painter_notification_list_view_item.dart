@@ -13,7 +13,7 @@ class PainterNotificationListViewItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
-            return SingleListDetailsScreen();
+            return const SingleListDetailsScreen();
           },
         ));
       },
@@ -47,7 +47,7 @@ class PainterNotificationListViewItem extends StatelessWidget {
                 children: [
                   Text(
                     "10/04/2022 08:15:36 PM".toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff606060)),
@@ -57,7 +57,7 @@ class PainterNotificationListViewItem extends StatelessWidget {
                     "Ramadan Kareem to you all and every year and you"
                         .toUpperCase(),
                     maxLines: 2,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff0D3B6F)),

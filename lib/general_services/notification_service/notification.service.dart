@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/app_images.dart';
 import '../../platform/platform_is.dart';
-import '../backend_services/api_service/http_api_service/http_api.service.dart';
+import '../backend_services/api_service/dio_api_service/dio_api.service.dart';
 import 'timeout_message.service.dart';
 
 ///  A service to handle push notifications using Firebase Messaging.
@@ -131,7 +131,7 @@ abstract class PushNotificationService {
     if (_isTokenInit) return;
     var userToken = await fcm?.getToken();
 
-    var result = await HttpApiService().post(
+    var result = await DioApiService().post(
         context: context,
         apiUrlThatReciveUserToken,
         requestBody ??

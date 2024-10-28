@@ -138,24 +138,27 @@ class OnBoardingScreen extends StatelessWidget {
                               },
                             ),
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CustomElevatedButton(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: CustomElevatedButton(
                                     onPressed: () async =>
                                         viewModel.goNext(context),
                                     title: AppStrings.next.tr(),
-                                    width: AppSizes.s150,
+                                    //  width: AppSizes.s150,
                                     isPrimaryBackground: true,
                                     isFuture: false),
-                                TextButton(
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: TextButton(
                                   onPressed: () => viewModel.skip(context),
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize:
-                                        const Size(AppSizes.s150, AppSizes.s50),
-                                  ),
+                                  // style: ElevatedButton.styleFrom(
+                                  //   fixedSize:
+                                  //       const Size(AppSizes.s150, AppSizes.s50),
+                                  // ),
                                   child: Text(AppStrings.skip.tr(),
                                       style: Theme.of(context)
                                           .textTheme
@@ -166,8 +169,8 @@ class OnBoardingScreen extends StatelessWidget {
                                                   .colorScheme
                                                   .secondary)),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

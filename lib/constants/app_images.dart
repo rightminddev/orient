@@ -164,4 +164,7 @@ abstract class AppImages {
   static const String ratedTeamLine = '$_teamsImagesDirectory/rated_team_line.svg';
 
   
+  static const String storeDefault = "assets/images/store-default-image.png";
+  static const String messagesImage =
+      'assets/images/alerts_images/messages.png';
 }

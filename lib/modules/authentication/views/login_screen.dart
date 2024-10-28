@@ -11,7 +11,6 @@ import '../../../constants/app_strings.dart';
 import '../../../general_services/app_config.service.dart';
 import '../../../general_services/layout.service.dart';
 import '../../../general_services/settings.service.dart';
-import '../../../general_services/validation_service.dart';
 import '../../../models/settings/general_settings.model.dart';
 import '../../../utils/overlay_gradient_widget.dart';
 import '../view_models/login.viewmodel.dart';
@@ -125,9 +124,9 @@ class LoginScreenState extends State<LoginScreen>
                                               hintText:
                                                   AppStrings.yourEmail.tr(),
                                             ),
-                                            validator: (value) =>
-                                                ValidationService.validateEmail(
-                                                    value),
+                                            // validator: (value) =>
+                                            //     ValidationService.validateEmail(
+                                            //         value),
                                           );
                                   },
                                 ),
@@ -138,8 +137,8 @@ class LoginScreenState extends State<LoginScreen>
                                   decoration: InputDecoration(
                                     hintText: AppStrings.password.tr(),
                                   ),
-                                  validator: (value) =>
-                                      ValidationService.validatePassword(value),
+                                  // validator: (value) =>
+                                  //     ValidationService.validatePassword(value),
                                   obscureText: true,
                                 ),
                                 gapH12,

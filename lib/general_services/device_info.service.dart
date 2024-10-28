@@ -34,7 +34,8 @@ abstract class DeviceInformationService {
       //   deviceIdentifier = DateTime.now().microsecondsSinceEpoch.toString();
       //   ConfigService.setValueString("deviceIdentifier", deviceIdentifier);
       // }
-      return deviceIdentifier;
+      return deviceIdentifier 
+      ;
     } catch (ex) {
       return null;
     }

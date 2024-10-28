@@ -58,7 +58,7 @@ class SingleListDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 gapH24,
-                Text(
+                const Text(
                   "22 December 2023 , 02:00pm",
                   style: TextStyle(
                       fontSize: AppSizes.s10,
@@ -66,7 +66,7 @@ class SingleListDetailsScreen extends StatelessWidget {
                       color: Color(AppColors.oC1Color)),
                 ),
                 gapH14,
-                Text(
+                const Text(
                   "Ramadan Kareem to you all and every year and you",
                   style: TextStyle(
                       fontSize: AppSizes.s16,
@@ -74,7 +74,7 @@ class SingleListDetailsScreen extends StatelessWidget {
                       color: Color(AppColors.oC1Color)),
                 ),
                 gapH14,
-                Text(
+                const Text(
                   "With a continuous effort to hold a unique leading position in the industry, Orient brings together Egyptian manufacturing and German technology to offer products that you can rely on  With a continuous\n effort to hold a unique leading position in the industry, Orient brings together Egyptian manufacturing and German technology to offer products that you can rely on andandWith a continuous effort to hold a unique leading position in the industry, Orient brings together Egyptian manufacturing and German technology to offer products that you can rely on and a name you can trust.",
                   style: TextStyle(
                       fontSize: AppSizes.s12,

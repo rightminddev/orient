@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../constants/app_constants.dart';
-import '../../../general_services/backend_services/api_service/http_api_service/http_api.service.dart';
+import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import '../../../models/operation_result.model.dart';
 
 abstract class EmployeeService {
@@ -16,7 +16,7 @@ abstract class EmployeeService {
     final String url = departmentId != null
         ? '${AppConstants.baseUrl}/emp_requests/v1/employees?department_id=$departmentId'
         : '${AppConstants.baseUrl}/emp_requests/v1/employees';
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       context: context,
       allData: true,
@@ -36,7 +36,7 @@ abstract class EmployeeService {
   }) async {
     final String url =
         '${AppConstants.baseUrl}/emp_requests/v1/employees/$employeeId';
-    final response = await HttpApiService().get<Map<String, dynamic>>(
+    final response = await DioApiService().get<Map<String, dynamic>>(
       url,
       context: context,
       allData: true,

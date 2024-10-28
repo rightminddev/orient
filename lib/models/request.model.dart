@@ -1,4 +1,5 @@
 import 'department.model.dart';
+import 'info/country_key_model.dart';
 
 class RequestModel {
   final int? id;
@@ -138,7 +139,7 @@ class UserModel {
   final String? username;
   final String? email;
   final String? birthDay;
-  final CountryKey? countryKey;
+  final CountryKeyModel? countryKey;
   final String? phone;
   final String? roles;
   final DefaultLanguage? defaultLanguage;
@@ -171,7 +172,7 @@ class UserModel {
       email: json['email'] as String?,
       birthDay: json['birth_day'] as String?,
       countryKey: json['country_key'] != null
-          ? CountryKey.fromJson(json['country_key'])
+          ? CountryKeyModel.fromJson(json['country_key'])
           : null,
       phone: json['phone'] as String?,
       roles: json['roles'] as String?,
@@ -199,27 +200,6 @@ class UserModel {
       'status': status?.toJson(),
       'tags': tags,
       'action': action?.toJson(),
-    };
-  }
-}
-
-class CountryKey {
-  final int? key;
-  final String? value;
-
-  CountryKey({this.key, this.value});
-
-  factory CountryKey.fromJson(Map<String, dynamic> json) {
-    return CountryKey(
-      key: json['key'] as int?,
-      value: json['value'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'key': key,
-      'value': value,
     };
   }
 }

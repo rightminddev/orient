@@ -49,7 +49,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
           context: context,
           username: isPhoneLogin ? phoneController.text : emailController.text,
           deviceUniqueId:
-              appConfigServiceProvider.deviceInformation.deviceUniqueId);
+              appConfigServiceProvider.deviceInformation.deviceUniqueId??"");
       if (result.success &&
           result.data != null &&
           result.data?['forgot_password_prepare'] == true &&
@@ -108,7 +108,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
         sendType: sendType!,
         uuid: uuid!,
         deviceUniqueId:
-            appConfigServiceProvider.deviceInformation.deviceUniqueId);
+            appConfigServiceProvider.deviceInformation.deviceUniqueId??"");
     Navigator.pop(context);
 
     if (result.success && result.data != null) {
@@ -145,7 +145,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
           sendType: sendType!,
           uuid: uuid!,
           deviceUniqueId:
-              appConfigServiceProvider.deviceInformation.deviceUniqueId);
+              appConfigServiceProvider.deviceInformation.deviceUniqueId??"");
       if (result.success && result.data != null) {
         Navigator.pop(context, result);
 

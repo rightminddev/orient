@@ -69,7 +69,7 @@ class PainterMainScreen extends StatelessWidget {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
                                           builder: (context) {
-                                            return ListScreen();
+                                            return const ListScreen();
                                           },
                                         ));
                                       },

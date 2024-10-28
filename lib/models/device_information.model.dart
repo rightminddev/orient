@@ -15,11 +15,11 @@ class DeviceInfo {
 
   factory DeviceInfo.fromMap(Map<String, dynamic> map) {
     return DeviceInfo(
-      operatingSystem: map['operating_system'] as String,
-      operatingSystemVersion: map['operating_system_version'] as String,
-      brand: map['brand'] as String,
-      deviceUniqueId: map['device_unique_id'] as String,
-      type: map['type'] as String,
+      operatingSystem: map['operating_system'] as String? ??"",
+      operatingSystemVersion: map['operating_system_version'] as String? ??"",
+      brand: map['brand'] as String? ??"",
+      deviceUniqueId: map['device_unique_id'] as String? ??"",
+      type: map['type'] as String? ??"",
     );
   }
 

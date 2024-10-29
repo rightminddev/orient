@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/merchant/main/views/merchant_main_screen.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_screen.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
-import 'package:orient/modules/teams/views/teams_screen.dart';
+import 'package:orient/modules/painters/teams/views/teams_screen.dart';
 import '../general_services/app_config.service.dart';
 import '../merchant/stores/views/my_stores_actions_screen.dart';
 import '../models/request.model.dart';

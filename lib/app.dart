@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:orient/modules/merchants/views/merchants_home_screen.dart';
-import 'package:orient/modules/teams/views/teams_screen.dart';
+import 'package:orient/modules/painters/merchants/views/merchants_home_screen.dart';
+import 'package:orient/modules/painters/teams/views/teams_screen.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
 import 'modules/components/subviews/button_screen.dart';

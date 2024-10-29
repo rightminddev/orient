@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
-import '../../../general_services/backend_services/get_endpoint.service.dart';
-import '../../../models/endpoint.model.dart';
-import '../../../models/operation_result.model.dart';
+import '../../../../general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
+import '../../../../general_services/backend_services/get_endpoint.service.dart';
+import '../../../../models/endpoint.model.dart';
+import '../../../../models/operation_result.model.dart';
 
 abstract class TeamsService {
   static Future<OperationResult<Map<String, dynamic>>> getTeamDetails({

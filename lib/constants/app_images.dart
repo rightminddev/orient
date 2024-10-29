@@ -23,7 +23,10 @@ abstract class AppImages {
       '$_baseImagesDirectory/fingerprints_images';
   static const String _penaltiesAndRewardsImagesDirectory =
       '$_baseImagesDirectory/reward_penalties_images';
-
+  static const String _painterMainScreenImagesDirectory =
+      '$_baseImagesDirectory/painter_main_screen_images';
+  static const String testNotifi =
+      '$_painterMainScreenImagesDirectory/test_notifi.png';
   // general images
   static const String logo = '$_generalImagesDirectory/logo.png';
   // for in-app notifications
@@ -105,4 +108,56 @@ abstract class AppImages {
   static const String storeDefault = "assets/images/store-default-image.png";
   static const String messagesImage =
       'assets/images/alerts_images/messages.png';
+  static const String circleNotification =
+      '$_painterMainScreenImagesDirectory/circle_notification.png';
+  static const String competition =
+      '$_painterMainScreenImagesDirectory/competition.svg';
+  static const String group = '$_painterMainScreenImagesDirectory/group.svg';
+  static const String logoWhite =
+      '$_painterMainScreenImagesDirectory/logo_white.png';
+  static const String myPoints =
+      '$_painterMainScreenImagesDirectory/my_points.svg';
+  static const String notification =
+      '$_painterMainScreenImagesDirectory/notification.svg';
+  static const String questionMark =
+      '$_painterMainScreenImagesDirectory/question_mark.svg';
+  static const String teamList =
+      '$_painterMainScreenImagesDirectory/team_list.svg';
+  static const String user = '$_painterMainScreenImagesDirectory/user.png';
+  static const String backgroundImage =
+      '$_painterMainScreenImagesDirectory/background_image.png';
+  static const String sendNow =
+      '$_painterMainScreenImagesDirectory/send_now.svg';
+  static const String addStore =
+      '$_painterMainScreenImagesDirectory/add_store.svg';
+  static const String myStores =
+      '$_painterMainScreenImagesDirectory/my_stores.svg';
+
+  static const String controlYourStore =
+      '$_painterMainScreenImagesDirectory/control_your_store.svg';
+  static const String merchentBackGround =
+      '$_painterMainScreenImagesDirectory/merchent_back_ground.png';
+
+  static const String appBackGround =
+      '$_painterMainScreenImagesDirectory/app_back_ground.svg';
+
+//Teams images
+  static const String _teamsImagesDirectory =
+      '$_baseImagesDirectory/teams_images';
+  static const String search = '$_teamsImagesDirectory/search.svg';
+  static const String badge = '$_teamsImagesDirectory/badge.svg';
+  static const String uploadImage = '$_teamsImagesDirectory/upload_image.svg';
+  static const String arrowRight = '$_teamsImagesDirectory/arrow_right.svg';
+  static const String share = '$_teamsImagesDirectory/share.svg';
+  static const String teamMemberBackGround =
+      '$_teamsImagesDirectory/team_member_back_ground.png';
+  static const String userJoin = '$_teamsImagesDirectory/user_join.svg';
+  static const String signOut = '$_teamsImagesDirectory/sign_out.svg';
+  static const String createTeam = '$_teamsImagesDirectory/create_team.svg';
+  static const String info = '$_teamsImagesDirectory/info.svg';
+  static const String bottomSheet = '$_teamsImagesDirectory/bottom_sheet.svg';
+  static const String gold = '$_teamsImagesDirectory/golden.png';
+  static const String sliver = '$_teamsImagesDirectory/sliver.svg';
+  static const String bronz = '$_teamsImagesDirectory/bronz.svg';
+  static const String ratedTeamLine = '$_teamsImagesDirectory/rated_team_line.svg';
 }

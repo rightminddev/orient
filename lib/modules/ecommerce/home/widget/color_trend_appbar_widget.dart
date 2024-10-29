@@ -26,7 +26,7 @@ class ColorTrendAppbarWidget extends StatelessWidget {
                     bottomLeft: Radius.circular(40)
                 ),
                 child: CachedNetworkImage(
-                    imageUrl: homeProvider.colorTrendModel!.page!.coverForWeb![0].file!,
+                    imageUrl: homeProvider.colorTrendCover,
                     height: 360,
                     fit: BoxFit.cover,
                     placeholder: (context,

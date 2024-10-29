@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/modules/ecommerce/cart/cart_screen_loading.dart';
 import 'package:orient/modules/ecommerce/cart/controller/cart_controller.dart';
 import 'package:orient/modules/ecommerce/cart/widget/cart_bottom_button_widget.dart';
 import 'package:orient/modules/ecommerce/cart/widget/cart_enter_promo_widget.dart';
@@ -25,11 +26,11 @@ class _ECommerceShoppingCartState extends State<ECommerceShoppingCart> {
     return ChangeNotifierProvider(create: (context)=> CartControllerProvider()..getCart(context: context),
     child: Consumer<CartControllerProvider>(
       builder: (context, value, child) {
-        return Scaffold(
+        return  value.cartModel == null ?
+        CartScreenLoading()
+        :Scaffold(
             backgroundColor: const Color(0xffFFFFFF),
-            body: value.cartModel == null ?
-            SingleChildScrollView(child: HomeLoadingPage(viewAppbar: false))
-                :Container(
+            body: Container(
               height: MediaQuery.sizeOf(context).height * 1,
                   child: GradientBgImage(
                                 padding: EdgeInsets.zero,

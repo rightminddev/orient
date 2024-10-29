@@ -42,13 +42,6 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color:const Color(0xffFFFFFF),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     color: Color(0xffC9CFD2).withOpacity(0.5),
-                      //     blurRadius: AppSizes.s5,
-                      //     spreadRadius: 1,
-                      //   )
-                      // ],
                     ),
                     child: ListView.builder(
                       shrinkWrap: true,

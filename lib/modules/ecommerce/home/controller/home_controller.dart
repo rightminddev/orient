@@ -19,7 +19,8 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
     List premiumProductImage = [];
     List colorTrendGallery = [];
     List colorTrendBlog = [];
-    ColorTrendModel? colorTrendModel;
+    String colorTrendContant = '';
+    String colorTrendCover = '';
     var coverImage;
     String? errorMessage;
     String? errorColorTrendMessage;
@@ -103,10 +104,10 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
             "with": "blogs",
           },
         );
-        colorTrendModel = ColorTrendModel.fromJson(value.data);
         colorTrendGallery = value.data['page']['gallery'];
         colorTrendBlog = value.data['page']['blogs'];
-        print("COLOR TREND MODEL --> ${colorTrendModel!.page!.title}");
+        colorTrendContant = value.data['page']['content'];
+        colorTrendCover = value.data['page']['cover_for_web'][0]['file'];
         isColorTrendLoading = false;
         isColorTrendSuccess = true;
         notifyListeners();

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orient/models/teams/team_details_model.dart';
 import 'package:orient/models/teams/team_model.dart';
 import 'package:orient/models/teams/top_rated_teams_model.dart';
-import '../../../services/crud_operation.service.dart';
+import '../../../../services/crud_operation.service.dart';
 import '../services/teams.service.dart';
 
 class TeamsViewModel extends ChangeNotifier {
@@ -16,14 +16,14 @@ class TeamsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> initializeTeamList(BuildContext context) async {
+  Future<void> initializeTeamList(BuildContext context,String slug) async {
     updateLoadingStatus(laodingValue: true);
-    await _getTeamsList(context);
+    await _getTeamsList(context,slug: slug);
     updateLoadingStatus(laodingValue: false);
   }
 
   Future<void> initializeTeamDetailsScreen(
-      BuildContext context, int teamId) async {
+      BuildContext context, int teamId,String slug) async {
     updateLoadingStatus(laodingValue: true);
     await _getTeamDetails(context, teamId);
     updateLoadingStatus(laodingValue: false);
@@ -38,17 +38,17 @@ class TeamsViewModel extends ChangeNotifier {
   Future<void> _getTeamsList(
     BuildContext context, {
     String scope = 'filter',
+    String slug =""
   }) async {
     try {
       final result = await CrudOperationService.readEntities(
         context: context,
-        slug: 'teams',
+        slug: slug,
         queryParams: {
-          "scope": scope
-          //'page': 1,
-          // 'with': 'cate',
-          // 'trash': 1,
-          // 'scope': 'filter',
+          "scope": scope,
+          'page': 1,
+          'with': 'cate',
+          'trash': 1,
         },
       );
       teamsList = teamsList.isNotEmpty ? List.empty(growable: true) : teamsList;

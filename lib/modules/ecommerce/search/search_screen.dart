@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
+import 'package:orient/modules/ecommerce/search/search_screen_loading.dart';
 import 'package:orient/modules/ecommerce/search/widget/search_category_widget.dart';
 import 'package:orient/modules/ecommerce/search/widget/search_filter_widget.dart';
 import 'package:orient/modules/ecommerce/search/widget/search_product_gridview_widget.dart';
@@ -47,13 +48,13 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
           return Consumer<HomeProvider>(
             builder: (context, value, child) {
               return Scaffold(
-                backgroundColor: Color(0xffFFFFFF),
+                backgroundColor: const Color(0xffFFFFFF),
                 body: (searchControllerProvider.isLoadingSearch ||
                         value.isLoading)
-                    ? HomeLoadingPage(
-                        viewAppbar: true,
-                      )
-                    : Container(
+                    ? const GradientBgImage(
+                    padding: EdgeInsets.zero,
+                    child: SearchScreenLoading())
+                    : SizedBox(
                         height: MediaQuery.sizeOf(context).height * 1,
                         child: GradientBgImage(
                           padding: EdgeInsets.zero,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/single_product/controller/single_product_controller.dart';
+import 'package:orient/modules/ecommerce/single_product/single_producr_screen_loading.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_bottom_button_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_change_count_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_description_tapbar_widget.dart';
@@ -35,12 +36,12 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
     child: Consumer<SingleProductProvider>(
       builder: (context, singleProductProvider, child){
         print("PRODUCT ID IS ------> ${widget.id}");
-        return SafeArea(
+        return (singleProductProvider.singleProductModel == null)?
+        const SingleProductScreenLoading()
+        :SafeArea(
           child: Scaffold(
               backgroundColor: const Color(0xffFFFFFF),
-              body: (singleProductProvider.singleProductModel == null)?
-              HomeLoadingPage(viewAppbar: true)
-              :GradientBgImage(
+              body: GradientBgImage(
                 padding: EdgeInsets.zero,
                 child: SingleChildScrollView(
                   child: Column(
@@ -60,7 +61,7 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 20,),
+                     const SizedBox(height: 20,),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(

@@ -1,303 +1,309 @@
+import 'dart:convert';
+
+// To parse this JSON data, you can use `PageModel.fromJson(jsonData)`.
+ColorTrendModel pageModelFromJson(String str) => ColorTrendModel.fromJson(json.decode(str));
+
 class ColorTrendModel {
-  bool? status;
-  String? message;
-  Page? page;
+  final bool status;
+  final String message;
+  final Page page;
 
-  ColorTrendModel({this.status, this.message, this.page});
+  ColorTrendModel({
+    required this.status,
+    required this.message,
+    required this.page,
+  });
 
-  ColorTrendModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    page = json['page'] != null ? new Page.fromJson(json['page']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.page != null) {
-      data['page'] = this.page!.toJson();
-    }
-    return data;
-  }
+  factory ColorTrendModel.fromJson(Map<String, dynamic> json) => ColorTrendModel(
+    status: json["status"],
+    message: json["message"],
+    page: Page.fromJson(json["page"]),
+  );
 }
 
 class Page {
-  int? id;
-  String? title;
-  String? slug;
-  String? type;
-  String? content;
-  String? pageColor;
-  List<CoverForWeb>? coverForWeb;
-  String? coverForMobile;
-  List? gallery;
-  List<Blogs>? blogs;
-  List? products;
+  final int id;
+  final String title;
+  final String slug;
+  final String type;
+  final String content;
+  final String pageColor;
+  final List<Image> coverForWeb;
+  final List<dynamic> coverForMobile;
+  final List<Image> gallery;
+  final List<Blog> blogs;
+  final List<Product> products;
 
-  Page(
-      {this.id,
-        this.title,
-        this.slug,
-        this.type,
-        this.content,
-        this.pageColor,
-        this.coverForWeb,
-        this.coverForMobile,
-        this.gallery,
-        this.blogs,
-        this.products});
+  Page({
+    required this.id,
+    required this.title,
+    required this.slug,
+    required this.type,
+    required this.content,
+    required this.pageColor,
+    required this.coverForWeb,
+    required this.coverForMobile,
+    required this.gallery,
+    required this.blogs,
+    required this.products,
+  });
 
-  Page.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    slug = json['slug'];
-    type = json['type'];
-    content = json['content'];
-    pageColor = json['page_color'];
-    if (json['cover_for_web'] != null) {
-      coverForWeb = <CoverForWeb>[];
-      json['cover_for_web'].forEach((v) {
-        coverForWeb!.add(new CoverForWeb.fromJson(v));
-      });
-    }
-    coverForMobile = json['cover_for_mobile'];
-    if (json['gallery'] != null) {
-      gallery = <Sizesgallery>[];
-      json['gallery'].forEach((v) {
-        gallery!.add(Sizesgallery.fromJson(v));
-      });
-    }
-    if (json['blogs'] != null) {
-      blogs = <Blogs>[];
-      json['blogs'].forEach((v) {
-        blogs!.add(new Blogs.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['slug'] = this.slug;
-    data['type'] = this.type;
-    data['content'] = this.content;
-    data['page_color'] = this.pageColor;
-    if (this.coverForWeb != null) {
-      data['cover_for_web'] = this.coverForWeb!.map((v) => v.toJson()).toList();
-    }
-    data['cover_for_mobile'] = this.coverForMobile;
-    if (this.gallery != null) {
-      data['gallery'] = this.gallery!.map((v) => v.toJson()).toList();
-    }
-    if (this.blogs != null) {
-      data['blogs'] = this.blogs!.map((v) => v.toJson()).toList();
-    }
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  factory Page.fromJson(Map<String, dynamic> json) => Page(
+    id: json["id"],
+    title: json["title"],
+    slug: json["slug"],
+    type: json["type"],
+    content: json["content"],
+    pageColor: json["page_color"],
+    coverForWeb:
+    List<Image>.from(json["cover_for_web"].map((x) => Image.fromJson(x))),
+    coverForMobile: List<dynamic>.from(json["cover_for_mobile"].map((x) => x)),
+    gallery: List<Image>.from(json["gallery"].map((x) => Image.fromJson(x))),
+    blogs: List<Blog>.from(json["blogs"].map((x) => Blog.fromJson(x))),
+    products:
+    List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
+  );
 }
 
-class CoverForWeb {
-  int? id;
-  String? type;
-  String? title;
-  String? alt;
-  String? file;
-  String? thumbnail;
-  CoverForWebSizes? coverForWebSizes;
+class Image {
+  final int id;
+  final String type;
+  final String title;
+  final String alt;
+  final String file;
+  final String thumbnail;
+  final Sizes sizes;
 
-  CoverForWeb(
-      {this.id,
-        this.type,
-        this.title,
-        this.alt,
-        this.file,
-        this.thumbnail,
-        this.coverForWebSizes});
+  Image({
+    required this.id,
+    required this.type,
+    required this.title,
+    required this.alt,
+    required this.file,
+    required this.thumbnail,
+    required this.sizes,
+  });
 
-  CoverForWeb.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    type = json['type'];
-    title = json['title'];
-    alt = json['alt'];
-    file = json['file'];
-    thumbnail = json['thumbnail'];
-    coverForWebSizes = json['sizes'] != null ? new CoverForWebSizes.fromJson(json['sizes']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['type'] = this.type;
-    data['title'] = this.title;
-    data['alt'] = this.alt;
-    data['file'] = this.file;
-    data['thumbnail'] = this.thumbnail;
-    if (this.coverForWebSizes != null) {
-      data['sizes'] = this.coverForWebSizes!.toJson();
-    }
-    return data;
-  }
+  factory Image.fromJson(Map<String, dynamic> json) => Image(
+    id: json["id"],
+    type: json["type"],
+    title: json["title"],
+    alt: json["alt"],
+    file: json["file"],
+    thumbnail: json["thumbnail"],
+    sizes: Sizes.fromJson(json["sizes"]),
+  );
 }
 
-class CoverForWebSizes{
-  String? thumbnail;
-  String? medium;
-  String? large;
-  CoverForWebSizes(
-      {this.thumbnail,
-        this.medium,
-        this.large,
-      });
+class Sizes {
+  final String thumbnail;
+  final String medium;
+  final String large;
+  final String size1200x800;
+  final String size800x1200;
+  final String size1200x300;
+  final String size300x1200;
+  final String webpVersion;
 
-  CoverForWebSizes.fromJson(Map<String, dynamic> json) {
-    thumbnail = json['thumbnail'];
-    medium = json['medium'];
-    large = json['large'];
-  }
+  Sizes({
+    required this.thumbnail,
+    required this.medium,
+    required this.large,
+    required this.size1200x800,
+    required this.size800x1200,
+    required this.size1200x300,
+    required this.size300x1200,
+    required this.webpVersion,
+  });
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['thumbnail'] = this.thumbnail;
-    data['medium'] = this.medium;
-    data['large'] = this.large;
-    return data;
-  }
+  factory Sizes.fromJson(Map<String, dynamic> json) => Sizes(
+    thumbnail: json["thumbnail"],
+    medium: json["medium"],
+    large: json["large"],
+    size1200x800: json["1200_800"],
+    size800x1200: json["800_1200"],
+    size1200x300: json["1200_300"],
+    size300x1200: json["300_1200"],
+    webpVersion: json["Vector--1-.jpg_webp"],
+  );
 }
 
-class Sizesgallery {
-  String? thumbnail;
-  String? medium;
-  String? large;
-  Sizesgallery(
-      {this.thumbnail,
-        this.medium,
-        this.large,
-      });
+class Blog {
+  final int id;
+  final String slug;
+  final String tags;
+  final String title;
+  final String shortDescription;
+  final List<Image> mainGallery;
+  final List<Image> mainThumbnail;
+  final String category;
+  final int categoryId;
+  final DateTime? createdAt;
+  final Status status;
 
-  Sizesgallery.fromJson(Map<String, dynamic> json) {
-    thumbnail = json['thumbnail'];
-    medium = json['medium'];
-    large = json['large'];
-  }
+  Blog({
+    required this.id,
+    required this.slug,
+    required this.tags,
+    required this.title,
+    required this.shortDescription,
+    required this.mainGallery,
+    required this.mainThumbnail,
+    required this.category,
+    required this.categoryId,
+    this.createdAt,
+    required this.status,
+  });
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['thumbnail'] = this.thumbnail;
-    data['medium'] = this.medium;
-    data['large'] = this.large;
-    return data;
-  }
+  factory Blog.fromJson(Map<String, dynamic> json) => Blog(
+    id: json["id"],
+    slug: json["slug"],
+    tags: json["tags"],
+    title: json["title"],
+    shortDescription: json["short_description"],
+    mainGallery: List<Image>.from(
+        json["main_gallery"].map((x) => Image.fromJson(x))),
+    mainThumbnail: List<Image>.from(
+        json["main_thumbnail"].map((x) => Image.fromJson(x))),
+    category: json["category"],
+    categoryId: json["category_id"],
+    createdAt: json["created_at"] == null
+        ? null
+        : DateTime.parse(json["created_at"]),
+    status: Status.fromJson(json["status"]),
+  );
 }
 
-class Blogs {
-  int? id;
-  String? slug;
-  String? tags;
-  String? title;
-  String? shortDescription;
-  List? mainGallery;
-  String? category;
-  int? categoryId;
-  var createdAt;
-  Status? status;
+class Product {
+  final int id;
+  final String title;
+  final ProductType type;
+  final int regularPrice;
+  final int? sellPrice;
+  final int price;
+  final String shortDescription;
+  final String description;
+  final List<Image> mainCover;
+  final List<dynamic> images;
+  final List<Pdf> pdf;
+  final List<dynamic> threeDModel;
+  final List<dynamic> image360Panorama;
+  final String? videos;
+  final Status stockStatus;
+  final int quantity;
+  final int width;
+  final int height;
+  final int length;
+  final int weight;
+  final String sku;
+  final Status status;
 
-  Blogs(
-      {this.id,
-        this.slug,
-        this.tags,
-        this.title,
-        this.shortDescription,
-        this.mainGallery,
-        this.category,
-        this.categoryId,
-        this.createdAt,
-        this.status});
+  Product({
+    required this.id,
+    required this.title,
+    required this.type,
+    required this.regularPrice,
+    this.sellPrice,
+    required this.price,
+    required this.shortDescription,
+    required this.description,
+    required this.mainCover,
+    required this.images,
+    required this.pdf,
+    required this.threeDModel,
+    required this.image360Panorama,
+    this.videos,
+    required this.stockStatus,
+    required this.quantity,
+    required this.width,
+    required this.height,
+    required this.length,
+    required this.weight,
+    required this.sku,
+    required this.status,
+  });
 
-  Blogs.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    slug = json['slug'];
-    tags = json['tags'];
-    title = json['title'];
-    shortDescription = json['short_description'];
-    if (json['main_gallery'] != null) {
-      mainGallery = [];
-      json['main_gallery'].forEach((v) {
-        mainGallery!.add(SizesBlog.fromJson(v));
-      });
-    }
-    category = json['category'];
-    categoryId = json['category_id'];
-    createdAt = json['created_at'];
-    status =
-    json['status'] != null ? new Status.fromJson(json['status']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['slug'] = this.slug;
-    data['tags'] = this.tags;
-    data['title'] = this.title;
-    data['short_description'] = this.shortDescription;
-    if (this.mainGallery != null) {
-      data['main_gallery'] = this.mainGallery!.map((v) => v.toJson()).toList();
-    }
-    data['category'] = this.category;
-    data['category_id'] = this.categoryId;
-    data['created_at'] = this.createdAt;
-    if (this.status != null) {
-      data['status'] = this.status!.toJson();
-    }
-    return data;
-  }
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+    id: json["id"],
+    title: json["title"],
+    type: ProductType.fromJson(json["type"]),
+    regularPrice: json["regular_price"],
+    sellPrice: json["sell_price"],
+    price: json["price"],
+    shortDescription: json["short_description"],
+    description: json["description"],
+    mainCover:
+    List<Image>.from(json["main_cover"].map((x) => Image.fromJson(x))),
+    images: List<dynamic>.from(json["images"].map((x) => x)),
+    pdf: List<Pdf>.from(json["pdf"].map((x) => Pdf.fromJson(x))),
+    threeDModel: List<dynamic>.from(json["three_d_model"].map((x) => x)),
+    image360Panorama:
+    List<dynamic>.from(json["image_360_panorama"].map((x) => x)),
+    videos: json["videos"],
+    stockStatus: Status.fromJson(json["stock_status"]),
+    quantity: json["quantity"],
+    width: json["width"],
+    height: json["height"],
+    length: json["length"],
+    weight: json["weight"],
+    sku: json["sku"],
+    status: Status.fromJson(json["status"]),
+  );
 }
 
-class SizesBlog {
-  String? thumbnail;
-  String? medium;
-  String? large;
+class ProductType {
+  final String key;
+  final String value;
 
-  SizesBlog (
-      {this.thumbnail,
-        this.medium,
-        this.large,
-      });
+  ProductType({
+    required this.key,
+    required this.value,
+  });
 
-  SizesBlog.fromJson(Map<String, dynamic> json) {
-    thumbnail = json['thumbnail'];
-    medium = json['medium'];
-    large = json['large'];
-  }
+  factory ProductType.fromJson(Map<String, dynamic> json) => ProductType(
+    key: json["key"],
+    value: json["value"],
+  );
+}
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['thumbnail'] = this.thumbnail;
-    data['medium'] = this.medium;
-    data['large'] = this.large;
-    return data;
-  }
+class Pdf {
+  final int id;
+  final String type;
+  final String title;
+  final String alt;
+  final String file;
+  final String thumbnail;
+
+  Pdf({
+    required this.id,
+    required this.type,
+    required this.title,
+    required this.alt,
+    required this.file,
+    required this.thumbnail,
+  });
+
+  factory Pdf.fromJson(Map<String, dynamic> json) => Pdf(
+    id: json["id"],
+    type: json["type"],
+    title: json["title"],
+    alt: json["alt"],
+    file: json["file"],
+    thumbnail: json["thumbnail"],
+  );
 }
 
 class Status {
-  String? key;
-  String? value;
+  final String key;
+  final String value;
 
-  Status({this.key, this.value});
+  Status({
+    required this.key,
+    required this.value,
+  });
 
-  Status.fromJson(Map<String, dynamic> json) {
-    key = json['key'];
-    value = json['value'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['key'] = this.key;
-    data['value'] = this.value;
-    return data;
-  }
+  factory Status.fromJson(Map<String, dynamic> json) => Status(
+    key: json["key"],
+    value: json["value"],
+  );
 }

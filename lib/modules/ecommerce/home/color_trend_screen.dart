@@ -33,7 +33,7 @@ class ColorTrendScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Text(
-                        "${value.colorTrendModel!.page!.content}",
+                        value.colorTrendContant,
                         textAlign: TextAlign.center,
                         style:const TextStyle(
                           color: Color(0xff525252),

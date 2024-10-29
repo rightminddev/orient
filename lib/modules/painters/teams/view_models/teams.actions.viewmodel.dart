@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orient/painter/teams/services/teams.service.dart';
+import 'package:orient/modules/painters/teams/services/teams.service.dart';
 
 class TeamsActionsViewModel extends ChangeNotifier {
   String? orderStatus;

@@ -10,6 +10,7 @@ dependencies:
   animated_custom_dropdown: ^3.1.1
   flutter_bloc:
   pretty_dio_logger:
+  shimmer:
   bloc:
   webview_flutter:
   # Widgets starting auto play animation when mounted. It is already possible to animate the list and icons.
@@ -119,6 +120,8 @@ flutter:
     - assets/images/company_info_images/
     - assets/images/fingerprints_images/
     - assets/images/reward_penalties_images/
+    - assets/images/painter_main_screen_images/
+    - assets/images/teams_images/
     - assets/images/ecommerce/png/
     - assets/images/ecommerce/svg/
 

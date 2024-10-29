@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orient/modules/ecommerce/cart/controller/cart_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
+import 'package:orient/modules/ecommerce/home/home_screen_loading.dart';
 import 'package:orient/modules/ecommerce/home/widget/home_adds_widget.dart';
 import 'package:orient/modules/ecommerce/home/widget/home_best_offer_product.dart';
 import 'package:orient/modules/ecommerce/home/widget/home_feature_widget.dart';
@@ -51,12 +52,9 @@ class ECommerceHomeScreen extends StatelessWidget {
               ),
             )
                 :  SingleChildScrollView(
-              child: Column(
-                children: [
-                  HomeLoadingPage(viewAppbar: false,),
-                  HomeLoadingPage(viewAppbar: false,),
-                ],
-              ),
+              child: GradientBgImage(
+                  padding: EdgeInsets.zero,
+                  child: HomeScreenLoading()),
             )
 
           );

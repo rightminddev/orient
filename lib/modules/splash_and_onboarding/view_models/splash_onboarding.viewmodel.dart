@@ -127,10 +127,10 @@ class OnboardingViewModel extends ChangeNotifier {
               // context.goNamed(AppRoutes.eCommerceHomeScreen.name,
               //     pathParameters: {'lang': context.locale.languageCode});
           if(role != null){
-            if(role!.contains('Customer')){
+            if(role!.contains('Customer')|| role!.contains('admin')){
               context.goNamed(AppRoutes.eCommerceHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
-            } else if(role!.contains('Merchant') || role!.contains('traders') || role!.contains('admin')){
+            } else if(role!.contains('Merchant') || role!.contains('traders') ){
               context.goNamed(AppRoutes.merchantHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
             }else{

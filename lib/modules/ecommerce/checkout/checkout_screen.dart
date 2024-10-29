@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/modules/ecommerce/checkout/checkout_screen_loading.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
@@ -73,14 +74,7 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
           return Scaffold(
               backgroundColor: const Color(0xffFFFFFF),
               body:(value.userAddressModel == null)?
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    HomeLoadingPage(viewAppbar: false,),
-                    HomeLoadingPage(viewAppbar: false,),
-                  ],
-                ),
-              )
+              const CheckoutScreenLoading()
                   :Container(
                     height: MediaQuery.sizeOf(context).height * 1,
                     child: GradientBgImage(

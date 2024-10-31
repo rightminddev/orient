@@ -13,6 +13,7 @@ import '../view_models/merchant_main_view_model.dart';
 class MerchantMainScreen extends StatelessWidget {
   final MerchantNavbarPages navbarPages;
   final Widget child;
+
   const MerchantMainScreen({
     super.key,
     required this.navbarPages,

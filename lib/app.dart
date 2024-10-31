@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/modules/components/views/componenets_screen.dart';
+import 'package:orient/painter/layout_page/layout_page.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
 import 'modules/components/subviews/button_screen.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
     //   supportedLocales: context.supportedLocales,
     //   home: ECommerceMainScreen()
     // );
-      MaterialApp.router(
+    ///
+    MaterialApp.router(
       title: 'Orient',
       restorationScopeId: 'app',
       debugShowCheckedModeBanner: false,
@@ -56,26 +58,6 @@ class MyApp extends StatelessWidget {
       darkTheme: AppThemeService.getTheme(isDark: true, context: context),
       scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
     );
-
-    // return MaterialApp(
-    //   title: 'Orient',
-    //   restorationScopeId: 'app',
-    //   routes: {
-    //     '/buttons': (context) => const ButtonsScreen(),
-    //     '/image_with_title': (context) => const ImageWithTitleScreen(),
-    //     '/comment_widget': (context) => const CommentScreen(),
-    //     '/order_widget': (context) => const OrderScreen(),
-    //   },
-    //   supportedLocales: const [
-    //     Locale('en', 'US'),
-    //     Locale('ar', 'EG'),
-    //   ],
-    //   themeMode: ThemeMode.light,
-    //   theme: AppThemeService.getTheme(isDark: false, context: context),
-    //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
-    //   scrollBehavior: AppScrollBehavior(),
-    //   home: const ComponenetsScreen(),
-    // );
   }
 }
 

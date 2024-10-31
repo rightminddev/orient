@@ -141,6 +141,10 @@ abstract class AppImages {
   static const String appBackGround =
       '$_painterMainScreenImagesDirectory/app_back_ground.svg';
 
+  static const String sendNoww =
+      '$_painterMainScreenImagesDirectory/sendNow.png';
+
+
 //Teams images
   static const String _teamsImagesDirectory =
       '$_baseImagesDirectory/teams_images';

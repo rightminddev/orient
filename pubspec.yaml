@@ -82,11 +82,16 @@ dependencies:
   rename: 3.0.2
   shared_preferences: 2.2.3
   soundpool: 2.4.1
+  dartz: ^0.10.1
   syncfusion_flutter_calendar: 26.2.7
   syncfusion_flutter_pdf: 26.1.40
   universal_html: 2.2.4
   url_launcher: 6.3.0
   yaml: 3.1.2
+  flutter_widget_from_html: ^0.15.2
+  fluttertoast: ^8.2.8
+
+
 
 dev_dependencies:
   flutter_launcher_icons: 0.13.1

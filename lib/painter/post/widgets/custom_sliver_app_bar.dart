@@ -8,13 +8,13 @@ class CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: const Color(0xFF0D3B6F),
-      surfaceTintColor: const Color(0xFF0D3B6F),
-      shadowColor: const Color(0xFF0D3B6F),
+      backgroundColor: Color(0xFF0D3B6F),
+      surfaceTintColor: Color(0xFF0D3B6F),
+      shadowColor: Color(0xFF0D3B6F),
       elevation: 0,
       pinned: true,
       centerTitle: true,
-      title: const Text(
+      title: Text(
         "Mass Stars",
         style: TextStyle(
           fontSize: 16,
@@ -23,7 +23,7 @@ class CustomSliverAppBar extends StatelessWidget {
         ),
       ),
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_rounded,
           color: Colors.white,
           size: 18,
@@ -35,7 +35,7 @@ class CustomSliverAppBar extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {},
-            icon: const Icon(
+            icon: Icon(
               Icons.share,
               color: Colors.white,
             ))

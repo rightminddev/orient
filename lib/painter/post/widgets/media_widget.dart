@@ -42,12 +42,11 @@ class MediaWidget extends StatelessWidget {
           width: double.infinity,
           child: _buildMediaPreview(-1, posts.mediaItems[0])));
     }
-    else {
-      return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
+    else return GridView.builder(
+      physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
       shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 3,
         mainAxisSpacing: 3,
@@ -66,14 +65,14 @@ class MediaWidget extends StatelessWidget {
               children: [
                 _buildMediaPreview(index, mediaItem), // Show the 4th media item
                 Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       color: Colors.black45,
                       borderRadius:
                       BorderRadius.only(bottomRight: Radius.circular(4))),
                   child: Center(
                     child: Text(
                       '+$extraCount',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
@@ -88,7 +87,6 @@ class MediaWidget extends StatelessWidget {
             onTap: () {}, child: _buildMediaPreview(index, mediaItem));
       },
     );
-    }
   }
 
   Widget _buildMediaPreview(int index, MediaItem mediaItem) {

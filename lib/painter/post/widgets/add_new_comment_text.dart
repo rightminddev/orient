@@ -14,9 +14,9 @@ class AddNewCommentText extends StatelessWidget {
           width: 100,
           color: Colors.grey,
         ),
-        const SizedBox(width: 10,),
-        const Text('Add New Comment',style: TextStyle(color: Color(0xFFE6007E)),),
-        const SizedBox(width: 10,),
+        SizedBox(width: 10,),
+        Text('Add New Comment',style: TextStyle(color: Color(0xFFE6007E)),),
+        SizedBox(width: 10,),
         Container(
           height: 2,
           width: 100,

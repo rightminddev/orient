@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import 'package:orient/painter/core/errors/failures.dart';
+import 'package:orient/painter/group_page/data/models/groups_model.dart';
 import 'package:orient/painter/post/data/models/post_response.dart';
 import 'package:orient/painter/post/data/repositories/post_repository/post_repository.dart';
 

@@ -11,7 +11,7 @@ class RedeemNowButton extends StatelessWidget {
       height: 36,
       width: 150,
       decoration: BoxDecoration(
-        color: const Color(0xFFE6007E),
+        color: Color(0xFFE6007E),
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -19,7 +19,7 @@ class RedeemNowButton extends StatelessWidget {
         children: [
           Image.asset("assets/images/png/icon.png"),
           gapW4,
-          const Text("Redeem Now",style: TextStyle(
+          Text("Redeem Now",style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: Colors.white,

@@ -5,13 +5,13 @@ import '../data/models/post_response.dart';
 import '../show_video_widget.dart';
 
 class PostVideo extends StatelessWidget {
-  const PostVideo({super.key, required this.post});
+  PostVideo({super.key, required this.post});
   final SocialPost post;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: post.video.map((item) {
+      children: post.video!.map((item) {
         return Container(
             height: AppSizes.s240,
             width: double.infinity,

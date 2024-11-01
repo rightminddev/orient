@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/painter/core/api/api_services_implementation.dart';
 import 'package:orient/painter/points/data/repositories/prize_repository/prize_repository_implementation.dart';
-import 'package:orient/painter/points/logic/prize_cubit/prize_cubit.dart';
-import 'package:orient/painter/points/logic/prize_cubit/prize_state.dart';
+import 'package:orient/painter/points/logic/prize_cubit/prize_provider.dart';
+import 'package:orient/painter/points/logic/redeem_prize_cubit/redeem_prize_provider.dart';
 import 'package:orient/painter/points/widgets/drop_down_and_button_bottom_sheet.dart';
 import 'package:orient/painter/points/widgets/redeem_now_button.dart';
 import 'package:orient/painter/post/widgets/bottom_sheet_edge.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
+import 'package:provider/provider.dart';
 
 import '../data/repositories/redeem_prize_repository/redeem_prize_repository_implementation.dart';
-import '../logic/redeem_prize_cubit/redeem_prize_cubit.dart';
 
 class SliverAppBarPoints extends StatelessWidget {
   const SliverAppBarPoints({super.key});
@@ -19,12 +19,12 @@ class SliverAppBarPoints extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: const Color(0xFF0D3B6F),
-      surfaceTintColor: const Color(0xFF0D3B6F),
-      shadowColor: const Color(0xFF0D3B6F),
+      backgroundColor: Color(0xFF0D3B6F),
+      surfaceTintColor: Color(0xFF0D3B6F),
+      shadowColor: Color(0xFF0D3B6F),
       elevation: 0,
       pinned: true,
-      title: const Text(
+      title: Text(
         "My Points",
         style: TextStyle(
           fontSize: 16,
@@ -33,7 +33,7 @@ class SliverAppBarPoints extends StatelessWidget {
         ),
       ),
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_rounded,
           color: Colors.white,
           size: 18,
@@ -53,8 +53,8 @@ class SliverAppBarPoints extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Spacer(flex: 2,),
-                  const Row(
+                  Spacer(flex: 2,),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -78,7 +78,7 @@ class SliverAppBarPoints extends StatelessWidget {
                     ],
                   ),
                   gapH16,
-                  const Text.rich(TextSpan(children: [
+                  Text.rich(TextSpan(children: [
                     TextSpan(
                       text: "54,271",
                       style: TextStyle(
@@ -96,7 +96,7 @@ class SliverAppBarPoints extends StatelessWidget {
                       ),
                     ),
                   ])),
-                  const Text(
+                  Text(
                     "From 60000 Points",
                     style: TextStyle(
                       fontSize: 12,
@@ -111,7 +111,7 @@ class SliverAppBarPoints extends StatelessWidget {
 
                         backgroundColor: Colors.white,
                         context: context,
-                        shape: const RoundedRectangleBorder(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(50),
                             topRight: Radius.circular(50),
@@ -119,15 +119,15 @@ class SliverAppBarPoints extends StatelessWidget {
                         ),
                         clipBehavior: Clip.antiAlias,
                         builder: (context) {
-                          return  MultiBlocProvider(
+                          return  MultiProvider(
                             providers: [
-                              BlocProvider(
-                                create: (context) => PrizeCubit(GetPrizeRepositoryImplementation(ApiServicesImplementation()))..getPrize(),
+                              ChangeNotifierProvider(
+                                create: (context) => PrizeProvider(GetPrizeRepositoryImplementation(ApiServicesImplementation()))..getPrize(),
                               ),
-                              BlocProvider(create: (context) => RedeemPrizeCubit(RedeemPrizeRepositoryImplementation(ApiServicesImplementation()))),
+                              ChangeNotifierProvider(create: (context) => RedeemPrizeProvider(RedeemPrizeRepositoryImplementation(ApiServicesImplementation()))),
                             ],
                             child: StatefulBuilder(builder: (context, setState) {
-                              return const SizedBox(
+                              return SizedBox(
                                 width: double.infinity,
                                 child: Padding(
                                   padding: EdgeInsets.all(12.0),
@@ -154,9 +154,9 @@ class SliverAppBarPoints extends StatelessWidget {
                         },
                       );
                     },
-                    child: const RedeemNowButton(),
+                    child: RedeemNowButton(),
                   ),
-                  const Spacer(flex: 1,),
+                  Spacer(flex: 1,),
                 ],
               ),
             ],

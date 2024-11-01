@@ -124,20 +124,22 @@ class OnboardingViewModel extends ChangeNotifier {
           } catch (ex) {
             debugPrint('Failed to send saved fingerprints to server $ex');
           }
-              // context.goNamed(AppRoutes.eCommerceHomeScreen.name,
-              //     pathParameters: {'lang': context.locale.languageCode});
-          if(role != null){
-            if(role!.contains('Customer')|| role!.contains('admin')){
-              context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+          ///
+              context.goNamed(AppRoutes.painterHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
-            } else if(role!.contains('Merchant') || role!.contains('traders') ){
-              context.goNamed(AppRoutes.merchantHomeScreen.name,
-                  pathParameters: {'lang': context.locale.languageCode});
-            }else{
-              context.goNamed(AppRoutes.merchantHomeScreen.name,
-                  pathParameters: {'lang': context.locale.languageCode});
-            }
-          }
+          //
+          // if(role != null){
+          //   if(role!.contains('Customer')|| role!.contains('admin')){
+          //     context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+          //         pathParameters: {'lang': context.locale.languageCode});
+          //   } else if(role!.contains('Merchant') || role!.contains('traders') ){
+          //     context.goNamed(AppRoutes.merchantHomeScreen.name,
+          //         pathParameters: {'lang': context.locale.languageCode});
+          //   }else{
+          //     context.goNamed(AppRoutes.merchantHomeScreen.name,
+          //         pathParameters: {'lang': context.locale.languageCode});
+          //   }
+          // }
           return;
         } else {
           // check if there are features in the general setting to display it as an on boarding screen

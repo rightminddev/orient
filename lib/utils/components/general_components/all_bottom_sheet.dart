@@ -6,24 +6,26 @@ import 'package:orient/constants/settings/app_icons.dart';
 import 'package:orient/merchant/orders/models/order_status.dart';
 import 'package:orient/merchant/orders/view_models/orders.actions.viewmodel.dart';
 import 'package:orient/merchant/stores/view_models/stores.actions.viewmodel.dart';
+import 'package:orient/painter/points/logic/points_cubit/points_provider.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
 import 'package:provider/provider.dart';
 
+
 defaultActionBottomSheet(
-    {required BuildContext? context,
-      required String? title,
-      required String? subTitle,
-      required String? buttonText,
-      bool viewCheckIcon = false,
-      bool viewDropDownButton = false,
-      String? dropDownValue,
-      String? dropDownTitle,
-      List<DropdownMenuItem<String>>? dropDownItems,
-      void Function(String?)? dropDownOnChanged,
-      Widget? headerIcon,
-      double? bottomSheetHeight,
-      void Function()? onTapButton}) =>
+        {required BuildContext? context,
+        required String? title,
+        required String? subTitle,
+        required String? buttonText,
+        bool viewCheckIcon = false,
+        bool viewDropDownButton = false,
+        String? dropDownValue,
+        String? dropDownTitle,
+        List<DropdownMenuItem<String>>? dropDownItems,
+        void Function(String?)? dropDownOnChanged,
+        Widget? headerIcon,
+        double? bottomSheetHeight,
+        void Function()? onTapButton}) =>
     showModalBottomSheet(
       context: context!,
       shape: const RoundedRectangleBorder(
@@ -43,20 +45,21 @@ defaultActionBottomSheet(
           height: (bottomSheetHeight != null)
               ? bottomSheetHeight
               : (viewDropDownButton == false)
-              ? MediaQuery.sizeOf(context).height * 0.5
-              : MediaQuery.sizeOf(context).height * 0.56,
+                  ? MediaQuery.sizeOf(context).height * 0.5
+                  : MediaQuery.sizeOf(context).height * 0.56,
           alignment: Alignment.center,
           child: Column(
             children: [
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Center(
                 child: Container(
-                 height: 5,
-                 width: 63,
-                 decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(100),
-                   color: Color(0xffB9C0C9)
-                 ), 
+                  height: 5,
+                  width: 63,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Color(0xffB9C0C9)),
                 ),
               ),
               Padding(
@@ -77,7 +80,7 @@ defaultActionBottomSheet(
                             color: const Color(0xffE6007E).withOpacity(0.05),
                           ),
                           child: Container(
-                            padding: EdgeInsets.all(20),
+                              padding: EdgeInsets.all(20),
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(0xffE6007E),
@@ -179,7 +182,8 @@ Future<void> completeOrderActionBottomSheet({
 }) async {
   return await showModalBottomSheet(
     context: context,
-    enableDrag: true, isScrollControlled: true,
+    enableDrag: true,
+    isScrollControlled: true,
 
     // showDragHandle: true,
     shape: const RoundedRectangleBorder(
@@ -289,16 +293,17 @@ Future<void> completeOrderActionBottomSheet({
     },
   );
 }
+
 Future<void> orderStatusActionBottomSheet(
     {required BuildContext? context,
-      required String? buttonText,
-      OrderActionsViewModel? orderActionsViewModel,
-      String? dropDownTitle,
-      List<DropdownMenuItem<String>>? dropDownItems,
-      void Function(String?)? dropDownOnChanged,
-      bool isLoading = false,
-      void Function(OrderStatus)? onItemTap,
-      void Function()? onTapButton}) async {
+    required String? buttonText,
+    OrderActionsViewModel? orderActionsViewModel,
+    String? dropDownTitle,
+    List<DropdownMenuItem<String>>? dropDownItems,
+    void Function(String?)? dropDownOnChanged,
+    bool isLoading = false,
+    void Function(OrderStatus)? onItemTap,
+    void Function()? onTapButton}) async {
   return await showModalBottomSheet(
     context: context!,
     shape: const RoundedRectangleBorder(
@@ -346,28 +351,28 @@ Future<void> orderStatusActionBottomSheet(
                       items: orderStatusMap
                           .map(
                             (index, element) => MapEntry(
-                          index,
-                          DropdownMenuItem<String>(
-                            onTap: () {
-                              onItemTap != null ? onItemTap(index) : null;
-                              setState(() {
-                                value = orderStatusMap[index];
-                              });
-                            },
-                            value: element,
-                            child: Text(
-                              element,
-                              style: const TextStyle(
-                                color: Color(0xFF464646),
-                                fontSize: 12,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                                height: 0.11,
+                              index,
+                              DropdownMenuItem<String>(
+                                onTap: () {
+                                  onItemTap != null ? onItemTap(index) : null;
+                                  setState(() {
+                                    value = orderStatusMap[index];
+                                  });
+                                },
+                                value: element,
+                                child: Text(
+                                  element,
+                                  style: const TextStyle(
+                                    color: Color(0xFF464646),
+                                    fontSize: 12,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0.11,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      )
+                          )
                           .values
                           .toList(),
                       title: dropDownTitle,

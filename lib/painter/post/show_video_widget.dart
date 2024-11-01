@@ -5,7 +5,7 @@ import 'package:video_player/video_player.dart';
 class ShowVideoWidget extends StatefulWidget {
   final bool showControls;
   final String post;
-  const ShowVideoWidget({required this.showControls, super.key, required this.post});
+  ShowVideoWidget({required this.showControls, super.key, required this.post});
 
   @override
   State<ShowVideoWidget> createState() => _ShowVideoWidgetState();
@@ -42,7 +42,7 @@ class _ShowVideoWidgetState extends State<ShowVideoWidget> {
                       }
                       setState(() {});
                     },
-                    child: !isPlay ? const Icon(Icons.play_circle) : null,
+                    child: !isPlay ? Icon(Icons.play_circle) : null,
                   ),
                 ),
           looping: false,

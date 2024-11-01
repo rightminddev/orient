@@ -9,7 +9,7 @@ class AddCommentModel {
     status = json['status'];
     message = json['message'];
     comment =
-    json['comment'] != null ? Comment.fromJson(json['comment']) : null;
+    json['comment'] != null ? new Comment.fromJson(json['comment']) : null;
   }
 }
 

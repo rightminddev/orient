@@ -1,12 +1,12 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orient/painter/post/logic/comment_cubit/comment_cubit.dart';
-import 'package:orient/painter/post/logic/comment_cubit/comment_state.dart';
-import 'package:orient/painter/post/logic/post_cubit/posts_cubit.dart';
-import 'package:orient/painter/post/logic/post_cubit/posts_state.dart';
+import 'package:orient/painter/post/logic/comment_cubit/comment_provider.dart';
+import 'package:orient/painter/post/logic/post_cubit/post_provider.dart';
+import 'package:provider/provider.dart';
 
 class CommentFormFieldAndButton extends StatelessWidget {
-  const CommentFormFieldAndButton(
+  CommentFormFieldAndButton(
       {super.key, required this.postId, required this.socialGroupId});
 
   final String postId;
@@ -14,14 +14,14 @@ class CommentFormFieldAndButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCubit, CommentState>(
-      builder: (context, state) {
+    return Consumer<CommentProvider>(
+      builder: (context, provider, child) {
         return Row(
           children: [
             Expanded(
                 flex: 1,
                 child: TextFormField(
-                  controller: CommentCubit.get(context).commentController,
+                  controller: provider.commentController,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter a comment';
@@ -30,47 +30,38 @@ class CommentFormFieldAndButton extends StatelessWidget {
                   },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  )),
+                        borderRadius: BorderRadius.circular(25),
+                      )),
                 )),
-            const SizedBox(
+            SizedBox(
               width: 15,
             ),
-            BlocBuilder<PostsCubit, PostsState>(
-              builder: (context, state) {
+            Consumer<PostsProvider>(
+              builder: (context, provider, child) {
                 return GestureDetector(
                   onTap: () {
-                    print(
-                        'before toggle${PostsCubit.get(context).isCommented}');
-                    CommentCubit.get(context)
+                    Provider.of<CommentProvider>(context, listen: false)
                         .addComment(
-                            postId: postId,
-                            comment: CommentCubit.get(context)
-                                .commentController
-                                .text)
+                        postId: postId,
+                        comment: Provider.of<CommentProvider>(context, listen: false)
+                            .commentController
+                            .text)
                         .then((value) {
-                      CommentCubit.get(context).commentController.clear();
-                      PostsCubit.get(context).scrollListenerPostsData(
+                      Provider.of<CommentProvider>(context, listen: false).commentController.clear();
+                      provider.scrollListenerPostsData(
                           socialGroupId: socialGroupId);
-                      PostsCubit.get(context)
-                          .getPosts(socialGroupId: socialGroupId)
-                          .then(
-                        (value) {
-                          PostsCubit.get(context).toggleIsCommented();
-                          print(
-                              'after toggle${PostsCubit.get(context).isCommented}');
-                        },
-                      );
+                      provider
+                          .getPosts(socialGroupId: socialGroupId);
                     });
                   },
                   child: Container(
                     height: 70,
                     width: 70,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Color(0xFFE6007E),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.send,
                       color: Colors.white,
                     ),

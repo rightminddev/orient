@@ -8,13 +8,13 @@ import '../show_image_widget.dart';
 import '../show_video_widget.dart';
 
 class PostMedia extends StatelessWidget {
-  const PostMedia({super.key, required this.post,});
+  PostMedia({super.key, required this.post,});
   final SocialPost post;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: post.image.map((item) {
+      children: post.image!.map((item) {
         return Container(
           height: AppSizes.s200,
           padding: const EdgeInsets.symmetric(vertical: 8),

@@ -3,11 +3,10 @@ import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/painter/post/data/models/post_response.dart';
 
-
 import '../post_model.dart';
 
 class ImageAndNameSection extends StatelessWidget {
-  const ImageAndNameSection({super.key, required this.user,});
+  ImageAndNameSection({super.key, required this.user,});
   final User user;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class ImageAndNameSection extends StatelessWidget {
         gapW12,
         Text(
           user.name ?? '',
-          style: const TextStyle(fontSize: 15, color: Colors.black),
+          style: TextStyle(fontSize: 15, color: Colors.black),
         ),
       ],
     );

@@ -11,7 +11,7 @@ class GetCommentModel {
     if (json['comments'] != null) {
       comments = <Comments>[];
       json['comments'].forEach((v) {
-        comments!.add(Comments.fromJson(v));
+        comments!.add(new Comments.fromJson(v));
       });
     }
   }

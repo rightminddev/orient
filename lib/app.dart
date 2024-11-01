@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/modules/components/views/componenets_screen.dart';
-import 'package:orient/painter/layout_page/layout_page.dart';
+import 'package:orient/painter/layout_page/122212121.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
 import 'modules/components/subviews/button_screen.dart';

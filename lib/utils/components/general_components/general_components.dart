@@ -1,8 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/painter/points/logic/points_cubit/points_provider.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
+import 'package:provider/provider.dart';
 
+
+Widget defaultTap2BarItem(
+    {required List<String>? items,
+      final Function? onTapItem,
+      double? tapBarItemsWidth}) {
+  //var selectIndex = 0;
+  return Consumer<PointsProvider>(
+    builder: (context, provider, child) {
+      double itemWidth =
+          (tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.9) /
+              items!.length;
+      return Center(
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
+            height: 45.0,
+            width: tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.9,
+            decoration: BoxDecoration(
+                color: const Color(0xff0D3B6F),
+                borderRadius: BorderRadius.circular(25)),
+            child: ListView.builder(
+              shrinkWrap: true,
+              reverse: false,
+              scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    provider.changeIndex(index);
+
+                    if (onTapItem != null) {
+                      onTapItem!(index);
+                    }
+                  },
+                  child: Container(
+                    height: 32,
+                    width: itemWidth - 8,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: (provider.selectedIndex == index)
+                          ? const Color(0xffE6007E)
+                          : Colors.transparent,
+                    ),
+                    child: Text(
+                      items![index].toUpperCase(),
+                      style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xffFFFFFF),
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Poppins"),
+                    ),
+                  )),
+              itemCount: items!.length,
+            )),
+      );
+    },
+  );
+}
 Widget defaultTapBarItem(
     {required List<String>? items,
     final Function? onTapItem,
@@ -29,12 +88,11 @@ Widget defaultTapBarItem(
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
-                    setState(() {
-                      selectIndex = index;
-                      if (onTapItem != null) {
-                        onTapItem!(index);
-                      }
-                    });
+                    selectIndex = index;
+                    if (onTapItem != null) {
+                      onTapItem!(index);
+                    }
+                    setState((){});
                   },
                   child: Container(
                     height: 32,
@@ -520,7 +578,7 @@ Widget defaultFillImageAppbar({
                   bottomRight: Radius.circular(30),
                   bottomLeft: Radius.circular(30)),
               child: Image.asset(
-                "assets/png/back_ground_fill.png",
+                "assets/images/png/back_ground_fill.png",
                 fit: BoxFit.cover,
               )),
         ),

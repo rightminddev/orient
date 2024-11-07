@@ -29,7 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> initializeHomeAndSplash() async {
-    await homeViewModel.initializeHomeScreen(context);
+    if(homeViewModel.userSettings == null){
+      print("FETCHING");
+      await homeViewModel.initializeHomeScreen(context);
+    }
     if(homeViewModel.userSettings != null){
       print("Model is -> ${homeViewModel.userSettings!.name}");
     }

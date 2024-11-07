@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/modules/components/views/componenets_screen.dart';
+import 'package:orient/painter/settings_page/settings_page.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
 import 'modules/components/subviews/button_screen.dart';
@@ -57,24 +58,15 @@ class MyApp extends StatelessWidget {
       scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
     );
 
-    // return MaterialApp(
+    //  MaterialApp(
     //   title: 'Orient',
     //   restorationScopeId: 'app',
-    //   routes: {
-    //     '/buttons': (context) => const ButtonsScreen(),
-    //     '/image_with_title': (context) => const ImageWithTitleScreen(),
-    //     '/comment_widget': (context) => const CommentScreen(),
-    //     '/order_widget': (context) => const OrderScreen(),
-    //   },
-    //   supportedLocales: const [
-    //     Locale('en', 'US'),
-    //     Locale('ar', 'EG'),
-    //   ],
     //   themeMode: ThemeMode.light,
+    //   debugShowCheckedModeBanner: false,
     //   theme: AppThemeService.getTheme(isDark: false, context: context),
     //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
     //   scrollBehavior: AppScrollBehavior(),
-    //   home: const ComponenetsScreen(),
+    //   home:  SettingsPage(),
     // );
   }
 }

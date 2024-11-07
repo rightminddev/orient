@@ -7,7 +7,6 @@ import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
-import 'package:orient/modules/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';

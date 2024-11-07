@@ -194,5 +194,10 @@
   "paymentFailed" : "Payment Failed",
   "repayment" : "Repayment",
   "colorTrend" : "Color Trend",
-  "theNumberOfPaintSheetsUsedIs" : "The number of paint sheets used is"
+  "theNumberOfPaintSheetsUsedIs" : "The number of paint sheets used is",
+  "notificationsDetails" : "Notifications Details",
+  "notificationsCenter" : "Notifications Center",
+  "myGroups" : "My Groups",
+  "ratedTeam" : "ratedTeam",
+  "sendCoupon" : "Send Coupon"
 }

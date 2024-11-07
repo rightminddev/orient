@@ -31,6 +31,7 @@ class UserSettingsModel extends AppSettingsModel {
   final dynamic insuranceNumber;
   final dynamic asset;
   final Map<String, dynamic>? avFingerprint;
+  final UserTeam? userTeam;
   final Map<String, dynamic>? avFingerprintLocations;
 
   UserSettingsModel({
@@ -63,6 +64,7 @@ class UserSettingsModel extends AppSettingsModel {
     this.insuranceNumber,
     this.asset,
     this.avFingerprint,
+    this.userTeam,
     this.avFingerprintLocations,
   });
 
@@ -97,7 +99,7 @@ class UserSettingsModel extends AppSettingsModel {
       managers: json['managers'] as Map<String, dynamic>?,
       teamleaders: json['teamleaders'] as Map<String, dynamic>?,
       approvalOfSubDepartments:
-          json['approval_of_sub_departments'] as List<dynamic>?,
+      json['approval_of_sub_departments'] as List<dynamic>?,
       isManagerIn: json['is_manager_in'] as List<dynamic>?,
       isTeamleaderIn: json['is_teamleader_in'] as List<dynamic>?,
       topManagement: json['top_management'] as bool?,
@@ -111,10 +113,13 @@ class UserSettingsModel extends AppSettingsModel {
       insuranceNumber: json['insurance_number'],
       asset: json['asset'],
       avFingerprint: json['av_fingerprint'] as Map<String, dynamic>?,
-      avFingerprintLocations:
-          json['av_fingerprint_locations'] as Map<String, dynamic>?,
+      userTeam: json['user_team'] != null
+          ? UserTeam.fromJson(json['user_team'])
+          : null,
+      avFingerprintLocations: json['av_fingerprint_locations'] as Map<String, dynamic>?,
     );
   }
+
 
   @override
   Map<String, dynamic> toJson() {
@@ -154,7 +159,37 @@ class UserSettingsModel extends AppSettingsModel {
       'insurance_number': insuranceNumber,
       'asset': asset,
       'av_fingerprint': avFingerprint,
+      'user_team': userTeam?.toJson(),
       'av_fingerprint_locations': avFingerprintLocations,
+    };
+  }
+}
+class UserTeam {
+  final int? id;
+  final String? name;
+  final String? about;
+  final int? points;
+  final String? permssion;
+
+  UserTeam({this.id, this.name, this.about, this.points, this.permssion,});
+
+  factory UserTeam.fromJson(Map<String, dynamic> json) {
+    return UserTeam(
+      name: json['name'],
+      id: json['id'],
+      about: json['about'],
+      points: json['points'],
+      permssion: json['permssion'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'id': id,
+      'about': about,
+      'points' : points,
+      'permssion': permssion,
     };
   }
 }

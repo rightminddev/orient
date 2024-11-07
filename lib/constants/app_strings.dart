@@ -10,6 +10,7 @@ abstract class AppStrings {
   static const yourAccount = 'yourAccount';
   static const byEmail = 'byEmail';
   static const byPhone = 'byPhone';
+  static const ratedTeam = 'ratedTeam';
   static const yourPhone = 'yourPhone';
   static const pleaseEnterValidPhoneNumber = 'pleaseEnterValidPhoneNumber';
   static const yourEmail = 'yourEmail';
@@ -80,6 +81,7 @@ abstract class AppStrings {
   static const success = 'success';
   static const warning = 'warning';
   static const error = 'error';
+  static const sendCoupon = 'sendCoupon';
   static const informational = 'informational';
   static const failedVerificationPleaseTryLater ="failedVerificationPleaseTryLater";
   static const failedRegisterationPleaseTryAgain =
@@ -111,6 +113,7 @@ abstract class AppStrings {
   static const orderDetails = 'orderDetails';
   static const myOrders = 'myOrders';
   static const addStore = 'addStore';
+  static const notificationsCenter = 'notificationsCenter';
   static const search = 'search';
   static const editStore = 'editStore';
   static const update = 'update';
@@ -134,6 +137,7 @@ abstract class AppStrings {
   static const recommendedForYou = 'recommendedForYou';
   static const seeMore = 'seeMore';
   static const metalPaints = 'metalPaints';
+  static const notificationsDetails = 'notificationsDetails';
   static const bestOffers = 'bestOffers';
   static const shop = 'shop';
   static const productsCategory = 'productsCategory';
@@ -210,4 +214,5 @@ abstract class AppStrings {
   static const String numberOfMeters = 'numberOfMeters';
   static const String theNumberOfPaintSheetsUsedIs = 'theNumberOfPaintSheetsUsedIs';
   static const String sheets = 'sheets';
+  static const String myGroups = 'myGroups';
 }

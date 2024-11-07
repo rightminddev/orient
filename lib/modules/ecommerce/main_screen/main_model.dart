@@ -6,6 +6,7 @@ import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
 import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
+import 'package:orient/painter/settings_page/settings_page.dart';
 import '../../../routing/app_router.dart';
 import '../../home/views/home_screen.dart';
 
@@ -13,7 +14,14 @@ import '../../home/views/home_screen.dart';
 class EcommerceMainScreenViewModel extends ChangeNotifier {
   EcommerceNavbarPages currentPage = EcommerceNavbarPages.eCommerceHomeScreen;
   int get pageIndex => EcommerceNavbarPages.values.indexOf(currentPage);
-
+  List<String> navs = [
+    "assets/images/ecommerce/svg/nav1.svg",
+    "assets/images/ecommerce/svg/nav2.svg",
+    "assets/images/ecommerce/svg/nav3.svg",
+    "assets/images/ecommerce/svg/nav4.svg",
+    "assets/images/ecommerce/svg/nav5.svg",
+  ];
+  int? selectIndexs = 0;
   void initializeMainScreen({
     required BuildContext context,
     required Type currentScreen,
@@ -51,7 +59,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case EcommerceNavbarPages.eCommerceSearchScreen:
         return  ECommerceSearchScreen();
       case EcommerceNavbarPages.eCommerceMoreScreen:
-        return EcommerceMoreScreen();
+        return SettingsPage();
       default:
         return const HomeScreen();
     }

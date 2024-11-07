@@ -61,7 +61,7 @@ class _SingleCommentBottomsheetWidgetState extends State<SingleCommentBottomshee
                         color: const Color(0xffB9C0C9)),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Row(
@@ -90,7 +90,7 @@ class _SingleCommentBottomsheetWidgetState extends State<SingleCommentBottomshee
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(

@@ -7,7 +7,6 @@ import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/modules/ecommerce/cart/controller/cart_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
-import 'package:orient/modules/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';
@@ -79,7 +78,12 @@ class HomeAppbarWidget extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SvgPicture.asset("assets/images/ecommerce/svg/notification.svg"),
+                                      GestureDetector(
+                                          onTap: (){
+                                            context.pushNamed(AppRoutes.notification.name,
+                                                pathParameters: {'lang': context.locale.languageCode,});
+                                          },
+                                          child: SvgPicture.asset("assets/images/ecommerce/svg/notification.svg")),
                                       GestureDetector(
                                           onTap: (){
                                             if(values.cartModel!.cart!.items!.isNotEmpty){

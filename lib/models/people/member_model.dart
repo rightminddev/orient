@@ -5,33 +5,33 @@ import '../stores/location_type_model.dart';
 import '../teams/pivot_model.dart';
 
 class MemberModel {
-  int? id;
-  String? avatar;
-  String? name;
-  String? username;
-  String? email;
-  String? birthDay;
-  CountryKeyModel? countryKey;
-  String? phone;
-  String? roles;
-  LocationTypeModel? defaultLanguage;
-  LocationTypeModel? status;
-  String? tags;
-  int? active;
-  String? emailVerifiedAt;
-  String? createdBy;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
-  String? forgetPasswordCode;
+  var id;
+  var avatar;
+  var name;
+  var username;
+  var email;
+  var birthDay;
+  var countryKey;
+  var phone;
+  var roles;
+  var defaultLanguage;
+  var status;
+  var tags;
+  var active;
+  var emailVerifiedAt;
+  var createdBy;
+  var createdAt;
+  var updatedAt;
+  var deletedAt;
+  var forgetPasswordCode;
   bool? tfa;
-  String? googleTfaSecret;
-  String? updatedBy;
-  String? lastLogin;
-  String? phoneVerifiedAt;
-  String? socialId;
-  String? googleTfaSecretVerifiedAt;
-  String? timezone;
+  var googleTfaSecret;
+  var updatedBy;
+  var lastLogin;
+  var phoneVerifiedAt;
+  var socialId;
+  var googleTfaSecretVerifiedAt;
+  var timezone;
   List<PointsModel>? points;
   PivotModel? pivot;
 
@@ -81,17 +81,11 @@ class MemberModel {
     username = json['username'];
     email = json['email'];
     birthDay = json['birth_day'];
-    countryKey = json['country_key'] != null
-        ? CountryKeyModel.fromJson(json['country_key'])
-        : null;
+    countryKey = json['country_key'];
     phone = json['phone'];
     roles = json['roles'];
-    defaultLanguage = json['default_language'] != null
-        ? LocationTypeModel.fromJson(json['default_language'])
-        : null;
-    status = json['status'] != null
-        ? LocationTypeModel.fromJson(json['status'])
-        : null;
+    defaultLanguage = json['default_language'];
+    status = json['status'];
     tags = json['tags'];
     googleTfaSecret = json['google_tfa_secret'];
     updatedBy = json['updated_by'];
@@ -117,17 +111,11 @@ class MemberModel {
     data['username'] = username;
     data['email'] = email;
     data['birth_day'] = birthDay;
-    if (countryKey != null) {
-      data['country_key'] = countryKey!.toJson();
-    }
+    data['country_key'] = countryKey;
     data['phone'] = phone;
     data['roles'] = roles;
-    if (defaultLanguage != null) {
-      data['default_language'] = defaultLanguage!.toJson();
-    }
-    if (status != null) {
-      data['status'] = status!.toJson();
-    }
+    data['default_language'] = defaultLanguage;
+    data['status'] = status;
     data['tags'] = tags;
     data['active'] = active;
     data['email_verified_at'] = emailVerifiedAt;

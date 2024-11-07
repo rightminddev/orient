@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 class DioHelper{
   static Dio? dio;
   static initail(){
-
     dio = Dio(
         BaseOptions(
             baseUrl: "https://lab.r-m.dev/api",
@@ -64,16 +63,16 @@ class DioHelper{
       'Content-Type': 'application/json',
       'device-unique-id' : appConfigServiceProvider.deviceInformation.deviceUniqueId,
       'Authorization': 'Bearer ${appConfigServiceProvider.token}',
-
     };
     return await dio!.put(url, queryParameters: query, data: data??null);
   }
-  static Future<Response> postFormData({@required url, formdata,@required Map<String, dynamic>? query, token, @required Map<String, dynamic>? data})async{
+  static Future<Response> postFormData({@required url, context, formdata,@required Map<String, dynamic>? query, @required Map<String, dynamic>? data})async{
+    final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
     dio!.options.headers = {
       'Accept':'application/json',
       'Content-Type': 'multipart/form-data',
-      'Authorization': 'Bearer $token',
-
+      'device-unique-id' : appConfigServiceProvider.deviceInformation.deviceUniqueId,
+      'Authorization': 'Bearer ${appConfigServiceProvider.token}',
     };
     return await dio!.post(url, queryParameters: query, data: formdata);
   }

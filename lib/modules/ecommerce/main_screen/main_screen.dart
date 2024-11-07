@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
-import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
 import 'package:provider/provider.dart';
@@ -16,14 +14,7 @@ class ECommerceMainScreen extends StatefulWidget {
 }
 
 class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
-  List<String> navs = [
-    "assets/images/ecommerce/svg/nav1.svg",
-    "assets/images/ecommerce/svg/nav2.svg",
-    "assets/images/ecommerce/svg/nav3.svg",
-    "assets/images/ecommerce/svg/nav4.svg",
-    "assets/images/ecommerce/svg/nav5.svg",
-  ];
-  int? selectIndexs = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +30,12 @@ class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         child: defaultBottomNavigationBar(
-            items: navs,
-            selectIndex: selectIndexs,
+            items: viewModel.navs,
+            selectIndex: viewModel.selectIndexs,
             tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
             onTapItem: (index) {
               setState(() {
-                selectIndexs = index;
+                viewModel.selectIndexs = index;
               });
               if (index == 0) {
                 viewModel.onItemTapped(

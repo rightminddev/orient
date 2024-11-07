@@ -9,6 +9,8 @@ abstract class AppImages {
       '$_baseImagesDirectory/splash_images';
   static const String _onboardingImagesDirectory =
       '$_baseImagesDirectory/onboarding_images';
+  static const String sendNoww =
+      '$_painterMainScreenImagesDirectory/send_now.png';
   static const String _loginImagesDirectory =
       '$_baseImagesDirectory/login_images';
   static const String _homeImagesDirectory =
@@ -106,8 +108,8 @@ abstract class AppImages {
       '$_penaltiesAndRewardsImagesDirectory/reward.png';
 
   static const String storeDefault = "assets/images/store-default-image.png";
-  static const String messagesImage =
-      'assets/images/alerts_images/messages.png';
+  static const String messagesImage = 'assets/images/alerts_images/messages.png';
+  static const String messageImage = 'assets/images/alerts_images/message.svg';
   static const String circleNotification =
       '$_painterMainScreenImagesDirectory/circle_notification.png';
   static const String competition =
@@ -140,6 +142,13 @@ abstract class AppImages {
 
   static const String appBackGround =
       '$_painterMainScreenImagesDirectory/app_back_ground.svg';
+  static const String painterNav1 = '$_painterMainScreenImagesDirectory/nav1.svg';
+  static const String painterNav2 = '$_painterMainScreenImagesDirectory/nav2.svg';
+  static const String painterNav3 = '$_painterMainScreenImagesDirectory/nav3.svg';
+  static const String painterNav4 = '$_painterMainScreenImagesDirectory/nav4.svg';
+  static const String painterNav5 = '$_painterMainScreenImagesDirectory/nav5.svg';
+  static const String painterCodeLogo = '$_painterMainScreenImagesDirectory/logo.png';
+  static const String postBackGroundFill = '$_painterMainScreenImagesDirectory/post_back_ground_fill.png';
 
 //Teams images
   static const String _teamsImagesDirectory =
@@ -156,8 +165,8 @@ abstract class AppImages {
   static const String createTeam = '$_teamsImagesDirectory/create_team.svg';
   static const String info = '$_teamsImagesDirectory/info.svg';
   static const String bottomSheet = '$_teamsImagesDirectory/bottom_sheet.svg';
-  static const String gold = '$_teamsImagesDirectory/golden.png';
-  static const String sliver = '$_teamsImagesDirectory/sliver.svg';
-  static const String bronz = '$_teamsImagesDirectory/bronz.svg';
+  static const String gold = '$_teamsImagesDirectory/first.png';
+  static const String sliver = '$_teamsImagesDirectory/second.png';
+  static const String bronz = '$_teamsImagesDirectory/third.png';
   static const String ratedTeamLine = '$_teamsImagesDirectory/rated_team_line.svg';
 }

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/modules/ecommerce/single_product/controller/const.dart';
 import 'package:orient/modules/ecommerce/single_product/controller/single_product_controller.dart';
 import 'package:provider/provider.dart';
 

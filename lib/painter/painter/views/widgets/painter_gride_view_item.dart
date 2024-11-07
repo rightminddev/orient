@@ -16,7 +16,6 @@ class PainterGridViewItem extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: 120,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(

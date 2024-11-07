@@ -87,6 +87,9 @@ dependencies:
   universal_html: 2.2.4
   url_launcher: 6.3.0
   yaml: 3.1.2
+  dartz: ^0.10.1
+  flutter_widget_from_html: ^0.15.2
+  fluttertoast: ^8.2.8
 
 dev_dependencies:
   flutter_launcher_icons: 0.13.1

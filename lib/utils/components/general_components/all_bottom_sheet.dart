@@ -19,6 +19,7 @@ defaultActionBottomSheet(
       bool viewDropDownButton = false,
       String? dropDownValue,
       String? dropDownTitle,
+      bool? view = false,
       List<DropdownMenuItem<String>>? dropDownItems,
       void Function(String?)? dropDownOnChanged,
       Widget? headerIcon,
@@ -77,7 +78,7 @@ defaultActionBottomSheet(
                             color: const Color(0xffE6007E).withOpacity(0.05),
                           ),
                           child: Container(
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(5),
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(0xffE6007E),
@@ -141,7 +142,8 @@ defaultActionBottomSheet(
                         ],
                       ),
                     const SizedBox(height: 30),
-                    GestureDetector(
+                    if(view == true) const Center(child: CircularProgressIndicator(),),
+                    if(view == false)GestureDetector(
                       onTap: onTapButton,
                       child: Container(
                         height: 50,

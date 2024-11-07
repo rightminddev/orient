@@ -37,7 +37,6 @@ class AppConfigService extends ChangeNotifier {
 
   ///locale getter often used to get the current language and send it in the header of the request
   String get language => getValueString('language');
-
   ///locale setter
   set language(v) {
     if (_prefs == null) {

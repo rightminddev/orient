@@ -2,12 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
-import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
-import 'package:orient/modules/personal_profile/viewmodels/personal_profile.viewmodel.dart';
+import 'package:orient/painter/layout_page/logic/layout_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
 import 'firebase_options.dart';
@@ -19,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'modules/main_screen/view_models/main_viewmodel.dart';
+import 'painter/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'platform/platform_is.dart';
 
 GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
@@ -61,6 +61,9 @@ void main() async {
           ),
           ChangeNotifierProvider<MainScreenViewModel>(
             create: (_) => MainScreenViewModel(),
+          ),
+          ChangeNotifierProvider<PainterMainScreenViewModel>(
+            create: (_) => PainterMainScreenViewModel(),
           ),
           ChangeNotifierProvider(create: (_) => PersonalProfileViewModel()),
           ChangeNotifierProvider<EcommerceMainScreenViewModel>(

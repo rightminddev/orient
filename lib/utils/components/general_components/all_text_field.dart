@@ -21,7 +21,7 @@ Widget defaultTextFormField({
   void Function(String)? onFieldSubmitted
 }){
   return Container(
-    height: containerHeight ?? 64,
+    height: containerHeight ?? 50,
     alignment: Alignment.center,
     margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
     padding: EdgeInsets.symmetric(horizontal: 16, vertical: (maxLines! > 1) ? 16: 0),
@@ -184,7 +184,7 @@ Widget defaultDropdownField({
   required void Function(String?)? onChanged
 }){
   return  Container(
-    height: 64,
+    height: 50,
     alignment: Alignment.center,
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
     decoration: ShapeDecoration(
@@ -261,6 +261,7 @@ Widget defaultUploadLinkAndImage({
 Widget defaultTextFieldCodeSendNow({
   TextEditingController? controller,
   String? hintText,
+  String? logo,
   Widget? suffixIcon,
   String? Function(String?)? validator,
   void Function()? onTapButton,
@@ -291,6 +292,11 @@ Widget defaultTextFieldCodeSendNow({
               color: Color(0xff191C1F)
           ),
           border: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
           contentPadding:const EdgeInsets.only(top: 12),
           hintText: hintText ??'XXXX-XXXX-XXXX-XXXX',
           suffixIcon: GestureDetector(
@@ -299,7 +305,7 @@ Widget defaultTextFieldCodeSendNow({
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/svg/logo.png',
+                  logo ?? 'assets/svg/logo.png',
                   width: 20,
                   height: 20,
                 ),

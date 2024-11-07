@@ -194,5 +194,10 @@
   "type" : "النوع",
   "colorTrend" : "اتجاه اللون",
   "all" : "الكل",
-  "theNumberOfPaintSheetsUsedIs" : "عدد صفائح الطلاء المستخدمة هو"
+  "theNumberOfPaintSheetsUsedIs" : "عدد صفائح الطلاء المستخدمة هو",
+  "notificationsDetails" : "تفاصيل الاشعارات",
+  "notificationsCenter" : "مركز الاشعارات",
+  "myGroups" : "مجموعاتي",
+  "ratedTeam" : "تقييم الفريق",
+  "sendCoupon" : "إرسال الكوبون"
 }

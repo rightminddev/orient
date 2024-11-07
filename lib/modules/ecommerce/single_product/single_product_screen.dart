@@ -48,7 +48,7 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CachedNetworkImage(
-                        height: 270,
+                        height: 350,
                         width: double.infinity,
                         imageUrl:(singleProductProvider.singleProductModel!.product!.mainCover!.isNotEmpty)? "${singleProductProvider.singleProductModel!.product!.mainCover![0].file}" : "",
                         fit: BoxFit.cover,

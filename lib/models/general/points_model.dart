@@ -1,15 +1,15 @@
 class PointsModel {
-  int? id;
-  int? userId;
-  String? title;
-  String? type;
-  String? operation;
-  int? points;
-  String? data;
-  int? checked;
-  String? notes;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+  var userId;
+  var title;
+  var type;
+  var operation;
+  var points;
+  var data;
+  var checked;
+  var notes;
+  var createdAt;
+  var updatedAt;
 
   PointsModel(
       {this.id,

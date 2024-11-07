@@ -1,8 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_images.dart';
+import 'package:orient/painter/points/logic/points_cubit/points_provider.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
+import 'package:provider/provider.dart';
+Widget defaultTap2BarItem(
+    {required List<String>? items,
+      final Function? onTapItem,
+      double? tapBarItemsWidth}) {
+  //var selectIndex = 0;
+  return Consumer<PointsProvider>(
+    builder: (context, provider, child) {
+      double itemWidth =
+          (tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.9) /
+              items!.length;
+      return Center(
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
+            height: 45.0,
+            width: tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.9,
+            decoration: BoxDecoration(
+                color: const Color(0xff0D3B6F),
+                borderRadius: BorderRadius.circular(25)),
+            child: ListView.builder(
+              shrinkWrap: true,
+              reverse: false,
+              scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    provider.changeIndex(index);
 
+                    if (onTapItem != null) {
+                      onTapItem!(index);
+                    }
+                  },
+                  child: Container(
+                    height: 32,
+                    width: itemWidth - 8,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: (provider.selectedIndex == index)
+                          ? const Color(0xffE6007E)
+                          : Colors.transparent,
+                    ),
+                    child: Text(
+                      items![index].toUpperCase(),
+                      style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xffFFFFFF),
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Poppins"),
+                    ),
+                  )),
+              itemCount: items!.length,
+            )),
+      );
+    },
+  );
+}
 Widget defaultTapBarItem(
     {required List<String>? items,
     final Function? onTapItem,
@@ -285,7 +343,7 @@ Widget defaultProfileContainer({
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(2),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(63),
               child: CachedNetworkImage(
@@ -458,8 +516,8 @@ Widget defaultMinImageAppbar({
     height: containerHeight ?? 298,
     decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(30),
-            bottomLeft: Radius.circular(30))),
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30))),
     width: double.infinity,
     child: Stack(
       alignment: Alignment.center,
@@ -467,31 +525,31 @@ Widget defaultMinImageAppbar({
         Positioned.fill(
           child: ClipRRect(
               borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30)),
+                  topRight: Radius.circular(30),
+                  topLeft: Radius.circular(30)),
               child: Image.asset(
-                "assets/png/background_image.png",
-                fit: BoxFit.cover,
+                "assets/images/png/back_ground_fill.png",
+                fit: BoxFit.fill,
               )),
         ),
         ClipRRect(
           borderRadius: const BorderRadius.only(
-              bottomRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30)),
+              topRight: Radius.circular(30),
+              topLeft: Radius.circular(30)),
           child: Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(30)),
+                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(30)),
                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.topRight,
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft,
                   colors: [
-                    const Color(0xFF0D3B6F), // Dark blue
-                    const Color(0xFF0D3B6F).withOpacity(0.0), // Light gray
+                    const Color(0xFF0D3B6F).withOpacity(0.8),
+                    const Color(0xFF0D3B6F).withOpacity(0.8),
                   ],
-                  stops:const [0.0, 1.0], // Control the transition
+                  stops:const [1.0, 1.0],
                 ),
               ),
             ),
@@ -511,43 +569,15 @@ Widget defaultFillImageAppbar({
             bottomRight: Radius.circular(30),
             bottomLeft: Radius.circular(30))),
     width: double.infinity,
-    child: Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned.fill(
-          child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30)),
-              child: Image.asset(
-                "assets/png/back_ground_fill.png",
-                fit: BoxFit.cover,
-              )),
-        ),
-        ClipRRect(
+    child: Positioned.fill(
+      child: ClipRRect(
           borderRadius: const BorderRadius.only(
               bottomRight: Radius.circular(30),
               bottomLeft: Radius.circular(30)),
-          child: Positioned.fill(
-            child: Container(
-              decoration:  BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(30)),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF0D3B6F).withOpacity(0.75),
-                    Colors.transparent,
-                  ],
-                  stops: [1, 1],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+          child: Image.asset(
+            "assets/images/png/point_background.png",
+            fit: BoxFit.cover,
+          )),
     ),
   );
 }

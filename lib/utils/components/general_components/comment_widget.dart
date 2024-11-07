@@ -114,7 +114,6 @@ class CommentWidget extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(width: AppSizes.s12),
           Expanded(
             child: Column(

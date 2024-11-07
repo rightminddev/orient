@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
+import 'package:orient/modules/ecommerce/single_product/controller/const.dart';
 import 'package:orient/modules/ecommerce/single_product/model/single_product_model.dart';
 
 class SingleProductProvider extends ChangeNotifier {
@@ -21,16 +22,17 @@ class SingleProductProvider extends ChangeNotifier {
  String? productReview_count ;
  String? productDecscription ;
  List productVariations = [];
- var productVariationsColor;
- var productVariationsSize;
  String? productImage ;
  List comments = [];
  List productAttributesColors = [];
  List productAttributesSizes = [];
  var count = 1;
+ var productVariationsColor;
+ var productVariationsSize;
   SingleProductModel? singleProductModel;
   int? selectColorIndex;
   void changeColorIndex(id){
+    productVariationsColor = null;
     productVariationsColor = id;
     notifyListeners();
   }
@@ -76,19 +78,19 @@ class SingleProductProvider extends ChangeNotifier {
       });
       values.data['variations'][0].forEach((e){
         if(e['attribute_id'] == 1){
-          productVariationsColor = e['option_id'];
+          productVariationsColor ??= e['option_id'];
           print("productVariationsColor ---> $productVariationsColor");
         }else if(e['attribute_id'] == 2){
-          productVariationsSize = e['option_id'];
+          productVariationsSize ??= e['option_id'];
           print("productVariationsSize ---> $productVariationsSize");
         }
       });
       values.data['variations'][1].forEach((e){
         if(e['attribute_id'] == 1){
-          productVariationsColor = e['option_id'];
+          productVariationsColor ??= e['option_id'];
           print("productVariationsColor ---> $productVariationsColor");
         }else if(e['attribute_id'] == 2){
-          productVariationsSize = e['option_id'];
+          productVariationsSize ??= e['option_id'];
           print("productVariationsSize ---> $productVariationsSize");
         }
       });

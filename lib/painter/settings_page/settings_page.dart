@@ -102,7 +102,6 @@ class SettingsPage extends StatelessWidget {
                                   ),defaultListTile(
                                       title: "Logout",
                                        onTap: ()async{
-                                            defaultGeneralSettings.features?.items = null;
                                             final appConfigService =
                                             Provider.of<AppConfigService>(context, listen: false);
                                             appConfigService.logout().then((v){

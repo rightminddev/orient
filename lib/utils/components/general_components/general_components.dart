@@ -569,15 +569,13 @@ Widget defaultFillImageAppbar({
             bottomRight: Radius.circular(30),
             bottomLeft: Radius.circular(30))),
     width: double.infinity,
-    child: Positioned.fill(
-      child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-              bottomRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30)),
-          child: Image.asset(
-            "assets/images/png/point_background.png",
-            fit: BoxFit.cover,
-          )),
-    ),
+    child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            bottomRight: Radius.circular(30),
+            bottomLeft: Radius.circular(30)),
+        child: Image.asset(
+          "assets/images/png/point_background.png",
+          fit: BoxFit.cover,
+        )),
   );
 }

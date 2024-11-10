@@ -4,11 +4,15 @@ import 'package:orient/painter/teams/services/teams.service.dart';
 
 class TeamsActionsViewModel extends ChangeNotifier {
   String? orderStatus;
-
+  String? selectNewOwner;
   bool isLoading = false;
   bool createTeamSuccess = false;
   bool joinTeamSuccess = false;
   bool leaveTeamSuccess = false;
+  void dropDownOnChanged(value){
+    selectNewOwner = value;
+    notifyListeners();
+  }
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
     notifyListeners();
@@ -120,16 +124,17 @@ class TeamsActionsViewModel extends ChangeNotifier {
   }
   
 
-  Future<void> leaveTeam(
-    BuildContext context,
-    int teamId,
-  ) async {
+  Future<void> leaveTeam({
+    BuildContext? context,
+    int? teamId,
+    int? newOwnerId,
+  }) async {
     try {
       isLoading = true;
       DioHelper.postData(url: "/rm_social/v1/team/leave",
           data: {
-            "team_id": teamId,
-            "new_owner_id": null
+        "team_id": teamId,
+ if(newOwnerId != null) "new_owner_id": newOwnerId
           }
       ).then((value){
         isLoading = false;

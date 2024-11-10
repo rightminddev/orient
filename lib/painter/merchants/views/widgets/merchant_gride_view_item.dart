@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
-import 'package:orient/painter/painter/models/gride_view_item_model.dart';
+import 'package:orient/painter/home_screen/models/gride_view_item_model.dart';
 
 class MerchantGrideViewItem extends StatelessWidget {
   final GrideViewItemModel itemModel;

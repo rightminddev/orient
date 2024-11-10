@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
@@ -5,9 +6,14 @@ import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
+import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
-class SingleListDetailsScreens extends StatelessWidget {
-  const SingleListDetailsScreens({super.key});
+class SingleListDetailsScreen extends StatelessWidget {
+  final String date;
+  final String image;
+  final String title;
+  final String contant;
+  const SingleListDetailsScreen({super.key, required this.date, required this.image, required this.title, required this.contant});
 
   @override
   Widget build(BuildContext context) {
@@ -49,42 +55,48 @@ class SingleListDetailsScreens extends StatelessWidget {
                     ),
                   ),
                   gapH16,
-                  Container(
-                    //color: Colors.amber,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppSizes.s25)),
-                    child: Image.asset(
-                      AppImages.testNotifi,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: CachedNetworkImage(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.225,
+                      fit: BoxFit.cover,
+                      imageUrl: image,
+                      placeholder: (context, url) =>
+                      const ShimmerAnimatedLoading(),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.image_not_supported_outlined,
+                        size: AppSizes.s32,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   gapH24,
-                  const Text(
-                    "22 December 2023 , 02:00pm",
-                    style: TextStyle(
+                   Text(
+                    date,
+                    style: const TextStyle(
                         fontSize: AppSizes.s10,
                         fontWeight: FontWeight.w400,
                         color: Color(AppColors.oC1Color)),
                   ),
                   gapH14,
-                  const Text(
-                    "Ramadan Kareem to you all and every year and you",
-                    style: TextStyle(
+                   Text(
+                    title,
+                    style: const TextStyle(
                         fontSize: AppSizes.s16,
                         fontWeight: FontWeight.bold,
                         color: Color(AppColors.oC1Color)),
                   ),
                   gapH14,
-                  const Text(
-                    "With a continuous effort to hold a unique leading position in the industry, Orient brings together Egyptian manufacturing and German technology to offer products that you can rely on  With a continuous\n effort to hold a unique leading position in the industry, Orient brings together Egyptian manufacturing and German technology to offer products that you can rely on andandWith a continuous effort to hold a unique leading position in the industry, Orient brings together Egyptian manufacturing and German technology to offer products that you can rely on and a name you can trust.",
-                    style: TextStyle(
+                   Text(
+                     contant,
+                    style: const TextStyle(
                         fontSize: AppSizes.s12,
                         fontWeight: FontWeight.w400,
                         height: 2,
                         color: Color(AppColors.black1Color)),
                   ),
-                  
+
                 ],
               ),
             )),

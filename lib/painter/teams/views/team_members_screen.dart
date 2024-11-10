@@ -7,6 +7,7 @@ import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart';
 import 'package:orient/painter/teams/view_models/teams.actions.viewmodel.dart';
 import 'package:orient/painter/teams/view_models/teams.viewmodel.dart';
+import 'package:orient/painter/teams/views/loading/team_memmber_loading.dart';
 import 'package:orient/painter/teams/views/widgets/custom_button_bottom_sheet.dart';
 import 'package:orient/painter/teams/views/widgets/custom_teams_appbar.dart';
 import 'package:orient/painter/teams/views/widgets/team_members_list_view_item.dart';
@@ -53,7 +54,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
             return  Scaffold(
               backgroundColor: const Color(0xffFFFFFF),
               body: (teamsViewModel.isLoading)?
-              HomeLoadingPage(viewAppbar: false)
+              TeamMemmberLoading()
                   :GradientBgImage(
                 padding: EdgeInsets.zero,
                 child: CustomScrollView(
@@ -125,20 +126,30 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                             crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                "${teamsViewModel.teamDetails.name}".toUpperCase(),
-                                                style: const TextStyle(
-                                                    fontSize: AppSizes.s20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(AppColors.textC5)),
+                                              SizedBox(
+                                                width: MediaQuery.sizeOf(context).width * 0.5,
+                                                child: Text(
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  "${teamsViewModel.teamDetails.name}".toUpperCase(),
+                                                  style: const TextStyle(
+                                                      fontSize: AppSizes.s20,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Color(AppColors.textC5)),
+                                                ),
                                               ),
                                               gapH6,
-                                              Text(
-                                                "${teamsViewModel.teamDetails.owner!.name}".toUpperCase(),
-                                                style: const TextStyle(
-                                                    fontSize: AppSizes.s14,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Color(AppColors.textC5)),
+                                              SizedBox(
+                                                width: MediaQuery.sizeOf(context).width * 0.5,
+                                                child: Text(
+                                                  "${teamsViewModel.teamDetails.owner!.name}".toUpperCase(),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      fontSize: AppSizes.s14,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Color(AppColors.textC5)),
+                                                ),
                                               ),
                                               gapH6,
                                               Text(
@@ -280,24 +291,39 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                 context: context,
                                 title: "Leave team".toLowerCase(),
                                 view: teamsActionsViewModel.isLoading,
-                                // viewDropDownButton: true,
-                                // dropDownValue: "user1",
-                                // dropDownItems: [
-                                //   DropdownMenuItem(child: Text('user1'),value: "user1",),
-                                //   DropdownMenuItem(child: Text('user2'),value: "user1",),
-                                //   DropdownMenuItem(child: Text('user3'),value: "user1",)
-                                // ],
+                                viewDropDownButton: true,
+                                dropDownOnChanged: (String? value){
+                                   teamsActionsViewModel.dropDownOnChanged(value);
+                                 },
+                                dropDownValue: teamsActionsViewModel.selectNewOwner,
+                                dropDownItems: teamsViewModel.teamDetails.members!.map((value) {
+                              return DropdownMenuItem(
+                                value: value.id.toString(),
+                                child: Text(
+                                  value.name.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color:const Color(0xff000000)
+                                          .withOpacity(0.74)),
+                                ),
+                              );
+                            }).toList(),
                                 dropDownTitle: "List of team users",
                                 onTapButton: (){
-                                  teamsActionsViewModel.leaveTeam(context, widget.id);
+                                  int? id = int.parse(teamsActionsViewModel.selectNewOwner?? '');
+                                  teamsActionsViewModel.leaveTeam(
+                                      context : context,
+                                      teamId: widget.id,
+                                      newOwnerId: id
+                                  );
                                 },
                                 headerIcon: SvgPicture.asset(
                                   "assets/images/svg/leave.svg",
                                   width: 40,
                                   height: 40,
                                 ),
-                                subTitle: "Your order will be delivered soon."
-                                    .toLowerCase(),
+                                subTitle: "Your order will be delivered soon.".toLowerCase(),
                                 buttonText: "Leave team");
                           }),
                     ],

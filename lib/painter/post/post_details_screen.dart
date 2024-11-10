@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orient/painter/core/api/api_services_implementation.dart';
 import 'package:orient/painter/post/data/repositories/post_repository/post_repository_implementation.dart';
+import 'package:orient/painter/post/loading/post_loading.dart';
 import 'package:orient/painter/post/logic/post_cubit/post_provider.dart';
 import 'package:orient/painter/post/widgets/custom_sliver_app_bar.dart';
 import 'package:orient/painter/post/widgets/custom_sliver_list.dart';
@@ -25,6 +26,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   void initState() {
     super.initState();
     postProvider = PostsProvider();
+    _scrollController = ScrollController();
     postProvider.getPosts(socialGroupId: widget.socialGroupId, context: context);
     _scrollController = ScrollController();
     _scrollController.addListener(() {
@@ -62,7 +64,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     SizedBox(
                       height:(provider.status == PostsStatus.loading)?
                       MediaQuery.sizeOf(context).height * 0.9: MediaQuery.sizeOf(context).height * 1,
-                      child: CustomScrollView(
+                      child: (provider.status == PostsStatus.loading)?
+                      const PostLoading()
+                      :CustomScrollView(
                         physics: ClampingScrollPhysics(),
                         controller: _scrollController,
                         slivers: [

@@ -6,6 +6,7 @@ import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/painter/teams/view_models/teams.viewmodel.dart';
+import 'package:orient/painter/teams/views/loading/team_screen_loading.dart';
 import 'package:orient/painter/teams/views/widgets/custom_teams_search_bar.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
@@ -89,10 +90,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                           children: [
                             CustomTeamsSearchBar(),
                             gapH16,
-                            if(viewModel.isLoading && viewModel.pageNumber == 1)const LoadingPageWidget(
-                              reverse: true,
-                              height: AppSizes.s75,
-                            ),
+                            if(viewModel.isLoading && viewModel.pageNumber == 1)const TeamScreenLoading(),
                             if (!viewModel.isLoading && viewModel.pageNumber == 1 || viewModel.pageNumber != 1 ) ListView.builder(
                               itemCount: teamsViewModel.teamsList.length,
                               shrinkWrap: true,

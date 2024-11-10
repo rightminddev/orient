@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 
@@ -5,7 +7,26 @@ class HomeModelProvider extends ChangeNotifier{
  bool isLoading = false;
  bool isSuccess = false;
  bool isError = false;
+ bool _isLoading = false;
+ bool gif = false;
  String? errorMessage = '';
+ void startLoading() {
+   _isLoading = true;
+   notifyListeners();
+   Timer(const Duration(seconds: 2), () {
+     _isLoading = false;
+     gif = true;
+     stopCoinGif();
+     notifyListeners();
+   });
+ }
+
+ stopCoinGif() {
+   return Timer(const Duration(seconds: 5), () {
+     gif = false;
+     notifyListeners();
+   });
+ }
   addRedeemGift({serial, context}){
     isLoading = true;
     errorMessage = null;

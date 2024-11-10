@@ -16,12 +16,13 @@ import 'package:provider/provider.dart';
 import '../data/repositories/redeem_prize_repository/redeem_prize_repository_implementation.dart';
 
 class SliverAppBarPoints extends StatelessWidget {
-  const SliverAppBarPoints({super.key});
+  bool arrow = true;
+  SliverAppBarPoints({required this.arrow});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeViewModel>(builder:
-    (context, value, child) {
+    return Consumer<HomeViewModel>(
+      builder: (context, value, child) {
       var balancePoints;
       var availablePoints;
       value.userSettings2!.balance!.forEach((key, balance) {
@@ -40,13 +41,15 @@ class SliverAppBarPoints extends StatelessWidget {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.white,
+          icon: Icon(
+             Icons.arrow_back_ios_new_rounded,
+            color:(arrow == true)? Colors.white : Colors.transparent,
             size: 18,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            if(arrow == true) {
+              Navigator.of(context).pop();
+            }else{null;}
           },
         ),
         expandedHeight: 275,

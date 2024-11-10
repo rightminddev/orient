@@ -5,22 +5,29 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
-import 'package:orient/painter/list/views/single_list_details_screen.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
 class PainterNotificationListViewItem extends StatelessWidget {
-  const PainterNotificationListViewItem({super.key});
+  final List notifications;
+  final int index;
+  const PainterNotificationListViewItem({super.key, required this.notifications, required this.index});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.pushNamed(AppRoutes.notificationDetails.name,
-            pathParameters: {'lang': context.locale.languageCode,});
+         context.pushNamed(AppRoutes.notificationDetails.name,
+            pathParameters: {'lang': context.locale.languageCode,
+              "date" : "${notifications[index]['created_at']}",
+              "image" : "${notifications[index]['main_thumbnail'][0]['file']}",
+              "title" : "${notifications[index]['title']}",
+              "contant" : "${notifications[index]['content']}"
+            });
       },
       child: Container(
-        padding: const EdgeInsetsDirectional.symmetric(horizontal: AppSizes.s15, vertical: AppSizes.s12),
+        padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: AppSizes.s15, vertical: AppSizes.s12),
         decoration: BoxDecoration(
           color: const Color(AppColors.textC5),
           borderRadius: BorderRadius.circular(AppSizes.s15),
@@ -50,7 +57,8 @@ class PainterNotificationListViewItem extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(63),
                   child: CachedNetworkImage(
-                      imageUrl: "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg",
+                      imageUrl: (notifications[index]['main_thumbnail'].isNotEmpty)?
+                      notifications[index]['main_thumbnail'][0]['file'] : "",
                       fit: BoxFit.cover,
                       height: 40,
                       width: 40,
@@ -71,7 +79,7 @@ class PainterNotificationListViewItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "10/04/2022 08:15:36 PM".toUpperCase(),
+                    "${notifications[index]['created_at']}".toUpperCase(),
                     style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -79,7 +87,7 @@ class PainterNotificationListViewItem extends StatelessWidget {
                   ),
                   gapH4,
                   Text(
-                    "Ramadan Kareem to you all and every year and you"
+                    "${notifications[index]['content']}"
                         .toUpperCase(),
                     maxLines: 2,
                     style: const TextStyle(

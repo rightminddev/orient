@@ -17,6 +17,7 @@ class _LayoutPageScreenState extends State<LayoutPageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int selectIndex = 0;
     final viewModel = Provider.of<PainterMainScreenViewModel>(context);
     viewModel.currentPage = widget.painterNavbarPages;
     return SafeArea(
@@ -32,11 +33,11 @@ class _LayoutPageScreenState extends State<LayoutPageScreen> {
           surfaceTintColor: Colors.transparent,
           child: defaultBottomNavigationBar(
               items: viewModel.navs,
-              selectIndex: viewModel.selectIndexs,
+              selectIndex: selectIndex,
               tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
               onTapItem: (index) {
                 setState(() {
-                  viewModel.selectIndexs = index;
+                  selectIndex = index;
                 });
                 if (index == 0) {
                   viewModel.onItemTapped(

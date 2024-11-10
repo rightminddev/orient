@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/modules/notification/logic/notification_provider.dart';
 import 'package:orient/modules/notification/view/notification_list_view_item.dart';
+import 'package:orient/painter/home_screen/views/widgets/home_loading_page.dart';
 import 'package:orient/painter/home_screen/views/widgets/painter_gride_view.dart';
+import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
@@ -20,17 +22,12 @@ class MerchantHomeScreen extends StatelessWidget {
       create: (context) => NotificationProviderModel()..getNotification(context),
       child: Consumer<NotificationProviderModel>(
         builder: (context, notificationProviderModel, child) {
-          return Scaffold(
-            body: Container(
-              decoration: const BoxDecoration(
-                  gradient: RadialGradient(
-                      radius: 0.8,
-                      stops: [0.1, 1.0],
-                      center: Alignment.centerLeft,
-                      colors: [
-                        Color.fromRGBO(255, 0, 123, 0.10),
-                        Color.fromRGBO(0, 161, 255, 0.10)
-                      ])),
+          return (notificationProviderModel.isGetNotificationLoading)?
+          HomePainterLoadingPage()
+              :Scaffold(
+            backgroundColor: const Color(0xffFFFFFF),
+            body: GradientBgImage(
+              padding: EdgeInsets.zero,
               child: CustomScrollView(
                 slivers: [
                   // SliverAppBar for the top section (Profile, Points Earned)

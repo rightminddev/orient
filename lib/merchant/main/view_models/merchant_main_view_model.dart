@@ -47,7 +47,7 @@ class MerchantMainViewModel extends ChangeNotifier {
       case MerchantNavbarPages.merchantStoresScreen:
         return const MerchantStoresScreen();
       case MerchantNavbarPages.merchantNotifications:
-        return  NotificationScreen();
+        return  NotificationScreen(false);
       case MerchantNavbarPages.merchantMore:
         return SettingsPage();
       default:

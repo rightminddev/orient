@@ -123,7 +123,7 @@ Widget defaultBottomNavigationBar(
     {required List<String>? items,
       final Function? onTapItem,
       double? tapBarItemsWidth,
-      int? selectIndex,
+      int? selectIndex = 0,
     }) {
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
@@ -131,6 +131,7 @@ Widget defaultBottomNavigationBar(
       double itemWidth = containerWidth / items!.length * 0.9;
       double itemHeight = itemWidth * 1;
       double itemRadius = itemWidth / 2;
+      print("SELECTED => ${selectIndex}");
       return Center(
         child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7.5),
@@ -147,13 +148,11 @@ Widget defaultBottomNavigationBar(
               itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     setState(() {
-                      selectIndex = index;
+                      selectIndex = index;  // Update selectIndex here
                       if (onTapItem != null) {
-                        onTapItem!(index);
+                        onTapItem!(index);  // Call onTapItem function passed to this widget
                       }
                     });
-                    print(selectIndex);
-                    print(index);
                   },
                   child: Container(
                       width: itemWidth,

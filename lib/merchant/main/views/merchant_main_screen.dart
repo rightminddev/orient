@@ -19,6 +19,7 @@ class MerchantMainScreen extends StatefulWidget {
 }
 
 class _MerchantMainScreenState extends State<MerchantMainScreen> {
+  int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<MerchantMainViewModel>(context);
@@ -35,11 +36,11 @@ class _MerchantMainScreenState extends State<MerchantMainScreen> {
         surfaceTintColor: Colors.transparent,
         child: defaultBottomNavigationBar(
           items: viewModel.navs,
-          selectIndex: viewModel.selectIndexs,
+          selectIndex: selectIndex,
           tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
           onTapItem: (index) {
             setState(() {
-              viewModel.selectIndexs = index;
+              selectIndex = index;
             });
             if (index == 0) {
               viewModel.onItemTapped(

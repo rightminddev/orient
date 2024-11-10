@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/layout.service.dart';
+import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_images.dart';
@@ -20,10 +21,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late final OnboardingViewModel viewModel;
   late final HomeViewModel homeViewModel;
+  late final MerchantMainViewModel merchantMainViewModel;
   @override
   void initState() {
     super.initState();
     homeViewModel = HomeViewModel();
+    merchantMainViewModel = MerchantMainViewModel();
+    merchantMainViewModel.selectIndexs = 0;
     viewModel = OnboardingViewModel();
     initializeHomeAndSplash();
   }

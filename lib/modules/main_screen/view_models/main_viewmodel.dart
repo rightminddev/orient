@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/modules/notification/view/notification_screen.dart';
 import '../../../routing/app_router.dart';
 import '../../fingerprint/views/fingerprint_screen.dart';
 import '../../home/views/home_screen.dart';
 import '../../more/views/more_screen.dart';
-import '../../notifications/views/notifications_screen.dart';
 import '../../requests/views/requests_screen.dart';
 
 class MainScreenViewModel extends ChangeNotifier {
@@ -26,7 +26,7 @@ class MainScreenViewModel extends ChangeNotifier {
       case FingerprintScreen _:
         currentPage = NavbarPages.fingerprint;
         return;
-      case NotificationsScreen _:
+      case NotificationScreen _:
         currentPage = NavbarPages.notifications;
         return;
       case MoreScreen _:
@@ -47,7 +47,7 @@ class MainScreenViewModel extends ChangeNotifier {
       case NavbarPages.requests:
         return const RequestsScreen();
       case NavbarPages.notifications:
-        return const NotificationsScreen();
+        return  NotificationScreen(false);
       case NavbarPages.more:
         return const MoreScreen();
       default:

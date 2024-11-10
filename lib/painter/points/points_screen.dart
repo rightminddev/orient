@@ -13,7 +13,8 @@ import 'package:orient/utils/components/general_components/gradient_bg_image.dar
 import 'package:provider/provider.dart';
 
 class PointsScreen extends StatefulWidget {
-  const PointsScreen({super.key});
+  bool arrow;
+  PointsScreen({super.key, required this.arrow});
 
   @override
   State<PointsScreen> createState() => _PointsScreenState();
@@ -32,14 +33,14 @@ class _PointsScreenState extends State<PointsScreen> {
       child: ChangeNotifierProvider(
         create: (context) => PrizeProvider(
             GetPrizeRepositoryImplementation(ApiServicesImplementation(),context)),
-        child: const Scaffold(
+        child: Scaffold(
           backgroundColor: Color(0xffFFFFFF),
           body: GradientBgImage(
             padding: EdgeInsets.zero,
             child: CustomScrollView(
               physics: ClampingScrollPhysics(),
               slivers: [
-                SliverAppBarPoints(),
+                SliverAppBarPoints(arrow: widget.arrow,),
                 SliverListPoints(),
               ],
             ),

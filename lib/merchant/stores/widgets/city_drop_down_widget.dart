@@ -111,8 +111,7 @@ class CityDropDownWidget extends StatelessWidget {
             return defaultDropdownField(
               title: AppStrings.storeCity.tr(),
               value: citySelectedValue,
-              items: cities
-                  .map(
+              items: cities.map(
                     (element) => DropdownMenuItem<String>(
                       onTap: () {
                         setCityChanged(element);

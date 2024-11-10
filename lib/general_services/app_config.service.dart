@@ -49,7 +49,6 @@ class AppConfigService extends ChangeNotifier {
 
   ///access token getter
   String get token => getValueString('token');
-
   /// setter method to set the access token status with optional parameter [notify] set it true if you wanna to notify all application and route system.
   Future<void> setToken(v, {bool? notify = false}) async {
     if (_prefs == null) {
@@ -370,5 +369,17 @@ class AppConfigService extends ChangeNotifier {
   /// get data localy
   bool getValueBool(dynamic key) {
     return _prefs?.getBool(key.toString()) ?? false;
+  }
+  Future<void> clearToken({bool? notify = true}) async {
+    if (_prefs == null) await init();
+    await _prefs?.remove('token');
+    if (notify == true) {
+      notifyListeners();
+    }
+  }
+  Future<void> logout() async {
+    await clearToken();
+    await setIsLogin(false);
+    debugPrint('User has been logged out, and token is cleared.');
   }
 }

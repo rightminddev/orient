@@ -87,7 +87,7 @@ class PainterMainScreenViewModel extends ChangeNotifier {
       case PainterNavbarPages.painterTeamsScreen:
         return TeamsScreen();
       case PainterNavbarPages.painterPointsScreen:
-        return  PointsScreen();
+        return  PointsScreen(arrow: false,);
       case PainterNavbarPages.painterProfileScreen:
         return SettingsPage();
       default:

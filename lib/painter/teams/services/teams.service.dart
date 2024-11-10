@@ -91,7 +91,7 @@ abstract class TeamsService {
   static Future<OperationResult<Map<String, dynamic>>> leaveTeam({
     required BuildContext context,
     required int teamId,
-    required int newOwnerId,
+    int? newOwnerId,
   }) async {
     final String url =
         EndpointServices.getApiEndpoint(EndpointsNames.leaveTeam).url;

@@ -1,8 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/settings/default_general_settings.dart';
+import 'package:orient/general_services/app_config.service.dart';
+import 'package:orient/models/settings/general_settings.model.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
 
@@ -78,7 +84,6 @@ class SettingsPage extends StatelessWidget {
                                       title: "Customize notifications",
                                       src: "assets/images/svg/s1.svg"
                                   ),
-
                                   defaultListTile(
                                       title: "Language settings",
                                       src: "assets/images/svg/s2.svg"
@@ -96,6 +101,15 @@ class SettingsPage extends StatelessWidget {
                                       src: "assets/images/svg/s6.svg"
                                   ),defaultListTile(
                                       title: "Logout",
+                                       onTap: ()async{
+                                            defaultGeneralSettings.features?.items = null;
+                                            final appConfigService =
+                                            Provider.of<AppConfigService>(context, listen: false);
+                                            appConfigService.logout().then((v){
+                                              context.goNamed(AppRoutes.splash.name,
+                                                  pathParameters: {'lang': context.locale.languageCode});
+                                            });
+                                         },
                                       src: "assets/images/svg/s7.svg"
                                   ),
                                 ],

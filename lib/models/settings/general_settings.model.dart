@@ -314,7 +314,7 @@ class FeatureItem {
 
 class Features {
   final String? date;
-  final List<FeatureItem>? items;
+  late final List<FeatureItem>? items;
 
   Features({this.date, this.items});
 

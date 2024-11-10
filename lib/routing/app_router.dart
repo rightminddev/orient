@@ -17,8 +17,8 @@ import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
 import 'package:orient/painter/group_page/groups_page.dart';
-import 'package:orient/painter/home_screen/views/single_list_details_screen.dart';
-import 'package:orient/painter/home_screen/views/widgets/notification_screen.dart';
+import 'package:orient/modules/notification/view/notification_details_screen.dart';
+import 'package:orient/modules/notification/view/notification_screen.dart';
 import 'package:orient/painter/layout_page/layout_page.dart';
 import 'package:orient/painter/points/points_screen.dart';
 import 'package:orient/painter/post/add_post_screen.dart';
@@ -95,7 +95,9 @@ enum AppRoutes {
   painterLayOutScreen,
   painterHomeScreen,
   painterMyGroupsScreen,
+  painterViewMyGroupsScreen,
   painterTeamsScreen,
+  painterViewTeamsScreen,
   painterCreateTeamsScreen,
   painterMemberTeamsScreen,
   painterRatedTeamsScreen,
@@ -229,13 +231,46 @@ GoRouter goRouter(BuildContext context) => GoRouter(
       path: '/:lang/notification-screen',
       parentNavigatorKey: _rootNavigatorKey,
       name: AppRoutes.notification.name,
-      builder: (context, state) => const NotificationScreen(),
+      builder: (context, state) => NotificationScreen(),
     ),
     GoRoute(
-      path: '/:lang/notification-details-screen',
+      path: '/:lang/notification-details-screen/:title/:image/:contant/:date',
       parentNavigatorKey: _rootNavigatorKey,
       name: AppRoutes.notificationDetails.name,
-      builder: (context, state) => const SingleListDetailsScreen(),
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        final title = state.pathParameters['title'] ?? '';
+        final image = state.pathParameters['image'] ?? '';
+        final contant = state.pathParameters['contant'] ?? '';
+        final date = state.pathParameters['date'] ?? '';
+
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        // Make sure to dispose the controller after the transition is complete
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: SingleListDetailsScreen(
+            date: date,
+            title: title,
+            image: image,
+            contant: contant,
+          ),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
     ),
     GoRoute(
         path: '/:lang/onboarding-screen',
@@ -1001,37 +1036,64 @@ GoRouter goRouter(BuildContext context) => GoRouter(
               NoTransitionPage(
                 child: HomeScreen(),
               ),
-          // routes: [
-          //   GoRoute(
-          //       path: 'painter-single-list-details-screen',
-          //       parentNavigatorKey: _rootNavigatorKey,
-          //       name: AppRoutes.painterSingleListDetailsScreen.name,
-          //       pageBuilder: (context, state) {
-          //         Offset? begin = state.extra as Offset?;
-          //         final lang = state.uri.queryParameters['lang'];
-          //         if (lang != null) {
-          //           final locale = Locale(lang);
-          //           context.setLocale(locale);
-          //         }
-          //         final animationController = AnimationController(
-          //           vsync: ticker,
-          //         );
-          //         // Make sure to dispose the controller after the transition is complete
-          //         animationController.addStatusListener((status) {
-          //           if (status == AnimationStatus.completed ||
-          //               status == AnimationStatus.dismissed) {
-          //             animationController.dispose();
-          //           }
-          //         });
-          //         return AppRouterTransitions.slideTransition(
-          //           key: state.pageKey,
-          //           child: const SingleListDetailsScreen(),
-          //           animation: animationController,
-          //           begin: begin ?? const Offset(1.0, 0.0),
-          //         );
-          //       },
-          //   ),
-          // ]
+          routes: [
+            GoRoute(
+                path: 'painters-groups-view',
+                parentNavigatorKey: _rootNavigatorKey,
+                name: AppRoutes.painterViewMyGroupsScreen.name,
+                pageBuilder: (context, state) {
+                  Offset? begin = state.extra as Offset?;
+                  final lang = state.uri.queryParameters['lang'];
+                  if (lang != null) {
+                    final locale = Locale(lang);
+                    context.setLocale(locale);
+                  }
+                  final animationController = AnimationController(
+                    vsync: ticker,
+                  );
+                  // Make sure to dispose the controller after the transition is complete
+                  animationController.addStatusListener((status) {
+                    if (status == AnimationStatus.completed ||
+                        status == AnimationStatus.dismissed) {
+                      animationController.dispose();
+                    }
+                  });
+                  return AppRouterTransitions.slideTransition(
+                    key: state.pageKey,
+                    child: const GroupsPage(),
+                    animation: animationController,
+                    begin: begin ?? const Offset(1.0, 0.0),
+                  );
+                },
+            ),
+            GoRoute(
+                path: 'painters-teams-view',
+                parentNavigatorKey: _rootNavigatorKey,
+                name: AppRoutes.painterViewTeamsScreen.name,
+                pageBuilder: (context, state) {
+                  final lang = state.uri.queryParameters['lang'];
+                  if (lang != null) {
+                    final locale = Locale(lang);
+                    context.setLocale(locale);
+                  }
+                  final animationController = AnimationController(
+                    vsync: ticker,
+                  );
+                  animationController.addStatusListener((status) {
+                    if (status == AnimationStatus.completed ||
+                        status == AnimationStatus.dismissed) {
+                      animationController.dispose();
+                    }
+                  });
+                  return AppRouterTransitions.slideTransition(
+                    key: state.pageKey,
+                    child: const TeamsScreen(),
+                    animation: animationController,
+                    begin: const Offset(1.0, 0.0),
+                  );
+                },
+            ),
+          ]
         ),
         GoRoute(
             path: '/:lang/painters-groups',
@@ -1277,7 +1339,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                 });
                 return AppRouterTransitions.slideTransition(
                   key: state.pageKey,
-                  child: const PointsScreen(),
+                  child: PointsScreen(arrow: true,),
                   animation: animationController,
                   begin: const Offset(1.0, 0.0),
                 );
@@ -1308,7 +1370,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
             });
             return AppRouterTransitions.slideTransition(
               key: state.pageKey,
-              child: const PointsScreen(),
+              child: PointsScreen(arrow: false,),
               animation: animationController,
               begin: begin ?? const Offset(1.0, 0.0),
             );

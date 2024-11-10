@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NotificationScreen extends StatefulWidget {
-
+  bool viewArrow = true;
+  NotificationScreen(this.viewArrow);
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
 }

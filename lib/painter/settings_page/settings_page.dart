@@ -8,6 +8,7 @@ import 'package:orient/constants/settings/default_general_settings.dart';
 import 'package:orient/general_services/app_config.service.dart';
 import 'package:orient/models/settings/general_settings.model.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/painter/settings_page/setting_loading.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class SettingsPage extends StatelessWidget {
     return Consumer<HomeViewModel>(
       builder: (context, value, child) {
         return SafeArea(
-          child: Scaffold(
+          child: (value.userSettings != null && value.userSettings2 != null )? Scaffold(
             backgroundColor: const Color(0xffFFFFFF),
             body: GradientBgImage(
               padding: EdgeInsets.zero,
@@ -179,7 +180,7 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+          ): ShimmerLoadingSetting(),
         );
       },
     );

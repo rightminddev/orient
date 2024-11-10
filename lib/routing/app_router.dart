@@ -255,7 +255,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
       path: '/:lang/notification-screen',
       parentNavigatorKey: _rootNavigatorKey,
       name: AppRoutes.notification.name,
-      builder: (context, state) => NotificationScreen(),
+      builder: (context, state) => NotificationScreen(true),
     ),
     GoRoute(
       path: '/:lang/notification-details-screen/:title/:image/:contant/:date',
@@ -625,7 +625,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           ],
         ),
         GoRoute(
-          path: '/merchantNotifications:lang',
+          path: '/:lang/merchantNotifications',
           parentNavigatorKey: _shellNavigatorKey,
           name: AppRoutes.merchantNotifications.name,
           pageBuilder: (context, state) {
@@ -646,7 +646,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
             });
             return AppRouterTransitions.slideTransition(
               key: state.pageKey,
-              child:  NotificationScreen(),
+              child:  NotificationScreen(false),
               animation: animationController,
               begin: begin ?? const Offset(1.0, 0.0),
             );

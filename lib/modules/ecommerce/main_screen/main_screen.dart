@@ -14,8 +14,7 @@ class ECommerceMainScreen extends StatefulWidget {
 }
 
 class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
-
-
+  int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EcommerceMainScreenViewModel>(context);
@@ -31,11 +30,11 @@ class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
         surfaceTintColor: Colors.transparent,
         child: defaultBottomNavigationBar(
             items: viewModel.navs,
-            selectIndex: viewModel.selectIndexs,
+            selectIndex: selectIndex,
             tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
             onTapItem: (index) {
               setState(() {
-                viewModel.selectIndexs = index;
+                selectIndex = index;
               });
               if (index == 0) {
                 viewModel.onItemTapped(

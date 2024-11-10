@@ -3,12 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/merchant/main/subviews/merchant_home_screen.dart';
 import 'package:orient/merchant/main/subviews/merchant_stores_screen.dart';
+import '../../../painter/home_screen/views/widgets/notification_screen.dart';
+import '../../../painter/settings_page/settings_page.dart';
 import '../../../routing/app_router.dart';
 
 class MerchantMainViewModel extends ChangeNotifier {
   MerchantNavbarPages currentPage = MerchantNavbarPages.merchantHomeScreen;
   int get pageIndex => MerchantNavbarPages.values.indexOf(currentPage);
-
+  List<String> navs = [
+    "assets/images/ecommerce/svg/nav1.svg",
+    'assets/icons/store.svg',
+    "assets/images/svg/s1.svg",
+    "assets/images/svg/s5.svg",
+  ];
+  int? selectIndexs = 0;
   void initializeMainScreen({
     required BuildContext context,
     required Type currentScreen,
@@ -19,6 +27,12 @@ class MerchantMainViewModel extends ChangeNotifier {
         return;
       case MerchantStoresScreen _:
         currentPage = MerchantNavbarPages.merchantStoresScreen;
+        return;
+      case NotificationScreen _:
+        currentPage = MerchantNavbarPages.merchantNotifications;
+        return;
+      case SettingsPage _:
+        currentPage = MerchantNavbarPages.merchantMore;
         return;
       default:
         currentPage = MerchantNavbarPages.merchantHomeScreen;
@@ -32,6 +46,10 @@ class MerchantMainViewModel extends ChangeNotifier {
         return const MerchantHomeScreen();
       case MerchantNavbarPages.merchantStoresScreen:
         return const MerchantStoresScreen();
+      case MerchantNavbarPages.merchantNotifications:
+        return const NotificationScreen();
+      case MerchantNavbarPages.merchantMore:
+        return SettingsPage();
       default:
         return const MerchantHomeScreen();
     }
@@ -69,7 +87,16 @@ class MerchantMainViewModel extends ChangeNotifier {
             extra: begin,
             pathParameters: {'lang': context.locale.languageCode});
         return;
-
+      case MerchantNavbarPages.merchantNotifications:
+        context.pushReplacementNamed(AppRoutes.merchantNotifications.name,
+            extra: begin,
+            pathParameters: {'lang': context.locale.languageCode});
+        return;
+      case MerchantNavbarPages.merchantMore:
+        context.pushReplacementNamed(AppRoutes.merchantMore.name,
+            extra: begin,
+            pathParameters: {'lang': context.locale.languageCode});
+        return;
       default:
         context.pushReplacementNamed(AppRoutes.merchantHomeScreen.name,
             extra: begin,

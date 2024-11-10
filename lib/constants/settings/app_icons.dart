@@ -9,6 +9,7 @@ class AppIcons {
       'assets/icons/add-req-shopping-cart.svg';
   static const String notes = 'assets/icons/notes.svg';
   static const String bag = 'assets/icons/bag.svg';
+  static const String store = 'assets/icons/store.svg';
 
   static const String edit = 'assets/icons/edit.svg';
   static const String availableShoppingCart =

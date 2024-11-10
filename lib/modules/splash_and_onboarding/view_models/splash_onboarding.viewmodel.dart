@@ -48,6 +48,7 @@ class OnboardingViewModel extends ChangeNotifier {
     }
     return null;
   }
+
   var userSettings;
   Future<void> _initializeAppServices(
       BuildContext context, AppConfigService appConfigService) async {
@@ -72,25 +73,25 @@ class OnboardingViewModel extends ChangeNotifier {
 
       // Optional: Set application name
       appConfigService.appName =
-      await ApplicationInformationService.getAppName();
+          await ApplicationInformationService.getAppName();
 
       // Optional: Set application version
       appConfigService.appVersion =
-      await ApplicationInformationService.getAppVersion();
+          await ApplicationInformationService.getAppVersion();
 
       // Optional: Set application build number
       appConfigService.buildNumber =
-      await ApplicationInformationService.getAppBuildNumber();
+          await ApplicationInformationService.getAppBuildNumber();
 
       // Optional: Set application package name
       appConfigService.packageName =
-      await ApplicationInformationService.getAppPackageName();
+          await ApplicationInformationService.getAppPackageName();
 
       await ConnectionsService.init();
 
       await AppSettingsService.initializeGeneralSettings(
           settingType: SettingsType.startupSettings, context: context);
-      userSettings =await AppSettingsService.getSettings(
+      userSettings = await AppSettingsService.getSettings(
           settingsType: SettingsType.userSettings,
           context: context) as UserSettingsModel;
       print("UserSettingsModel----- > ${userSettings.name}");
@@ -98,7 +99,9 @@ class OnboardingViewModel extends ChangeNotifier {
       debugPrint('Error initializing app services: $e');
     }
   }
-  Future<void> initializeSplashScreen({required BuildContext context, role}) async {
+
+  Future<void> initializeSplashScreen(
+      {required BuildContext context, role}) async {
     final appConfigService =
         Provider.of<AppConfigService>(context, listen: false);
     try {
@@ -124,23 +127,25 @@ class OnboardingViewModel extends ChangeNotifier {
           } catch (ex) {
             debugPrint('Failed to send saved fingerprints to server $ex');
           }
-              // context.goNamed(AppRoutes.painterMemberTeamsScreen.name,
-              //     pathParameters: {'lang': context.locale.languageCode, 'id' : '39'});
-          if(role != null){
-            if(role!.contains('Customer')){
-              context.goNamed(AppRoutes.eCommerceHomeScreen.name,
-                  pathParameters: {'lang': context.locale.languageCode});
-            } else if(role!.contains('Merchant') || role!.contains('traders') ){
-              context.goNamed(AppRoutes.merchantHomeScreen.name,
-                  pathParameters: {'lang': context.locale.languageCode});
-            }else if(role!.contains('Painter')|| role!.contains('admin')){
-              context.goNamed(AppRoutes.painterHomeScreen.name,
-                  pathParameters: {'lang': context.locale.languageCode});
-            }else{
-              context.goNamed(AppRoutes.merchantHomeScreen.name,
-                  pathParameters: {'lang': context.locale.languageCode});
-            }
-          }
+          context.goNamed(AppRoutes.merchantHomeScreen.name, pathParameters: {
+            'lang': context.locale.languageCode,
+            //   'id': '39'
+          });
+          // if(role != null){
+          //   if(role!.contains('Customer')){
+          //     context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+          //         pathParameters: {'lang': context.locale.languageCode});
+          //   } else if(role!.contains('Merchant') || role!.contains('traders') ){
+          //     context.goNamed(AppRoutes.merchantHomeScreen.name,
+          //         pathParameters: {'lang': context.locale.languageCode});
+          //   }else if(role!.contains('Painter')|| role!.contains('admin')){
+          //     context.goNamed(AppRoutes.painterHomeScreen.name,
+          //         pathParameters: {'lang': context.locale.languageCode});
+          //   }else{
+          //     context.goNamed(AppRoutes.merchantHomeScreen.name,
+          //         pathParameters: {'lang': context.locale.languageCode});
+          //   }
+          // }
           return;
         } else {
           // check if there are features in the general setting to display it as an on boarding screen
@@ -165,7 +170,6 @@ class OnboardingViewModel extends ChangeNotifier {
           "Error in initializing splash screen: ${err.toString()} - (${t.toString()})");
     }
   }
-
 
   Future<void> _precacheImages(
       BuildContext context, List<FeatureItem> features) async {

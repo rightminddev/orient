@@ -1,16 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:orient/constants/app_images.dart';
-import 'package:orient/constants/app_sizes.dart';
-import 'package:orient/constants/app_strings.dart';
-import 'package:orient/modules/main_screen/views/widgets/custom_bottom_nav_item.widget.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:provider/provider.dart';
 import '../../../general_services/app_theme.service.dart';
 import '../view_models/merchant_main_view_model.dart';
+import 'package:orient/utils/components/general_components/general_components.dart';
 
 //MerchantMainScreen
-class MerchantMainScreen extends StatelessWidget {
+class MerchantMainScreen extends StatefulWidget {
   final MerchantNavbarPages navbarPages;
   final Widget child;
   const MerchantMainScreen({
@@ -18,57 +14,56 @@ class MerchantMainScreen extends StatelessWidget {
     required this.navbarPages,
     required this.child,
   });
+  @override
+  State<MerchantMainScreen> createState() => _MerchantMainScreenState();
+}
 
+class _MerchantMainScreenState extends State<MerchantMainScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<MerchantMainViewModel>(context);
-    viewModel.currentPage = navbarPages;
+    viewModel.currentPage = widget.navbarPages;
     return Scaffold(
       backgroundColor: AppThemeService.colorPalette.bodyBackgroundColor.color,
-      body: child,
-      bottomNavigationBar: Container(
-        color: AppThemeService.colorPalette.btmAppBarBackgroundColor.color,
-        child: Container(
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: AppThemeService.colorPalette.btmAppBarBackgroundColor.color,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: AppSizes.s10,
-                offset: const Offset(0, -2),
-              ),
-            ],
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(AppSizes.s26),
-                topLeft: Radius.circular(AppSizes.s26)),
-          ),
-          child: BottomAppBar(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                BottomNavItem(
-                  icon: AppImages.homeBottomBarIcon,
-                  label: AppStrings.home.tr(),
-                  isSelected:
-                      navbarPages == MerchantNavbarPages.merchantHomeScreen,
-                  onTap: () => viewModel.onItemTapped(
-                      context: context,
-                      page: MerchantNavbarPages.merchantHomeScreen),
-                ),
-                BottomNavItem(
-                  icon: AppImages.requestsBottomBarIcon,
-                  label: AppStrings.requests.tr(),
-                  isSelected:
-                      navbarPages == MerchantNavbarPages.merchantStoresScreen,
-                  onTap: () => viewModel.onItemTapped(
-                      context: context,
-                      page: MerchantNavbarPages.merchantStoresScreen),
-                ),
-              ],
-            ),
-          ),
+      body: widget.child,
+      bottomNavigationBar: BottomAppBar(
+        elevation: 0.0,
+        height: 115,
+        clipBehavior: Clip.none,
+        color: const Color(0xffFFFFFF),
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        child: defaultBottomNavigationBar(
+          items: viewModel.navs,
+          selectIndex: viewModel.selectIndexs,
+          tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
+          onTapItem: (index) {
+            setState(() {
+              viewModel.selectIndexs = index;
+            });
+            if (index == 0) {
+              viewModel.onItemTapped(
+                  context: context,
+                  page: MerchantNavbarPages.merchantHomeScreen);
+              print(index);
+            }
+            if (index == 1) {
+              viewModel.onItemTapped(
+                  context: context,
+                  page: MerchantNavbarPages.merchantStoresScreen);
+            }
+            if (index == 2) {
+              viewModel.onItemTapped(
+                  context: context,
+                  page: MerchantNavbarPages.merchantNotifications);
+              print(index);
+            }
+            if (index == 3) {
+              viewModel.onItemTapped(
+                  context: context, page: MerchantNavbarPages.merchantMore);
+              print(index);
+            }
+          },
         ),
       ),
     );

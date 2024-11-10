@@ -129,6 +129,10 @@ flutter:
     - assets/images/ecommerce/svg/
 
   fonts:
+    - family: NalikaSignature
+      fonts:
+        - asset: assets/fonts/NalikaSignature/NalikaSignature.otf
+        - asset: assets/fonts/NalikaSignature/NalikaSignature.ttf
     - family: Poppins
       fonts:
         - asset: assets/fonts/poppins/Poppins-Black.ttf

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:orient/merchant/main/subviews/merchant_home_screen.dart';
+import 'package:orient/merchant/main/subviews/merchant_stores_screen.dart';
+import 'package:orient/modules/notification/view/notification_screen.dart';
+import 'package:orient/painter/settings_page/settings_page.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:provider/provider.dart';
 import '../../../general_services/app_theme.service.dart';
@@ -20,13 +24,19 @@ class MerchantMainScreen extends StatefulWidget {
 
 class _MerchantMainScreenState extends State<MerchantMainScreen> {
   int selectIndex = 0;
+  final List<Widget> pages = [
+    const MerchantHomeScreen(),
+    const MerchantStoresScreen(),
+    NotificationScreen(false),
+    SettingsPage()
+  ];
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<MerchantMainViewModel>(context);
     viewModel.currentPage = widget.navbarPages;
     return Scaffold(
       backgroundColor: AppThemeService.colorPalette.bodyBackgroundColor.color,
-      body: widget.child,
+      body: pages[selectIndex],
       bottomNavigationBar: BottomAppBar(
         elevation: 0.0,
         height: 115,

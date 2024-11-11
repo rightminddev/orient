@@ -95,10 +95,12 @@ class PainterMainScreenViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> onItemTapped(
-      {required BuildContext context, required PainterNavbarPages page}) async {
+  Future<void> onItemTapped({
+    required BuildContext context,
+    required PainterNavbarPages page,
+  }) async {
     if (page == currentPage) return;
-    int oldIndex = pageIndex;
+    int oldIndex = PainterNavbarPages.values.indexOf(currentPage);
     int newIndex = PainterNavbarPages.values.indexOf(page);
     currentPage = page;
     Offset begin = (newIndex > oldIndex)
@@ -106,7 +108,16 @@ class PainterMainScreenViewModel extends ChangeNotifier {
         : const Offset(-1.0, 0.0);
     notifyListeners();
     await _pushNamedToPage(context: context, page: page, begin: begin);
-    return;
+  }
+  void onNavItemTapped(int index, context) {
+    final page = PainterNavbarPages.values[index];
+
+    if (page != currentPage) {
+      onItemTapped(
+        context: context,
+        page: page,
+      );
+    }
   }
 
   Future<void> _pushNamedToPage({

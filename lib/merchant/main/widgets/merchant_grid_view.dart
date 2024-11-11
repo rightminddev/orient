@@ -10,7 +10,6 @@ import 'package:orient/painter/home_screen/models/gride_view_item_model.dart';
 import 'package:orient/painter/home_screen/views/widgets/painter_gride_view_item.dart';
 import 'package:orient/routing/app_router.dart';
 
-
 class MerchantGridView extends StatelessWidget {
   const MerchantGridView({super.key});
 
@@ -28,7 +27,8 @@ class MerchantGridView extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   if (item.title == AppStrings.myStores.tr()) {
-                    context.goNamed(AppRoutes.merchantStoresScreen.name,
+                    context.pushReplacementNamed(
+                        AppRoutes.merchantStoresScreen.name,
                         extra: const Offset(1.0, 0.0),
                         pathParameters: {'lang': context.locale.languageCode});
                   } else {
@@ -47,16 +47,15 @@ class MerchantGridView extends StatelessWidget {
   }
 }
 
-
 List<GrideViewItemModel> merchantGrideItems = [
   GrideViewItemModel(
       image: AppIcons.store,
       title: AppStrings.myStores.tr(),
-      onTap: (){},
-      backgroundColor:  const Color(AppColors.oC1Color)),
+      onTap: () {},
+      backgroundColor: const Color(AppColors.oC1Color)),
   GrideViewItemModel(
       image: AppIcons.continueShoppingCart,
       title: AppStrings.addStore.tr(),
-      onTap: (){},
+      onTap: () {},
       backgroundColor: const Color(AppColors.oC2Color)),
 ];

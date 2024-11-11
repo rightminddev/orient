@@ -55,8 +55,7 @@ class _MerchantMainScreenState extends State<MerchantMainScreen> {
             }
             if (index == 2) {
               viewModel.onItemTapped(
-                  context: context,
-                  page: MerchantNavbarPages.merchantNotifications);
+                  context: context, page: MerchantNavbarPages.notifications);
               print(index);
             }
             if (index == 3) {

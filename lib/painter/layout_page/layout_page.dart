@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:orient/painter/group_page/groups_page.dart';
+import 'package:orient/painter/home_screen/views/painter_main_screen.dart';
 import 'package:orient/painter/layout_page/logic/layout_provider.dart';
+import 'package:orient/painter/points/points_screen.dart';
+import 'package:orient/painter/settings_page/settings_page.dart';
+import 'package:orient/painter/teams/views/teams_screen.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +20,13 @@ class LayoutPageScreen extends StatefulWidget {
 
 class _LayoutPageScreenState extends State<LayoutPageScreen> {
   int selectIndex = 0;
+  final List<Widget> pages = [
+    HomeScreen(),
+    GroupsPage(viewArrow: false,),
+    const TeamsScreen(),
+    PointsScreen(arrow: false,),
+    SettingsPage(),
+  ];
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<PainterMainScreenViewModel>(context);
@@ -22,7 +34,7 @@ class _LayoutPageScreenState extends State<LayoutPageScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffFFFFFF),
-        body: widget.child,
+        body: pages[selectIndex],
         bottomNavigationBar: BottomAppBar(
           elevation: 0.0,
           height: 115,
@@ -35,9 +47,13 @@ class _LayoutPageScreenState extends State<LayoutPageScreen> {
               selectIndex: selectIndex,
               tapBarItemsWidth: MediaQuery.sizeOf(context).width * 0.9,
               onTapItem: (index) {
+                print(index);
+                print(widget.child);
                 setState(() {
                   selectIndex = index;
                 });
+                viewModel.onNavItemTapped(index, context);
+                print("Tapped index: $index, Current page: ${viewModel.currentPage}");
                 if (index == 0) {
                   viewModel.onItemTapped(
                       context: context,

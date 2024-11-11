@@ -131,10 +131,10 @@ class OnboardingViewModel extends ChangeNotifier {
             if(role!.contains('Customer')){
               context.goNamed(AppRoutes.eCommerceHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
-            } else if(role!.contains('Merchant') || role!.contains('traders') ){
+            } else if(role!.contains('Merchant') || role!.contains('traders')|| role!.contains('admin') ){
               context.goNamed(AppRoutes.merchantHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
-            }else if(role!.contains('Painter')|| role!.contains('admin')){
+            }else if(role!.contains('Painter')){
               context.goNamed(AppRoutes.painterHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
             }else{
@@ -144,7 +144,6 @@ class OnboardingViewModel extends ChangeNotifier {
           }
           return;
         } else {
-          // check if there are features in the general setting to display it as an on boarding screen
           final features = getAllOnboardingData(context: context);
           if (features == null || features.isEmpty) {
             context.goNamed(AppRoutes.login.name,

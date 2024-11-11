@@ -220,7 +220,6 @@ class HomeScreen extends StatelessWidget {
                               }),
                             ),
                             PainterGrideView(),
-                            // Sliver for notifications
                             SliverPadding(
                               padding: const EdgeInsets.symmetric(horizontal: AppSizes.s24),
                               sliver: SliverToBoxAdapter(

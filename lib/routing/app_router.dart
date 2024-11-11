@@ -653,7 +653,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           },
         ),
         GoRoute(
-          path: '/merchantMore:lang',
+          path: '/:lang/merchantMore',
           parentNavigatorKey: _shellNavigatorKey,
           name: AppRoutes.merchantMore.name,
           pageBuilder: (context, state) {
@@ -1457,7 +1457,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           },
         ),
         GoRoute(
-          path: '/:lang/painters-settings',
+          path: '/painters-settings/:lang',
           parentNavigatorKey: _shellNavigatorKey,
           name: AppRoutes.painterProfileScreen.name,
           pageBuilder: (context, state) {

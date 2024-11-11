@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
+import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
+import 'package:orient/modules/ecommerce/search/search_screen.dart';
+import 'package:orient/modules/ecommerce/test_screen.dart';
+import 'package:orient/painter/settings_page/settings_page.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
 import 'package:provider/provider.dart';
@@ -15,12 +20,19 @@ class ECommerceMainScreen extends StatefulWidget {
 
 class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
   int selectIndex = 0;
+  final List<Widget> pages = [
+    ECommerceHomeScreen(),
+    const TestScreen(),
+    ECommerceShoppingCart(mainScreen: true,),
+    ECommerceSearchScreen(),
+    SettingsPage()
+  ];
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EcommerceMainScreenViewModel>(context);
     viewModel.currentPage = widget.ecommerceNavbarPages;
     return Scaffold(
-      body: widget.child,
+      body: pages[selectIndex],
       bottomNavigationBar: BottomAppBar(
         elevation: 0.0,
         height: 115,

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart' as locale;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/constants/app_strings.dart';
 import '../../../../../constants/app_sizes.dart';
 import '../../../../general_services/layout.service.dart';
 import '../../../../routing/app_router.dart';
@@ -80,8 +81,8 @@ class PersonalProfileHeaderWidget extends StatelessWidget {
                           ),
                         ),
                       )),
-                  const Text(
-                    'Account & Settings',
+                   Text(
+                    AppStrings.accountAndSettings.tr().toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: AppSizes.s14,

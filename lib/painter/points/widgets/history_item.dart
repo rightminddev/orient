@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/points/logic/history_cubit/history_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ class HistoryItem extends StatelessWidget {
     return Consumer<HistoryProvider>(
       builder: (context, provider, child) {
         if (provider.state == HistoryState.loading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (provider.state == HistoryState.failure) {
           return Center(
             child: Text('Error: ${provider.errorMessage}'),
@@ -79,13 +80,13 @@ class HistoryItem extends StatelessWidget {
                                   height: 8,
                                 ),
                                 Text(
-                                  e.operation == 'deposit'
-                                      ? "+${e.points} points"
-                                      : "-${e.points} points",
+                                  e.operation == AppStrings.deposit.tr()
+                                      ? "+${e.points} ${AppStrings.points.tr()}"
+                                      : "-${e.points} ${AppStrings.points.tr()}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: e.operation == 'deposit'
+                                    color: e.operation == AppStrings.deposit.tr()
                                         ? Color(0xffE6007E)
                                         : Color(0xffFF0004),
                                   ),
@@ -120,7 +121,7 @@ class HistoryItem extends StatelessWidget {
               onPressed: () {
                 provider.getHistory();
               },
-              child: Text('Load History'),
+              child: Text(AppStrings.loadHistory.tr()),
             ),
           );
         }

@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/models/people/member_model.dart';
 import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
@@ -100,7 +102,7 @@ class TeamMembersListViewItem extends StatelessWidget {
                         color: const Color(AppColors.red1Color),
                       ),
                       child: Text(
-                        "remove".toUpperCase(),
+                        AppStrings.remove.tr().toUpperCase(),
                         style: const TextStyle(
                             fontSize: AppSizes.s8,
                             fontWeight: FontWeight.w500,
@@ -114,7 +116,7 @@ class TeamMembersListViewItem extends StatelessWidget {
                           onTap: () {
                             defaultActionBottomSheet(
                                   context: context,
-                                  title: "add user".toLowerCase(),
+                                  title: AppStrings.addUser.tr().toLowerCase(),
                                   headerIcon: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SvgPicture.asset(
@@ -125,8 +127,7 @@ class TeamMembersListViewItem extends StatelessWidget {
                                     ),
                                   ),
                                   subTitle:
-                                      "Are you sure you added this user?"
-                                          .toLowerCase(),
+                                      AppStrings.areYouSureYouAddedThisUser.tr().toLowerCase(),
                                   buttonText: "Add Or Delete");
                           },
                           child: Container(
@@ -137,7 +138,7 @@ class TeamMembersListViewItem extends StatelessWidget {
                               color: const Color(AppColors.oC1Color),
                             ),
                             child: Text(
-                              "add".toUpperCase(),
+                              AppStrings.add.tr().toUpperCase(),
                               style: const TextStyle(
                                   fontSize: AppSizes.s8,
                                   fontWeight: FontWeight.w500,

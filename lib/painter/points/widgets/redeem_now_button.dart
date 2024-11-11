@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 
 
 class RedeemNowButton extends StatelessWidget {
@@ -19,7 +21,7 @@ class RedeemNowButton extends StatelessWidget {
         children: [
           Image.asset("assets/images/png/icon.png"),
           gapW4,
-          Text("Redeem Now",style: TextStyle(
+          Text(AppStrings.redeemNow.tr().toUpperCase(),style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: Colors.white,

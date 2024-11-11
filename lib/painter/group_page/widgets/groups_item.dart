@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
@@ -105,8 +106,8 @@ class GroupsItem extends StatelessWidget {
                         );
 
                       },
-                      child: const Text(
-                        'DISCOVER',
+                      child:  Text(
+                        AppStrings.discover.tr().toUpperCase(),
                         style: TextStyle(
                             fontSize: 12,
                             color: Color(0xffFFFFFF),

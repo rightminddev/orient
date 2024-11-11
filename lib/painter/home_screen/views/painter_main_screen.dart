@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/modules/notification/logic/notification_provider.dart';
 import 'package:orient/modules/notification/view/notification_list_view_item.dart';
@@ -38,7 +39,7 @@ class HomeScreen extends StatelessWidget {
             (context, notificationProviderModel, child) {
               if(homeModelProvider.isError == true){
                 Fluttertoast.showToast(
-                    msg: "This card it used try another one",
+                    msg: AppStrings.thisCardItUsedTryAnotherOne.tr(),
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
@@ -139,9 +140,9 @@ class HomeScreen extends StatelessWidget {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    const Text(
-                                                      "MY POINTS EARNED",
-                                                      style: TextStyle(
+                                                     Text(
+                                                      AppStrings.myPointsEarned.tr().toUpperCase(),
+                                                      style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500,
                                                           color: Color(AppColors.textC5)),
@@ -177,9 +178,9 @@ class HomeScreen extends StatelessWidget {
                                                           color: Color(AppColors.textC5)),
                                                     ),
                                                     gapW10,
-                                                    const Text(
-                                                      "POINTS",
-                                                      style: TextStyle(
+                                                     Text(
+                                                      AppStrings.points.tr().toUpperCase(),
+                                                      style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500,
                                                           color: Color(AppColors.textC5)),
@@ -237,7 +238,7 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         gapW8,
                                         Text(
-                                          "Lasted notifications".toUpperCase(),
+                                            AppStrings.lastedNotifications.tr().toUpperCase(),
                                           style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600,

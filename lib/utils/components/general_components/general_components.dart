@@ -148,9 +148,9 @@ Widget defaultBottomNavigationBar(
               itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     setState(() {
-                      selectIndex = index;  // Update selectIndex here
+                      selectIndex = index;
                       if (onTapItem != null) {
-                        onTapItem!(index);  // Call onTapItem function passed to this widget
+                        onTapItem!(index);
                       }
                     });
                   },

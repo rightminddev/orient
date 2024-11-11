@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/authentication/views/widgets/phone_number_field.dart';
 import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/custom_elevated_button.widget.dart';
@@ -66,7 +68,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                             notchPadding: viewModel.notchPadding,
                             notchImage: AppImages.logo,
                             title: viewModel.nameController.text,
-                            subtitle: 'Nice to Meet You'),
+                            subtitle: AppStrings.niceToMeetYou.tr()),
                   )),
             )
           ],
@@ -82,7 +84,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                             // CHANGE PHONE NUMBER
                             ...[
                               Text(
-                                'Change phone number',
+                              AppStrings.changePhoneNumber.tr(),
                                 style: textStyle,
                               ),
                               gapH18,
@@ -98,7 +100,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                 child: CustomElevatedButton(
                                     titleSize: AppSizes.s14,
                                     radius: AppSizes.s10,
-                                    title: 'Update Phone',
+                                    title: AppStrings.updatePhone.tr(),
                                     onPressed: () async =>
                                         viewModel.updateProfilePhoneNumber(
                                             context: context)),
@@ -109,7 +111,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                             // CHANGE EMAIL
                             ...[
                               Text(
-                                'Change Email',
+                                AppStrings.changeEmail.tr(),
                                 style: textStyle,
                               ),
                               gapH18,
@@ -130,7 +132,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                 child: CustomElevatedButton(
                                     radius: AppSizes.s10,
                                     titleSize: AppSizes.s14,
-                                    title: 'Update Email',
+                                    title: AppStrings.updateEmail.tr(),
                                     onPressed: () async => viewModel
                                         .updateProfileEmail(context: context)),
                               ),
@@ -139,7 +141,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                             // MAIN DATA FORM
                             ...[
                               Text(
-                                'Update Main Data',
+                                AppStrings.updateMainData.tr(),
                                 style: textStyle,
                               ),
                               Form(
@@ -224,8 +226,8 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                     TextFormField(
                                       controller: viewModel.nameController,
                                       keyboardType: TextInputType.emailAddress,
-                                      decoration: const InputDecoration(
-                                          hintText: 'Name'),
+                                      decoration:  InputDecoration(
+                                          hintText: AppStrings.name.tr()),
                                       validator: (value) =>
                                           ValidationService.validateRequired(
                                               value),
@@ -238,8 +240,8 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                       onTap: () async => await viewModel
                                           .selectBirthDate(context),
                                       controller: viewModel.birthDateController,
-                                      decoration: const InputDecoration(
-                                          hintText: 'BirthDate'),
+                                      decoration: InputDecoration(
+                                          hintText: AppStrings.birthdate.tr()),
                                       validator: (value) =>
                                           ValidationService.validateRequired(
                                               value),
@@ -250,7 +252,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                       child: CustomElevatedButton(
                                           radius: AppSizes.s10,
                                           titleSize: AppSizes.s14,
-                                          title: 'Update Profile',
+                                          title: AppStrings.updateProfile.tr(),
                                           onPressed: () async =>
                                               viewModel.updateProfileMainInfo(
                                                   context: context)),
@@ -280,7 +282,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                 width: LayoutService.getWidth(context),
                                 radius: AppSizes.s10,
                                 backgroundColor: Colors.red,
-                                title: 'Delete Your Account',
+                                title: AppStrings.deleteYourAccount.tr(),
                                 onPressed: () async => await viewModel
                                     .removeAccount(context: context),
                               ),
@@ -295,7 +297,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                 radius: AppSizes.s10,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.primary,
-                                title: 'Enable 2FA',
+                                  title: AppStrings.enable2fa.tr(),
                                 onPressed: () async => () async =>
                                     await viewModel.activate2FA(
                                         context: context),

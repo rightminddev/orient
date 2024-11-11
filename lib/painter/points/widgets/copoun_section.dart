@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,16 +24,16 @@ class CopounSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "About Points program",
-                style: TextStyle(
+                AppStrings.aboutPointsProgram.tr(),
+                style: const TextStyle(
                   fontSize: 14,
                   color: Color(0xffE6007E),
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const Text(
-                "About program I am pleased to reach out to you today to offer a job opportunity as a Surgical Nurse with us. Given your experience and outstanding skills in the field",
-                style: TextStyle(
+               Text(
+                AppStrings.aboutProgramIAmPleasedToReachOutToYouTodayToOfferAJobOpportunityAsASurgicalNurseWithUsGivenYourExperienceAndOutstandingSkillsInTheField.tr(),
+                style: const TextStyle(
                   fontSize: 12,
                   color: Color(0xff464646),
                   fontWeight: FontWeight.w400,
@@ -93,7 +94,7 @@ class CopounSection extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   if(provider.isLoading)const Center(
                     child: CircularProgressIndicator(),
                   ),

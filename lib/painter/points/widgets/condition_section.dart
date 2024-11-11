@@ -12,7 +12,7 @@ class ConditionSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final conditionProvider = Provider.of<ConditionProvider>(context);
     if (conditionProvider.isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     } else if (conditionProvider.errorMessage != null) {

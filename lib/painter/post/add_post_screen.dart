@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/painter/post/logic/post_cubit/post_provider.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
@@ -185,14 +187,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         gapH16,
                         defaultTextFormField(
                           controller: titleController,
-                          hintText: 'Title',
+                          hintText: AppStrings.title.tr(),
                         ),
                         gapH18,
                         defaultTextFormField(
                           controller: contentController,
                           maxLines: 5,
                           containerHeight: 150,
-                          hintText: 'Content',
+                          hintText: AppStrings.content.tr(),
                         ),
                         gapH18,
                         Container(
@@ -243,9 +245,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                 },
                                 child: Row(
                                   children: [
-                                    const Text(
-                                      "Upload Image",
-                                      style: TextStyle(
+                                     Text(
+                                      AppStrings.uploadImage.tr(),
+                                      style: const TextStyle(
                                           fontFamily: "Poppins",
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400,
@@ -297,7 +299,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             height: AppSizes.s24,
                           ),
                           label: Text(
-                            "Create Post".toUpperCase(),
+                            AppStrings.createPost.tr().toUpperCase(),
                             style: const TextStyle(
                                 fontSize: AppSizes.s12,
                                 fontWeight: FontWeight.w500,
@@ -362,8 +364,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text("Select Photo",
-                      style: TextStyle(
+                     Text(AppStrings.selectPhoto.tr(),
+                      style: const TextStyle(
                           fontSize: 18, color: Color(0xFF011A51)),
                     ),
                     const SizedBox(
@@ -399,8 +401,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                 ),
                               ),
                             ),
-                            const Text("Gallery",
-                              style: TextStyle(
+                             Text(AppStrings.gallery.tr(),
+                              style: const TextStyle(
                                   fontSize: 18, color: Color(0xFF011A51)),
                             ),
                           ],
@@ -434,7 +436,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                               ),
                             ),
                             Text(
-                              "Camera",
+                              AppStrings.camera.tr(),
                               style: TextStyle(fontSize: 18, color: Color(0xFF011A51)),
                             ),
                           ],

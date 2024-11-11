@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
-import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/teams/view_models/teams.actions.viewmodel.dart';
 import 'package:orient/painter/teams/view_models/teams.viewmodel.dart';
 import 'package:orient/painter/teams/views/loading/team_memmber_loading.dart';
@@ -15,7 +16,6 @@ import 'package:orient/painter/teams/views/widgets/team_memeber_request_listview
 import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
-
 import '../../../utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
 class TeamMembersScreen extends StatefulWidget {
@@ -95,7 +95,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                         Navigator.of(context).pop();
                                       },
                                       shareFun: () {},
-                                      title: "Team Members",
+                                      title: AppStrings.teamMember.tr().toUpperCase(),
                                     ),
                                     gapH36,
                                     Align(
@@ -153,7 +153,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                               ),
                                               gapH6,
                                               Text(
-                                                "${teamsViewModel.teamDetails.totalPoints} Points".toUpperCase(),
+                                                "${teamsViewModel.teamDetails.totalPoints} ${AppStrings.points.tr().toUpperCase()}".toUpperCase(),
                                                 style: const TextStyle(
                                                     fontSize: AppSizes.s12,
                                                     fontWeight: FontWeight.w500,
@@ -180,7 +180,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                           children: [
                             gapH20,
                             Text(
-                              "your team".toUpperCase(),
+                              AppStrings.yourTeam.toUpperCase(),
                               style: const TextStyle(
                                   fontSize: AppSizes.s14,
                                   fontWeight: FontWeight.w500,
@@ -200,7 +200,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                 },
                               ) : Center(
                                 child: Text(
-                                  "No Member Found!".toUpperCase(),
+                                  AppStrings.noMemberFound.tr().toUpperCase(),
                                   style: const TextStyle(
                                       fontSize: AppSizes.s14,
                                       fontWeight: FontWeight.w500,
@@ -210,8 +210,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                             ),
                             gapH18,
                             Text(
-                              "Members who would like to join your team"
-                                  .toUpperCase(),
+                                  AppStrings.membersWhoWouldLikeToJoinYourTeam.tr().toUpperCase(),
                               style: const TextStyle(
                                   fontSize: AppSizes.s13,
                                   fontWeight: FontWeight.w500,
@@ -260,12 +259,12 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                     children: [
                       CustomButtonBottomSheet(
                           image: AppImages.userJoin,
-                          title: "JOIN TEAM",
+                          title: AppStrings.joinTeam.tr().toUpperCase(),
                           backGroundColor: AppColors.oC1Color,
                           function: () {
                             defaultActionBottomSheet(
                                 context: context,
-                                title: "Join team".toLowerCase(),
+                                title:AppStrings.joinTeam.tr().toLowerCase(),
                                 view: teamsActionsViewModel.isLoading,
                                 onTapButton: (){
                                   teamsActionsViewModel.joinTeam(context, widget.id);
@@ -278,18 +277,18 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                     height: 32,
                                   ),
                                 ),
-                                subTitle: "By join to team you agree to the terms and conditions".toLowerCase(),
+                                subTitle: AppStrings.byJoinToTeamYouAgreeToTheTermsAndConditions.tr().toLowerCase(),
                                 buttonText: "Join");
                           }),
                       gapW10,
                       CustomButtonBottomSheet(
                           image: AppImages.signOut,
-                          title: "LEAVE TEAM",
+                          title: AppStrings.leaveTeam.tr().toUpperCase(),
                           backGroundColor: AppColors.red1Color,
                           function: () {
                             defaultActionBottomSheet(
                                 context: context,
-                                title: "Leave team".toLowerCase(),
+                                title: AppStrings.leaveTeam.tr().toLowerCase(),
                                 view: teamsActionsViewModel.isLoading,
                                 viewDropDownButton: true,
                                 dropDownOnChanged: (String? value){
@@ -309,7 +308,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                 ),
                               );
                             }).toList(),
-                                dropDownTitle: "List of team users",
+                                dropDownTitle: AppStrings.listOfTeamUsers.tr(),
                                 onTapButton: (){
                                   int? id = int.parse(teamsActionsViewModel.selectNewOwner?? '');
                                   teamsActionsViewModel.leaveTeam(
@@ -323,8 +322,8 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                                   width: 40,
                                   height: 40,
                                 ),
-                                subTitle: "Your order will be delivered soon.".toLowerCase(),
-                                buttonText: "Leave team");
+                                subTitle: AppStrings.yourOrderWillBeDeliveredSoon.tr().toLowerCase(),
+                                buttonText: AppStrings.leaveTeam.tr());
                           }),
                     ],
                   ),

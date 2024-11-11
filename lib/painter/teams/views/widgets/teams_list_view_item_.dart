@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/models/teams/team_model.dart';
 import 'package:orient/painter/teams/views/team_members_screen.dart';
 import 'package:orient/routing/app_router.dart';
@@ -93,7 +94,7 @@ class TeamsListViewItem extends StatelessWidget {
                     color: const Color(AppColors.oC2Color),
                   ),
                   child: Text(
-                    "More".toUpperCase(),
+                    AppStrings.more.tr().toUpperCase(),
                     style: const TextStyle(
                         fontSize: AppSizes.s8,
                         fontWeight: FontWeight.w500,

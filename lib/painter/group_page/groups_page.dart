@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 import 'data/repositories/get_social_groups_repository_implementation.dart';
 
 class GroupsPage extends StatelessWidget {
-  const GroupsPage({super.key});
+   bool viewArrow = true;
+   GroupsPage({super.key, required this.viewArrow});
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +28,17 @@ class GroupsPage extends StatelessWidget {
               padding: EdgeInsets.zero,
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 30,
+                   SizedBox(
+                    height: (viewArrow == true)? 30 : 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Color(0xff224982)),
+                     IconButton(
+                        icon: Icon(Icons.arrow_back, color: (viewArrow == true)? Color(0xff224982) : Colors.transparent),
                         onPressed: () {
-                          Navigator.pop(context);
+                          if(viewArrow == true){
+                          Navigator.pop(context);}
                         },
                       ),
                       Text(

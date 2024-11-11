@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/models/settings/user_settings_2.model.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/painter/core/api/api_services_implementation.dart';
@@ -32,8 +34,8 @@ class SliverAppBarPoints extends StatelessWidget {
       return SliverAppBar(
         elevation: 0,
         pinned: true,
-        title: const Text(
-          "My Points",
+        title:  Text(
+          AppStrings.myPoints.tr(),
           style: TextStyle(
             fontSize: 16,
             color: Colors.white,
@@ -64,11 +66,11 @@ class SliverAppBarPoints extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(flex: 2,),
-                    const Row(
+                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "My Points earned",
+                          AppStrings.myPointsEarned.tr(),
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.white,
@@ -97,8 +99,8 @@ class SliverAppBarPoints extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const TextSpan(
-                        text: "\t Points",
+                       TextSpan(
+                        text: "\t ${AppStrings.points.tr()}",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -107,7 +109,7 @@ class SliverAppBarPoints extends StatelessWidget {
                       ),
                     ])),
                     Text(
-                      "From ${balancePoints.toString()} Points",
+                      "${AppStrings.from.tr().toUpperCase()} ${balancePoints.toString()} ${AppStrings.myPoints.tr()}",
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.white,
@@ -136,7 +138,7 @@ class SliverAppBarPoints extends StatelessWidget {
                                 ChangeNotifierProvider(create: (context) => RedeemPrizeProvider(RedeemPrizeRepositoryImplementation(ApiServicesImplementation(), context))),
                               ],
                               child: StatefulBuilder(builder: (context, setState) {
-                                return const SizedBox(
+                                return  SizedBox(
                                   width: double.infinity,
                                   child: Padding(
                                     padding: EdgeInsets.all(12.0),
@@ -144,16 +146,16 @@ class SliverAppBarPoints extends StatelessWidget {
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        SizedBox(height: 5,),
-                                        BottomSheetEdge(),
-                                        SizedBox(height: 15,),
-                                        Text('REDEEM NOW',style: TextStyle(
+                                        const SizedBox(height: 5,),
+                                        const BottomSheetEdge(),
+                                        const SizedBox(height: 15,),
+                                        Text(AppStrings.redeemNow.tr().toUpperCase(),style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFFE6007E),
                                         )),
-                                        SizedBox(height: 25,),
-                                        DropDownAndButtonBottomSheet()
+                                        const SizedBox(height: 25,),
+                                        const DropDownAndButtonBottomSheet()
                                       ],
                                     ),
                                   ),

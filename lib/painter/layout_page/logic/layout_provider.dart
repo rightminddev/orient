@@ -83,7 +83,7 @@ class PainterMainScreenViewModel extends ChangeNotifier {
       case PainterNavbarPages.painterHomeScreen:
         return HomeScreen();
       case PainterNavbarPages.painterMyGroupsScreen:
-        return const GroupsPage();
+        return GroupsPage(viewArrow: false,);
       case PainterNavbarPages.painterTeamsScreen:
         return TeamsScreen();
       case PainterNavbarPages.painterPointsScreen:

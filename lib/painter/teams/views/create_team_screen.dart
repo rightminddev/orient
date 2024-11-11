@@ -1,11 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/teams/view_models/teams.actions.viewmodel.dart';
-import 'package:orient/painter/teams/views/widgets/custom_text_form_field.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +110,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
             },
             child: const Icon(Icons.arrow_back, color: Color(0XFF224982),)),
         title: Text(
-          "create team".toUpperCase(),
+          AppStrings.createTeam.tr().toUpperCase(),
           style: const TextStyle(
               fontSize: AppSizes.s16,
               fontWeight: FontWeight.w700,
@@ -133,7 +134,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
           builder: (context, teamsActionsViewModel, child) {
             if(teamsActionsViewModel.createTeamSuccess ==true){
               Fluttertoast.showToast(
-                  msg: "CREATE TEAM SUCCESSFUL",
+                  msg: AppStrings.createTeamSuccessful.tr().toUpperCase(),
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
@@ -160,17 +161,17 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                         gapH16,
                         defaultTextFormField(
                           controller: teamNameController,
-                          hintText: 'Team Name',
+                          hintText: AppStrings.teamName.tr().toUpperCase(),
                         ),
                         gapH18,
                         defaultTextFormField(
                           controller: aboutTeamController,
-                          hintText: 'About Team',
+                          hintText: AppStrings.teamAbout.tr().toUpperCase(),
                         ),
                         gapH18,
                         defaultTextFormField(
                             controller: uploadImageController,
-                            hintText: 'Upload Image',
+                            hintText: AppStrings.uploadImage.tr(),
                             suffixIcon: Padding(
                               padding: const EdgeInsets.all(14.0),
                               child: SvgPicture.asset(
@@ -193,7 +194,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                             height: AppSizes.s24,
                           ),
                           label: Text(
-                            "Create Team".toUpperCase(),
+                            AppStrings.createTeam.tr().toUpperCase(),
                             style: const TextStyle(
                                 fontSize: AppSizes.s12,
                                 fontWeight: FontWeight.w500,
@@ -225,7 +226,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
             SvgPicture.asset(AppImages.info),
             gapW8,
             Text(
-              "By creating a team you agree to the ".toUpperCase(),
+              AppStrings.byCreatingATeamYouAgreeToThe.tr().toUpperCase(),
               style: const TextStyle(
                   fontSize: AppSizes.s8,
                   fontWeight: FontWeight.w500,
@@ -236,7 +237,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                 showTermsAndConditionsBottomSheet(context);
               },
               child: Text(
-                "terms and conditions".toUpperCase(),
+                  AppStrings.termsAndConditions.tr().toUpperCase(),
                 style: const TextStyle(
                     fontSize: AppSizes.s8,
                     fontWeight: FontWeight.w500,

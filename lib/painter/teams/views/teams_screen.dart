@@ -1,16 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:orient/common_modules_widgets/loading_page.widget.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/painter/teams/view_models/teams.viewmodel.dart';
 import 'package:orient/painter/teams/views/loading/team_screen_loading.dart';
 import 'package:orient/painter/teams/views/widgets/custom_teams_search_bar.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
-import 'package:orient/utils/components/general_components/pagination_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/teams_list_view_item_.dart';
@@ -57,7 +56,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
               backgroundColor: const Color(0xffFFFFFF),
               elevation: 0.0,
               title: Text(
-                "teams".toUpperCase(),
+                  AppStrings.teams.toUpperCase(),
                 style: const TextStyle(
                     fontSize: AppSizes.s16,
                     fontWeight: FontWeight.w700,
@@ -111,8 +110,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
               ),
             ),
            floatingActionButton: (homeViewModel.userSettings?.userTeam == null)?SizedBox(
-              width: AppSizes.s70,
-              height: AppSizes.s70,
+              width: 64,
+              height: 64,
               child: FloatingActionButton.large(
                 onPressed: () {
                   context.pushNamed(AppRoutes.painterCreateTeamsScreen.name,

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/points/logic/prize_cubit/prize_provider.dart';
 import 'package:orient/painter/points/logic/redeem_prize_cubit/redeem_prize_provider.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
@@ -23,7 +25,7 @@ class _DropDownAndButtonBottomSheetState extends State<DropDownAndButtonBottomSh
         Consumer<PrizeProvider>(
           builder: (context, provider, child) {
             if (provider.isLoading == true) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -31,7 +33,7 @@ class _DropDownAndButtonBottomSheetState extends State<DropDownAndButtonBottomSh
               if (provider.prizeModel!.status == true) {
                 return defaultDropdownField(
                   value: provider.prize,
-                  title: provider.prize ?? "Choose the prize",
+                  title: provider.prize ?? AppStrings.chooseThePrize.tr(),
                     items: provider.prizeModel!.prizes!.map(
                           (e) => DropdownMenuItem(
                         value: e,
@@ -51,17 +53,17 @@ class _DropDownAndButtonBottomSheetState extends State<DropDownAndButtonBottomSh
                   },
                 );
               }  else{
-                return Text('Something went wrong');
+                return Text(AppStrings.somethingWentWrong.tr().toUpperCase());
               }
             }
 
           },
         ),
-        SizedBox(height: 30,),
+        const SizedBox(height: 30,),
         Consumer<RedeemPrizeProvider>(
           builder: (context, provider, child) {
             if (provider.status == RedeemPrizeStatus.loading) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -106,7 +108,7 @@ class _DropDownAndButtonBottomSheetState extends State<DropDownAndButtonBottomSh
                     children: [
                       Image.asset("assets/images/png/icon.png"),
                       gapW4,
-                      Text("REDEEM NOW",style: TextStyle(
+                       Text(AppStrings.redeemNow.tr().toUpperCase(),style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,

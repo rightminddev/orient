@@ -1,5 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/core/api/api_services_implementation.dart';
 import 'package:orient/painter/points/data/repositories/condition_repository/condition_repository_implementation.dart';
 import 'package:orient/painter/points/data/repositories/history_repository/get_history_repository_implementation.dart';
@@ -22,9 +23,7 @@ class SliverListPoints extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate(
                 (BuildContext context, index) {
-
               return Container(
-                // padding: EdgeInsets.symmetric(horizontal: 23, vertical: 16),
                 decoration: const BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.only(
@@ -35,15 +34,15 @@ class SliverListPoints extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 22,),
-                      defaultTap2BarItem(items: ["Coupon","Conditions","History"]),
-                      SizedBox(height: 29,),
+                      const SizedBox(height: 22,),
+                      defaultTap2BarItem(items: [AppStrings.coupon.tr(),AppStrings.conditions.tr(),AppStrings.history.tr()]),
+                      const SizedBox(height: 29,),
                       provider.selectedIndex == 0 ?
                       CopounSection() :
                       provider.selectedIndex == 1?
                       ChangeNotifierProvider(
                           create: (_) => ConditionProvider(GetConditionRepositoryImplementation(ApiServicesImplementation(), context))..getCondition(),
-                          child: ConditionSection())
+                          child: const ConditionSection())
                           :
                       ChangeNotifierProvider(
                           create: (context) => HistoryProvider(GetHistoryRepositoryImplementation(ApiServicesImplementation(), context))..getHistory(),

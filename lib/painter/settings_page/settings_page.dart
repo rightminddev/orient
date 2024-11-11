@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/default_general_settings.dart';
 import 'package:orient/general_services/app_config.service.dart';
 import 'package:orient/models/settings/general_settings.model.dart';
@@ -54,7 +55,7 @@ class SettingsPage extends StatelessWidget {
                                     GestureDetector(
                                         onTap: (){},
                                         child: Icon(Icons.arrow_back, color: Color(0xffFFFFFF),)),
-                                    Text("Account & Settings".toUpperCase(),
+                                    Text(AppStrings.accountAndSettings.tr().toUpperCase(),
                                       style: const TextStyle(
                                           color: Color(0xffFFFFFF),
                                           fontSize: 16,
@@ -82,26 +83,26 @@ class SettingsPage extends StatelessWidget {
                               child: ListView(
                                 children: [
                                   defaultListTile(
-                                      title: "Customize notifications",
+                                      title: AppStrings.customizeNotifications.tr(),
                                       src: "assets/images/svg/s1.svg"
                                   ),
                                   defaultListTile(
-                                      title: "Language settings",
+                                      title: AppStrings.languageSettings.tr(),
                                       src: "assets/images/svg/s2.svg"
                                   ),defaultListTile(
-                                      title: "Update password",
+                                      title: AppStrings.updatePassword.tr(),
                                       src: "assets/images/svg/s3.svg"
                                   ),defaultListTile(
-                                      title: "Personal info",
+                                      title: AppStrings.personalInfo.tr(),
                                       src: "assets/images/svg/s4.svg"
                                   ),defaultListTile(
-                                      title: "About Us",
+                                      title: AppStrings.aboutUs.tr(),
                                       src: "assets/images/svg/s5.svg"
                                   ),defaultListTile(
-                                      title: "Contact Us",
+                                      title: AppStrings.contactUs.tr(),
                                       src: "assets/images/svg/s6.svg"
                                   ),defaultListTile(
-                                      title: "Logout",
+                                      title: AppStrings.logout.tr(),
                                        onTap: ()async{
                                             final appConfigService =
                                             Provider.of<AppConfigService>(context, listen: false);
@@ -167,8 +168,8 @@ class SettingsPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10,),
-                        const Text("Nice to meet you",
-                          style: TextStyle(
+                         Text(AppStrings.niceToMeetYou.tr(),
+                          style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff1B1B1B)
@@ -215,7 +216,7 @@ class SettingsPage extends StatelessWidget {
               child: SvgPicture.asset(src, fit: BoxFit.scaleDown,),
             )),
         title: Text( "$title".toUpperCase(), style: TextStyle(
-            color:  Color(0xff1B1B1B).withOpacity(0.7), fontWeight: FontWeight.w500, fontSize: 12
+            color:  const Color(0xff1B1B1B).withOpacity(0.7), fontWeight: FontWeight.w500, fontSize: 12
         ),),
         trailing: SvgPicture.asset("assets/images/svg/sarrow.svg"),
         onTap: onTap ?? (){}, // Add your onTap functionality here

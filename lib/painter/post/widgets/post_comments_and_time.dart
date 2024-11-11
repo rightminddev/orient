@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/core/api/api_services_implementation.dart';
 import 'package:orient/painter/post/data/models/post_response.dart';
 import 'package:orient/painter/post/data/repositories/comment_repository/comment_repository_implementation.dart';
@@ -56,9 +58,9 @@ class PostCommentAndTime extends StatelessWidget {
                     },
                   );
                 },
-                child: const Text(
-                  "Show comments",
-                  style: TextStyle(
+                child: Text(
+                  AppStrings.showComments.tr(),
+                  style: const TextStyle(
                       fontSize: 10,
                       color: Color(0xff000000),
                       fontWeight: FontWeight.w600),

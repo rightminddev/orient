@@ -14,10 +14,9 @@ class LayoutPageScreen extends StatefulWidget {
 }
 
 class _LayoutPageScreenState extends State<LayoutPageScreen> {
-
+  int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
-    int selectIndex = 0;
     final viewModel = Provider.of<PainterMainScreenViewModel>(context);
     viewModel.currentPage = widget.painterNavbarPages;
     return SafeArea(

@@ -1140,7 +1140,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   });
                   return AppRouterTransitions.slideTransition(
                     key: state.pageKey,
-                    child: const GroupsPage(),
+                    child:  GroupsPage(viewArrow: true,),
                     animation: animationController,
                     begin: begin ?? const Offset(1.0, 0.0),
                   );
@@ -1198,7 +1198,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
               });
               return AppRouterTransitions.slideTransition(
                 key: state.pageKey,
-                child: const GroupsPage(),
+                child: GroupsPage(viewArrow: false,),
                 animation: animationController,
                 begin: begin ?? const Offset(1.0, 0.0),
               );

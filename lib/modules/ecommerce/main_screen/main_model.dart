@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/modules/eCommerce_more_screen.dart';
 import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
 import 'package:orient/modules/ecommerce/home/home_screen.dart';
+import 'package:orient/modules/ecommerce/myorder/ecommerce_order_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
 import 'package:orient/painter/settings_page/settings_page.dart';
@@ -33,8 +34,8 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case TestScreen _:
         currentPage = EcommerceNavbarPages.ecommerceTestScreen;
         return;
-      case ECommerceShoppingCart _:
-        currentPage = EcommerceNavbarPages.eCommerceShoppingCart;
+      case EcommerceOrderScreen _:
+        currentPage = EcommerceNavbarPages.eCommerceMyOrderScreen;
         return;
       case ECommerceSearchScreen _:
         currentPage = EcommerceNavbarPages.eCommerceSearchScreen;
@@ -54,8 +55,8 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
         return  ECommerceHomeScreen();
       case EcommerceNavbarPages.ecommerceTestScreen:
         return const TestScreen();
-      case EcommerceNavbarPages.eCommerceShoppingCart:
-        return ECommerceShoppingCart(mainScreen: true,);
+      case EcommerceNavbarPages.eCommerceMyOrderScreen:
+        return const EcommerceOrderScreen();
       case EcommerceNavbarPages.eCommerceSearchScreen:
         return  ECommerceSearchScreen();
       case EcommerceNavbarPages.eCommerceMoreScreen:
@@ -95,8 +96,8 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
             extra: {'offset': begin},
             pathParameters: {'lang': context.locale.languageCode});
         return;
-      case EcommerceNavbarPages.eCommerceShoppingCart:
-         context.pushReplacementNamed(AppRoutes.eCommerceShoppingCart.name,
+      case EcommerceNavbarPages.eCommerceMyOrderScreen:
+         context.pushReplacementNamed(AppRoutes.eCommerceMyOrderScreen.name,
             extra: begin,
             pathParameters: {
               'lang': context.locale.languageCode

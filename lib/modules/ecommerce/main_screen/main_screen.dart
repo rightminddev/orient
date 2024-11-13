@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
 import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
+import 'package:orient/modules/ecommerce/myorder/ecommerce_order_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
 import 'package:orient/painter/settings_page/settings_page.dart';
@@ -23,7 +24,7 @@ class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
   final List<Widget> pages = [
     ECommerceHomeScreen(),
     const TestScreen(),
-    ECommerceShoppingCart(mainScreen: true,),
+    const EcommerceOrderScreen(),
     ECommerceSearchScreen(),
     SettingsPage()
   ];
@@ -62,7 +63,7 @@ class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
               if (index == 2) {
                 viewModel.onItemTapped(
                     context: context,
-                    page: EcommerceNavbarPages.eCommerceShoppingCart);
+                    page: EcommerceNavbarPages.eCommerceMyOrderScreen);
                 print(index);
               }
               if (index == 3) {

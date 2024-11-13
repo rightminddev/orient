@@ -90,14 +90,16 @@ class _TeamsScreenState extends State<TeamsScreen> {
                             CustomTeamsSearchBar(),
                             gapH16,
                             if(viewModel.isLoading && viewModel.pageNumber == 1)const TeamScreenLoading(),
-                            if (!viewModel.isLoading && viewModel.pageNumber == 1 || viewModel.pageNumber != 1 ) ListView.builder(
+                            if (!viewModel.isLoading && homeViewModel.userSettings != null && viewModel.pageNumber == 1 || viewModel.pageNumber != 1 ) ListView.builder(
                               itemCount: teamsViewModel.teamsList.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return TeamsListViewItem(
                                     model: teamsViewModel.teamsList,
-                                    index: index
+                                    index: index,
+                                  roles: homeViewModel.userSettings!.userTeam!.permssion,
+                                  userTeamId: homeViewModel.userSettings!.userTeam!.id,
                                 );
                               },
                             ),
@@ -109,7 +111,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 ),
               ),
             ),
-           floatingActionButton: (homeViewModel.userSettings?.userTeam == null)?SizedBox(
+           floatingActionButton: (homeViewModel.userSettings != null)?(homeViewModel.userSettings?.userTeam == null)?SizedBox(
               width: 64,
               height: 64,
               child: FloatingActionButton.large(
@@ -124,7 +126,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                   color: Color(AppColors.textC5),
                 ),
               ),
-            ):const SizedBox.shrink(),
+            ):const SizedBox.shrink():const SizedBox.shrink(),
           );
         },
       )

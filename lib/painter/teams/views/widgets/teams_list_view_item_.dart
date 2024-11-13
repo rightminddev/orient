@@ -13,8 +13,10 @@ import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dar
 
 class TeamsListViewItem extends StatelessWidget {
   final List<TeamModel> model;
+  var userTeamId;
+  var roles;
   final int index;
-  TeamsListViewItem({super.key, required this.model, required this.index});
+  TeamsListViewItem({super.key, required this.model, required this.index, required this.userTeamId, required this.roles});
   @override
   Widget build(BuildContext context) {
     final team = model[index];
@@ -22,7 +24,9 @@ class TeamsListViewItem extends StatelessWidget {
       onTap: () {
         context.pushNamed(AppRoutes.painterMemberTeamsScreen.name,
             pathParameters: {'lang': context.locale.languageCode,
-              'id' : "${team.id}"
+              'id' : "${team.id}",
+              'roles' : "$roles",
+              "admin" : (userTeamId == team.id) ?"true" : "false"
             });
       },
       child: Container(
@@ -79,27 +83,19 @@ class TeamsListViewItem extends StatelessWidget {
                   )
                 ],
               ),
-              InkWell(
-                onTap: () {
-                  context.pushNamed(AppRoutes.painterMemberTeamsScreen.name,
-                      pathParameters: {'lang': context.locale.languageCode,
-                        'id' : "${team.id}"
-                      });
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppSizes.s20, vertical: 9),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.s5),
-                    color: const Color(AppColors.oC2Color),
-                  ),
-                  child: Text(
-                    AppStrings.more.tr().toUpperCase(),
-                    style: const TextStyle(
-                        fontSize: AppSizes.s8,
-                        fontWeight: FontWeight.w500,
-                        color: Color(AppColors.textC5)),
-                  ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.s20, vertical: 9),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSizes.s5),
+                  color: const Color(AppColors.oC2Color),
+                ),
+                child: Text(
+                  AppStrings.more.tr().toUpperCase(),
+                  style: const TextStyle(
+                      fontSize: AppSizes.s8,
+                      fontWeight: FontWeight.w500,
+                      color: Color(AppColors.textC5)),
                 ),
               ),
             ],

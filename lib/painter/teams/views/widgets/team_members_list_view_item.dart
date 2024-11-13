@@ -16,7 +16,7 @@ class TeamMembersListViewItem extends StatelessWidget {
   TeamMembersListViewItem({super.key, this.isAdd = false, required this.member, required this.index});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return(member![index].pivot!.status != "pending")? Container(
         margin: const EdgeInsets.symmetric(vertical: AppSizes.s8),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSizes.s5,
@@ -73,7 +73,7 @@ class TeamMembersListViewItem extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.28,
                         child: Text(
-                          "${member![index].phone}",
+                          (member![index].phone != null)?"${member![index].phone}" : "0",
                           maxLines: 1,
                           style: TextStyle(
                               fontSize: AppSizes.s12,
@@ -151,6 +151,6 @@ class TeamMembersListViewItem extends StatelessWidget {
               ),
             ),
           ],
-        ));
+        )) : const SizedBox(height: 0,);
   }
 }

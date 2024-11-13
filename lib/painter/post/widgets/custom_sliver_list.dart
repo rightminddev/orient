@@ -19,12 +19,10 @@ class CustomSliverList extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate(
                 (context, index) {
-              // Ensure listPostResponse is not empty
               if (provider.listPostResponse.isEmpty) {
                 return Center(child: Text('No posts available.'));
               }
-
-              var post = provider.listPostResponse[index];  // Use updated listPostResponse
+              var post = provider.listPostResponse[index];
               List<MediaItem> mediaItems = [
                 ...post.video.map((e) => MediaItem(url: e.file, type: MediaType.video)),
                 ...post.image.map((e) => MediaItem(url: e.file, type: MediaType.image)),

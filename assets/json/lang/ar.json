@@ -238,7 +238,12 @@
   "camera" : "الكاميره",
   "remove" : "مسح",
   "addUser" : "اضافه عضو",
+  "deleteUser" : "ازالة عضو",
   "add" : "اضف",
+  "delivered" : "تسليم",
+  "needHelp" : "احتاج مساعده",
+  "shippingCost": "تكلفة الشحن",
+  "delete" : "ازاله",
   "logout" : "تسجيل الخروج",
   "teams" : "الفريق",
   "teamName" : "اسم الفريق",
@@ -262,6 +267,7 @@
   "createTeamSuccessful" : "تم انشاء الفريق",
   "createTeam" : "انشاء فريق",
   "areYouSureYouAddedThisUser" : "هل أنت متأكد من أنك أضفت هذا المستخدم",
+  "areYouSureYouDeleteThisUser" : "هل أنت متأكد من أنك ازالة هذا المستخدم",
   "pleaseEnterAComment" : "من فضلك اكتب التعليق",
   "aboutProgramIAmPleasedToReachOutToYouTodayToOfferAJobOpportunityAsASurgicalNurseWithUsGivenYourExperienceAndOutstandingSkillsInTheField": "حول البرنامج يسعدني التواصل معكم اليوم لتقديم فرصة عمل كممرضة جراحية معنا. نظرا لخبرتك ومهاراتك المتميزة في هذا المجال"
 }

@@ -30,6 +30,7 @@ class HomeModelProvider extends ChangeNotifier{
   addRedeemGift({serial, context}){
     isLoading = true;
     errorMessage = null;
+    notifyListeners();
     DioHelper.postData(
         url: "/rm_pointsys/v1/redeem_gift_card",
         context: context,
@@ -46,6 +47,7 @@ class HomeModelProvider extends ChangeNotifier{
       isError = true;
       errorMessage = e.toString();
       print("ERROR--> $errorMessage");
+      notifyListeners();
     });
   }
 }

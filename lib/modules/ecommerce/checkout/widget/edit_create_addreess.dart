@@ -85,13 +85,8 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
         statesViewModel.initializeStates(context, country.iso2 ?? '').then((_) {
           toggleCountrySelected.value = true;
           final state = statesViewModel.states.firstWhere((element) => element.id == widget.stateIdModel);
-          stateSelected.value = state.title;
           citiesViewModel.initializeCities(context, state.id ?? 0).then((_) {
             CityModel storeCities = CityModel();
-            final cities = citiesViewModel.cities;
-            storeCities = cities.firstWhere((city) => widget.cityIdModel == city.id);
-            citySelected.value = storeCities.title;
-            toggleStateSelected.value = true;
           });
         });
       });
@@ -174,6 +169,14 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
       builder: (context, value, child) {
       return Consumer<HomeViewModel>(builder:
       (context, values, child) {
+        if(value.isAddAddressSuccess == true || value.isUpdateAddressSuccess == true){
+          print(value.isUpdateAddressSuccess);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            //Navigator.pop(context);
+            value.isAddAddressSuccess = false;
+            value.isUpdateAddressSuccess = false;
+          });
+        }
         return Form(
           key: _formKey,
           child: Column(
@@ -182,7 +185,7 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                 controller: phoneController,
                 countryCodeController: countryCodeController,
               ),
-              defaultTextFormField(hintText: AppStrings.address.tr().toUpperCase(), containerHeight: 64, controller:addressController),
+              defaultTextFormField(hintText: AppStrings.address.tr().toUpperCase(), containerHeight: 50, controller:addressController),
               const SizedBox(height: 10),
               ValueListenableBuilder(
                 valueListenable: areCountriesLoaded,

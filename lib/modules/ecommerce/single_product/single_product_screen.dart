@@ -15,6 +15,7 @@ import 'package:orient/utils/components/general_components/general_components.da
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EcommerceSingleProductDetailScreen extends StatefulWidget {
   final int id;
@@ -78,7 +79,10 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                                 items: tapBarItems,
                                 selectIndex: selectIndex,
                                 onTapItem: (index) async{
-                                  if(index == 1){
+                                  if(index == 2){
+                                    if(singleProductProvider.pdf.isNotEmpty){
+                                      await launchUrl(Uri.parse(singleProductProvider.pdf[0]['file']), mode: LaunchMode.externalApplication);
+                                    }
                                   }
                                   setState(() {
                                     selectIndex = index;

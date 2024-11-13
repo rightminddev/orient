@@ -13,6 +13,7 @@ class TeamDetailsModel {
   OwnerModel? owner;
   List<MemberModel>? members;
 
+
   TeamDetailsModel(
       {this.id,
       this.name,

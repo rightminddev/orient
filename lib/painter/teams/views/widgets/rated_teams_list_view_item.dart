@@ -51,7 +51,7 @@ class RatedTeamsListViewItem extends StatelessWidget {
                     bottomLeft: Radius.circular(40)
                 ),
                 child: CachedNetworkImage(
-                    imageUrl: (teams![index].image != [] && teams![index].image != null)?teams![index].image : "",
+                    imageUrl: (teams![index].image.isNotEmpty && teams![index].image != null)?(teams![index].image[0] != null)?teams![index].image[0].file : "":"",
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,

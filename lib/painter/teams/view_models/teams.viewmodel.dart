@@ -7,10 +7,12 @@ import '../services/teams.service.dart';
 
 class TeamsViewModel extends ChangeNotifier {
   List<TeamModel> teamsList = List.empty(growable: true);
-  TeamDetailsModel teamDetails = TeamDetailsModel();
+  TeamDetailsModel? teamDetails;
   TopRatedTeamsModel topRatedTeamsModel = TopRatedTeamsModel();
   final ScrollController controller = ScrollController();
   int pageNumber = 1;
+  List teamMembers = [];
+  List requestMembers = [];
   int count = 0;
   bool isLoading = true;
   final int expectedPageSize = 9;
@@ -85,19 +87,33 @@ class TeamsViewModel extends ChangeNotifier {
 
 
   Future<void> _getTeamDetails(BuildContext context, int teamId) async {
+    notifyListeners();
+    isLoading = true;
     try {
       final result =
           await TeamsService.getTeamDetails(context: context, teamId: teamId);
 
       if (result.success && result.data != null) {
         teamDetails = TeamDetailsModel.fromJson(result.data?['team']);
+        teamDetails!.members!.forEach((e){
+          if(e.pivot!.status == "pending"){
+            requestMembers.clear();
+            requestMembers.add(e);
+          }else{
+            teamMembers.clear();
+            teamMembers.add(e);
+          }
+        });
+        isLoading = false;
+        notifyListeners();
       }
     } catch (err, t) {
+      isLoading = false;
+      notifyListeners();
       debugPrint(
           "error while getting Employee Details  ${err.toString()} at :- $t");
     }
   }
-
   Future<void> _getTopRated(BuildContext context) async {
     try {
       final result = await TeamsService.getTopRated(context: context);

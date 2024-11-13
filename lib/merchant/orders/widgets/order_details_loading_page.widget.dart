@@ -90,7 +90,7 @@ class OrderDetailsLoadingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const ShimmerAnimatedLoading(
-                width: 100.0,
+                width: 80.0,
                 height: 104.0,
                 circularRaduis: 10,
               ),

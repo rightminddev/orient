@@ -6,6 +6,9 @@ class TeamsActionsViewModel extends ChangeNotifier {
   String? orderStatus;
   String? selectNewOwner;
   bool isLoading = false;
+  bool isApproveSuccess = false;
+  bool isRefusedSuccess = false;
+  ValueNotifier<bool> isLoadingWidget = ValueNotifier(false);
   bool createTeamSuccess = false;
   bool joinTeamSuccess = false;
   bool leaveTeamSuccess = false;
@@ -104,23 +107,28 @@ class TeamsActionsViewModel extends ChangeNotifier {
     int teamId,
     int userId,
   ) async {
-    try {
-      final result = await TeamsService.approveRequest(
-        context: context,
-        teamId: teamId,
-        userId: userId,
-      );
-
-      if (result.success && result.data != null) {
-        // (result.data?['orders'] ?? []).forEach((v) {
-        //   myOrders.add(OrderModel.fromJson(v));
-        // });
-      }
-      //debugPrint(myOrders.length.toString());
-    } catch (err, t) {
-      debugPrint(
-          "error while getting Employee Details  ${err.toString()} at :- $t");
-    }
+      isLoadingWidget.value = true;
+      notifyListeners();
+      DioHelper.postData(
+          url: "/rm_social/v1/team/approve-request",
+          context: context,
+          data: {
+            "team_id": teamId,
+            "user_id": userId
+          }
+      ).then((value){
+        if (value.data != null) {
+          print(value.data);
+          isLoadingWidget.value = false;
+        }
+        isApproveSuccess = true;
+        notifyListeners();
+      }).catchError((err){
+        isLoadingWidget.value = false;
+        notifyListeners();
+        debugPrint(
+            "error while getting Employee Details  ${err.toString()} " );
+      });
   }
   
 
@@ -166,23 +174,28 @@ class TeamsActionsViewModel extends ChangeNotifier {
     int teamId,
     int userId,
   ) async {
-    try {
-      final result = await TeamsService.deleteUser(
+    isLoadingWidget.value = true;
+    notifyListeners();
+    DioHelper.postData(
+        url: "/rm_social/v1/team/delete-member",
         context: context,
-        teamId: teamId,
-        userId: userId,
-      );
-
-      if (result.success && result.data != null) {
-        // (result.data?['orders'] ?? []).forEach((v) {
-        //   myOrders.add(OrderModel.fromJson(v));
-        // });
+        data: {
+          "team_id": teamId,
+          "user_id": userId
+        }
+    ).then((value){
+      if (value.data != null) {
+        print(value.data);
+        isLoadingWidget.value = false;
       }
-      //debugPrint(myOrders.length.toString());
-    } catch (err, t) {
+      isRefusedSuccess = true;
+      notifyListeners();
+    }).catchError((err){
+      isLoadingWidget.value = false;
+      notifyListeners();
       debugPrint(
-          "error while getting Employee Details  ${err.toString()} at :- $t");
-    }
+          "error while getting Employee Details  ${err.toString()} " );
+    });
   }
 
   Future<void> updateTeam(

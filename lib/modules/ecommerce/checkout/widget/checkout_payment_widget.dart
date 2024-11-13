@@ -17,6 +17,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
   Widget build(BuildContext context) {
     return Consumer<CheckoutControllerProvider>(
         builder: (context, value, child) {
+          print("IDS ======= ${CheckConst.selectedPaymentId}");
           return Container(
             constraints: const BoxConstraints(
               minHeight: 0,

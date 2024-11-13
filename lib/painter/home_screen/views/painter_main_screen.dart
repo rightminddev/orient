@@ -13,6 +13,7 @@ import 'package:orient/modules/notification/view/notification_list_view_item.dar
 import 'package:orient/painter/home_screen/views/home_model.dart';
 import 'package:orient/painter/home_screen/views/widgets/home_loading_page.dart';
 import 'package:orient/painter/home_screen/views/widgets/painter_gride_view.dart';
+import 'package:orient/painter/home_screen/views/widgets/upload_code_home_widget.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
@@ -50,7 +51,9 @@ class HomeScreen extends StatelessWidget {
                 homeModelProvider.isError = false;
               }
               if(homeModelProvider.isSuccess == true){
-                homeModelProvider.startLoading();
+                if(homeModelProvider.errorMessage == null){
+                  homeModelProvider.startLoading();
+                }
                 Fluttertoast.showToast(
                     msg: "${homeModelProvider.errorMessage}",
                     toastLength: Toast.LENGTH_SHORT,
@@ -64,7 +67,6 @@ class HomeScreen extends StatelessWidget {
                 homeModelProvider.isSuccess = false;
               }
               if(!value.isLoading){
-                print("IDS -> ${value.userSettings!.userTeam!.about}");
                 value.userSettings2!.balance!.forEach((key, balance) {
                   totalPoints = balance.available;
                 });
@@ -193,28 +195,7 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Positioned(
-                                      bottom: -26,
-                                      child: Opacity(
-                                          opacity: top <= 120.0 ? 0.0 : 1.0,
-                                          child: SizedBox(
-                                            width: width * 0.75,
-                                            height: AppSizes.s53,
-                                            child: defaultTextFieldCodeSendNow(
-                                              hintText: '1294-1256-5523-5520',
-                                              controller: codeController,
-                                              onTapButton: (){
-                                                homeModelProvider.addRedeemGift(
-                                                    context: context,
-                                                    serial: codeController.text
-                                                );
-                                                codeController.clear();
-                                              },
-                                              logo: AppImages.painterCodeLogo,
-                                            ),
-                                          )
-                                      ),
-                                    )
+                                    DefaultTextFieldCodeSendNow()
                                   ],
                                 );
                               }),

@@ -26,6 +26,7 @@ class SingleProductProvider extends ChangeNotifier {
  List comments = [];
  List productAttributesColors = [];
  List productAttributesSizes = [];
+ List pdf = [];
  var count = 1;
  var productVariationsColor;
  var productVariationsSize;
@@ -54,47 +55,54 @@ class SingleProductProvider extends ChangeNotifier {
          if(productVariationsSize != null) "options[2]" : productVariationsSize
         },
       );
+      if(values.data['attributes'].isNotEmpty){
+        values.data['attributes'].forEach((e){
+          if(e['slug'] == "color"){
+            productAttributesColors = e['options'];
+          }
+        });
+        values.data['attributes'].forEach((e){
+          if(e['slug'] == "wight"){
+            productAttributesSizes = e['options'];
+            print("productAttributesSizes ---> $productAttributesSizes");
+          }
+        });
+      }
+      if(values.data['variations'].isNotEmpty){
+        values.data['variations'][0].forEach((e){
+          if(e['attribute_id'] == 1){
+            productVariationsColor ??= e['option_id'];
+            print("productVariationsColor1 ---> $productVariationsColor");
+          }else if(e['attribute_id'] == 2){
+            productVariationsSize ??= e['option_id'];
+            print("productVariationsSize1 ---> $productVariationsSize");
+          }
+        });
+      }
+      if(values.data['variations'].length > 1){
+        values.data['variations'][1].forEach((e){
+          if(e['attribute_id'] == 1){
+            productVariationsColor ??= e['option_id'];
+            print("productVariationsColor2 ---> $productVariationsColor");
+          }else if(e['attribute_id'] == 2){
+            productVariationsSize ??= e['option_id'];
+            print("productVariationsSize2 ---> $productVariationsSize");
+          }
+        });
+      }
       print("VALUE ----> ${values.data}");
       singleProductModel = SingleProductModel.fromJson(values.data);
       print("CheckConst.productParentId -----> ${CheckConst.productParentId}");
       CheckConst.productParentId = values.data['product']['parent_id'];
       print("CheckConst.productParentId -----> ${CheckConst.productParentId}");
-      productVariations = values.data['variations'];
-      productName = values.data['product']['title'];
-      productDecscription = values.data['product']['description'];
-      productReview_rate = values.data['product']['review_rate'];
-      productReview_count = values.data['product']['review_count'];
-      productImage = values.data['product']['main_cover'][0]['thumbnail'];
-      values.data['attributes'].forEach((e){
-        if(e['slug'] == "color"){
-          productAttributesColors = e['options'];
-        }
-      });
-      values.data['attributes'].forEach((e){
-        if(e['slug'] == "wight"){
-          productAttributesSizes = e['options'];
-          print("productAttributesSizes ---> $productAttributesSizes");
-        }
-      });
-      values.data['variations'][0].forEach((e){
-        if(e['attribute_id'] == 1){
-          productVariationsColor ??= e['option_id'];
-          print("productVariationsColor ---> $productVariationsColor");
-        }else if(e['attribute_id'] == 2){
-          productVariationsSize ??= e['option_id'];
-          print("productVariationsSize ---> $productVariationsSize");
-        }
-      });
-      values.data['variations'][1].forEach((e){
-        if(e['attribute_id'] == 1){
-          productVariationsColor ??= e['option_id'];
-          print("productVariationsColor ---> $productVariationsColor");
-        }else if(e['attribute_id'] == 2){
-          productVariationsSize ??= e['option_id'];
-          print("productVariationsSize ---> $productVariationsSize");
-        }
-      });
-
+      if(values.data['product']['pdf'].isNotEmpty ) pdf = values.data['product']['pdf'];
+      print("PDF is $pdf");
+      if(values.data['variations']!=null)productVariations = values.data['variations'];
+      if(values.data['product']['title']!=null) productName = values.data['product']['title'];
+      if(values.data['product']['description']!=null) productDecscription = values.data['product']['description'];
+      if(values.data['product']['review_rate']!=null) productReview_rate = values.data['product']['review_rate'];
+      if(values.data['product']['review_count']!=null) productReview_count = values.data['product']['review_count'];
+      if(values.data['product']['main_cover'][0]['thumbnail']!=null) productImage = values.data['product']['main_cover'][0]['thumbnail'];
       isLoading = false;
       notifyListeners();
     } catch (e) {

@@ -64,7 +64,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     SizedBox(
                       height:(provider.status == PostsStatus.loading)?
                       MediaQuery.sizeOf(context).height * 0.9: MediaQuery.sizeOf(context).height * 1,
-                      child: (provider.status == PostsStatus.loading)?
+                      child: (provider.status == PostsStatus.loading && provider.pageNumber ==1) ?
                       const PostLoading()
                       :CustomScrollView(
                         physics: ClampingScrollPhysics(),

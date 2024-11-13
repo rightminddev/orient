@@ -5,9 +5,13 @@ abstract class AppStrings {
   static const next = 'next';
   static const skip = 'skip';
   static const type = 'type';
+  static const delivered = 'delivered';
   static const all = 'all';
+  static const delete = 'delete';
   static const loginTo = 'loginTo';
+  static const needHelp = 'needHelp';
   static const yourAccount = 'yourAccount';
+  static const shippingCost = 'shippingCost';
   static const byEmail = 'byEmail';
   static const byPhone = 'byPhone';
   static const ratedTeam = 'ratedTeam';
@@ -254,6 +258,7 @@ abstract class AppStrings {
   static const String camera = 'camera';
   static const String remove = 'remove';
   static const String addUser = 'addUser';
+  static const String deleteUser = 'deleteUser';
   static const String add = 'add';
   static const String createTeam = 'createTeam';
   static const String teamMember = 'teamMember';
@@ -278,6 +283,7 @@ abstract class AppStrings {
   static const String teamAbout = 'teamAbout';
   static const String createTeamSuccessful = 'createTeamSuccessful';
   static const String areYouSureYouAddedThisUser = 'areYouSureYouAddedThisUser';
+  static const String areYouSureYouDeleteThisUser = 'areYouSureYouDeleteThisUser';
   static const String uploadImage = 'uploadImage';
   static const String loadHistory = 'loadHistory';
   static const String aboutProgramIAmPleasedToReachOutToYouTodayToOfferAJobOpportunityAsASurgicalNurseWithUsGivenYourExperienceAndOutstandingSkillsInTheField = 'aboutProgramIAmPleasedToReachOutToYouTodayToOfferAJobOpportunityAsASurgicalNurseWithUsGivenYourExperienceAndOutstandingSkillsInTheField';

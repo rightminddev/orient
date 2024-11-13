@@ -114,7 +114,7 @@ class MerchantHomeScreen extends StatelessWidget {
                           );
                         }),
                   ),
-                  MerchantGridView(),
+                  const MerchantGridView(),
                   // Sliver for notifications
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: AppSizes.s24),

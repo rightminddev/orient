@@ -48,6 +48,7 @@ class CheckoutControllerProvider extends ChangeNotifier {
   Future<void> getPrepareCheckout({required BuildContext context}) async {
     isPrepareCheckoutLoading = true;
     errorPrepareCheckoutMessage = null;
+    CheckConst.selectedPaymentId = null;
     notifyListeners();
     try {
       var value = await DioHelper.getData(
@@ -65,7 +66,7 @@ class CheckoutControllerProvider extends ChangeNotifier {
       checkoutDiscountTotal = value.data['cart']['discount_total'];
       if(CheckConst.selectedPaymentId != null){
       }else{
-        CheckConst.selectedPaymentId = value.data['payment_methods'][0]['id'];
+        //CheckConst.selectedPaymentId = value.data['payment_methods'][0]['id'];
       }
       userAddressModel = UserAddressModel.fromJson(value.data['user_address']);
       CheckConst.userAddressModel = userAddressModel;
@@ -118,7 +119,6 @@ class CheckoutControllerProvider extends ChangeNotifier {
       );
       shippingAddresses = value.data['data'];
       isGetAddressLoading = false;
-      isAddAddressSuccess = true;
       notifyListeners();
     } catch (e) {
       isGetAddressLoading = false;
@@ -144,10 +144,10 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "user_id" : user_id
         }
       );
+      isUpdateAddressSuccess = true;
       userAddressModel!.id = id;
       userAddressModel!.address = address;
           isUpdateAddressLoading = false;
-      isUpdateAddressSuccess = true;
       notifyListeners();
     } catch (e) {
       isUpdateAddressLoading = false;

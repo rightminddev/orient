@@ -24,6 +24,7 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CheckConst.selectedPaymentId = null;
     return ChangeNotifierProvider(
       create: (context)=> CheckoutControllerProvider()..getPrepareCheckout(context: context),
       child: Consumer<CheckoutControllerProvider>(
@@ -69,7 +70,7 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
           }
           return Scaffold(
               backgroundColor: const Color(0xffFFFFFF),
-              body:(value.userAddressModel == null)?
+              body:(value.isPrepareCheckoutLoading)?
               const CheckoutScreenLoading()
                   :Container(
                     height: MediaQuery.sizeOf(context).height * 1,

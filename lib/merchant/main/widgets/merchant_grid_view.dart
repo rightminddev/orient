@@ -10,11 +10,30 @@ import 'package:orient/painter/home_screen/models/gride_view_item_model.dart';
 import 'package:orient/painter/home_screen/views/widgets/painter_gride_view_item.dart';
 import 'package:orient/routing/app_router.dart';
 
+
 class MerchantGridView extends StatelessWidget {
   const MerchantGridView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    List<GrideViewItemModel> merchantGrideItems = [
+      GrideViewItemModel(
+          image: AppIcons.store,
+          title: AppStrings.myStores.tr(),
+          onTap: (){
+            context.goNamed(AppRoutes.merchantViewStoresScreen.name,
+                pathParameters: {'lang': context.locale.languageCode});
+          },
+          backgroundColor:  const Color(AppColors.oC1Color)),
+      GrideViewItemModel(
+          image: AppIcons.continueShoppingCart,
+          title: AppStrings.addStore.tr(),
+          onTap: (){
+            context.pushNamed(AppRoutes.addStore.name,
+                pathParameters: {'lang': context.locale.languageCode});
+          },
+          backgroundColor: const Color(AppColors.oC2Color)),
+    ];
     return SliverPadding(
       padding: const EdgeInsets.only(top: AppSizes.s90, right: 24, left: 24),
       sliver: SliverGrid.count(
@@ -24,22 +43,8 @@ class MerchantGridView extends StatelessWidget {
           childAspectRatio: 1.2,
           children: [
             ...merchantGrideItems.map((item) {
-              return GestureDetector(
-                onTap: () {
-                  if (item.title == AppStrings.myStores.tr()) {
-                    context.pushReplacementNamed(
-                        AppRoutes.merchantStoresScreen.name,
-                        extra: const Offset(1.0, 0.0),
-                        pathParameters: {'lang': context.locale.languageCode});
-                  } else {
-                    context.pushNamed(AppRoutes.addStore.name,
-                        extra: const Offset(1.0, 0.0),
-                        pathParameters: {'lang': context.locale.languageCode});
-                  }
-                },
-                child: PainterGridViewItem(
-                  itemModel: item,
-                ),
+              return PainterGridViewItem(
+                itemModel: item,
               );
             })
           ]),
@@ -47,15 +52,3 @@ class MerchantGridView extends StatelessWidget {
   }
 }
 
-List<GrideViewItemModel> merchantGrideItems = [
-  GrideViewItemModel(
-      image: AppIcons.store,
-      title: AppStrings.myStores.tr(),
-      onTap: () {},
-      backgroundColor: const Color(AppColors.oC1Color)),
-  GrideViewItemModel(
-      image: AppIcons.continueShoppingCart,
-      title: AppStrings.addStore.tr(),
-      onTap: () {},
-      backgroundColor: const Color(AppColors.oC2Color)),
-];

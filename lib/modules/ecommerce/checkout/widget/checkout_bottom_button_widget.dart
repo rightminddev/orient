@@ -19,7 +19,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CheckoutControllerProvider>(
         builder: (context, value, child) {
-          if (value.isConfirmOrderSuccess == true && value.isUpdateCartSuccess == true) {
+          if (value.isConfirmOrderSuccess == true) {
             if(value.paymentUrl == null){
               value.isUpdateCartSuccess == false;
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -30,7 +30,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                     subTitle: AppStrings.yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp.tr().toUpperCase(),
                     viewCheckIcon: true,
                     onTapButton: (){
-                      value.isUpdateCartSuccess == false;
+                     // value.isUpdateCartSuccess == false;
                       context.goNamed(AppRoutes.eCommerceHomeScreen.name,
                         pathParameters: {'lang': context.locale.languageCode});},
                     headerIcon: SvgPicture.asset("assets/images/ecommerce/svg/cart_success.svg", height: 42, width: 40,)
@@ -135,7 +135,6 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                           title: AppStrings.checkout.tr().toUpperCase(),
                           svgIcon: "assets/images/ecommerce/svg/verifiy.svg",
                           onPressed: () {
-                            if(value.isUpdateCartSuccess == true){
                               value.confirmOrder(
                                 context: context,
                                 country_id: CheckConst.userAddressModel!.countryId,
@@ -147,7 +146,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                                 country_key: CheckConst.userAddressModel!.countryKey,
                                 state_id: CheckConst.userAddressModel!.stateId,
                               );
-                            }
+
                           },
                           padding: EdgeInsets.zero,
                           fontSize: 12,

@@ -14,12 +14,13 @@ defaultActionBottomSheet(
     {required BuildContext? context,
       required String? title,
       required String? subTitle,
-      required String? buttonText,
+       String? buttonText,
       bool viewCheckIcon = false,
       bool viewDropDownButton = false,
       String? dropDownValue,
       String? dropDownTitle,
       bool? view = false,
+      Widget? buttonWidget,
       List<DropdownMenuItem<String>>? dropDownItems,
       void Function(String?)? dropDownOnChanged,
       Widget? headerIcon,
@@ -152,7 +153,7 @@ defaultActionBottomSheet(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                             color: const Color(0xff0D3B6F)),
-                        child: Text(
+                        child: (buttonWidget !=null)? buttonWidget:Text(
                           buttonText!.toUpperCase(),
                           style: const TextStyle(
                               fontSize: 12,

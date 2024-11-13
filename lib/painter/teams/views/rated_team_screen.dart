@@ -76,7 +76,7 @@ class _RatedTeamScreenState extends State<RatedTeamScreen> {
                                 children: [
                                   gapH64,
                                   CustomTeamsAppbar(
-                                    isShare: false,
+                                    isShare: true,
                                     popFun: () {
                                       Navigator.pop(context);
                                     },

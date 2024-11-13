@@ -40,7 +40,7 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: isLoading == true ? onPressed : null,
+      onPressed: isLoading == false ? onPressed : null,
       style: ButtonStyle(
         elevation: WidgetStateProperty.all(0),
         padding: WidgetStateProperty.all(
@@ -67,77 +67,82 @@ class ButtonWidget extends StatelessWidget {
       //     side: borderSide,
       //   ),
       // ),
-      child: (padding == EdgeInsets.zero) ?SizedBox(
-       height:buttonHeight ?? 50,
-        width:buttonWidth?? 225,
-        child: isLoading == true
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  svgIcon != null
-                      ? Padding(
-                          padding: EdgeInsets.only(right: AppSizes.s12),
-                          child: SvgPicture.asset(
-                            svgIcon!,
-                            colorFilter: ColorFilter.mode(
-                                svgIconColor ??
-                                    AppThemeService
-                                        .colorPalette.fabIconColor.color,
-                                BlendMode.srcIn),
-                            fit: BoxFit.scaleDown,
-                          ),
-                        )
-                      : SizedBox.shrink(),
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: fontWeight ?? FontWeight.w500,
-                          height: 0.08,
-                          color: fontColor ??
-                              AppThemeService.colorPalette.quinaryTextColor.color,
-                          fontSize: fontSize,
+      child: (padding == EdgeInsets.zero)
+          ? SizedBox(
+              height: buttonHeight ?? 50,
+              width: buttonWidth ?? 225,
+              child: isLoading == false
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        svgIcon != null
+                            ? Padding(
+                                padding: EdgeInsets.only(right: AppSizes.s12),
+                                child: SvgPicture.asset(
+                                  svgIcon!,
+                                  colorFilter: ColorFilter.mode(
+                                      svgIconColor ??
+                                          AppThemeService
+                                              .colorPalette.fabIconColor.color,
+                                      BlendMode.srcIn),
+                                  fit: BoxFit.scaleDown,
+                                ),
+                              )
+                            : SizedBox.shrink(),
+                        Text(
+                          title,
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: fontWeight ?? FontWeight.w500,
+                                    height: 0.08,
+                                    color: fontColor ??
+                                        AppThemeService.colorPalette
+                                            .quinaryTextColor.color,
+                                    fontSize: fontSize,
+                                  ),
                         ),
-                  ),
-                ],
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
-      ):isLoading == true
-          ? Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          svgIcon != null
-              ? Padding(
-            padding: EdgeInsets.only(right: AppSizes.s12),
-            child: SvgPicture.asset(
-              svgIcon!,
-              colorFilter: ColorFilter.mode(
-                  svgIconColor ??
-                      AppThemeService
-                          .colorPalette.fabIconColor.color,
-                  BlendMode.srcIn),
-              fit: BoxFit.scaleDown,
-            ),
-          )
-              : SizedBox.shrink(),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: fontWeight ?? FontWeight.w500,
-              height: 0.08,
-              color: fontColor ??
-                  AppThemeService.colorPalette.quinaryTextColor.color,
-              fontSize: fontSize,
-            ),
-          ),
-        ],
-      )
-          : Center(
-        child: CircularProgressIndicator(),
-      ),
+                      ],
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            )
+          : isLoading == false
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    svgIcon != null
+                        ? Padding(
+                            padding: EdgeInsets.only(right: AppSizes.s12),
+                            child: SvgPicture.asset(
+                              svgIcon!,
+                              colorFilter: ColorFilter.mode(
+                                  svgIconColor ??
+                                      AppThemeService
+                                          .colorPalette.fabIconColor.color,
+                                  BlendMode.srcIn),
+                              fit: BoxFit.scaleDown,
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: fontWeight ?? FontWeight.w500,
+                            height: 0.08,
+                            color: fontColor ??
+                                AppThemeService
+                                    .colorPalette.quinaryTextColor.color,
+                            fontSize: fontSize,
+                          ),
+                    ),
+                  ],
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
       // ),
     );
   }

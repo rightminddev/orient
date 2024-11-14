@@ -22,7 +22,7 @@ abstract class DateService {
 
   /// Method to convert a DateTime object to a specific format
   static String formatDateTime(DateTime? dateTime,
-      {String? format = 'dd/MM/yyyy'}) {
+      {String? format = 'yyyy-MM-dd'}) {
     if (dateTime == null || format == null) {
       return 'Invalid date';
     }

@@ -50,11 +50,8 @@ class SettingsPage extends StatelessWidget {
                                     left: 15,right: 15, bottom: MediaQuery.sizeOf(context).height * 0.15
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    GestureDetector(
-                                        onTap: (){},
-                                        child: Icon(Icons.arrow_back, color: Color(0xffFFFFFF),)),
                                     Text(AppStrings.accountAndSettings.tr().toUpperCase(),
                                       style: const TextStyle(
                                           color: Color(0xffFFFFFF),
@@ -62,7 +59,6 @@ class SettingsPage extends StatelessWidget {
                                           fontWeight: FontWeight.w700
                                       ),
                                     ),
-                                    const Icon(Icons.arrow_back, color: Colors.transparent,),
                                   ],
                                 ),
                               )
@@ -124,6 +120,14 @@ class SettingsPage extends StatelessWidget {
                                             });
                                       },
                                       src: "assets/images/svg/promo.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.bookMark.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.bookMark.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/booksmarks.svg"
                                   ),defaultListTile(
                                       title: AppStrings.shippingAddress.tr(),
                                       onTap: (){

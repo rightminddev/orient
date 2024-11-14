@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio_api.service.dart';
 import 'package:orient/general_services/backend_services/get_endpoint.service.dart';
@@ -44,30 +46,28 @@ abstract class PersonalProfileService {
     String? phone,
     String? phoneUuid,
     String? birthDay, // Format should be "YYYY-MM-DD"
-    FilePickerResult? avatar,
+     List<XFile>? avatar,
     required BuildContext context,
   }) async {
-    // Prepare request data
-    Map<String, String> requestData = {};
-    if (name != null) requestData['name'] = name;
-    if (email != null) requestData['email'] = email;
-    if (emailUuid != null) requestData['email_uuid'] = emailUuid;
-    if (phoneUuid != null) requestData['phone_uuid'] = phoneUuid;
-    if (emailCode != null) requestData['email_code'] = emailCode;
-    if (countryKey != null) requestData['country_key'] = countryKey;
-    if (phoneCode != null) requestData['phone_code'] = phoneCode;
-    if (phone != null) requestData['phone'] = phone;
-    if (birthDay != null) requestData['birth_day'] = birthDay;
-
-    // Prepare files
-    List<FilePickerResult> files = [];
-    if (avatar != null) {
-      files.add(avatar);
-    }
-    return await DioHelper.postFormData(
+    FormData formData = FormData.fromMap(
+        {
+          if (name != null) 'name' : name,
+          if (email != null) 'email' : email,
+          if (avatar!.isNotEmpty) "avatar" : avatar != null
+        ? await Future.wait(avatar.map((file) async => await MultipartFile.fromFile(file.path, filename: file.name)).toList()) : null,
+          if (emailUuid != null) 'email_uuid' : emailUuid,
+          if (phoneUuid != null) 'phone_uuid' : phoneUuid,
+          if (emailCode != null) 'email_code' : emailCode,
+          if (countryKey != null) 'country_key' : countryKey,
+          if (phoneCode != null) 'phone_code' : phoneCode,
+          if (phone != null) 'phone' : phone,
+          if (birthDay != null) 'birth_day' : birthDay,
+        }
+    );
+      DioHelper.postFormData(
         url: "/rm_users/v1/update_profile",
         context: context,
-        formdata: requestData
+        formdata: formData
     );
 
     // Send request

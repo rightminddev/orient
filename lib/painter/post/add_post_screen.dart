@@ -197,53 +197,53 @@ class _AddPostScreenState extends State<AddPostScreen> {
                           hintText: AppStrings.content.tr(),
                         ),
                         gapH18,
-                        Container(
-                        height: 140,
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
-                        padding: const EdgeInsets.only(
-                          right: 16, left: 16, top: 16, bottom: 10
-                        ),
-                        decoration: ShapeDecoration(
-                          color: AppThemeService.colorPalette.tertiaryColorBackground.color,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppSizes.s8),
-                            side:  const BorderSide(
-                              color: Color(0xffE3E5E5),
-                              width: 1.0,
-                            ),
+                        GestureDetector(
+                          onTap: ()async{
+                            await getImage(
+                                image1: attachmentImage,
+                                image2: XImageFileAttachment,
+                                list2: listXAttachmentImage,
+                                one: false,
+                                list: listAttachmentImage);
+                            Fluttertoast.showToast(
+                                msg: "ADD IMAGE SUCCESSFUL",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                          },
+                          child: Container(
+                          height: 140,
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
+                          padding: const EdgeInsets.only(
+                            right: 16, left: 16, top: 16, bottom: 10
                           ),
-                          shadows: const [
-                            BoxShadow(
-                              color: Color(0x0C000000),
-                              blurRadius: 10,
-                              offset: Offset(0, 1),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                          child:  Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: ()async{
-                                  await getImage(
-                                      image1: attachmentImage,
-                                      image2: XImageFileAttachment,
-                                      list2: listXAttachmentImage,
-                                      one: false,
-                                      list: listAttachmentImage);
-                                  Fluttertoast.showToast(
-                                      msg: "ADD IMAGE SUCCESSFUL",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.green,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0
-                                  );
-                                },
-                                child: Row(
+                          decoration: ShapeDecoration(
+                            color: AppThemeService.colorPalette.tertiaryColorBackground.color,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppSizes.s8),
+                              side:  const BorderSide(
+                                color: Color(0xffE3E5E5),
+                                width: 1.0,
+                              ),
+                            ),
+                            shadows: const [
+                              BoxShadow(
+                                color: Color(0x0C000000),
+                                blurRadius: 10,
+                                offset: Offset(0, 1),
+                                spreadRadius: 0,
+                              )
+                            ],
+                          ),
+                            child:  Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
                                   children: [
                                      Text(
                                       AppStrings.uploadImage.tr(),
@@ -262,24 +262,24 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
-                             if(listAttachmentImage.isNotEmpty) SizedBox(
-                               height: 90,
-                               child: GridView.builder(
-                                  physics: const ClampingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: listAttachmentImage.length,
-                                  gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4),
-                                  itemBuilder: (c, i) {
-                                    return buildCustomContainer(
-                                        file: listAttachmentImage[i]['view']);
-                                  },
-                                ),
-                             ),
-                            ],
+                               if(listAttachmentImage.isNotEmpty) SizedBox(
+                                 height: 90,
+                                 child: GridView.builder(
+                                    physics: const ClampingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listAttachmentImage.length,
+                                    gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4),
+                                    itemBuilder: (c, i) {
+                                      return buildCustomContainer(
+                                          file: listAttachmentImage[i]['view']);
+                                    },
+                                  ),
+                               ),
+                              ],
+                            ),
                           ),
                         ),
                         gapH82,

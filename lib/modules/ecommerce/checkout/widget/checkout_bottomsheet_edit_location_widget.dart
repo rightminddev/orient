@@ -17,12 +17,14 @@ class CheckoutBottomsheetEditLocationWidget extends StatefulWidget {
   var addressModel;
   var stateIdModel;
   var cityIdModel;
+  bool? checkout = true;
   var id;
   CheckoutBottomsheetEditLocationWidget({super.key,
       required this.addAdress,
       this.countryIdModel,
       this.countryCodeModel,
       this.phoneModel,
+    this.checkout,
       this.addressModel,
       this.stateIdModel,
       this.cityIdModel,
@@ -45,9 +47,9 @@ class _CheckoutBottomsheetEditLocationWidgetState extends State<CheckoutBottomsh
               CheckConst.userAddressModel!.id = widget.id;
               value.updateCart(
                   context: context,
-                  address_id: CheckConst.userAddressModel!.id,
+                  address_id: CheckConst.selectedAddressId,
                   payment_method_id: CheckConst.selectedPaymentId);
-              Navigator.pop(context);
+              //Navigator.pop(context);
               value.isAddAddressSuccess = false;
             });
           }
@@ -56,7 +58,7 @@ class _CheckoutBottomsheetEditLocationWidgetState extends State<CheckoutBottomsh
               CheckConst.userAddressModel!.id = widget.id;
               value.updateCart(
                   context: context,
-                  address_id: CheckConst.userAddressModel!.id,
+                  address_id: CheckConst.selectedAddressId,
                   payment_method_id: CheckConst.selectedPaymentId);
               Navigator.pop(context);
               value.isUpdateAddressSuccess = false;
@@ -93,6 +95,7 @@ class _CheckoutBottomsheetEditLocationWidgetState extends State<CheckoutBottomsh
                         padding:const EdgeInsets.all(20.0),
                         child: CreateEditAddressScreen(
                           addAdress: widget.addAdress,
+                          checkout: widget.checkout,
                           id: widget.id,
                           addressModel:widget.addressModel ,
                           cityIdModel: widget.cityIdModel,

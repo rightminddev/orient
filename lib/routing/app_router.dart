@@ -9,15 +9,24 @@ import 'package:orient/merchant/stores/views/create_edit_store_screen.dart';
 import 'package:orient/merchant/stores/views/my_stores_actions_screen.dart';
 import 'package:orient/models/stores/store_model.dart';
 import 'package:orient/modules/eCommerce_more_screen.dart';
+import 'package:orient/modules/ecommerce/blog/view/blog_details_screen.dart';
+import 'package:orient/modules/ecommerce/blog/view/blog_screen.dart';
 import 'package:orient/modules/ecommerce/checkout/checkout_screen.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_payment_webview.dart';
 import 'package:orient/modules/ecommerce/home/color_trend/color_trend_screen.dart';
 import 'package:orient/modules/ecommerce/home/get_inspired_screen.dart';
+import 'package:orient/modules/ecommerce/home/inspired/inspired_screen.dart';
 import 'package:orient/modules/ecommerce/myorder/ecommerce_order_details_screen.dart';
 import 'package:orient/modules/ecommerce/myorder/ecommerce_order_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
+import 'package:orient/modules/shared_more_screen/aboutus/view/aboutus_screen.dart';
+import 'package:orient/modules/shared_more_screen/faq/view/faq_screen.dart';
+import 'package:orient/modules/shared_more_screen/personal_profile/views/personal_profile_screen.dart';
+import 'package:orient/modules/shared_more_screen/promocode/view/promocode_screen.dart';
+import 'package:orient/modules/shared_more_screen/shipping_address/view/shipping_address_screen.dart';
+import 'package:orient/modules/shared_more_screen/update_password/view/update_password_screen.dart';
 import 'package:orient/painter/group_page/groups_page.dart';
 import 'package:orient/modules/notification/view/notification_details_screen.dart';
 import 'package:orient/modules/notification/view/notification_screen.dart';
@@ -49,9 +58,17 @@ import 'package:provider/provider.dart';
 enum AppRoutes {
   home,
   addStore,
+  personalInfoScreen,
+  promoCodeScreen,
+  faqScreen,
+  updatePassword,
+  aboutusScreen,
+  shippingAddress,
   splash,
   notification,
+  blog,
   notificationDetails,
+  blogDetails,
   onboarding,
   login,
   storeActions,
@@ -250,6 +267,174 @@ GoRouter goRouter(BuildContext context) => GoRouter(
         return null;
   },
   routes: [
+    GoRoute(
+      path: '/:lang/about-us-screen',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.aboutusScreen.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: AboutUsScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/faq-screen',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.faqScreen.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: FaqScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/update-password',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.updatePassword.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: UpdatePasswordScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/personal-info',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.personalInfoScreen.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: const PersonalProfileScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/promo-code',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.promoCodeScreen.name,
+      pageBuilder: (context, state) {
+       // Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: const PromoCodeScreen(),
+          animation: animationController,
+          begin: const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/shipping-address',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.shippingAddress.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: const ShippingAddressScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
     GoRoute(
       path: '/:lang/splash-screen',
       parentNavigatorKey: _rootNavigatorKey,
@@ -934,7 +1119,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   });
                   return AppRouterTransitions.slideTransition(
                     key: state.pageKey,
-                    child:const GetInspiredScreen(),
+                    child: InspiredScreen(),
                     animation: animationController,
                     begin: begin ?? const Offset(1.0, 0.0),
                   );
@@ -976,6 +1161,75 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                     begin:  const Offset(1.0, 0.0),
                   );
                 },
+              ),
+              GoRoute(
+                path: 'blog',
+                parentNavigatorKey: _rootNavigatorKey,
+                name: AppRoutes.blog.name,
+                pageBuilder: (context, state) {
+                  Offset? begin = state.extra as Offset?;
+                  final lang = state.uri.queryParameters['lang'];
+                  if (lang != null) {
+                    final locale = Locale(lang);
+                    context.setLocale(locale);
+                  }
+                  final animationController = AnimationController(
+                    vsync: ticker,
+                  );
+                  // Make sure to dispose the controller after the transition is complete
+                  animationController.addStatusListener((status) {
+                    if (status == AnimationStatus.completed ||
+                        status == AnimationStatus.dismissed) {
+                      animationController.dispose();
+                    }
+                  });
+                  return AppRouterTransitions.slideTransition(
+                    key: state.pageKey,
+                    child: BlogScreen(),
+                    animation: animationController,
+                    begin: begin ?? const Offset(1.0, 0.0),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'blog-details/:title/:image/:contant/:date',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    name: AppRoutes.blogDetails.name,
+                    pageBuilder: (context, state) {
+                      Offset? begin = state.extra as Offset?;
+                      final lang = state.uri.queryParameters['lang'];
+                      final title = state.pathParameters['title'] ?? '';
+                      final image = state.pathParameters['image'] ?? '';
+                      final contant = state.pathParameters['contant'] ?? '';
+                      final date = state.pathParameters['date'] ?? '';
+
+                      if (lang != null) {
+                        final locale = Locale(lang);
+                        context.setLocale(locale);
+                      }
+                      final animationController = AnimationController(
+                        vsync: ticker,
+                      );
+                      animationController.addStatusListener((status) {
+                        if (status == AnimationStatus.completed ||
+                            status == AnimationStatus.dismissed) {
+                          animationController.dispose();
+                        }
+                      });
+                      return AppRouterTransitions.slideTransition(
+                        key: state.pageKey,
+                        child: BlogListDetailsScreen(
+                          date: date,
+                          title: title,
+                          image: image,
+                          contant: contant,
+                        ),
+                        animation: animationController,
+                        begin: begin ?? const Offset(1.0, 0.0),
+                      );
+                    },
+                  ),
+                ]
               ),
             ]),
         GoRoute(

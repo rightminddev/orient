@@ -1,5 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/modules/components/views/componenets_screen.dart';
+import 'package:orient/modules/ecommerce/bookmark/view/bookmark_screen.dart';
+import 'package:orient/modules/shared_more_screen/aboutus/view/aboutus_screen.dart';
+import 'package:orient/modules/shared_more_screen/personal_info/view/personal_info_screen.dart';
+import 'package:orient/modules/shared_more_screen/personal_profile/views/personal_profile_screen.dart';
+import 'package:orient/modules/shared_more_screen/promocode/view/promocode_screen.dart';
+import 'package:orient/modules/shared_more_screen/remove_account/view/remove_account_screen.dart';
+import 'package:orient/painter/post/add_post_screen.dart';
 import 'package:orient/painter/settings_page/settings_page.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
@@ -17,6 +24,7 @@ import 'package:orient/routing/app_router.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
 import 'modules/ecommerce/main_screen/main_screen.dart';
+import 'modules/shared_more_screen/faq/view/faq_screen.dart';
 import 'platform/platform_is.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +74,7 @@ class MyApp extends StatelessWidget {
     //   theme: AppThemeService.getTheme(isDark: false, context: context),
     //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
     //   scrollBehavior: AppScrollBehavior(),
-    //   home:  SettingsPage(),
+    //   home: BookmarkScreen(),
     // );
   }
 }

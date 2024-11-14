@@ -40,7 +40,13 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                       CheckConst.selectedPaymentId = value.checkoutPaymentMethods[index]['id'];
                     });
                     print("CheckConst.selectedPaymentId -> ${CheckConst.selectedPaymentId }");
-                    if(CheckConst.userAddressModel!.id != null && CheckConst.selectedPaymentId != null) {
+                    if(CheckConst.selectedAddressId != null && CheckConst.selectedPaymentId != null) {
+                      value.updateCart(
+                          context: context,
+                          address_id: CheckConst.userAddressModel!.id,
+                          payment_method_id: CheckConst.selectedPaymentId
+                      );
+                    }if(CheckConst.userAddressModel!.id != null && CheckConst.selectedPaymentId != null) {
                       value.updateCart(
                           context: context,
                           address_id: CheckConst.userAddressModel!.id,

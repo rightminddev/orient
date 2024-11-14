@@ -13,13 +13,17 @@ import 'package:orient/painter/post/logic/comment_cubit/comment_provider.dart';
 import 'package:orient/painter/post/logic/post_cubit/post_provider.dart';
 import 'package:orient/painter/post/widgets/bottom_sheet_body.dart';
 import 'package:provider/provider.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostCommentAndTime extends StatelessWidget {
    PostCommentAndTime({super.key, required this.post, required this.socialGroupId, required this.user});
    final User user;
   final SocialPost post;
   final int socialGroupId;
+   String formatRelativeTime(String timestamp) {
+     final dateTime = DateTime.parse(timestamp);
+     return timeago.format(dateTime, locale: 'en');
+   }
   @override
   Widget build(BuildContext context) {
     return Consumer<PostsProvider>(
@@ -67,9 +71,9 @@ class PostCommentAndTime extends StatelessWidget {
                 )
             ),
             const Spacer(),
-            const Text(
-              "35 min ago",
-              style: TextStyle(
+             Text(
+             formatRelativeTime(post.createAt!) ,
+              style: const TextStyle(
                   fontSize: 9,
                   color: Color(0xff9E9898),
                   fontWeight: FontWeight.w500),

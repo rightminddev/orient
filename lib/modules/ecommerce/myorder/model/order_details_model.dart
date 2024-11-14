@@ -29,6 +29,7 @@ class Order {
   String? uuid;
   int? subTotal;
   int? discountTotal;
+  PaymentGateway? paymentGateway;
   int? feesTotal;
   int? taxesTotal;
   int? shippingCost;
@@ -42,6 +43,7 @@ class Order {
   Order(
       {this.id,
         this.status,
+        this.paymentGateway,
         this.merchantStatus,
         this.uuid,
         this.subTotal,
@@ -68,6 +70,9 @@ class Order {
     shippingCost = json['shipping_cost'];
     total = json['total'];
     date = json['date'];
+    paymentGateway = json['payment_gateway'] != null
+        ? new PaymentGateway.fromJson(json['payment_gateway'])
+        : null;
     shippingInfo = json['shipping_info'] != null
         ? new ShippingInfo.fromJson(json['shipping_info'])
         : null;
@@ -94,6 +99,9 @@ class Order {
     data['shipping_cost'] = this.shippingCost;
     data['total'] = this.total;
     data['date'] = this.date;
+    if (this.paymentGateway != null) {
+      data['payment_gateway'] = this.paymentGateway!.toJson();
+    }
     if (this.shippingInfo != null) {
       data['shipping_info'] = this.shippingInfo!.toJson();
     }
@@ -105,7 +113,118 @@ class Order {
     return data;
   }
 }
+class PaymentGateway {
+  int? id;
+  String? title;
+  List<Logo>? logo;
 
+  PaymentGateway({this.id, this.title, this.logo});
+
+  PaymentGateway.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    if (json['logo'] != null) {
+      logo = <Logo>[];
+      json['logo'].forEach((v) {
+        logo!.add(new Logo.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    if (this.logo != null) {
+      data['logo'] = this.logo!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Logo {
+  int? id;
+  String? type;
+  String? title;
+  String? alt;
+  String? file;
+  String? thumbnail;
+  SizesPayment? sizes;
+
+  Logo(
+      {this.id,
+        this.type,
+        this.title,
+        this.alt,
+        this.file,
+        this.thumbnail,
+        this.sizes});
+
+  Logo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    type = json['type'];
+    title = json['title'];
+    alt = json['alt'];
+    file = json['file'];
+    thumbnail = json['thumbnail'];
+    sizes = json['sizes'] != null ? new SizesPayment.fromJson(json['sizes']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['type'] = this.type;
+    data['title'] = this.title;
+    data['alt'] = this.alt;
+    data['file'] = this.file;
+    data['thumbnail'] = this.thumbnail;
+    if (this.sizes != null) {
+      data['sizes'] = this.sizes!.toJson();
+    }
+    return data;
+  }
+}
+
+class SizesPayment {
+  String? thumbnail;
+  String? medium;
+  String? large;
+  String? s1200800;
+  String? s8001200;
+  String? s1200300;
+  String? s3001200;
+
+  SizesPayment(
+      {this.thumbnail,
+        this.medium,
+        this.large,
+        this.s1200800,
+        this.s8001200,
+        this.s1200300,
+        this.s3001200});
+
+  SizesPayment.fromJson(Map<String, dynamic> json) {
+    thumbnail = json['thumbnail'];
+    medium = json['medium'];
+    large = json['large'];
+    s1200800 = json['1200_800'];
+    s8001200 = json['800_1200'];
+    s1200300 = json['1200_300'];
+    s3001200 = json['300_1200'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['thumbnail'] = this.thumbnail;
+    data['medium'] = this.medium;
+    data['large'] = this.large;
+    data['1200_800'] = this.s1200800;
+    data['800_1200'] = this.s8001200;
+    data['1200_300'] = this.s1200300;
+    data['300_1200'] = this.s3001200;
+    return data;
+  }
+}
 class ShippingInfo {
   int? id;
   String? type;

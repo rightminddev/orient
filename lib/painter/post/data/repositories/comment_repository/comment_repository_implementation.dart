@@ -21,6 +21,7 @@ class CommentRepositoryImplementation extends CommentRepository{
   Future<Either<Failure, AddCommentModel>> addComment(String postId, String comment) async{
     var get = Provider.of<AppConfigService>(context, listen: false);
     try {
+      print("COMMENT IS => $comment");
       Response data = await apiServices.post(
           endPoint: 'api/social-posts/entities-operations/$postId/comments',
           context: context,
@@ -29,6 +30,7 @@ class CommentRepositoryImplementation extends CommentRepository{
           }
       );
       print(data.data);
+      print("content == $comment");
       return Right(AddCommentModel.fromJson(data.data));
     } catch (error) {
       if (error is DioException) {

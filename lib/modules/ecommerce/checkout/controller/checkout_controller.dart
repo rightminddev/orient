@@ -1,28 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/ecommerce/checkout/model/get_address_model.dart';
 import 'package:orient/modules/ecommerce/checkout/model/update_cart_model.dart';
+import 'package:orient/modules/shared_more_screen/shipping_address/model_address.dart';
 
 class CheckoutControllerProvider extends ChangeNotifier {
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   bool isPrepareCheckoutSuccess =false;
   bool isAddAddressSuccess =false;
+  bool isShippingAddressLoading =false;
   bool isUpdateAddressSuccess =false;
   bool isGetAddressSuccess =false;
   bool isUpdateCartSuccess =false;
   bool isConfirmOrderSuccess =false;
   bool isPrepareCheckoutLoading = false;
   bool isConfirmOrderLoading = false;
+  bool isLoading = false;
+  bool isSuccess = false;
   bool isUpdateCartLoading = false;
   bool isAddAddressLoading = false;
   bool isGetAddressLoading = false;
   bool isUpdateAddressLoading = false;
   String? paymentUrl;
   UserAddressModel? userAddressModel;
+  AddressModel? addressModel;
   UpdateCartModel? updateCartModel;
   String? errorPrepareCheckoutMessage;
   String? errorConfirmOrderMessage;
@@ -44,6 +50,28 @@ class CheckoutControllerProvider extends ChangeNotifier {
   }
   void updateScreen(){
     notifyListeners();
+  }
+  Future<void> getShippingAddress({required BuildContext context}) async {
+    isShippingAddressLoading = true;
+    errorPrepareCheckoutMessage = null;
+    CheckConst.selectedPaymentId = null;
+    notifyListeners();
+    try {
+      var value = await DioHelper.getData(
+        url: "/shipping-addresses/entities-operations",
+        context: context,
+      );
+      isShippingAddressLoading = false;
+      isPrepareCheckoutSuccess = true;
+      addressModel = AddressModel.fromJson(value.data);
+      print("userAddressModel_>$addressModel");
+      print("userAddressModel_>${addressModel!}");
+      notifyListeners();
+    } catch (e) {
+      isShippingAddressLoading = false;
+      errorPrepareCheckoutMessage = e.toString();
+      notifyListeners();
+    }
   }
   Future<void> getPrepareCheckout({required BuildContext context}) async {
     isPrepareCheckoutLoading = true;
@@ -97,10 +125,13 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "user_id" : user_id
         }
       );
-      userAddressModel!.id = value.data['id'];
-      userAddressModel!.address  = address;
       isAddAddressLoading = false;
       isAddAddressSuccess = true;
+      CheckConst.selectedAddressId= value.data['id'];
+      CheckConst.userAddressModel!.id = value.data['id'];
+      userAddressModel!.id = value.data['id'];
+      userAddressModel!.address  = address;
+
       notifyListeners();
     } catch (e) {
       isAddAddressLoading = false;
@@ -144,6 +175,10 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "user_id" : user_id
         }
       );
+      // CheckConst.userAddressModel!.address = value.shippingAddresses[index]['address'];
+      // CheckConst.userAddressModel!.id = id;
+      // print("CheckConst.selectedPaymentId -> ${CheckConst.selectedPaymentId}");
+      // CheckConst.selectedAddressId = value.shippingAddresses[index]['id'];
       isUpdateAddressSuccess = true;
       userAddressModel!.id = id;
       userAddressModel!.address = address;
@@ -152,6 +187,39 @@ class CheckoutControllerProvider extends ChangeNotifier {
     } catch (e) {
       isUpdateAddressLoading = false;
       errorUpdateAddressMessage = e.toString();
+      notifyListeners();
+    }
+  }
+  Future<void> updateShippingAddress({required BuildContext context, phone, city_id, country_key, address, country_id, state_id, user_id, id }) async {
+    isLoading = true;
+    notifyListeners();
+    try {
+      var value = await DioHelper.putData(
+        url: "/shipping-addresses/entities-operations/$id/update",
+        context: context,
+        data: {
+         if(phone != null) "phone": phone,
+          "country_key": country_key,
+          "address" : address,
+          "city_id" : city_id,
+          "country_id": country_id,
+          "state_id" : state_id,
+          "user_id" : user_id
+        }
+      );
+      isSuccess = true;
+      AlertsService.success(
+          context: context,
+          message: 'UPDATED SUCCESSFULLY',
+          title: 'SUCCESS');
+          isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      isLoading = false;
+      AlertsService.error(
+          context: context,
+          message: 'UPDATED FAILED',
+          title: 'FAILED');
       notifyListeners();
     }
   }

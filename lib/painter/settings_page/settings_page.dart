@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
     return Consumer<HomeViewModel>(
       builder: (context, value, child) {
         return SafeArea(
-          child: (value.userSettings != null && value.userSettings2 != null )? Scaffold(
+          child:  Scaffold(
             backgroundColor: const Color(0xffFFFFFF),
             body: GradientBgImage(
               padding: EdgeInsets.zero,
@@ -91,16 +91,47 @@ class SettingsPage extends StatelessWidget {
                                       src: "assets/images/svg/s2.svg"
                                   ),defaultListTile(
                                       title: AppStrings.updatePassword.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.updatePassword.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
                                       src: "assets/images/svg/s3.svg"
                                   ),defaultListTile(
                                       title: AppStrings.personalInfo.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.personalInfoScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
                                       src: "assets/images/svg/s4.svg"
                                   ),defaultListTile(
                                       title: AppStrings.aboutUs.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.aboutusScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
                                       src: "assets/images/svg/s5.svg"
                                   ),defaultListTile(
                                       title: AppStrings.contactUs.tr(),
                                       src: "assets/images/svg/s6.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.promoCode.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.promoCodeScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/promo.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.shippingAddress.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.shippingAddress.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/ecommerce/svg/checkout_location.svg"
                                   ),defaultListTile(
                                       title: AppStrings.logout.tr(),
                                        onTap: ()async{
@@ -137,7 +168,7 @@ class SettingsPage extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(124),
                               child: CachedNetworkImage(
-                                  imageUrl: value.userSettings!.photo!,
+                                  imageUrl:(value.userSettings != null && value.userSettings2 != null )? value.userSettings!.photo! : "",
                                   fit: BoxFit.cover,
                                   height: 124,
                                   width: 124,
@@ -157,7 +188,7 @@ class SettingsPage extends StatelessWidget {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.symmetric(horizontal: 50),
                           width: MediaQuery.sizeOf(context).width * 1,
-                          child: Text("${value.userSettings!.name}".toUpperCase(),
+                          child: Text((value.userSettings != null && value.userSettings2 != null )?"${value.userSettings!.name}".toUpperCase(): "NAME",
                             maxLines: 1,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
@@ -181,7 +212,7 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
             ),
-          ): ShimmerLoadingSetting(),
+          ),
         );
       },
     );

@@ -2,13 +2,23 @@
 
 abstract class AppStrings {
   static const loading = 'loading';
+  static const noCommentsYet = 'noCommentsYet';
   static const next = 'next';
+  static const blogCenter = 'blogCenter';
+  static const email = 'email';
   static const skip = 'skip';
+  static const bookMark = 'bookMark';
+  static const getInspired = 'getInspired';
+  static const enterYourPassword = 'enterYourPassword';
   static const type = 'type';
   static const delivered = 'delivered';
+  static const confirmDeletion = 'confirmDeletion';
   static const all = 'all';
+  static const removeAccount = 'removeAccount';
   static const delete = 'delete';
+  static const deleteAccount = 'deleteAccount';
   static const loginTo = 'loginTo';
+  static const theAccountWillBeScheduledForDeletionWithIn60DaysYouWillStillBeAbleToLogInToCancelTheDeletionScheduleAtAnyTimeDuringThisPeriodOtherwiseTheDataWillBePermanentlyDeletedAfterThisPeriodEnds = 'theAccountWillBeScheduledForDeletionWithIn60DaysYouWillStillBeAbleToLogInToCancelTheDeletionScheduleAtAnyTimeDuringThisPeriodOtherwiseTheDataWillBePermanentlyDeletedAfterThisPeriodEnds.';
   static const needHelp = 'needHelp';
   static const yourAccount = 'yourAccount';
   static const shippingCost = 'shippingCost';
@@ -268,6 +278,7 @@ abstract class AppStrings {
   static const String joinTeam = 'joinTeam';
   static const String teams = 'teams';
   static const String aboutUs = 'aboutUs';
+  static const String aboutApp = 'aboutApp';
   static const String contactUs = 'contactUs';
   static const String logout = 'logout';
   static const String personalInfo = 'personalInfo';

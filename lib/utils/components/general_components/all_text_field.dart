@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 
@@ -74,6 +77,71 @@ Widget defaultTextFormField({
         keyboardType: keyboardType ?? TextInputType.text,
         validator: validator,
       onFieldSubmitted: onFieldSubmitted,
+    ),
+  );
+}
+Widget defaultTextFormFieldUpdate({
+  TextEditingController? controller,
+  String? hintText,
+  void Function()? onTap
+}){
+  return Container(
+    height: 50,
+    alignment: Alignment.center,
+    margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+    decoration: ShapeDecoration(
+      color: AppThemeService.colorPalette.tertiaryColorBackground.color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.s8),
+        side:  const BorderSide(
+          color: Color(0xffE3E5E5),
+          width: 1.0,
+        ),
+      ),
+    ),
+    child: TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: hintText,
+        labelStyle: const TextStyle(
+            fontFamily: "Poppins",
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: Color(0xff191C1F)
+        ),
+        hintStyle:const TextStyle(
+            fontFamily: "Poppins",
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: Color(0xff464646)
+        ),
+        suffixIcon: GestureDetector(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 3),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              decoration: BoxDecoration(
+                color: const Color(AppColors.oc1),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text(AppStrings.update.tr().toUpperCase(), style: const TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w500, fontSize: 12),),
+            ),
+          ),
+        ),
+        border: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+      ),
+      keyboardType: TextInputType.phone,
+      validator: (String? value){
+        return AppStrings.pleaseEnterValidPhoneNumber.tr();
+      },
     ),
   );
 }
@@ -260,3 +328,40 @@ Widget defaultUploadLinkAndImage({
 }
 
 
+Widget buildTextFieldDate(
+    {String? labelText, onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        height: 50,
+        alignment: Alignment.center,
+        margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+        decoration: ShapeDecoration(
+          color: AppThemeService.colorPalette.tertiaryColorBackground.color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.s8),
+            side:  const BorderSide(
+              color: Color(0xffE3E5E5),
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(labelText!, style: const TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff464646)
+            ),),
+            Spacer(),
+            SvgPicture.asset("assets/images/calender.svg")
+          ],
+        ),
+      ),
+    ),
+  );
+}

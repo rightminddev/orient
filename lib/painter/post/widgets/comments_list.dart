@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/post/data/models/post_response.dart';
 import 'package:orient/painter/post/logic/comment_cubit/comment_provider.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +23,8 @@ final User user;
             );
           }
           else{
-            return const Center(
-              child: Text('No Comments yet'),
+            return Center(
+              child: Text(AppStrings.noCommentsYet.tr(), style: const TextStyle(color: Colors.black),),
             );
           }
 

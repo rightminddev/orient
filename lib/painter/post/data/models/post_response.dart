@@ -32,6 +32,7 @@ class SocialPost {
   final List<Media> video;
   final List<Media> image;
   final String? imag;
+  final String? createAt;
   final User user;
   final int userId;
   final SocialGroup socialGroup;
@@ -48,6 +49,7 @@ class SocialPost {
     required this.imag,
     required this.user,
     required this.userId,
+    required this.createAt,
     required this.socialGroup,
     required this.socialGroupId,
     required this.commentsCount,
@@ -65,6 +67,7 @@ class SocialPost {
           ? List<Media>.from(json['video'].map((item) => Media.fromJson(item)))
           : [],
       imag: json['image'] is String ? json['image'] : '',
+      createAt: json['created_at'] is String ? json['created_at'] : '',
       image: json['image'] is List
           ? List<Media>.from(json['image'].map((item) => Media.fromJson(item)))
           : [],

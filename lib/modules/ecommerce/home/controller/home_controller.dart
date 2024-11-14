@@ -10,8 +10,12 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
     String? selectCategory;
     bool isLoading = false;
     bool isColorTrendLoading = false;
+    bool isInspiredCategoryLoading = false;
+    bool isInspiredLoading = false;
     bool isSuccess = false;
     bool isColorTrendSuccess = false;
+    bool isInspiredCategorySuccess = false;
+    bool isInspiredSuccess = false;
     List productsCategories = [];
     List productsBlog = [];
     List products = [];
@@ -19,11 +23,15 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
     List premiumProductImage = [];
     List colorTrendGallery = [];
     List colorTrendBlog = [];
+    List inspiredCategories = [];
+    List inspireds = [];
     String colorTrendContant = '';
     String colorTrendCover = '';
     var coverImage;
     String? errorMessage;
     String? errorColorTrendMessage;
+    String? errorInspiredCategoryMessage;
+    String? errorInspiredMessage;
     List ids = [];
     Future<void> getPages({required BuildContext context, bool addAll = false}) async {
       isLoading = true;
@@ -114,6 +122,47 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
       } catch (e) {
         isColorTrendLoading = false;
         errorColorTrendMessage = e.toString();
+        notifyListeners();
+      }
+    }
+    Future<void> getInspiredCategory({required BuildContext context}) async {
+      isInspiredCategoryLoading = true;
+      errorInspiredCategoryMessage = null;
+      notifyListeners();
+      try {
+        var value = await DioHelper.getData(
+          url: "/inspired-categories/entities-operations",
+          context: context,
+        );
+        inspiredCategories = value.data['data'];
+        isInspiredCategoryLoading = false;
+        isInspiredCategorySuccess = true;
+        notifyListeners();
+      } catch (e) {
+        isInspiredCategoryLoading = false;
+        errorInspiredCategoryMessage = e.toString();
+        notifyListeners();
+      }
+    }
+    Future<void> getInspired({required BuildContext context, inspired_categories}) async {
+      isInspiredLoading = true;
+      errorInspiredMessage = null;
+      notifyListeners();
+      try {
+        var value = await DioHelper.getData(
+          url: "/inspired-items/entities-operations",
+          context: context,
+          query: {
+            "inspired_categories" : inspired_categories
+          }
+        );
+        inspireds = value.data['data'];
+        isInspiredLoading = false;
+        isInspiredSuccess = true;
+        notifyListeners();
+      } catch (e) {
+        isInspiredLoading = false;
+        errorInspiredMessage = e.toString();
         notifyListeners();
       }
     }

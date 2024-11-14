@@ -5,8 +5,10 @@ import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
+import 'package:orient/modules/general/viewmodels/company_structure_info.viewmodel.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/modules/notification/logic/notification_provider.dart';
+import 'package:orient/modules/shared_more_screen/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:orient/painter/layout_page/logic/layout_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
@@ -19,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'modules/main_screen/view_models/main_viewmodel.dart';
-import 'painter/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'platform/platform_is.dart';
 
 GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
@@ -56,6 +57,7 @@ void main() async {
         // inject all providers to make it accessable intire all application via context.
         providers: [
           ChangeNotifierProvider(create: (_) => NotificationProviderModel()),
+          ChangeNotifierProvider(create: (context) => CompanyStructureInfoViewModel()..initializeCompanyinformationScreen(context: context)),
           ChangeNotifierProvider<AppConfigService>(
             create: (_) => AppConfigService(),
           ),ChangeNotifierProvider<HomeViewModel>(

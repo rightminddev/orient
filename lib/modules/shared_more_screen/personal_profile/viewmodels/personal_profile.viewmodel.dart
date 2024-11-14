@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:orient/common_modules_widgets/custom_elevated_button.widget.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
@@ -22,6 +25,7 @@ import '../services/personal_profile.service.dart';
 class PersonalProfileViewModel extends ChangeNotifier {
   bool isLoading = false;
   bool isSuccess = false;
+  bool isSuccessUpdate = false;
   String? errorMessage;
   UserSettingsModel? userData;
   TextEditingController emailController = TextEditingController();
@@ -33,7 +37,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
   TextEditingController countryCodeController = TextEditingController();
   String? initialCountry;
   DateTime? birthDate;
-  FilePickerResult? selectedAvatar;
+  List<XFile>? selectedAvatar = [];
   final GlobalKey<FormState> form1Key = GlobalKey<FormState>();
   final GlobalKey<FormState> form2Key = GlobalKey<FormState>();
   final GlobalKey<FormState> form3Key = GlobalKey<FormState>();
@@ -114,23 +118,149 @@ class PersonalProfileViewModel extends ChangeNotifier {
     emailController.text = userData?.email ?? '';
     phoneNumberController.text = userData?.phone ?? '';
     nameController.text = userData?.name ?? '';
-    birthDateController.text = userData?.birthDate == null
-        ? ""
+    birthDateController.text = userData?.birthDate == null ? ""
         : DateService.formatDateTime(userData?.birthDate);
+    print("date is ${birthDateController.text}");
+    print("date is ${userData?.birthDate}");
   }
 
   void updateLoading(bool newVal) {
     isLoading = newVal;
     notifyListeners();
   }
+  List listProfileImage = [];
+  List<XFile> listXProfileImage = [];
+  XFile? XImageFileProfile;
+  File? profileImage;
+  final picker = ImagePicker();
+  Future<void> getProfileImageByCam(
+      {image1, image2, list, list2}) async {
+    XFile? imageFileProfile =
+    await picker.pickImage(source: ImageSource.camera);
+    if (imageFileProfile == null) return;
+      image1 = File(imageFileProfile.path);
+      image2 = imageFileProfile;
+      list.add({"image": image2, "view": image1});
+      list2.add(image2);
+    notifyListeners();
+    print(image1);
+  }
 
-  Future<void> pickAvatar() async {
-    FilePickerResult? result = await FileAndImagePickerService.pickFile();
-    if (result != null) {
-      selectedAvatar = result;
-    }
+  Future<void> getProfileImageByGallery(
+      {image1, image2, list, list2}) async {
+    XFile? imageFileProfile =
+    await picker.pickImage(source: ImageSource.gallery);
+    if (imageFileProfile == null) return null;
+      image1 = File(imageFileProfile.path);
+      image2 = imageFileProfile;
+      list.add({"image": image2, "view": image1});
+      list2.add(image2);
     notifyListeners();
   }
+  Future<void> getImage(context,{image1, image2, list, bool one = true, list2}) =>
+      showModalBottomSheet<void>(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+          ),
+          backgroundColor: Colors.white,
+          context: context,
+          builder: (BuildContext context) {
+            return SizedBox(
+              height: 200,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      "selectPhoto",
+                      style: TextStyle(
+                          fontSize: 20, color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                await getProfileImageByGallery(
+
+                                    image1: image1,
+                                    image2: image2,
+                                    list: list,
+                                    list2: list2
+                                );
+                                await image2 == null
+                                    ? null
+                                    : Image.asset(
+                                    "assets/images/profileImage.png");
+                                Navigator.pop(context);
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  Icons.image,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Gallery",
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                await getProfileImageByCam(
+                                    image1: image1,
+                                    image2: image2,
+                                    list: list,
+                                    list2: list2
+                                );
+                                print(image1);
+                                print(image2);
+                                await image2 == null
+                                    ? null
+                                    : Image.asset(
+                                    "assets/images/profileImage.png");
+                                Navigator.pop(context);
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  Icons.camera,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Camera",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
 
   Future<void> selectBirthDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -141,7 +271,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
     );
     if (picked != null && picked != birthDate) {
       birthDate = picked;
-      birthDateController.text = DateService.formatDateTime(birthDate);
+      birthDateController.text = DateService.formatDateTime(birthDate, format: 'yyyy-MM-dd');
     }
     notifyListeners();
   }
@@ -282,16 +412,20 @@ class PersonalProfileViewModel extends ChangeNotifier {
          var result = PersonalProfileService.updateProfile(
           context: context,
           name: nameController.text,
-          avatar: selectedAvatar,
-          birthDay: DateService.formatDateTime(birthDate, format: 'yyyy-MM-dd'),
+          avatar: listXProfileImage,
+          birthDay: birthDateController.text ==
+              DateService.formatDateTime(userData?.birthDate) ? birthDateController.text:DateService.formatDateTime(birthDate, format: 'yyyy-MM-dd'),
         );
+
           result.then((value)async{
-            print(value.data);
             await updateUserSettingsData(context: context);
             AlertsService.success(
                 title: 'Profile updated!',
                 context: context,
                 message: 'Profile updated successfully');
+            isSuccessUpdate = true;
+            print("Update2");
+            print(value.data);
             notifyListeners();
             return;
           });

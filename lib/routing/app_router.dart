@@ -11,6 +11,7 @@ import 'package:orient/models/stores/store_model.dart';
 import 'package:orient/modules/eCommerce_more_screen.dart';
 import 'package:orient/modules/ecommerce/blog/view/blog_details_screen.dart';
 import 'package:orient/modules/ecommerce/blog/view/blog_screen.dart';
+import 'package:orient/modules/ecommerce/bookmark/view/bookmark_screen.dart';
 import 'package:orient/modules/ecommerce/checkout/checkout_screen.dart';
 import 'package:orient/modules/ecommerce/checkout/widget/checkout_payment_webview.dart';
 import 'package:orient/modules/ecommerce/home/color_trend/color_trend_screen.dart';
@@ -80,6 +81,7 @@ enum AppRoutes {
   requests,
   notifications,
   more,
+  bookMark,
   requestsById,
   requestDetails,
   addRequest,
@@ -402,6 +404,34 @@ GoRouter goRouter(BuildContext context) => GoRouter(
         return AppRouterTransitions.slideTransition(
           key: state.pageKey,
           child: const PromoCodeScreen(),
+          animation: animationController,
+          begin: const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/book-mark',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.bookMark.name,
+      pageBuilder: (context, state) {
+       // Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: const BookmarkScreen(),
           animation: animationController,
           begin: const Offset(1.0, 0.0),
         );

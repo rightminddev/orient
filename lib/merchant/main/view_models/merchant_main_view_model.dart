@@ -29,7 +29,7 @@ class MerchantMainViewModel extends ChangeNotifier {
         currentPage = MerchantNavbarPages.merchantStoresScreen;
         return;
       case NotificationScreen _:
-        currentPage = MerchantNavbarPages.merchantNotifications;
+        currentPage = MerchantNavbarPages.notifications;
         return;
       case SettingsPage _:
         currentPage = MerchantNavbarPages.merchantMore;
@@ -46,8 +46,8 @@ class MerchantMainViewModel extends ChangeNotifier {
         return const MerchantHomeScreen();
       case MerchantNavbarPages.merchantStoresScreen:
         return const MerchantStoresScreen();
-      case MerchantNavbarPages.merchantNotifications:
-        return  NotificationScreen(false);
+      case MerchantNavbarPages.notifications:
+        return NotificationScreen(false);
       case MerchantNavbarPages.merchantMore:
         return SettingsPage();
       default:
@@ -87,7 +87,7 @@ class MerchantMainViewModel extends ChangeNotifier {
             extra: begin,
             pathParameters: {'lang': context.locale.languageCode});
         return;
-      case MerchantNavbarPages.merchantNotifications:
+      case MerchantNavbarPages.notifications:
         context.pushReplacementNamed(AppRoutes.merchantNotifications.name,
             extra: begin,
             pathParameters: {'lang': context.locale.languageCode});

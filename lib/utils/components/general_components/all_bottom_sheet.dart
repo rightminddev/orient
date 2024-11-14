@@ -19,7 +19,11 @@ defaultActionBottomSheet(
       bool viewDropDownButton = false,
       String? dropDownValue,
       String? dropDownTitle,
+      String? textFormFieldHint,
+      TextEditingController? textFormFieldController,
       bool? view = false,
+      bool? widgetTextFormField = false,
+      bool? viewHeaderIcon = true,
       Widget? buttonWidget,
       List<DropdownMenuItem<String>>? dropDownItems,
       void Function(String?)? dropDownOnChanged,
@@ -67,7 +71,7 @@ defaultActionBottomSheet(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Stack(
+                   if(viewHeaderIcon == true) Stack(
                       alignment: Alignment.topRight,
                       children: [
                         Container(
@@ -122,8 +126,7 @@ defaultActionBottomSheet(
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 30),
-                    if (viewDropDownButton == true)
-                      Stack(
+                    if (viewDropDownButton == true)Stack(
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 0.5),
@@ -142,6 +145,10 @@ defaultActionBottomSheet(
                               onChanged: dropDownOnChanged),
                         ],
                       ),
+                    if(widgetTextFormField == true) defaultTextFormField(
+                      hintText: textFormFieldHint,
+                      controller: textFormFieldController
+                    ),
                     const SizedBox(height: 30),
                     if(view == true) const Center(child: CircularProgressIndicator(),),
                     if(view == false)GestureDetector(

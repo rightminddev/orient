@@ -51,8 +51,6 @@ class CommentFormFieldAndButton extends StatelessWidget {
                         .then((value) {
                           print("TAP");
                       Provider.of<CommentProvider>(context, listen: false).commentController.clear();
-                      provider
-                          .getPosts(socialGroupId: socialGroupId, context: context);
                     });
                   },
                   child: Container(

@@ -35,6 +35,7 @@ class PostsProvider extends ChangeNotifier {
   int pageNumber = 1;
   int count = 0;
   ScrollController get scrollController => controller;
+
   bool hasMoreData(int length) {
     if (length < expectedPageSize) {
       return false; // No more data available if we received less than expected
@@ -95,7 +96,6 @@ class PostsProvider extends ChangeNotifier {
     ).then((value){
       _setStatus(PostsStatus.success);
       PostRepositoryImplementation(ApiServicesImplementation(), context);
-      getPosts(socialGroupId: socialGroupId, context: context);
       notifyListeners();
     }).catchError((e){
       print("ERROR ---> ${e.toString()}");

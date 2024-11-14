@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_colors.dart';
 import '../constants/app_sizes.dart';
 
 class CustomElevatedButton extends StatefulWidget {
@@ -11,14 +12,16 @@ class CustomElevatedButton extends StatefulWidget {
   final double? radius;
   final Color? backgroundColor;
   final bool? isFuture;
+  bool? blue = false;
   final bool? isPrimaryBackground;
 
-  const CustomElevatedButton(
+   CustomElevatedButton(
       {super.key,
       required this.onPressed,
       required this.title,
       this.buttonStyle,
       this.titleWidget,
+        this.blue,
       this.titleSize,
       this.backgroundColor,
       this.radius,
@@ -74,10 +77,7 @@ class CustomElevatedButtonState extends State<CustomElevatedButton>
           child: ElevatedButton(
             style: widget.buttonStyle ??
                 ElevatedButton.styleFrom(
-                  backgroundColor: widget.backgroundColor ??
-                      (widget.isPrimaryBackground == true
-                          ? null
-                          : Theme.of(context).colorScheme.secondary),
+                  backgroundColor:  Color((widget.blue == true)?AppColors.oc1 :AppColors.oc2),
                   foregroundColor: Colors.white, // Text color
                   disabledForegroundColor: Colors.white,
                   elevation: 2,

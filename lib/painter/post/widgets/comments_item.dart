@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orient/constants/app_sizes.dart';
@@ -6,6 +7,7 @@ import 'package:orient/painter/post/data/models/post_response.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
 import 'package:orient/utils/media_query_values.dart';
 
+import '../../../utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import '../data/models/comments_model/get_comment_model.dart';
 class CommentsItem extends StatelessWidget {
   CommentsItem({super.key, required this.comments, required this.user});
@@ -45,13 +47,35 @@ class CommentsItem extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(2.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(63),
-                child: const CachedNetWokImageWidget(
-                  url: "https://picsum.photos/200",
-                  width: 63,
-                  height: 63,
-                  radius: 63,
+              child: Container(
+                width: 63,
+                height: 63,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [Color(0xffE6007E), Color(0xff224982)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(63),
+                    child: CachedNetworkImage(
+                        imageUrl: user.avatar!,
+                        fit: BoxFit.cover,
+                        height: 63,
+                        width: 63,
+                        placeholder: (context, url) => const ShimmerAnimatedLoading(
+                          width: 63.0,
+                          height: 63,
+                          circularRaduis: 63,
+                        ),
+                        errorWidget: (context, url, error) => const Icon(
+                          Icons.image_not_supported_outlined,
+                        )),
+                  ),
                 ),
               ),
             ),

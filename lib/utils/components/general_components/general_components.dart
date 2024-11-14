@@ -61,22 +61,21 @@ Widget defaultTap2BarItem(
     },
   );
 }
-Widget defaultTapBarItem(
-    {required List<String>? items,
-    final Function? onTapItem,
-      int? selectIndex,
-    double? tapBarItemsWidth}) {
+  Widget defaultTapBarItem(
+      {required List<String>? items,
+      final Function? onTapItem,
+        int? selectIndex,
+      double? tapBarItemsWidth}) {
 
-  return StatefulBuilder(
-    builder: (BuildContext context, StateSetter setState) {
-      double itemWidth =
-          (tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.9) /
-              items!.length;
-      return Center(
-        child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        double itemWidth =
+            (tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.95) /
+                items!.length;
+        return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7.5),
             height: 45.0,
-            width: tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.9,
+            width: tapBarItemsWidth ?? MediaQuery.sizeOf(context).width * 0.95,
             decoration: BoxDecoration(
                 color: const Color(0xff0D3B6F),
                 borderRadius: BorderRadius.circular(25)),
@@ -107,18 +106,17 @@ Widget defaultTapBarItem(
                     child: Text(
                       items![index].toUpperCase(),
                       style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           color: Color(0xffFFFFFF),
                           fontWeight: FontWeight.w500,
                           fontFamily: "Poppins"),
                     ),
                   )),
               itemCount: items!.length,
-            )),
-      );
-    },
-  );
-}
+            ));
+      },
+    );
+  }
 Widget defaultBottomNavigationBar(
     {required List<String>? items,
       final Function? onTapItem,
@@ -199,7 +197,7 @@ Widget defaultProductContainer(
     List<BoxShadow>? boxShadow,
     required String? title,
     required String? price,
-    required String? unit,
+     String? unit,
     String? discountPrice,
     required BuildContext? context,
     required bool? showBookMark,

@@ -24,6 +24,7 @@ class BottomSheetBody extends StatefulWidget {
 }
 
 class _BottomSheetBodyState extends State<BottomSheetBody> {
+
   TextEditingController commentController = TextEditingController();
   String selectRate = "4";
   @override
@@ -31,102 +32,113 @@ class _BottomSheetBodyState extends State<BottomSheetBody> {
     print('///////////');
     print(widget.post);
     print('///////////');
-    return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.sizeOf(context).height * 0.8,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 5,),
-              const BottomSheetEdge(),
-              const SizedBox(height: 15,),
-              const CommentTextBottomSheet(),
-              const SizedBox(height: 15,),
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.55,
-                child: CommentsList(user: widget.user,),
-              ),
-              //Text('data')
-              //SizedBox(height: 15,),
-              const AddNewCommentText(),
-              const SizedBox(height: 10,),
-              Consumer<PostsProvider>(
-                builder: (context, provider, child) {
-                  return defaultCommentTextFormField(
-                    hintText: AppStrings.typeYourMessage.tr().toUpperCase(),
-                    onTapSend: (){
-                      Provider.of<CommentProvider>(context, listen: false)
-                          .addComment(
-                          postId: widget.post,
-                          comment: Provider.of<CommentProvider>(context, listen: false)
-                              .commentController
-                              .text)
-                          .then((value) {
-                        Provider.of<CommentProvider>(context, listen: false).commentController.clear();
-                        provider
-                            .getPosts(socialGroupId: widget.socialGroupId, context: context);
-                      });
-                    },
-                    maxLines: 1,
-                    borderColor: const Color(0xffE3E5E5),
-                    controller: commentController,
-                    viewDropDownRates: true,
-                    dropDownValue: selectRate,
-                    dropDownOnChanged: (String? value){
-                      setState(() {
-                        selectRate = value!;
-                      });
-                    },
-                    dropDownItems: ['1', '2', '3', '4', '5'].map((e) {
-                      return DropdownMenuItem(
-                        value: e.toString(),
-                        child: Row(
-                          children: [
-                            Text(
-                              e.toString(),
-                              style: const TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff1B1B1B)),
-                            ),
-                            const Icon(
-                              Icons.star,
-                              color: Color(0xffE6007E),
-                              size: 16,
-                            )
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    dropDownHint: Row(
-                      children: [
-                        Text(
-                          "${selectRate.toString()} ",
-                          style:const TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff1B1B1B)),
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Color(0xffE6007E),
-                          size: 16,
-                        )
-                      ],
+    return Consumer<PostsProvider>(
+        builder: (context, postsProvider, child) {
+          return Consumer<CommentProvider>(
+              builder: (context, commentProvider, child) {
+                if(commentProvider.isAddCommentSuccess == true){
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    commentProvider.getComment(postId: widget.post, context: context);
+                  });
+                  commentProvider.isAddCommentSuccess = false;
+                }
+                return SizedBox(
+                  width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height * 0.8,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 5,),
+                          const BottomSheetEdge(),
+                          const SizedBox(height: 15,),
+                          const CommentTextBottomSheet(),
+                          const SizedBox(height: 15,),
+                          SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.55,
+                            child: CommentsList(user: widget.user,),
+                          ),
+                          //Text('data')
+                          //SizedBox(height: 15,),
+                          const AddNewCommentText(),
+                          const SizedBox(height: 10,),
+                          Consumer<PostsProvider>(
+                            builder: (context, provider, child) {
+                              return defaultCommentTextFormField(
+                                hintText: AppStrings.typeYourMessage.tr().toUpperCase(),
+                                onTapSend: (){
+                                  Provider.of<CommentProvider>(context, listen: false).addComment(
+                                      context: context,
+                                      postId: widget.post,
+                                      comment: commentController.text)
+                                      .then((value) {
+                                    commentController.clear();
+
+                                  });
+                                },
+                                maxLines: 1,
+                                borderColor: const Color(0xffE3E5E5),
+                                controller: commentController,
+                                viewDropDownRates: true,
+                                dropDownValue: selectRate,
+                                dropDownOnChanged: (String? value){
+                                  setState(() {
+                                    selectRate = value!;
+                                  });
+                                },
+                                dropDownItems: ['1', '2', '3', '4', '5'].map((e) {
+                                  return DropdownMenuItem(
+                                    value: e.toString(),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          e.toString(),
+                                          style: const TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xff1B1B1B)),
+                                        ),
+                                        const Icon(
+                                          Icons.star,
+                                          color: Color(0xffE6007E),
+                                          size: 16,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                                dropDownHint: Row(
+                                  children: [
+                                    Text(
+                                      "${selectRate.toString()} ",
+                                      style:const TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff1B1B1B)),
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Color(0xffE6007E),
+                                      size: 16,
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+                  ),
+                );
+              },
+          );
+        },
     );
   }
 }

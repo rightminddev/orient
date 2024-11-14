@@ -22,9 +22,12 @@ class HomeAddsWidget extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index)=> GestureDetector(
                   onTap: (){
-                    context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
+                    context.pushNamed(AppRoutes.blogDetails.name,
                         pathParameters: {'lang': context.locale.languageCode,
-                          'id' : "${homeProvider.productsBlog[index]['category_id']}"
+                          "date" : "${homeProvider.productsBlog[index]['created_at']}",
+                          "image" : "${homeProvider.productsBlog[index]['main_thumbnail'][0]['file']}",
+                          "title" : "${homeProvider.productsBlog[index]['title']}",
+                          "contant" : "${homeProvider.productsBlog[index]['short_description']}"
                         });
                   },
                   child: Container(

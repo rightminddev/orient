@@ -34,9 +34,13 @@ class ColorTrendBlog extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index)=> GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
+                        context.pushNamed(AppRoutes.blogDetails.name,
                             pathParameters: {'lang': context.locale.languageCode,
-                              'id' : "${homeProvider.colorTrendBlog[index]['category_id']}"
+                              'id' : "${homeProvider.colorTrendBlog[index]['id']}",
+                              "date" : "${homeProvider.colorTrendBlog[index]['created_at']}",
+                              "image" : "${homeProvider.colorTrendBlog[index]['main_thumbnail'][0]['file']}",
+                              "title" : "${homeProvider.colorTrendBlog[index]['title']}",
+                              "contant" : "${homeProvider.colorTrendBlog[index]['short_description']}"
                             });
                       },
                       child: Container(

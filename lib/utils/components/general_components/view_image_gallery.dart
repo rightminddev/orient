@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-Widget defaultViewImageGallery({required List? listImagesUrl})=> listImagesUrl!.isEmpty
+Widget defaultViewImageGallery({ List? listImagesUrl , bool url = false})=> listImagesUrl!.isEmpty
     ? Center(child: CircularProgressIndicator())
     : MasonryGridView.builder(
       shrinkWrap: true,
@@ -28,6 +28,7 @@ Widget defaultViewImageGallery({required List? listImagesUrl})=> listImagesUrl!.
                   builder: (context) => FullScreenImageViewer(
                     imageUrls: listImagesUrl,
                     initialIndex: index,
+                    url: url,
                   ),
                 ),
               );
@@ -35,7 +36,7 @@ Widget defaultViewImageGallery({required List? listImagesUrl})=> listImagesUrl!.
             child:ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: CachedNetworkImage(
-                  imageUrl: listImagesUrl![index]['file'],
+                  imageUrl:url ==  false ? listImagesUrl![index]['file'] :listImagesUrl![index]['images'][0]['file'],
                   fit: BoxFit.fill,
                   placeholder: (context, url) => const ShimmerAnimatedLoading(
                     width:  100,
@@ -51,13 +52,15 @@ Widget defaultViewImageGallery({required List? listImagesUrl})=> listImagesUrl!.
     );
 class FullScreenImageViewer extends StatelessWidget {
   final List? imageUrls;
+  final bool? url;
   final int initialIndex;
 
-  FullScreenImageViewer({required this.imageUrls, required this.initialIndex});
+  FullScreenImageViewer({required this.imageUrls, required this.initialIndex,required this.url});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: GestureDetector(
@@ -70,7 +73,7 @@ class FullScreenImageViewer extends StatelessWidget {
         itemCount: imageUrls!.length,
         builder: (context, index) {
           return PhotoViewGalleryPageOptions(
-            imageProvider: NetworkImage(imageUrls![index]['file']),
+            imageProvider: NetworkImage((url == false)?imageUrls![index]['file'] :imageUrls![index]['images'][0]['file']),
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.covered * 2,
           );

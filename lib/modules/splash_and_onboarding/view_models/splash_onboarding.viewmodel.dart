@@ -128,13 +128,13 @@ class OnboardingViewModel extends ChangeNotifier {
             debugPrint('Failed to send saved fingerprints to server $ex');
           }
           if(role != null){
-            if(role!.contains('Customer')){
+            if(role!.contains('Customer') || role!.contains('admin')){
               context.goNamed(AppRoutes.eCommerceHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
             } else if(role!.contains('Merchant') || role!.contains('traders')){
               context.goNamed(AppRoutes.merchantHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
-            }else if(role!.contains('Painter') || role!.contains('admin')){
+            }else if(role!.contains('Painter')){
               context.goNamed(AppRoutes.painterHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
             }else{

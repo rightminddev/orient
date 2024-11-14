@@ -28,6 +28,8 @@ class CreateEditAddressScreen extends StatefulWidget {
   var stateIdModel;
   var cityIdModel;
   var id;
+  bool? checkout = true;
+  bool? addAddress = true;
   bool addAdress = true;
   CreateEditAddressScreen({super.key,
       this.id,
@@ -35,6 +37,8 @@ class CreateEditAddressScreen extends StatefulWidget {
       this.countryIdModel,
       this.countryCodeModel,
       this.phoneModel,
+    this.checkout,
+    this.addAddress,
        required this.addAdress,
       this.addressModel,
       this.stateIdModel,
@@ -170,11 +174,16 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
       return Consumer<HomeViewModel>(builder:
       (context, values, child) {
         if(value.isAddAddressSuccess == true || value.isUpdateAddressSuccess == true){
-          print(value.isUpdateAddressSuccess);
+          print("SUCCESS");
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            //Navigator.pop(context);
+            Navigator.pop(context);
             value.isAddAddressSuccess = false;
             value.isUpdateAddressSuccess = false;
+          });
+        }if(value.isSuccess == true){
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pop(context);
+            value.isSuccess = false;
           });
         }
         return Form(
@@ -227,8 +236,8 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                 },
               ),
               const SizedBox(height: 20),
-              if(value.isAddAddressLoading || value.isUpdateAddressLoading)const CircularProgressIndicator(),
-              if(!value.isAddAddressLoading && !value.isUpdateAddressLoading) Padding(
+              if(value.isAddAddressLoading || value.isUpdateAddressLoading || value.isLoading)const CircularProgressIndicator(),
+              if(!value.isAddAddressLoading && !value.isUpdateAddressLoading && !value.isLoading) Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: ButtonWidget(
                     onPressed: (){
@@ -264,7 +273,19 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                             &&cityId != null && (countryCode != null ||countryCodeController.text.isNotEmpty) &&
                             (countryId != null || widget.countryIdModel != null) && widget.id != null
                         ){
-                          value.updateAddressCheckout(
+                          if(widget.addAddress == true){
+                            value.addAddressCheckout(
+                                context: context,
+                                phone: phoneController.text,
+                                address: addressController.text,
+                                user_id: values.userSettings!.userId,
+                                state_id: stateId.toString(),
+                                city_id: cityId.toString(),
+                                country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
+                                country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
+                            );
+                          }
+                         if (widget.checkout == true) {  value.updateAddressCheckout(
                               context: context,
                               phone: phoneController.text,
                               address: addressController.text,
@@ -274,7 +295,19 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                               country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
                               country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
                             id: widget.id
-                          );
+                          );}else{
+                           value.updateShippingAddress(
+                               context: context,
+                               phone: phoneController.text,
+                               address: addressController.text,
+                               user_id: values.userSettings!.userId,
+                               state_id: stateId.toString(),
+                               city_id: cityId.toString(),
+                               country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
+                               country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
+                               id: widget.id
+                           );
+                         }
                         }
                       }
                     },

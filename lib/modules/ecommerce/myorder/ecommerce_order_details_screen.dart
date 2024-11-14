@@ -54,55 +54,58 @@ class EcommerceOrderDetailsScreen extends StatelessWidget {
             child: (value.orderDetailsModel == null)?
             const GetOrderDetailsLoading()
             :SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          '${AppStrings.orderNo.tr()} ${value.orderDetailsModel!.order!.uuid}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displayMedium
-                              ?.copyWith(
-                            color: AppThemeService
-                                .colorPalette.secondaryTextColor.color,
-                            height: 0,
-                            letterSpacing: 0,
+              child: SizedBox(
+                height: MediaQuery.sizeOf(context).height * 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '${AppStrings.orderNo.tr()} ${value.orderDetailsModel!.order!.uuid}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium
+                                ?.copyWith(
+                              color: AppThemeService
+                                  .colorPalette.secondaryTextColor.color,
+                              height: 0,
+                              letterSpacing: 0,
+                            ),
                           ),
-                        ),
-                        const Spacer(),
-                        Text(value.orderDetailsModel!.order!.status!.toUpperCase(), style: const TextStyle(color: Color(0xff2AA952), fontSize: 14, fontWeight: FontWeight.w500),),
-                      ],
-                    ),
-                    const SizedBox(height: 30,),
-                    OrderDetailsListOrder(items: value.orderDetailsModel!.order!.items,),
-                    const SizedBox(height: 30,),
-                    Container(
-                      width: double.infinity,
-                      alignment: Alignment.centerLeft,
-                      child: Text(AppStrings.orderInformation.tr().toUpperCase(), style: const TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 14, color: Color(AppColors.oc2)
-                      ),),
-                    ),
-                    const SizedBox(height: 15,),
-                    defaultOrderInfo("${AppStrings.date.tr()}:", "${value.orderDetailsModel!.order!.date}",context),
-                    defaultOrderInfo("${AppStrings.shippingAddress.tr()}:", "${value.orderDetailsModel!.order!.shippingInfo!.addressText}",context),
-                    defaultOrderInfo("${AppStrings.paymentMethods.tr()}:", "Cridet card",context),
-                    defaultOrderInfo("${AppStrings.shippingCost.tr()}:", "${value.orderDetailsModel!.order!.shippingCost}",context),
-                    defaultOrderInfo("${AppStrings.totalAmount.tr()}:", "${value.orderDetailsModel!.order!.total}", context),
-                    const SizedBox(height: 25,),
-                    ButtonWidget(
-                      title: AppStrings.needHelp.tr().toUpperCase(),
-                      svgIcon: "assets/images/svg/info.svg",
-                      onPressed: () {
-                      },
-                      padding: EdgeInsets.zero,
-                      fontSize: 12,
-                    ),
-                  ],
+                          const Spacer(),
+                          Text(value.orderDetailsModel!.order!.status!.toUpperCase(), style: const TextStyle(color: Color(0xff2AA952), fontSize: 14, fontWeight: FontWeight.w500),),
+                        ],
+                      ),
+                      const SizedBox(height: 30,),
+                      OrderDetailsListOrder(items: value.orderDetailsModel!.order!.items,),
+                      const SizedBox(height: 30,),
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        child: Text(AppStrings.orderInformation.tr().toUpperCase(), style: const TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14, color: Color(AppColors.oc2)
+                        ),),
+                      ),
+                      const SizedBox(height: 15,),
+                      defaultOrderInfo("${AppStrings.date.tr()}:", "${value.orderDetailsModel!.order!.date}",context),
+                      defaultOrderInfo("${AppStrings.shippingAddress.tr()}:", "${value.orderDetailsModel!.order!.shippingInfo!.addressText}",context),
+                      defaultOrderInfo("${AppStrings.paymentMethods.tr()}:", "${value.orderDetailsModel!.order!.paymentGateway!.title}",context),
+                      defaultOrderInfo("${AppStrings.shippingCost.tr()}:", "${value.orderDetailsModel!.order!.shippingCost}",context),
+                      defaultOrderInfo("${AppStrings.totalAmount.tr()}:", "${value.orderDetailsModel!.order!.total}", context),
+                      const SizedBox(height: 25,),
+                      ButtonWidget(
+                        title: AppStrings.needHelp.tr().toUpperCase(),
+                        svgIcon: "assets/images/svg/info.svg",
+                        onPressed: () {
+                        },
+                        padding: EdgeInsets.zero,
+                        fontSize: 12,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

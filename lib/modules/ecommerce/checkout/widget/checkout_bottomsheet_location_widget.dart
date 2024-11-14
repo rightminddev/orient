@@ -129,7 +129,10 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
                                   borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
                                 ),
                                 builder: (BuildContext context) {
-                                  return CheckoutBottomsheetEditLocationWidget(addAdress: true,);
+                                  return CheckoutBottomsheetEditLocationWidget(
+                                    addAdress: true,
+
+                                  );
                                 },
                               );
                               Navigator.pop(context);

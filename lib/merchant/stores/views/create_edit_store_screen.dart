@@ -235,7 +235,10 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
     if (widget.storeModel != null) {
       return true;
     } else {
-      if (countryCode == int.parse(countryCodeController.text.substring(1))) {
+      // debugPrint(countryCodeController.text.substring(1));
+      // final x = int.parse(countryCodeController.text.substring(1));
+      if (int.tryParse(countryCodeController.text.substring(1)) != null) {
+        countryCode = int.parse(countryCodeController.text.substring(1));
         return true;
       } else {
         return false;

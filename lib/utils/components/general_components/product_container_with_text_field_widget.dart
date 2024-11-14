@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
+import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/media_query_values.dart';
 
 class ProductContainerWithTextFieldWidget extends StatefulWidget {
@@ -86,7 +89,7 @@ class _ProductContainerWithTextFieldWidgetState
                 flex: 3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.title!,
@@ -127,9 +130,51 @@ class _ProductContainerWithTextFieldWidgetState
                         ),
                       ],
                     ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            AppStrings.units.tr(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              // decoration: TextDecoration.lineThrough,
+                              // decorationColor: Colors.grey,
+                              // decorationThickness: 2,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: defaultTextFormField(
+                            controller: controller,
+                            hasShadows: false,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              final isInt = int.tryParse(value);
+
+                              if (isInt != null &&
+                                  isInt >= 0 &&
+                                  widget.onQuantitySubmitted != null) {
+                                isStockValueError.value = false;
+                                widget.onQuantitySubmitted!(value);
+                              } else if (isInt == null &&
+                                  widget.onQuantitySubmitted != null) {
+                                isStockValueError.value = true;
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
+              /*
               Expanded(
                 child: TextField(
                   controller: controller,
@@ -171,6 +216,7 @@ class _ProductContainerWithTextFieldWidgetState
                   ),
                 ),
               ),
+              */
             ],
           ),
         );

@@ -35,12 +35,12 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       height: 64,
       alignment: Alignment.center,
       margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
-      padding:const EdgeInsets.symmetric(horizontal: 16, vertical:0),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       decoration: ShapeDecoration(
         color: AppThemeService.colorPalette.tertiaryColorBackground.color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.s8),
-          side:const BorderSide(
+          side: const BorderSide(
             color: Color(0xffE3E5E5),
             width: 1.0,
           ),
@@ -81,9 +81,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
             }
           },
           validator: (val) {
-            if (val == null || val.number.isEmpty) {
-              return AppStrings.pleaseEnterValidPhoneNumber.tr();
-            }
+            // if (val == null || val.number.isEmpty) {
+            //   return AppStrings.pleaseEnterValidPhoneNumber.tr();
+            // }
             //? is it needed??
             // if (val.number.length < minLength || val.number.length > maxLength) {
             //   return AppStrings.pleaseEnterValidPhoneNumber.tr();

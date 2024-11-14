@@ -83,6 +83,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ButtonWidget(
+                isLoading: false,
                 onPressed: () async {
                   await orderStatusActionBottomSheet(
                     context: context,
@@ -156,8 +157,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ),
                         const SizedBox(height: 12),
                         TitleWithDataWidget(
-                          data:
-                              '${viewModel.orderDetails.total} EGP',
+                          data: '${viewModel.orderDetails.total} EGP',
                           title: AppStrings.totalAmount.tr(),
                         ),
                         const SizedBox(height: 12),
@@ -189,8 +189,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     context: context,
                                     showBookMark: false,
                                     title: element.title,
-                                    imageUrl:(element.image?.elementAt(0) != null)?
-                                    element.image?.elementAt(0).file : "",
+                                    imageUrl:
+                                        (element.image?.elementAt(0) != null)
+                                            ? element.image?.elementAt(0).file
+                                            : "",
                                     price: element.priceAfterDiscount != null
                                         ? '${element.priceAfterDiscount} EGP'
                                         : '${element.price} EGP',

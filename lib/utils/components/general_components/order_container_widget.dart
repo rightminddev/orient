@@ -61,6 +61,7 @@ class OrderContainerWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ButtonWidget(
+                isLoading: false,
                 onPressed: () {
                   // Navigator.of(context).push(
                   //   MaterialPageRoute(

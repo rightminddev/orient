@@ -409,7 +409,7 @@ class ColorsModel {
 
 class CompanyContacts {
   final String? phone;
-  final List<dynamic> otherphones;
+  final List<String?>? otherphones;
   //final String? otherphones;
   final String? whatassp;
   final String? whatsapp;
@@ -444,11 +444,11 @@ class CompanyContacts {
   factory CompanyContacts.fromJson(Map<String, dynamic> json) {
     return CompanyContacts(
       phone: json['phone'],
-      otherphones: json['otherphones'],
-      // ? (json['otherphones'] as List<dynamic>)
-      //     .map((e) => e?.toString())
-      //     .toList()
-      // : null,
+      otherphones: json['otherphones']!= null
+      ? (json['otherphones'] as List<dynamic>)
+          .map((e) => e?.toString())
+          .toList()
+      : null,
       whatassp: json['whatassp'],
       branches: json['branches'] != null
           ? (json['branches'] as List<dynamic>)

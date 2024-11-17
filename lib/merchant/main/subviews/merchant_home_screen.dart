@@ -164,6 +164,34 @@ class MerchantHomeScreen extends StatelessWidget {
                                               color: const Color(0xffE0E0E0),
                                             ),
                                           ),
+                                          gapH24,
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'HELLO ${value.userSettings!.name!.split(' ')[0]}',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 36,
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 0,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                'Control your store',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 64,
+                                                  fontFamily: 'NalikaSignature',
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 0,
+                                                ),
+                                              ),
+                                            ],
+                                          )
                                         ],
                                       ),
                                       gapH8,

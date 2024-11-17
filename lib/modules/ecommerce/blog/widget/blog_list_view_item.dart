@@ -22,7 +22,7 @@ class BlogListViewItem extends StatelessWidget {
               "date" : "${blog[index]['created_at']}",
               "image" : "${blog[index]['main_thumbnail'][0]['file']}",
               "title" : "${blog[index]['title']}",
-              "contant" : "${blog[index]['short_description']}"
+              "contant" : "${blog[index]['content']}"
             });
       },
       child: Container(

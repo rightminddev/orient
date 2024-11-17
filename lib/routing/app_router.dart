@@ -23,7 +23,9 @@ import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
 import 'package:orient/modules/shared_more_screen/aboutus/view/aboutus_screen.dart';
+import 'package:orient/modules/shared_more_screen/contactus/view/contact_screen.dart';
 import 'package:orient/modules/shared_more_screen/faq/view/faq_screen.dart';
+import 'package:orient/modules/shared_more_screen/lang_setting/view/lang_setting_screen.dart';
 import 'package:orient/modules/shared_more_screen/personal_profile/views/personal_profile_screen.dart';
 import 'package:orient/modules/shared_more_screen/promocode/view/promocode_screen.dart';
 import 'package:orient/modules/shared_more_screen/shipping_address/view/shipping_address_screen.dart';
@@ -59,9 +61,11 @@ import 'package:provider/provider.dart';
 enum AppRoutes {
   home,
   addStore,
+  langSettingScreen,
   personalInfoScreen,
   promoCodeScreen,
   faqScreen,
+  contactUs,
   updatePassword,
   aboutusScreen,
   shippingAddress,
@@ -79,6 +83,7 @@ enum AppRoutes {
   qrcodeScreen,
   fingerprint,
   requests,
+  myOrderScreen,
   notifications,
   more,
   bookMark,
@@ -326,6 +331,64 @@ GoRouter goRouter(BuildContext context) => GoRouter(
       },
     ),
     GoRoute(
+        path: '/:lang/myOrder',
+        parentNavigatorKey: _rootNavigatorKey,
+        name: AppRoutes.myOrderScreen.name,
+        pageBuilder: (context, state) {
+          Offset? begin = state.extra as Offset?;
+          final lang = state.uri.queryParameters['lang'];
+          if (lang != null) {
+            final locale = Locale(lang);
+            context.setLocale(locale);
+          }
+          final animationController = AnimationController(
+            vsync: ticker,
+          );
+          // Make sure to dispose the controller after the transition is complete
+          animationController.addStatusListener((status) {
+            if (status == AnimationStatus.completed ||
+                status == AnimationStatus.dismissed) {
+              animationController.dispose();
+            }
+          });
+          return AppRouterTransitions.slideTransition(
+            key: state.pageKey,
+            child: const EcommerceOrderScreen(),
+            animation: animationController,
+            begin: begin ?? const Offset(1.0, 0.0),
+          );
+        },
+
+    ),
+    GoRoute(
+      path: '/:lang/lang-setting-screen',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.langSettingScreen.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: LangSettingScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
       path: '/:lang/update-password',
       parentNavigatorKey: _rootNavigatorKey,
       name: AppRoutes.updatePassword.name,
@@ -432,6 +495,34 @@ GoRouter goRouter(BuildContext context) => GoRouter(
         return AppRouterTransitions.slideTransition(
           key: state.pageKey,
           child: const BookmarkScreen(),
+          animation: animationController,
+          begin: const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/contact-us',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.contactUs.name,
+      pageBuilder: (context, state) {
+       // Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child:  ContactScreen(),
           animation: animationController,
           begin: const Offset(1.0, 0.0),
         );

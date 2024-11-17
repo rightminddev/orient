@@ -26,7 +26,7 @@ class MerchantHomeScreen extends StatelessWidget {
         builder: (context, value, child) {
           return Consumer<NotificationProviderModel>(
             builder: (context, notificationProviderModel, child) {
-              return (notificationProviderModel.isGetNotificationLoading)?
+              return (notificationProviderModel.isGetNotificationLoading || value.userSettings ==null)?
               HomePainterLoadingPage()
                   :Scaffold(
                 backgroundColor: const Color(0xffFFFFFF),
@@ -83,7 +83,7 @@ class MerchantHomeScreen extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                'HELLO ${value.userSettings!.name}',
+                                                'HELLO ${value.userSettings!.name!.split(' ')[0]}',
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 36,

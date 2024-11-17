@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
+import 'package:orient/modules/ecommerce/blog/controller/blog_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
@@ -57,6 +58,7 @@ void main() async {
         // inject all providers to make it accessable intire all application via context.
         providers: [
           ChangeNotifierProvider(create: (_) => NotificationProviderModel()),
+          ChangeNotifierProvider(create: (_) => BlogProviderModel()),
           ChangeNotifierProvider(create: (context) => CompanyStructureInfoViewModel()..initializeCompanyinformationScreen(context: context)),
           ChangeNotifierProvider<AppConfigService>(
             create: (_) => AppConfigService(),

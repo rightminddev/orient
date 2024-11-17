@@ -66,7 +66,7 @@ class LoginScreenState extends State<LoginScreen>
                       },
                     ),
                     const OverlayGradientWidget(),
-                    Center(
+                    Center  (
                       child: Form(
                         key: viewModel.formKey,
                         child: Padding(

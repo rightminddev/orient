@@ -29,7 +29,7 @@ class ButtonWidget extends StatelessWidget {
     this.borderSide = BorderSide.none,
     this.padding,
     required this.title,
-    this.isLoading = true,
+    this.isLoading = false,
     this.svgIcon,
     this.svgIconColor,
     this.fontColor,
@@ -54,8 +54,10 @@ class ButtonWidget extends StatelessWidget {
             side: borderSide,
           ),
         ),
-        backgroundColor: WidgetStateProperty.all(
+        backgroundColor: isLoading == false ?WidgetStateProperty.all(
           backgroundColor ?? Color(AppColors.oc1),
+        ): WidgetStateProperty.all(
+          Colors.transparent,
         ),
       ),
       // child: Container(

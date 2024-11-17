@@ -175,10 +175,10 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "user_id" : user_id
         }
       );
-      // CheckConst.userAddressModel!.address = value.shippingAddresses[index]['address'];
-      // CheckConst.userAddressModel!.id = id;
-      // print("CheckConst.selectedPaymentId -> ${CheckConst.selectedPaymentId}");
-      // CheckConst.selectedAddressId = value.shippingAddresses[index]['id'];
+      CheckConst.userAddressModel!.address = address;
+      CheckConst.userAddressModel!.id = id;
+      print("CheckConst.selectedPaymentId -> ${CheckConst.selectedPaymentId}");
+      CheckConst.selectedAddressId = id;
       isUpdateAddressSuccess = true;
       userAddressModel!.id = id;
       userAddressModel!.address = address;

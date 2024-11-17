@@ -2,10 +2,20 @@
 
 abstract class AppStrings {
   static const loading = 'loading';
+  static const faqs = 'faqs';
+  static const deactivate = 'deactivate';
+  static const activation = 'activation';
+  static const ourBlog = 'ourBlog';
+  static const addLanguage = 'addLanguage';
+  static const hotline = 'hotline';
   static const noCommentsYet = 'noCommentsYet';
   static const next = 'next';
+  static const headOffice = 'headOffice';
   static const blogCenter = 'blogCenter';
   static const email = 'email';
+  static const showMap = 'showMap';
+  static const followUs = 'followUs';
+  static const sendEmail = 'sendEmail';
   static const skip = 'skip';
   static const bookMark = 'bookMark';
   static const getInspired = 'getInspired';

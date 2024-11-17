@@ -14,6 +14,7 @@ import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
 
+import '../../modules/shared_more_screen/customize_notification/customize_notification_screen.dart';
 import '../../utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -79,11 +80,32 @@ class SettingsPage extends StatelessWidget {
                               child: ListView(
                                 children: [
                                   defaultListTile(
+                                      title: AppStrings.notifications.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.notification.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/s1.svg"
+                                  ),
+                                  defaultListTile(
                                       title: AppStrings.customizeNotifications.tr(),
+                                      onTap: (){
+                                        showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return CustomizeNotificationScreen();
+                                        });
+                                      },
                                       src: "assets/images/svg/s1.svg"
                                   ),
                                   defaultListTile(
                                       title: AppStrings.languageSettings.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.langSettingScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
                                       src: "assets/images/svg/s2.svg"
                                   ),defaultListTile(
                                       title: AppStrings.updatePassword.tr(),
@@ -102,24 +124,29 @@ class SettingsPage extends StatelessWidget {
                                       },
                                       src: "assets/images/svg/s4.svg"
                                   ),defaultListTile(
-                                      title: AppStrings.aboutUs.tr(),
+                                      title: AppStrings.colorTrend.tr(),
                                       onTap: (){
-                                        context.pushNamed(AppRoutes.aboutusScreen.name,
+                                        context.pushNamed(AppRoutes.eCommerceColorTrendScreen.name,
                                             pathParameters: {'lang': context.locale.languageCode,
                                             });
                                       },
-                                      src: "assets/images/svg/s5.svg"
+                                      src: "assets/images/svg/color_trend.svg"
                                   ),defaultListTile(
-                                      title: AppStrings.contactUs.tr(),
-                                      src: "assets/images/svg/s6.svg"
-                                  ),defaultListTile(
-                                      title: AppStrings.promoCode.tr(),
+                                      title: AppStrings.myOrders.tr(),
                                       onTap: (){
-                                        context.pushNamed(AppRoutes.promoCodeScreen.name,
+                                        context.pushNamed(AppRoutes.myOrderScreen.name,
                                             pathParameters: {'lang': context.locale.languageCode,
                                             });
                                       },
-                                      src: "assets/images/svg/promo.svg"
+                                      src: "assets/images/svg/my-order.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.ourBlog.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.blog.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/blog.svg"
                                   ),defaultListTile(
                                       title: AppStrings.bookMark.tr(),
                                       onTap: (){
@@ -136,6 +163,38 @@ class SettingsPage extends StatelessWidget {
                                             });
                                       },
                                       src: "assets/images/ecommerce/svg/checkout_location.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.promoCode.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.promoCodeScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/promo.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.aboutUs.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.aboutusScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/s5.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.contactUs.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.contactUs.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/s6.svg"
+                                  ),defaultListTile(
+                                      title: AppStrings.faqs.tr(),
+                                      onTap: (){
+                                        context.pushNamed(AppRoutes.faqScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode,
+                                            });
+                                      },
+                                      src: "assets/images/svg/s6.svg"
                                   ),defaultListTile(
                                       title: AppStrings.logout.tr(),
                                        onTap: ()async{

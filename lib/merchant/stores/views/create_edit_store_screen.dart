@@ -71,8 +71,10 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
     if (widget.storeModel != null) {
       countryCodeController = TextEditingController(
           text: (widget.storeModel?.countryKey ?? 0).toString());
-      nameEnController = TextEditingController(text: widget.storeModel!.name);
-      nameArController = TextEditingController(text: widget.storeModel!.name);
+      nameEnController =
+          TextEditingController(text: widget.storeModel!.names?.en);
+      nameArController =
+          TextEditingController(text: widget.storeModel!.names?.ar);
       phoneController = TextEditingController(
           text: widget.storeModel!.phoneNumber.toString());
 

@@ -149,10 +149,15 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                   // },
                   keyboardType: TextInputType.text,
                   onFieldSubmitted: (value) {
-                    storesViewModel.search = value;
+                    if (storesViewModel.search != value.trim()) {
+                      storesViewModel.search = value;
 
-                    storesViewModel.initializeAvailableProductsScreen(
-                        context, widget.storeId);
+                      storesViewModel.pageNumber = 1;
+                      storesViewModel.products = List.empty(growable: true);
+
+                      storesViewModel.initializeAvailableProductsScreen(
+                          context, widget.storeId);
+                    }
                   },
                 ),
                 const SizedBox(height: 18),

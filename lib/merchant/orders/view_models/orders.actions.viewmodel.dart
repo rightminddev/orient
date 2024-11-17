@@ -47,6 +47,7 @@ class OrderActionsViewModel extends ChangeNotifier {
             message: result.message ?? AppStrings.updatedSuccessfully.tr());
         return true;
       } else {
+        context.pop();
         AlertsService.error(
             title: AppStrings.failed.tr(),
             context: context,

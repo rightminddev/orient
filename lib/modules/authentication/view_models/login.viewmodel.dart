@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart' as locale;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/custom_elevated_button.widget.dart';
 import '../../../constants/app_sizes.dart';
@@ -29,6 +33,12 @@ enum AuthStatus {
 }
 
 class AuthenticationViewModel extends ChangeNotifier {
+  bool isLoading = false;
+  bool isLoading2 = false;
+  bool isSuccess = false;
+  bool isSuccess2 = false;
+  String? errorMessage;
+  String? errorMessage2;
   bool isPhoneLogin = true;
   late AnimationController animationController;
   late Animation<double> animation;
@@ -38,10 +48,13 @@ class AuthenticationViewModel extends ChangeNotifier {
   final otpController = TextEditingController();
   final countryCodeController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool _isDisposed = false;
+  bool _isDisposed2 = false;
 
-  // Triggered Automatically when the view model not used !!
   @override
   void dispose() {
+    _isDisposed = true;
+    _isDisposed2 = true;
     animationController.dispose();
     phoneController.dispose();
     emailController.dispose();
@@ -49,6 +62,69 @@ class AuthenticationViewModel extends ChangeNotifier {
     otpController.dispose();
     countryCodeController.dispose();
     super.dispose();
+  }  bool status = false;
+  postDeviceSys({context, fcmToken }){
+    isLoading = true;
+    notifyListeners();
+    DioHelper.postData(
+        url: "/rm_users/v1/device_sys",
+        context : context,
+        data: {
+          "action" : "set",
+          "key" : "notification_token",
+          "value" : fcmToken
+        }
+    ).then((value){
+      if (!_isDisposed) {
+        isLoading = false;
+        isSuccess = true;
+
+        print(value.data);
+        notifyListeners();
+      }
+    }).catchError((error){
+      if (error is DioError) {
+        if (!_isDisposed) {
+          errorMessage = error.response?.data['message'] ?? 'Something went wrong';
+        } else {
+          errorMessage = error.toString();
+        }
+        isLoading = false;
+        notifyListeners();
+        }
+    });
+  }
+  getDeviceSys({context, status}){
+    isLoading2 = true;
+    notifyListeners();
+    DioHelper.postData(
+        url: "/rm_users/v1/device_sys",
+        context : context,
+        data: {
+          "action" : "set",
+          "key" : "notification_token_status",
+          "value" : status
+        }
+    ).then((value){
+      if (!_isDisposed2) {
+        isLoading2 = false;
+        status = (value.data['device']['notification_token_status'] == 0) ? false : true;
+        print("PUT SUCCESS");
+        CacheHelper.setBool( "status",  true);
+        print(value.data);
+        notifyListeners();
+      }
+    }).catchError((error){
+      if (!_isDisposed2) {
+        if (error is DioError) {
+          errorMessage2 = error.response?.data['message'] ?? 'Something went wrong';
+        } else {
+          errorMessage2 = error.toString();
+        }
+        isLoading2 = false;
+        notifyListeners();
+      }
+    });
   }
 
   void initializeAnimation(TickerProvider vsync) {
@@ -98,6 +174,11 @@ class AuthenticationViewModel extends ChangeNotifier {
           result.data != null &&
           (result.data?.isNotEmpty ?? false)) {
         await _handleLoginResponse(result: result.data!, context: context);
+        await postDeviceSys(
+            context: context,
+            fcmToken:await FirebaseMessaging.instance.getToken()
+        );
+        await getDeviceSys(context: context, status: 1);
       } else {
         AlertsService.error(
             title: AppStrings.failed.tr(),

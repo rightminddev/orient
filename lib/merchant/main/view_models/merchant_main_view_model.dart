@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/merchant/main/subviews/merchant_home_screen.dart';
 import 'package:orient/merchant/main/subviews/merchant_stores_screen.dart';
 import 'package:orient/modules/notification/view/notification_screen.dart';
-import '../../../painter/settings_page/settings_page.dart';
+import 'package:orient/modules/settings_page/setting_page_two.dart';
 import '../../../routing/app_router.dart';
 
 class MerchantMainViewModel extends ChangeNotifier {
@@ -31,7 +31,7 @@ class MerchantMainViewModel extends ChangeNotifier {
       case NotificationScreen _:
         currentPage = MerchantNavbarPages.merchantNotifications;
         return;
-      case SettingsPage _:
+      case SettingsPageTwo _:
         currentPage = MerchantNavbarPages.merchantMore;
         return;
       default:
@@ -49,7 +49,7 @@ class MerchantMainViewModel extends ChangeNotifier {
       case MerchantNavbarPages.merchantNotifications:
         return NotificationScreen(false);
       case MerchantNavbarPages.merchantMore:
-        return SettingsPage();
+        return SettingsPageTwo();
       default:
         return const MerchantHomeScreen();
     }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/general_services/settings.service.dart';
 import 'package:orient/models/settings/general_settings.model.dart';
@@ -77,13 +78,14 @@ class _LangSettingScreenState extends State<LangSettingScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: (){
+
                           setState(() {
                             selectIndex = index;
                             selectValue = lang![index].toString();
                           });
                             LocalizationService.setLocaleAndUpdateUrl(
                                 context: context, newLangCode: selectValue!);
-
+                          CacheHelper.setString(key: "lang", value: selectValue);
                         },
                         child: Container(
                           width: double.infinity,
@@ -117,7 +119,7 @@ class _LangSettingScreenState extends State<LangSettingScreen> {
                               ,const Spacer(),
                               GestureDetector(
                                   onTap: (){},
-                                  child: Text(AppStrings.change.toUpperCase(), style: const TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500, color: Color(0xffE6007E)),))
+                                  child: Text((lang![index].contains("en"))?"change".toUpperCase() : "تغيير", style: const TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500, color: Color(0xffE6007E)),))
                             ],
                           ),
                         ),
@@ -135,12 +137,14 @@ class _LangSettingScreenState extends State<LangSettingScreen> {
                       },
                       child: Container(
                         height: 50,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: const Color(0xff0D3B6F),
                           borderRadius: BorderRadius.circular(50),
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset("assets/images/svg/add-lang.svg"),
                             const SizedBox(width: 15,),

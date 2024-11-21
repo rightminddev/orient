@@ -44,7 +44,7 @@ class BlogListDetailsScreen extends StatelessWidget {
                           },
                         ),
                         Text(
-                          AppStrings.blogCenter.tr().toUpperCase(),
+                          AppStrings.blogDetails.tr().toUpperCase(),
                           style: const TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         IconButton(

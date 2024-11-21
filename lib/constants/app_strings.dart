@@ -3,9 +3,13 @@
 abstract class AppStrings {
   static const loading = 'loading';
   static const faqs = 'faqs';
+  static const branchesAndDistributors = 'branchesAndDistributors';
+  static const calculator = 'calculator';
   static const deactivate = 'deactivate';
   static const activation = 'activation';
   static const ourBlog = 'ourBlog';
+  static const blogDetails = 'blogDetails';
+  static const blog = 'blog';
   static const addLanguage = 'addLanguage';
   static const hotline = 'hotline';
   static const noCommentsYet = 'noCommentsYet';
@@ -28,6 +32,11 @@ abstract class AppStrings {
   static const delete = 'delete';
   static const deleteAccount = 'deleteAccount';
   static const loginTo = 'loginTo';
+  static const welcomeTo = 'welcomeTo';
+  static const orientApp = 'orientApp';
+  static const ecommerceStore = 'ecommerceStore';
+  static const paintersCommunity = 'paintersCommunity';
+  static const merchantsAndStores = 'merchantsAndStores';
   static const theAccountWillBeScheduledForDeletionWithIn60DaysYouWillStillBeAbleToLogInToCancelTheDeletionScheduleAtAnyTimeDuringThisPeriodOtherwiseTheDataWillBePermanentlyDeletedAfterThisPeriodEnds = 'theAccountWillBeScheduledForDeletionWithIn60DaysYouWillStillBeAbleToLogInToCancelTheDeletionScheduleAtAnyTimeDuringThisPeriodOtherwiseTheDataWillBePermanentlyDeletedAfterThisPeriodEnds.';
   static const needHelp = 'needHelp';
   static const yourAccount = 'yourAccount';

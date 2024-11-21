@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orient/modules/ecommerce/home/color_trend/color_trend_loading.dart';
+import 'package:orient/modules/ecommerce/home/controller/const.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
+import 'package:orient/modules/ecommerce/home/widget/clor_trend_product.dart';
 import 'package:orient/modules/ecommerce/home/widget/color_trend_appbar_widget.dart';
 import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart';
 import 'package:orient/utils/components/general_components/gallery_slider_image.dart';
@@ -18,6 +20,12 @@ class ColorTrendScreen extends StatelessWidget {
     return ChangeNotifierProvider(create: (context)=> HomeProvider()..getColorTrend(context: context),
     child: Consumer<HomeProvider>(
       builder: (context, value, child) {
+        if(value.isColorTrendSuccess == true){
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            value.getCheck(context: context, ids: HomeConst.Ids);
+          });
+          value.isColorTrendSuccess = false ;
+        }
        return Scaffold(
           body: (value.isColorTrendLoading)?
           const ColorTrendLoading()
@@ -48,18 +56,7 @@ class ColorTrendScreen extends StatelessWidget {
                     const SizedBox(height: 20,),
                     defaultViewImageGallery(listImagesUrl: value.colorTrendGallery,),
                     const SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Container(
-                        height: 240,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child:const Center(
-                          child: Text(
-                              "NO PRODUCT FOUND"
-                          ),
-                        ),
-                      ),
-                    ),
+                    const ClorTrendProduct(),
                     const SizedBox(height: 20,),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),

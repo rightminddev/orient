@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_images.dart';
+import 'package:orient/general_services/localization.service.dart';
+import 'package:orient/modules/ecommerce/bookmark/controller/bookmark_controller.dart';
+import 'package:orient/modules/ecommerce/home/controller/const.dart';
+import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/painter/points/logic/points_cubit/points_provider.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';
@@ -410,99 +414,143 @@ Widget defaultViewProductGrid(
       required void Function()? onTap,
       String? discountPrice,
       bool? showDiscount,
+      bool bookMark = false,
+      required bool search,
       bool? showSale,
+      value,
       double? containerWidth,
       double? containerHeight,
+      required productId
     }) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      width: containerWidth ?? 150,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      height: containerHeight ?? 218,
-      decoration: BoxDecoration(
-        color: const Color(0xffFFFFFF),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: boxShadow,
-      ),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.topLeft,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                child: CachedNetworkImage(
-                    imageUrl: productImageUrl!,
-                    fit: BoxFit.cover,
-                    height: 155,
-                    width: containerWidth ?? 170,
-                    placeholder: (context, url) =>  ShimmerAnimatedLoading(
-                      width: containerWidth ?? 170,
-                      height: 155,
-                      circularRaduis: 10,
-                    ),
-                    errorWidget: (context, url, error) => const Icon(
-                      Icons.image_not_supported_outlined,
-                    )),
+  return MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => BookmarkControllerProvider(),),
+  ],
+  child: Consumer<HomeProvider>(
+    builder: (context, home, child) {
+      return Consumer<BookmarkControllerProvider>(
+        builder: (context, bookmarkControllerProvider, child) {
+          if(bookmarkControllerProvider.isSuccessAdd == true){
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              home.getCheck(context: context, ids: HomeConst.Ids);
+            });
+            bookmarkControllerProvider.isSuccessAdd = false;
+          }
+          return GestureDetector(
+            onTap: onTap,
+            child: Container(
+              width: containerWidth ?? 150,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              height: containerHeight ?? 218,
+              decoration: BoxDecoration(
+                color: const Color(0xffFFFFFF),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: boxShadow,
               ),
-             if(showSale == true) Padding(
-                padding: const EdgeInsets.only(top: 7, left: 22),
-                child: SvgPicture.asset(
-                  'assets/images/svg/sale.svg',
-                ),
-              )
-            ],
-          ),
-          Text(
-            productType!,
-            style: const TextStyle(
-              color: Color(0xffE6007E),
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w400,
-              fontSize: 10,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-            child: Text(
-              productName!,
-              maxLines: 1,
-              style: const TextStyle(
-                color: Color(0xff0D3B6F),
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-              ),
-            ),
-          ),
-          RichText(
-            text: TextSpan(
-              text: "$productPrice ",
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 11,
-                  color: Color(0xff0D3B6F),
-                  fontFamily: "Poppins"),
-              children: <TextSpan>[
-                if(showDiscount == true)  TextSpan(
-                  text: discountPrice!,
-                  style: const TextStyle(
-                    color: Color(0xffE6007E),
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w400,
-                    fontSize: 10,
-                    decoration: TextDecoration.lineThrough,
-                    decorationColor: Color(0xffE6007E),
-                    decorationThickness: 2,
+              child: Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.topLeft,
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                        child: CachedNetworkImage(
+                            imageUrl: productImageUrl!,
+                            fit: BoxFit.cover,
+                            height: 155,
+                            width: containerWidth ?? 170,
+                            placeholder: (context, url) =>  ShimmerAnimatedLoading(
+                              width: containerWidth ?? 170,
+                              height: 155,
+                              circularRaduis: 10,
+                            ),
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.image_not_supported_outlined,
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 7, left: 22, right: 22),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if(showSale == true)SvgPicture.asset(
+                              'assets/images/svg/sale.svg',
+                            ),
+                            if(showSale == false) Container(),
+                            if(bookMark == true )GestureDetector(
+                              onTap: (){
+                                bookmarkControllerProvider.addOrRemoveBookMark(context, action:
+                                home.checkResponse['products']['$productId']['favorite'] == true ? "remove":"add",
+                                    id: productId);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                width: 26,
+                                height: 26,
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0xff000000).withOpacity(0.5)),
+                                child: (bookmarkControllerProvider.isLoadingAdd)?const Center(child: CircularProgressIndicator(color: Color(0xffFFFFFF),),)
+                                    :(home.checkResponse != null &&  home.checkResponse['products']['$productId'] != null)?
+                                SvgPicture.asset("assets/images/svg/book.svg", fit: BoxFit.scaleDown, color: home.checkResponse['products']['$productId']['favorite'] == true ? Colors.amberAccent : Colors.white,) : const SizedBox.shrink(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                ),
-              ],
+                  if(productType != null)Text((productType == "variation")?(LocalizationService.isArabic(context: context))? "التباين" : "variation" :
+                  (productType == "simple")?(LocalizationService.isArabic(context: context))? "بسيط" : "simple": "",
+                    style: const TextStyle(
+                      color: Color(0xffE6007E),
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 10,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                    child: Text(
+                      productName!,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        color: Color(0xff0D3B6F),
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: "$productPrice ",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          color: Color(0xff0D3B6F),
+                          fontFamily: "Poppins"),
+                      children: <TextSpan>[
+                        if(showDiscount == true)  TextSpan(
+                          text: discountPrice!,
+                          style: const TextStyle(
+                            color: Color(0xffE6007E),
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10,
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: Color(0xffE6007E),
+                            decorationThickness: 2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    ),
+          );
+        },
+      );
+    },
+  ),
   );
 }
 

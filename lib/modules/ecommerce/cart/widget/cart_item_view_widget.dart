@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/cart/controller/cart_controller.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';
@@ -100,7 +101,7 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                                         Row(
                                           children: [
                                             Text(
-                                              "${value.cartModel!.cart!.items![index].priceAfterDiscount} EGP",
+                                              "${value.cartModel!.cart!.items![index].priceAfterDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                                               style: const TextStyle(
                                                 color: Color(0xff1B1B1B),
                                                 fontSize: 13,
@@ -109,7 +110,7 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                                             ),
                                             const SizedBox(width: 10),
                                             Text(
-                                              "${value.cartModel!.cart!.items![index].price} EGP",
+                                              "${value.cartModel!.cart!.items![index].price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                                               style: TextStyle(
                                                 color: const Color(0xff1B1B1B).withOpacity(0.5),
                                                 fontSize: 11,
@@ -213,7 +214,7 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                         if(value.isGetCartLoading || value.isAddItemCountLoading)Container(
                             padding: EdgeInsets.symmetric(horizontal: AppSizes.s18,),
                             child: CircularProgressIndicator(color: Color(0xffFFFFFF),)),
-                       if(!value.isGetCartLoading && !value.isAddItemCountLoading) Text("${value.cartModel!.cart!.subTotal} EGP".toUpperCase(),
+                       if(!value.isGetCartLoading && !value.isAddItemCountLoading) Text("${value.cartModel!.cart!.subTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 15,

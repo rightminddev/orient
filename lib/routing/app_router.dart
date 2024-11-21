@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/merchant/main/subviews/merchant_home_screen.dart';
 import 'package:orient/merchant/main/subviews/merchant_stores_screen.dart';
@@ -8,6 +10,7 @@ import 'package:orient/merchant/stores/views/available_products_screen.dart';
 import 'package:orient/merchant/stores/views/create_edit_store_screen.dart';
 import 'package:orient/merchant/stores/views/my_stores_actions_screen.dart';
 import 'package:orient/models/stores/store_model.dart';
+import 'package:orient/modules/authentication/views/admin_login_screen.dart';
 import 'package:orient/modules/eCommerce_more_screen.dart';
 import 'package:orient/modules/ecommerce/blog/view/blog_details_screen.dart';
 import 'package:orient/modules/ecommerce/blog/view/blog_screen.dart';
@@ -22,7 +25,10 @@ import 'package:orient/modules/ecommerce/myorder/ecommerce_order_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
+import 'package:orient/modules/settings_page/setting_page_two.dart';
+import 'package:orient/modules/settings_page/settings_page.dart';
 import 'package:orient/modules/shared_more_screen/aboutus/view/aboutus_screen.dart';
+import 'package:orient/modules/shared_more_screen/branches/view/branches_screen.dart';
 import 'package:orient/modules/shared_more_screen/contactus/view/contact_screen.dart';
 import 'package:orient/modules/shared_more_screen/faq/view/faq_screen.dart';
 import 'package:orient/modules/shared_more_screen/lang_setting/view/lang_setting_screen.dart';
@@ -37,7 +43,6 @@ import 'package:orient/painter/layout_page/layout_page.dart';
 import 'package:orient/painter/points/points_screen.dart';
 import 'package:orient/painter/post/add_post_screen.dart';
 import 'package:orient/painter/post/post_details_screen.dart';
-import 'package:orient/painter/settings_page/settings_page.dart';
 import 'package:orient/painter/teams/views/create_team_screen.dart';
 import 'package:orient/painter/teams/views/team_members_screen.dart';
 import 'package:orient/painter/teams/views/teams_screen.dart';
@@ -76,6 +81,7 @@ enum AppRoutes {
   blogDetails,
   onboarding,
   login,
+  loginAdmin,
   storeActions,
   orderDetails,
   storeAvailableProducts,
@@ -86,6 +92,7 @@ enum AppRoutes {
   myOrderScreen,
   notifications,
   more,
+  branchScreen,
   bookMark,
   requestsById,
   requestDetails,
@@ -325,6 +332,71 @@ GoRouter goRouter(BuildContext context) => GoRouter(
         return AppRouterTransitions.slideTransition(
           key: state.pageKey,
           child: FaqScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/admin-login-screen',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.loginAdmin.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: const AdminLoginScreen(),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/branch-screen/:branches',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.branchScreen.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        final branchesJson = state.pathParameters['branches'];
+        List branches = [];
+        if (branchesJson != null) {
+          try {
+            branches = jsonDecode(Uri.decodeComponent(branchesJson)) as List;
+          } catch (e) {
+            debugPrint('Error decoding branches: $e');
+          }
+        }
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: BranchScreen(branches: branches,),
           animation: animationController,
           begin: begin ?? const Offset(1.0, 0.0),
         );
@@ -1012,7 +1084,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
             });
             return AppRouterTransitions.slideTransition(
               key: state.pageKey,
-              child: SettingsPage(),
+              child: SettingsPageTwo(),
               animation: animationController,
               begin: begin ?? const Offset(1.0, 0.0),
             );
@@ -1898,7 +1970,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
             });
             return AppRouterTransitions.slideTransition(
               key: state.pageKey,
-              child: SettingsPage(),
+              child: SettingsPageTwo(),
               animation: animationController,
               begin: begin ?? const Offset(1.0, 0.0),
             );

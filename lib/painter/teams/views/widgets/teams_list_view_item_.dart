@@ -74,12 +74,15 @@ class TeamsListViewItem extends StatelessWidget {
                         )),
                   ),
                   gapW10,
-                  Text(
-                    "${team.name}".toUpperCase(),
-                    style: const TextStyle(
-                        fontSize: AppSizes.s14,
-                        fontWeight: FontWeight.w500,
-                        color: Color(AppColors.black1Color)),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.3,
+                    child: Text(
+                      "${team.name}".toUpperCase(),
+                      style: const TextStyle(
+                          fontSize: AppSizes.s14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(AppColors.black1Color)),
+                    ),
                   )
                 ],
               ),

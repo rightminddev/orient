@@ -65,9 +65,9 @@ class SingleDetailsAndColorsWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Text("${AppStrings.colors.tr().toUpperCase()}:",style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Color(0xff1B1B1B)),),
-              const SizedBox(height: 8),
-              Container(
+              if( singleProductProvider.productAttributesColors.isNotEmpty)Text("${AppStrings.colors.tr().toUpperCase()}:",style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Color(0xff1B1B1B)),),
+              if( singleProductProvider.productAttributesColors.isNotEmpty)const SizedBox(height: 8),
+              if( singleProductProvider.productAttributesColors.isNotEmpty) Container(
                 alignment: Alignment.center,
                 height: 25,
                 width: MediaQuery.sizeOf(context).width * 0.7,

@@ -4,8 +4,7 @@ import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/blog/controller/blog_controller.dart';
 import 'package:orient/modules/ecommerce/blog/widget/blog_list_view_item.dart';
-import 'package:orient/modules/notification/logic/notification_provider.dart';
-import 'package:orient/modules/notification/view/notification_list_view_item.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -57,7 +56,7 @@ class _BlogScreenState extends State<BlogScreen> {
                             },
                           ),
                           Text(
-                            AppStrings.notificationsCenter.tr().toUpperCase(),
+                            AppStrings.blogCenter.tr().toUpperCase(),
                             style: const TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           IconButton(

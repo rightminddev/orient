@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';
@@ -47,8 +48,8 @@ class CheckoutOrderListWidget extends StatelessWidget {
                 ),
                 subtitle: Text(
                   (value.updateCartModel !=null)?
-                  '${(value.updateCartModel!.cart!.items![index].priceAfterDiscount != null)?value.updateCartModel!.cart!.items![index].priceAfterDiscount: value.updateCartModel!.cart!.items![index].price} EGP × ${value.updateCartModel!.cart!.items![index].quantity}':
-                  '${(value.checkoutListItems[index]['price_after_discount'] != null)?value.checkoutListItems[index]['price_after_discount']:value.checkoutListItems[index]['price']} EGP × ${value.checkoutListItems[index]['quantity']}',
+                  '${(value.updateCartModel!.cart!.items![index].priceAfterDiscount != null)?value.updateCartModel!.cart!.items![index].priceAfterDiscount: value.updateCartModel!.cart!.items![index].price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.updateCartModel!.cart!.items![index].quantity}':
+                  '${(value.checkoutListItems[index]['price_after_discount'] != null)?value.checkoutListItems[index]['price_after_discount']:value.checkoutListItems[index]['price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.checkoutListItems[index]['quantity']}',
                   style:const TextStyle(color: Color(0xff1B1B1B), fontSize: 12, fontWeight: FontWeight.w400),),
               ),
               itemCount: (value.updateCartModel !=null)?value.updateCartModel!.cart!.items!.length : value.checkoutListItems.length,

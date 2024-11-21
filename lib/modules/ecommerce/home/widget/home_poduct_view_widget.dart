@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/routing/app_router.dart';
@@ -14,6 +15,7 @@ class HomePoductViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("DOES");
     return Consumer<HomeProvider>(
         builder: (context, homeProvider, child){
           return Padding(
@@ -67,12 +69,16 @@ class HomePoductViewWidget extends StatelessWidget {
                           clipBehavior: Clip.none,
                           itemBuilder: (context, index)=> defaultViewProductGrid(
                             containerHeight: 240,
+                              bookMark: true,
+                              search: false,
+                              value: homeProvider.checkResponse,
+                              productId: homeProvider.products[index]['id'],
                               productName: homeProvider.products[index]['title'],
                               productType: homeProvider.products[index]['type']['value'],
-                              productPrice: "${homeProvider.products[index]['price']} EGP",
+                              productPrice: "${homeProvider.products[index]['price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               showSale: (homeProvider.products[index]['sell_price'] != null)? true : false ,
                               showDiscount: (homeProvider.products[index]['sell_price'] != null)? true : false ,
-                              discountPrice: "${homeProvider.products[index]['regular_price']} EGP",
+                              discountPrice: "${homeProvider.products[index]['regular_price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               productImageUrl: (homeProvider.products[index]['main_cover'].isNotEmpty)?homeProvider.products[index]['main_cover'][0]['file']:"",
                               boxShadow: [
                                 BoxShadow(

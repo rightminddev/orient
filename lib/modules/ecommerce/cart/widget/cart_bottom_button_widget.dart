@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/cart/controller/cart_controller.dart';
 import 'package:orient/modules/ecommerce/checkout/checkout_screen.dart';
 import 'package:orient/routing/app_router.dart';
@@ -50,7 +51,7 @@ class CartBottomButtonWidget extends StatelessWidget {
                       ),
                     ),
                      Text(
-                      "${value.cartModel!.cart!.subTotal} EGP",
+                      "${value.cartModel!.cart!.subTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                       style:const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,

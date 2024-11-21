@@ -25,9 +25,12 @@ class ImageAndNameSection extends StatelessWidget {
               )),
         ),
         gapW12,
-        Text(
-          user.name.toUpperCase() ?? '',
-          style: const TextStyle(fontSize: 15, color: Color(0xff1B1B1B), fontWeight: FontWeight.w500),
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.5,
+          child: Text(
+            user.name.toUpperCase() ?? '',
+            style: const TextStyle(fontSize: 15, color: Color(0xff1B1B1B), fontWeight: FontWeight.w500),
+          ),
         ),
       ],
     );

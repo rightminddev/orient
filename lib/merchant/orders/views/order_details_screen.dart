@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:orient/common_modules_widgets/template_page.widget.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/app_sizes.dart';
@@ -157,7 +158,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ),
                         const SizedBox(height: 12),
                         TitleWithDataWidget(
-                          data: '${viewModel.orderDetails.total} EGP',
+                          data: '${viewModel.orderDetails.total} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}',
                           title: AppStrings.totalAmount.tr(),
                         ),
                         const SizedBox(height: 12),
@@ -194,8 +195,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                             ? element.image?.elementAt(0).file
                                             : "",
                                     price: element.priceAfterDiscount != null
-                                        ? '${element.priceAfterDiscount} EGP'
-                                        : '${element.price} EGP',
+                                        ? '${element.priceAfterDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}'
+                                        : '${element.price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}',
                                     unit:
                                         '${AppStrings.units.tr()}: ${element.quantity}',
                                     showDiscountPrice:
@@ -203,7 +204,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                             ? true
                                             : false,
                                     discountPrice:
-                                        '${element.priceAfterDiscount} EGP'),
+                                        '${element.priceAfterDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}'),
                                 index !=
                                         (viewModel.orderDetails.items!.length -
                                             1)
@@ -268,7 +269,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           textOnRightFontColor: AppThemeService
                               .colorPalette.tertiaryTextColor.color,
                           textOnRightFontSize: 14,
-                          textOnRight: '${viewModel.orderDetails.total} EGP',
+                          textOnRight: '${viewModel.orderDetails.total} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}',
                         ),
                       ],
                     ),

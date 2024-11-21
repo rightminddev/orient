@@ -115,6 +115,7 @@ class ApiService {
       'page': pageNumber,
       'social_group_id': socialGroupId,
       'with': 'social_group_id,user_id',
+          "order_dir" : "desc"
     });
     return response.data;
   }

@@ -9,14 +9,17 @@ class SingleProductProvider extends ChangeNotifier {
   TextEditingController numberOfMetersController = TextEditingController();
   bool isLoading = false;
   bool isShowCommentLoading = false;
+  bool isCheckLoading = false;
   bool isAddCommentLoading = false;
   bool isAddCommentSuccess = false;
   bool isAddtoCartLoading = false;
   bool isAddtoCartSuccess = false;
+  bool isCheckSuccess = false;
   String? errorAddtoCartMessage;
   String? errorShowCommentMessage;
   String? errorAddCommentMessage;
   String? errorMessage;
+  String? errorCheckMessage;
  String? productName ;
  String? productReview_rate ;
  String? productReview_count ;
@@ -28,6 +31,7 @@ class SingleProductProvider extends ChangeNotifier {
  List productAttributesSizes = [];
  List pdf = [];
  var count = 1;
+ bool? check;
  var productVariationsColor;
  var productVariationsSize;
   SingleProductModel? singleProductModel;
@@ -176,6 +180,29 @@ class SingleProductProvider extends ChangeNotifier {
     } catch (e) {
       isAddtoCartLoading = false;
       errorAddtoCartMessage = e.toString();
+      notifyListeners();
+    }
+  }
+  Future<void> getCheck({required BuildContext context, id}) async {
+    isCheckLoading = true;
+    errorCheckMessage = null;
+    notifyListeners();
+    try {
+      var value = await DioHelper.getData(
+          url: "/rm_ecommarce/v1/products/check",
+          context: context,
+          query: {
+            "ids[]" : id
+          }
+      );
+      check = value.data['products']["$id"]['favorite'];
+      print("CHECK IS ---> $check");
+      isCheckLoading = false;
+      isCheckSuccess = true;
+      notifyListeners();
+    } catch (e) {
+      isCheckLoading = false;
+      errorCheckMessage = e.toString();
       notifyListeners();
     }
   }

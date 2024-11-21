@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/merchant/orders/models/order_status.dart';
 import 'package:orient/merchant/orders/view_models/orders.actions.viewmodel.dart';
 import 'package:orient/merchant/stores/view_models/stores.actions.viewmodel.dart';
@@ -220,7 +221,7 @@ Future<void> completeOrderActionBottomSheet({
                         ),
                       ),
                       Text(
-                        '$subTotal EGP',
+                        '$subTotal ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}',
                         style: TextStyle(
                           color: Color(0xFF595959),
                           fontSize: 14,
@@ -245,7 +246,7 @@ Future<void> completeOrderActionBottomSheet({
                         ),
                       ),
                       Text(
-                        '$discount EGP',
+                        '$discount ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}',
                         style: TextStyle(
                           color: Color(0xFF595959),
                           fontSize: 14,
@@ -271,7 +272,7 @@ Future<void> completeOrderActionBottomSheet({
                   ),
                   SizedBox(height: 24),
                   Text(
-                    '$total EGP',
+                    '$total ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF1B1B1B),

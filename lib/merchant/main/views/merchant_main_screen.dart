@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orient/merchant/main/subviews/merchant_home_screen.dart';
 import 'package:orient/merchant/main/subviews/merchant_stores_screen.dart';
 import 'package:orient/modules/notification/view/notification_screen.dart';
-import 'package:orient/painter/settings_page/settings_page.dart';
+import 'package:orient/modules/settings_page/setting_page_two.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:provider/provider.dart';
 import '../../../general_services/app_theme.service.dart';
@@ -28,7 +28,7 @@ class _MerchantMainScreenState extends State<MerchantMainScreen> {
     const MerchantHomeScreen(),
     const MerchantStoresScreen(),
     NotificationScreen(false),
-    SettingsPage()
+    SettingsPageTwo()
   ];
   @override
   Widget build(BuildContext context) {

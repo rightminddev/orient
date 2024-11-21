@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/settings_page/setting_page_two.dart';
 import 'package:orient/painter/group_page/groups_page.dart';
 import 'package:orient/painter/home_screen/views/painter_main_screen.dart';
 import 'package:orient/painter/layout_page/logic/layout_provider.dart';
 import 'package:orient/painter/points/points_screen.dart';
-import 'package:orient/painter/settings_page/settings_page.dart';
 import 'package:orient/painter/teams/views/teams_screen.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
@@ -25,7 +25,7 @@ class _LayoutPageScreenState extends State<LayoutPageScreen> {
     GroupsPage(viewArrow: false,),
     const TeamsScreen(),
     PointsScreen(arrow: false,),
-    SettingsPage(),
+    SettingsPageTwo(),
   ];
   @override
   Widget build(BuildContext context) {

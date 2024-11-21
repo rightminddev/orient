@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/app_config.service.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +17,8 @@ class DioHelper{
             headers: {
               'Accept':'application/json',
               // 'Content-Type' : 'multipart/form-data'
-              'Content-Type':"application/json"
+              'Content-Type':"application/json",
+
             }
         )
     );
@@ -34,8 +37,10 @@ class DioHelper{
       'Accept':'application/json',
       'device-unique-id' : appConfigServiceProvider.deviceInformation.deviceUniqueId,
       'Authorization': 'Bearer ${appConfigServiceProvider.token}',
+      "lang" : CacheHelper.getString("lang") ?? "en",
     };
-    return await dio!.get(url, queryParameters: query, data: data??null );
+    print("Headers: ${dio!.options.headers}");
+    return await dio!.get(url, queryParameters: query );
   }
   static Future<Response> deleteData({@required url, @required Map<String, dynamic>? query, token, data})async{
     dio!.options.headers = {

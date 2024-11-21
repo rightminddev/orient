@@ -2,45 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_images.dart';
+import 'package:orient/modules/settings_page/setting_page_two.dart';
 import 'package:orient/painter/group_page/groups_page.dart';
 import 'package:orient/painter/points/points_screen.dart';
-import 'package:orient/painter/settings_page/settings_page.dart';
 import '../../../routing/app_router.dart';
 import '../../home_screen/views/painter_main_screen.dart';
 import '../../teams/views/teams_screen.dart';
 
-// class LayoutProvider extends ChangeNotifier {
-//   List<Widget> navList = [
-//     const HomeScreen(),
-//     const GroupsPage(),
-//     const TeamsScreen(),
-//     const PointsScreen(),
-//     const SettingsPage(),
-//   ];
-//
-//   List<String> navIcon = [
-//     "assets/images/ecommerce/svg/nav1.svg",
-//     "assets/images/ecommerce/svg/nav2.svg",
-//     "assets/images/ecommerce/svg/nav3.svg",
-//     "assets/images/ecommerce/svg/nav4.svg",
-//     "assets/images/ecommerce/svg/nav5.svg",
-//   ];
-//
-//   int navIndex = 0;
-//
-//   void changeIndex(BuildContext context, int index) {
-//     if (index == 3) {
-//       Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-//         return PointsScreen();
-//       }));
-//     } else {
-//       navIndex = index;
-//       notifyListeners(); // Notify the UI of changes
-//     }
-//   }
-// }
-
-////////////////////////
 class PainterMainScreenViewModel extends ChangeNotifier {
   PainterNavbarPages currentPage = PainterNavbarPages.painterHomeScreen;
   int get pageIndex => PainterNavbarPages.values.indexOf(currentPage);
@@ -69,7 +37,7 @@ class PainterMainScreenViewModel extends ChangeNotifier {
       case PointsScreen _:
         currentPage = PainterNavbarPages.painterPointsScreen;
         return;
-      case SettingsPage _:
+      case SettingsPageTwo _:
         currentPage = PainterNavbarPages.painterProfileScreen;
         return;
       default:
@@ -89,7 +57,7 @@ class PainterMainScreenViewModel extends ChangeNotifier {
       case PainterNavbarPages.painterPointsScreen:
         return  PointsScreen(arrow: false,);
       case PainterNavbarPages.painterProfileScreen:
-        return SettingsPage();
+        return SettingsPageTwo();
       default:
         return  HomeScreen();
     }

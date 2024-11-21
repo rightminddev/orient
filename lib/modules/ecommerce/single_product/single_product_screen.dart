@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/modules/ecommerce/bookmark/controller/bookmark_controller.dart';
 import 'package:orient/modules/ecommerce/single_product/controller/single_product_controller.dart';
 import 'package:orient/modules/ecommerce/single_product/single_producr_screen_loading.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_bottom_button_widget.dart';
@@ -33,13 +34,15 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
   ];
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (context)=> SingleProductProvider()..getOneProduct(context: context, id: widget.id, crossSells: true),
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => SingleProductProvider()..getOneProduct(context: context, id: widget.id, crossSells: true)..getCheck(context: context, id: widget.id),),
+      ChangeNotifierProvider(create: (context) => BookmarkControllerProvider()),
+    ],
     child: Consumer<SingleProductProvider>(
       builder: (context, singleProductProvider, child){
         print("PRODUCT ID IS ------> ${widget.id}");
-        return (singleProductProvider.singleProductModel == null)?
-        const SingleProductScreenLoading()
-        :SafeArea(
+        return (singleProductProvider.singleProductModel != null )?
+      SafeArea(
           child: Scaffold(
               backgroundColor: const Color(0xffFFFFFF),
               body: GradientBgImage(
@@ -48,28 +51,53 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CachedNetworkImage(
-                        height: 350,
-                        width: double.infinity,
-                        imageUrl:(singleProductProvider.singleProductModel!.product!.mainCover!.isNotEmpty)? "${singleProductProvider.singleProductModel!.product!.mainCover![0].file}" : "",
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const ShimmerAnimatedLoading(
-                          circularRaduis: AppSizes.s50,
-                        ),
-                        errorWidget: (context, url, error) => const Icon(
-                          Icons.image_not_supported_outlined,
-                          size: AppSizes.s32,
-                          color: Colors.white,
-                        ),
+                      Stack(
+                        alignment: Alignment.topLeft,
+                        children: [
+                          CachedNetworkImage(
+                            height: 350,
+                            width: double.infinity,
+                            imageUrl:(singleProductProvider.singleProductModel!.product!.mainCover!.isNotEmpty)? "${singleProductProvider.singleProductModel!.product!.mainCover![0].file}" : "",
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const ShimmerAnimatedLoading(
+                              circularRaduis: AppSizes.s50,
+                            ),
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.image_not_supported_outlined,
+                              size: AppSizes.s32,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(height: 90,
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                  padding: const EdgeInsets.all(7),
+                                  height: 30,
+                                  width: 30,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: const Color(0xff000000).withOpacity(0.5)
+                                  ),
+                                  child: const Icon(Icons.arrow_back, color: Color(0xffFFFFFF),size: 16,)),
+                            ),
+                          )
+                        ],
                       ),
-                     const SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
                           children: [
                             SingleDetailsAndColorsWidget(widget.id),
-                            const SizedBox(height: 16),
-                            SingleSizesWidget(viewSize: true, id: widget.id,),
+                            if(singleProductProvider.productAttributesSizes.isNotEmpty) const SizedBox(height: 16),
+                            if(singleProductProvider.productAttributesSizes.isNotEmpty)  SingleSizesWidget(viewSize: true, id: widget.id,),
                             const SizedBox(height: 16),
                             const SingleChangeCountWidget(),
                             const SizedBox(
@@ -102,7 +130,7 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
               bottomNavigationBar:(singleProductProvider.singleProductModel == null)?Container(height: 136,) :
               SingleBottomButtonWidget(totalPrice: "${singleProductProvider.singleProductModel!.product!.price}",id: singleProductProvider.singleProductModel!.product!.id)
           ),
-        );
+        ) : const SingleProductScreenLoading();
       },
     ),
     );

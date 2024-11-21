@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
 import 'package:orient/modules/ecommerce/blog/controller/blog_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
@@ -9,6 +10,7 @@ import 'package:orient/modules/ecommerce/search/controller/search_controller.dar
 import 'package:orient/modules/general/viewmodels/company_structure_info.viewmodel.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/modules/notification/logic/notification_provider.dart';
+import 'package:orient/modules/shared_more_screen/contactus/controller/controller.dart';
 import 'package:orient/modules/shared_more_screen/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:orient/painter/layout_page/logic/layout_provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -31,6 +33,7 @@ void main() async {
   /// [ENABLED] IN RELEASE ( DISABLE IN DEVELOPMENT TIME TO APPEAR ANY ERROR APPEAR )
   // registerErrorHandlers();
   await DioHelper.initail();
+  await CacheHelper.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/modules/ecommerce/home/controller/const.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
 import 'package:orient/modules/ecommerce/search/search_screen_loading.dart';
@@ -24,22 +25,33 @@ class ECommerceSearchScreen extends StatefulWidget {
 class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
   late SearchControllerProvider searchControllerProvider;
   late HomeProvider homeProvider;
-
+  late ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
     print("ID-------------------> ${widget.categoryId}");
     searchControllerProvider = SearchControllerProvider();
     homeProvider = HomeProvider();
-    searchControllerProvider.getSearch(
-        context: context, category_id: widget.categoryId);
-    homeProvider.getPages(context: context);
+    searchControllerProvider.getSearch(context: context, category_id: widget.categoryId, isNewPage: false);
+    homeProvider.getPages(context: context, fromHome: false);
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
+        searchControllerProvider.getSearch(
+            context: context, category_id: widget.categoryId,isNewPage: true);
+      }
+    });
   }
-
+  @override
+  void dispose() {
+    _scrollController.dispose(); // Dispose of the controller
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: searchControllerProvider),
         ChangeNotifierProvider.value(value: searchControllerProvider),
         ChangeNotifierProvider.value(value: homeProvider)
       ],
@@ -49,8 +61,8 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
             builder: (context, value, child) {
               return Scaffold(
                 backgroundColor: const Color(0xffFFFFFF),
-                body: (searchControllerProvider.isLoadingSearch ||
-                        value.isLoading)
+                body: (searchControllerProvider.isLoadingSearch &&
+                       value.isLoading )
                     ? const GradientBgImage(
                     padding: EdgeInsets.zero,
                     child: SearchScreenLoading())
@@ -59,6 +71,7 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
                         child: GradientBgImage(
                           padding: EdgeInsets.zero,
                           child: SingleChildScrollView(
+                            controller: _scrollController,
                             child: Column(
                               children: [
                                 Container(
@@ -143,7 +156,10 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
                                 SearchProductGridviewWidget(),
                                 const SizedBox(
                                   height: 15,
-                                )
+                                ),
+                               if(searchControllerProvider.isLoadingSearch &&
+                                   searchControllerProvider.pageNumber != 1
+                               ) const CircularProgressIndicator()
                               ],
                             ),
                           ),
@@ -155,12 +171,5 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    // searchControllerProvider.dispose();
-    // homeProvider.dispose();
-    super.dispose();
   }
 }

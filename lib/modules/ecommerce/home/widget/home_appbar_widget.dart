@@ -34,7 +34,7 @@ class HomeAppbarWidget extends StatelessWidget {
                         bottomLeft: Radius.circular(60)
                       ),
                       child: CachedNetworkImage(
-                          imageUrl: homeProvider.coverImage!,
+                          imageUrl: (homeProvider.coverImage != null) ?homeProvider.coverImage! : "",
                           height: 360,
                           fit: BoxFit.cover,
                           placeholder: (context,

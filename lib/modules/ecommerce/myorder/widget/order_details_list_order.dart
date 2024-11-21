@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import '../model/order_details_model.dart';
 
@@ -74,7 +75,7 @@ class OrderDetailsListOrder extends StatelessWidget {
                           Row(
                             children: [
                                Text(
-                                 (items![index].priceAfterDiscount!=null)? "${items![index].priceAfterDiscount} EGP":"${items![index].price} EGP",
+                                 (items![index].priceAfterDiscount!=null)? "${items![index].priceAfterDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}":"${items![index].price} EGP",
                                 style: const TextStyle(
                                   color: Color(0xff1B1B1B),
                                   fontSize: 13,

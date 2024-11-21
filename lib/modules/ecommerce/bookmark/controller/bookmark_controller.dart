@@ -31,26 +31,29 @@ class BookmarkControllerProvider extends ChangeNotifier{
       notifyListeners();
     });
   }
-  addOrRemoveBookMark(context,{id}){
-    isLoading = true;
+  addOrRemoveBookMark(context,{id, String action = "remove"}){
+    isLoadingAdd = true;
+    isSuccessAdd = false;
     notifyListeners();
     DioHelper.postData(
       url : "/ec-products/entities-operations/$id/bookmarks",
         data: {
-        "action" : "remove"
+        "action" : action
         },
         context: context,
     ).then((value){
       isLoadingAdd= false;
       isSuccessAdd = true;
-      getBookMark(context);
       notifyListeners();
+      //getBookMark(context);
+
     }).catchError((error){
       if (error is DioError) {
         errorMessage = error.response?.data['message'] ?? 'Something went wrong';
       } else {
         errorMessage = error.toString();
       }
+      print("ERROR IS $errorMessage");
       isLoadingAdd= false;
       isSuccessAdd = false;
       notifyListeners();

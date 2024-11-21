@@ -17,11 +17,12 @@ class CustomTeamsAppbar extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: popFun,
-          child: SvgPicture.asset(
-            AppImages.arrowRight,
-            width: AppSizes.s20,
-            height: AppSizes.s20,
-          ),
+          child: Icon(Icons.arrow_back, color: const Color(0xffFFFFFF),)
+          // SvgPicture.asset(
+          //   AppImages.arrow,
+          //   width: AppSizes.s20,
+          //   height: AppSizes.s20,
+          // ),
         ),
         const Spacer(),
         Text(

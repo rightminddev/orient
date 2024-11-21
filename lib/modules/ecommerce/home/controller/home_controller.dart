@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
   import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/modules/ecommerce/home/controller/const.dart';
 import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
 
   class HomeProvider extends ChangeNotifier {
@@ -12,16 +13,19 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
     bool isColorTrendLoading = false;
     bool isInspiredCategoryLoading = false;
     bool isInspiredLoading = false;
+    bool isCheckLoading = false;
     bool isSuccess = false;
     bool isColorTrendSuccess = false;
     bool isInspiredCategorySuccess = false;
     bool isInspiredSuccess = false;
+    bool isCheckSuccess = false;
     List productsCategories = [];
     List productsBlog = [];
     List products = [];
     List moreProducts = [];
     List premiumProductImage = [];
     List colorTrendGallery = [];
+    List colorTrendProducts = [];
     List colorTrendBlog = [];
     List inspiredCategories = [];
     List inspireds = [];
@@ -32,8 +36,10 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
     String? errorColorTrendMessage;
     String? errorInspiredCategoryMessage;
     String? errorInspiredMessage;
+    String? errorCheckMessage;
     List ids = [];
-    Future<void> getPages({required BuildContext context, bool addAll = false}) async {
+    List idsCheck = [];
+    Future<void> getPages({required BuildContext context, bool addAll = false, bool fromHome = true}) async {
       isLoading = true;
       errorMessage = null;
       notifyListeners();
@@ -91,6 +97,28 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
         premiumProductImage = value.data['page']['premium_product_image'];
         coverImage = value.data['page']['cover_image'][0]['file'];
         isLoading = false;
+        if(fromHome == true){
+          HomeConst.Ids = [];
+          if(products.isNotEmpty){
+            for (var e in products) {
+              idsCheck.add(e['id']);
+              HomeConst.Ids = idsCheck;
+              print("IDS CHECK products---> $idsCheck");
+            }
+          }
+          if(moreProducts.isNotEmpty){
+            print("Not1");
+            for (var e in moreProducts) {
+              if(e['products'].isNotEmpty){
+                for (var v in e['products']) {
+                  idsCheck!.add(v['id']);
+                  HomeConst.Ids = idsCheck;
+                  print("IDS CHECK moreProducts---> $idsCheck");
+                }
+              }
+            }
+          }
+        }
         isSuccess = true;
         notifyListeners();
       } catch (e) {
@@ -113,9 +141,18 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
           },
         );
         colorTrendGallery = value.data['page']['gallery'];
+        colorTrendProducts = value.data['page']['products'];
         colorTrendBlog = value.data['page']['blogs'];
         colorTrendContant = value.data['page']['content'];
         colorTrendCover = value.data['page']['cover_for_web'][0]['file'];
+        HomeConst.Ids = [];
+        if(colorTrendProducts.isNotEmpty){
+          for (var e in colorTrendProducts) {
+            idsCheck.add(e['id']);
+            HomeConst.Ids = idsCheck;
+            print("IDS CHECK SEARCH products---> $idsCheck");
+          }
+        }
         isColorTrendLoading = false;
         isColorTrendSuccess = true;
         notifyListeners();
@@ -163,6 +200,33 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
       } catch (e) {
         isInspiredLoading = false;
         errorInspiredMessage = e.toString();
+        notifyListeners();
+      }
+    }
+    var checkResponse;
+    Future<void> getCheck({required BuildContext context, ids}) async {
+      isCheckLoading = true;
+      errorCheckMessage = null;
+      notifyListeners();
+      print("LENGTH IS ---> $idsCheck");
+      print("ids IS ---> $ids");
+      try {
+        var queryParams = {
+          'ids[]': ids, // List of ids
+        };
+        var value = await DioHelper.getData(
+          url: "/rm_ecommarce/v1/products/check",
+          context: context,
+          query: queryParams,
+        );
+        checkResponse = value.data;
+        print("checkResponse ----> $checkResponse");
+        isCheckLoading = false;
+        isCheckSuccess = true;
+        notifyListeners();
+      } catch (e) {
+        isCheckLoading = false;
+        errorCheckMessage = e.toString();
         notifyListeners();
       }
     }

@@ -7,7 +7,7 @@ import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/myorder/ecommerce_order_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
-import 'package:orient/painter/settings_page/settings_page.dart';
+import 'package:orient/modules/settings_page/settings_page.dart';
 import '../../../routing/app_router.dart';
 import '../../home/views/home_screen.dart';
 
@@ -40,7 +40,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case ECommerceSearchScreen _:
         currentPage = EcommerceNavbarPages.eCommerceSearchScreen;
         return;
-      case EcommerceMoreScreen _:
+      case SettingsPage _:
         currentPage = EcommerceNavbarPages.eCommerceMoreScreen;
         return;
       default:

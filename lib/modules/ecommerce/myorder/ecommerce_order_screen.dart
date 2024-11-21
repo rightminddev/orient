@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/myorder/model/ecommerce_order_details_model.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
@@ -96,7 +97,7 @@ class EcommerceOrderScreen extends StatelessWidget {
                                   style: TextStyle(color: Color(AppColors.oc2), fontSize: 15, fontWeight: FontWeight.w700),
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: "${value.myOrders[index]['total']} EGP",
+                                      text: "${value.myOrders[index]['total']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                                       style: const TextStyle(
                                         color: Color(0xff464646),
                                         fontWeight: FontWeight.w400,

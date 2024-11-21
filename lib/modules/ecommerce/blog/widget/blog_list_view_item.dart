@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
@@ -86,15 +87,18 @@ class BlogListViewItem extends StatelessWidget {
                         color: Color(0xff606060)),
                   ),
                   gapH4,
-                  Text(
-                    "${blog[index]['content']}"
-                        .toUpperCase(),
-                    maxLines: 2,
-                    style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff0D3B6F)),
-                  ),
+                  Padding(
+                    padding: EdgeInsets.zero,
+                    child: Html(shrinkWrap: true,
+                        data: "${blog[index]['content']}".toUpperCase(),
+                        style: {
+                          "p" : Style(
+                              fontSize: FontSize(12),maxLines: 2,padding: HtmlPaddings.all(0),margin: Margins.all(0),
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff0D3B6F)),
+                        }
+                    ),
+                  )
                 ],
               ),
             )

@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:orient/modules/eCommerce_more_screen.dart';
 import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
 import 'package:orient/modules/ecommerce/home/home_screen.dart';
 import 'package:orient/modules/ecommerce/myorder/ecommerce_order_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
+import 'package:orient/modules/settings_page/setting_page_two.dart';
 import '../../../routing/app_router.dart';
 
 class EcommerceMainScreenViewModel extends ChangeNotifier {
@@ -30,7 +30,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case ECommerceSearchScreen _:
         currentPage = EcommerceNavbarPages.eCommerceSearchScreen;
         return;
-      case EcommerceMoreScreen _:
+      case SettingsPageTwo _:
         currentPage = EcommerceNavbarPages.eCommerceMoreScreen;
         return;
       default:
@@ -50,7 +50,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case EcommerceNavbarPages.eCommerceSearchScreen:
         return ECommerceSearchScreen();
       case EcommerceNavbarPages.eCommerceMoreScreen:
-        return EcommerceMoreScreen();
+        return SettingsPageTwo();
       default:
         return ECommerceHomeScreen();
     }

@@ -5,7 +5,7 @@ import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
 import 'package:orient/modules/ecommerce/myorder/ecommerce_order_screen.dart';
 import 'package:orient/modules/ecommerce/search/search_screen.dart';
 import 'package:orient/modules/ecommerce/test_screen.dart';
-import 'package:orient/painter/settings_page/settings_page.dart';
+import 'package:orient/modules/settings_page/settings_page.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
 import 'package:provider/provider.dart';

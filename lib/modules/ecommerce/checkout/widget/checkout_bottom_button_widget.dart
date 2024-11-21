@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
@@ -73,7 +74,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(AppStrings.subtotal.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
-                        Text("${value.checkoutSubtotal} EGP".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                        Text("${value.checkoutSubtotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
                       ],
                     ),
                   ),
@@ -83,7 +84,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(AppStrings.shippingFees.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
-                        Text("${value.checkoutFees} EGP".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                        Text("${value.checkoutFees} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
                       ],
                     ),
                   ),
@@ -93,7 +94,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(AppStrings.discount.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
-                        Text("${value.checkoutDiscountTotal} EGP".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                        Text("${value.checkoutDiscountTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
                       ],
                     ),
                   ),
@@ -119,7 +120,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "${value.checkoutTotal} EGP",
+                              "${value.checkoutTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               style:const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,

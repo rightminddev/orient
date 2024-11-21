@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
 import 'package:orient/routing/app_router.dart';
@@ -71,10 +72,14 @@ class HomeMetalPointsProduct extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 clipBehavior: Clip.none,
                                 itemBuilder: (context, indexs)=> defaultViewProductGrid(
+                                  search: false,
+                                  bookMark: true,
                                     containerHeight: 240,
+                                    value: homeProvider.checkResponse,
+                                    productId: homeProvider.moreProducts[index]['products'][indexs]['id'],
                                     productName: homeProvider.moreProducts[index]['products'][indexs]['title'],
-                                    productType: homeProvider.moreProducts[index]['products'][indexs]['type']['value'],
-                                    productPrice: "${homeProvider.moreProducts[index]['products'][indexs]['price']} EGP",
+                                    productType: homeProvider.moreProducts[index]['products'][indexs]['type'] ?? "",
+                                    productPrice: "${homeProvider.moreProducts[index]['products'][indexs]['price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                                     showSale: (homeProvider.moreProducts[index]['products'][indexs]['sell_price'] != null)? true : false ,
                                     showDiscount: (homeProvider.moreProducts[index]['products'][indexs]['sell_price'] != null)? true : false ,
                                     discountPrice: "${homeProvider.moreProducts[index]['products'][indexs]['regular_price']} EGP",

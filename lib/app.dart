@@ -1,30 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:orient/modules/components/views/componenets_screen.dart';
-import 'package:orient/modules/ecommerce/bookmark/view/bookmark_screen.dart';
-import 'package:orient/modules/shared_more_screen/aboutus/view/aboutus_screen.dart';
-import 'package:orient/modules/shared_more_screen/personal_info/view/personal_info_screen.dart';
-import 'package:orient/modules/shared_more_screen/personal_profile/views/personal_profile_screen.dart';
-import 'package:orient/modules/shared_more_screen/promocode/view/promocode_screen.dart';
-import 'package:orient/modules/shared_more_screen/remove_account/view/remove_account_screen.dart';
-import 'package:orient/painter/post/add_post_screen.dart';
-import 'package:orient/painter/settings_page/settings_page.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
-import 'modules/components/subviews/button_screen.dart';
-import 'modules/components/subviews/comment_screen.dart';
-import 'modules/components/subviews/image_with_title_screen.dart';
-import 'modules/components/subviews/order_screen.dart';
-import 'package:orient/modules/ecommerce/cart/cart_screen.dart';
-import 'package:orient/modules/ecommerce/checkout/checkout_screen.dart';
-import 'package:orient/modules/ecommerce/home/home_screen.dart';
-import 'package:orient/modules/ecommerce/search/search_screen.dart';
-import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
-import 'package:orient/modules/main_screen/views/main_screen.dart';
 import 'package:orient/routing/app_router.dart';
-import 'constants/app_images.dart';
-import 'general_services/app_theme.service.dart';
-import 'modules/ecommerce/main_screen/main_screen.dart';
-import 'modules/shared_more_screen/faq/view/faq_screen.dart';
 import 'platform/platform_is.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -34,22 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(CacheHelper.getString("lang") == null){
+      CacheHelper.setString(key: "lang", value: context.locale.languageCode);
+    }
     // precache spash screen image
     precacheImage(const AssetImage(AppImages.splashScreenBackground), context);
     final appGoRouter = goRouter(context);
     return
-    //   MaterialApp(
-    //   theme: AppThemeService.getTheme(isDark: false, context: context),
-    //   title: 'Orient',
-    //   locale: context.locale,
-    //   debugShowCheckedModeBanner: false,
-    //   themeMode: ThemeMode.light,
-    //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
-    //   scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
-    //   localizationsDelegates: context.localizationDelegates,
-    //   supportedLocales: context.supportedLocales,
-    //   home: ECommerceMainScreen()
-    // );
       MaterialApp.router(
       title: 'Orient',
       restorationScopeId: 'app',
@@ -66,16 +35,6 @@ class MyApp extends StatelessWidget {
       scrollBehavior: PlatformIs.web ? AppScrollBehavior() : null,
     );
 
-    //  MaterialApp(
-    //   title: 'Orient',
-    //   restorationScopeId: 'app',
-    //   themeMode: ThemeMode.light,
-    //   debugShowCheckedModeBanner: false,
-    //   theme: AppThemeService.getTheme(isDark: false, context: context),
-    //   darkTheme: AppThemeService.getTheme(isDark: true, context: context),
-    //   scrollBehavior: AppScrollBehavior(),
-    //   home: BookmarkScreen(),
-    // );
   }
 }
 

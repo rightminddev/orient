@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/home/widget/product_calculate.dart';
 import 'package:orient/routing/app_router.dart';
@@ -13,13 +14,13 @@ class HomeFeatureWidget extends StatelessWidget {
   List feature = [
     {
       "image" : "assets/images/ecommerce/png/c-trend.png",
-      "title" : "color trends"
+      "title" : AppStrings.colorTrend.tr()
     },{
       "image" : "assets/images/ecommerce/png/g-inispired.png",
-      "title" : "Get inspired"
+      "title" : AppStrings.getInspired.tr()
     },{
       "image" : "assets/images/ecommerce/png/calculate.png",
-      "title" : "calculator"
+      "title" : AppStrings.calculator.tr()
     },
   ];
   @override

@@ -1,4 +1,4 @@
-package com.orient.orient
+package com.orientpaints.paintstudio
 import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -6,7 +6,7 @@ import io.flutter.plugin.common.MethodChannel
 
 
 class MainActivity: FlutterActivity(){
-    private val nativeChannel = "com.orient.orient/secure"
+    private val nativeChannel = "com.orientpaints.paintstudio/secure"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

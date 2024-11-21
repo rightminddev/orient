@@ -49,6 +49,9 @@ class CommentRepositoryImplementation extends CommentRepository{
       Response data = await apiServices.get(
           endPoint: 'api/social-posts/entities-operations/$postId/comments',
           context: context,
+        queryParameters: {
+          "order_dir" : "desc"
+        }
       );
       print(data.data);
       return Right(GetCommentModel.fromJson(data.data));

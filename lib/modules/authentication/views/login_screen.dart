@@ -180,13 +180,13 @@ class LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                     ),
-                    // CREATE NEW ACCOUNT BUTTON (CONDITIONAL)
-                    if ((Provider.of<AppConfigService>(context, listen: false)
-                                    .getSettings(
-                                        type: SettingsType.generalSettings)
-                                as GeneralSettingsModel?)
-                            ?.canNewRegister ??
-                        true)
+                    // // CREATE NEW ACCOUNT BUTTON (CONDITIONAL)
+                    // if ((Provider.of<AppConfigService>(context, listen: false)
+                    //                 .getSettings(
+                    //                     type: SettingsType.generalSettings)
+                    //             as GeneralSettingsModel?)
+                    //         ?.canNewRegister ??
+                    //     true)
                       Positioned(
                         bottom: AppSizes.s40,
                         left: 0,

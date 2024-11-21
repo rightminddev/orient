@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/bookmark/controller/bookmark_controller.dart';
 import 'package:orient/modules/ecommerce/bookmark/view/bookmark_loading_screen.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
@@ -61,7 +62,7 @@ class BookmarkScreen extends StatelessWidget {
                         onPressedBookMark: (){
                           value.addOrRemoveBookMark(context, id: value.bookmarks[index]['id']);
                         },
-                        price: "${value.bookmarks[index]['regular_price']} EGP",
+                        price: "${value.bookmarks[index]['regular_price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                         context: context,
                         showBookMark: (value.isLoadingAdd)? false: true,
                         showDiscountPrice: true,

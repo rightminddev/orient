@@ -25,13 +25,13 @@ class _SingleSizesWidgetState extends State<SingleSizesWidget> {
             child: Row(
               mainAxisAlignment: (widget.viewSize == true)? MainAxisAlignment.center : MainAxisAlignment.start,
               children: [
-                if(widget.viewSize == true) Text("${AppStrings.size.tr().toUpperCase()}:", style: const TextStyle(
+                if(widget.viewSize == true && value.productAttributesSizes.isNotEmpty) Text("${AppStrings.size.tr().toUpperCase()}:", style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xff1B1B1B)
                 ),),
-                const SizedBox(width: 8),
-                Container(
+                if(value.productAttributesSizes.isNotEmpty) const SizedBox(width: 8),
+                if(value.productAttributesSizes.isNotEmpty) Container(
                   height: 24,
                   alignment: Alignment.topLeft,
                   width: MediaQuery.sizeOf(context).width * 0.5,

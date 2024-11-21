@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/modules/ecommerce/home/controller/const.dart';
 class SearchConstant{
 static  TextEditingController minPriceController = TextEditingController();
  static TextEditingController maxPriceController = TextEditingController();
@@ -13,15 +14,22 @@ static  TextEditingController minPriceController = TextEditingController();
 }
 class SearchControllerProvider extends ChangeNotifier {
   bool isLoadingSearch = false;
+  bool isSuccessSearch = false;
   String? errorMessageSearch;
   List searchProduct = [];
+
   List searchProductsCategories = [];
   List searchProductsAttributesColor= [];
   List searchProductsAttributesSize= [];
   List ids = [];
   int? selectColorIndex;
+  bool hasMore = true;
+  final ScrollController controller = ScrollController();
+  final int expectedPageSize = 9;
   int pageNumber = 1;
   int count = 0;
+  ScrollController get scrollController => controller;
+  List idsCheck = [];
   void changeColorIndex(index){
     selectColorIndex = index;
     notifyListeners();
@@ -37,15 +45,15 @@ class SearchControllerProvider extends ChangeNotifier {
     updateLoadingStatus(laodingValue: false);
   }
   bool hasMoreData(int length) {
-    if (length < count) {
-      pageNumber = pageNumber + 1;
-      return true;
-    } else {
+    if (length < expectedPageSize) {
       return false;
+    } else {
+      pageNumber += 1;
+      return true;
     }
   }
   Future<void> getSearch({required BuildContext context, int? id, bool crossSells = false,
-    category_id, price_from, price_to, bool addAll = false, colorId, sizeId,attributesColorId,attributesSizeId
+    category_id, price_from, price_to, bool addAll = false,bool? isNewPage, colorId, sizeId,attributesColorId,attributesSizeId
   }) async {
     isLoadingSearch = true;
     errorMessageSearch = null;
@@ -65,15 +73,31 @@ class SearchControllerProvider extends ChangeNotifier {
           if(SearchConstant.maxPriceController.text.isNotEmpty)"price_to" : SearchConstant.maxPriceController.text
         },
       );
-      notifyListeners();
       print("API Response: ${value.data}");
       isLoadingSearch = false;
+      if (value.data['products'] != null && value.data['products'].isNotEmpty) {
+
+        if (isNewPage!) {
+          searchProduct.addAll(value.data['products'] );
+        } else {
+          searchProduct = value.data['products'] ;
+        }
+        if (hasMore) pageNumber++;
+       // pageNumber++;
+      }
       SearchConstant.selectId = null;
       SearchConstant.minPriceController.clear();
       SearchConstant.maxPriceController.clear();
-      searchProduct = searchProduct.isNotEmpty ? pageNumber > 1 ? searchProduct : List.empty(growable: true): List.empty(growable: true);
-      searchProduct = value.data['products'] ?? [];
       searchProductsCategories = value.data['categories'];
+      HomeConst.Ids = [];
+      if(searchProduct.isNotEmpty){
+        for (var e in searchProduct) {
+          idsCheck.add(e['id']);
+          HomeConst.Ids = idsCheck;
+          print("IDS CHECK SEARCH products---> $idsCheck");
+        }
+      }
+      isSuccessSearch = true;
       value.data['attributes'].forEach((e){
         if(e['slug'] == "color"){
           searchProductsAttributesColor = e['options'];
@@ -107,6 +131,8 @@ class SearchControllerProvider extends ChangeNotifier {
       } catch (e) {
       isLoadingSearch = false;
       errorMessageSearch = e.toString();
+      isSuccessSearch = false;
+      print("FINAL");
       notifyListeners();
     }
   }

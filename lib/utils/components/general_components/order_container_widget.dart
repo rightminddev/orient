@@ -5,6 +5,7 @@ import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/routing/app_router.dart';
 
 import '../../../merchant/orders/models/order_status.dart';
@@ -53,7 +54,7 @@ class OrderContainerWidget extends StatelessWidget {
             title: 'Date',
           ),
           TitleWithDataWidget(
-            data: '${orderModel.total} EGP', //TODO: currency
+            data: '${orderModel.total} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}', //TODO: currency
             title: 'Total Amount',
           ),
           const SizedBox(height: 12),

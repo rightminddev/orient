@@ -425,7 +425,6 @@ class PersonalProfileViewModel extends ChangeNotifier {
                 message: 'Profile updated successfully');
             isSuccessUpdate = true;
             print("Update2");
-            print(value.data);
             notifyListeners();
             return;
           });

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/general_services/localization.service.dart';
 import '../../../../constants/app_images.dart';
 import '../../../../constants/app_sizes.dart';
 import '../../../../general_services/date.service.dart';
@@ -143,7 +144,7 @@ class RequestDetailsHeaderWidget extends StatelessWidget {
                             (request.moneyValue! > 0))
                           InfoTileWidget(
                               imgPath: Icons.attach_money_outlined,
-                              title: 'AMOUNT: ${request.moneyValue} EGP'),
+                              title: 'AMOUNT: ${request.moneyValue} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}'),
                         if (request.files != null &&
                             (request.files?.isNotEmpty ?? false))
                           const InfoTileWidget(

@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
@@ -26,7 +27,7 @@ class ColorTrendBlog extends StatelessWidget {
               ),
               Container(
                 height: 144,
-                padding:const EdgeInsets.symmetric(horizontal: 20),
+                padding:const EdgeInsets.symmetric(horizontal: 0),
                 child: ListView.separated(
                     shrinkWrap: true,
                     reverse: false,
@@ -81,7 +82,7 @@ class ColorTrendBlog extends StatelessWidget {
                                         )
                                     ),
                                     child: Text(
-                                      "Blog".toUpperCase(),
+                                      AppStrings.blog.tr().toUpperCase(),
                                       style:const TextStyle(
                                           color: Color(0xffFFFFFF),
                                           fontWeight: FontWeight.w600,
@@ -107,7 +108,7 @@ class ColorTrendBlog extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Text("see more".toUpperCase(),
+                                Text(AppStrings.seeMore.tr().toUpperCase(),
                                   style:const TextStyle(
                                       color: Color(0xffE6007E),
                                       fontSize: 10,

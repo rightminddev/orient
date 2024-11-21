@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/shared_more_screen/faq/logic/faq_model.dart';
 import 'package:orient/modules/shared_more_screen/faq/logic/get_faq_model.dart';
 import 'package:orient/modules/shared_more_screen/faq/view/faq_loading_widget.dart';
@@ -41,8 +43,12 @@ class _FaqScreenState extends State<FaqScreen> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
-            title: const Text('FAQS', style: TextStyle(fontSize: 16, color: Color(0xff224982), fontWeight: FontWeight.w700),),
-            leading: Icon(Icons.arrow_back, color: Color(0xff224982),),
+            title:  Text(AppStrings.faqs.tr().toUpperCase(), style: const TextStyle(fontSize: 16, color: Color(0xff224982), fontWeight: FontWeight.w700),),
+            leading: GestureDetector(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back, color: Color(0xff224982),)),
             backgroundColor: Colors.transparent,
           ),
           body: (value.faqModel != null)?ListView.builder(

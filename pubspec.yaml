@@ -11,7 +11,10 @@ dependencies:
   flutter_bloc:
   pretty_dio_logger:
   shimmer:
+  flutter_html:
+  flutter_osm_plugin: ^0.70.4
   timeago:
+  google_maps_flutter:
   bloc:
   webview_flutter:
   # Widgets starting auto play animation when mounted. It is already possible to animate the list and icons.

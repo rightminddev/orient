@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/media_query_values.dart';
@@ -104,7 +105,7 @@ class _ProductContainerWithTextFieldWidgetState
                     Row(
                       children: [
                         Text(
-                          '${widget.price} EGP',
+                          '${widget.price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(

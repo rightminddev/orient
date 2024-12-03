@@ -90,7 +90,7 @@ class Items {
   var id;
   var productId;
   var quantity;
-  var price;
+  var priceBeforeDiscount;
   var priceAfterDiscount;
   var title;
   List<Image>? image;
@@ -107,7 +107,7 @@ class Items {
       {this.id,
         this.productId,
         this.quantity,
-        this.price,
+        this.priceBeforeDiscount,
         this.priceAfterDiscount,
         this.title,
         this.image,
@@ -124,7 +124,7 @@ class Items {
     id = json['id'];
     productId = json['product_id'];
     quantity = json['quantity'];
-    price = json['price'];
+    priceBeforeDiscount = json['price_before_discount'];
     priceAfterDiscount = json['price_after_discount'];
     title = json['title'];
     if (json['image'] != null) {
@@ -148,7 +148,7 @@ class Items {
     data['id'] = this.id;
     data['product_id'] = this.productId;
     data['quantity'] = this.quantity;
-    data['price'] = this.price;
+    data['price_before_discount'] = this.priceBeforeDiscount;
     data['price_after_discount'] = this.priceAfterDiscount;
     data['title'] = this.title;
     if (this.image != null) {

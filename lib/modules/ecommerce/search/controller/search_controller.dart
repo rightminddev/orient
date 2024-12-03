@@ -53,7 +53,7 @@ class SearchControllerProvider extends ChangeNotifier {
     }
   }
   Future<void> getSearch({required BuildContext context, int? id, bool crossSells = false,
-    category_id, price_from, price_to, bool addAll = false,bool? isNewPage, colorId, sizeId,attributesColorId,attributesSizeId
+    category_id, price_from, price_to,pages, bool addAll = false,bool? isNewPage, colorId, sizeId,attributesColorId,attributesSizeId
   }) async {
     isLoadingSearch = true;
     errorMessageSearch = null;
@@ -63,7 +63,7 @@ class SearchControllerProvider extends ChangeNotifier {
         url: "/rm_ecommarce/v1/products/search",
         context: context,
         query: {
-          "page": pageNumber,
+          "page":pages ?? pageNumber,
           if(crossSells == true)  "with": "crossSells",
           if(colorId != null && attributesColorId != null)"attributes[$attributesColorId]" : colorId,
           if(sizeId != null && attributesSizeId != null)"attributes[$attributesSizeId}]" : sizeId,
@@ -74,22 +74,29 @@ class SearchControllerProvider extends ChangeNotifier {
         },
       );
       print("API Response: ${value.data}");
+      isSuccessSearch = true;
       isLoadingSearch = false;
       if (value.data['products'] != null && value.data['products'].isNotEmpty) {
-
-        if (isNewPage!) {
+        if (isNewPage == true) {
           searchProduct.addAll(value.data['products'] );
         } else {
-          searchProduct = value.data['products'] ;
+          searchProduct = value.data['products'];
+          print("PRODUCTS SUCCESS");
         }
         if (hasMore) pageNumber++;
        // pageNumber++;
       }
+      print("111");
       SearchConstant.selectId = null;
+      print("222");
       SearchConstant.minPriceController.clear();
+      print("333");
       SearchConstant.maxPriceController.clear();
+      print("444");
       searchProductsCategories = value.data['categories'];
+      print("555");
       HomeConst.Ids = [];
+      print("666");
       if(searchProduct.isNotEmpty){
         for (var e in searchProduct) {
           idsCheck.add(e['id']);
@@ -97,13 +104,16 @@ class SearchControllerProvider extends ChangeNotifier {
           print("IDS CHECK SEARCH products---> $idsCheck");
         }
       }
-      isSuccessSearch = true;
+      print("777");
       value.data['attributes'].forEach((e){
         if(e['slug'] == "color"){
           searchProductsAttributesColor = e['options'];
+          print("888");
           SearchConstant.selectColorAttributesId = e['id'];
+          print("searchProductsAttributesColor is ---> $searchProductsAttributesColor");
         }
       });
+      print("999");
       value.data['attributes'].forEach((e){
         if(e['slug'] == "wight"){
           searchProductsAttributesSize = e['options'];
@@ -128,6 +138,7 @@ class SearchControllerProvider extends ChangeNotifier {
         addAll == false;
       }
       print("Search products: $searchProduct");
+      notifyListeners();
       } catch (e) {
       isLoadingSearch = false;
       errorMessageSearch = e.toString();

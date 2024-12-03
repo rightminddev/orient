@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/painter/home_screen/views/home_model.dart';
 import 'package:provider/provider.dart';
@@ -79,9 +81,9 @@ class DefaultTextFieldCodeSendNow extends StatelessWidget {
                                 width: 20,
                                 height: 20,
                               ),
-                            const Text(
-                              'Send Now',
-                              style: TextStyle(
+                            Text(
+                            AppStrings.sendNow.tr(),
+                              style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xffE6007E),

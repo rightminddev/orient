@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -56,7 +58,7 @@ class _MerchantStoresScreenState extends State<MerchantStoresScreen> {
   }) {
     Offset begin = const Offset(1.0, 0.0);
     context.pushNamed(page,
-        extra: {'begin': begin, "storeModel": storeModel},
+        extra: jsonEncode({'storeModel': storeModel.toJson()}),
         pathParameters: {'lang': context.locale.languageCode});
   }
 

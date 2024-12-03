@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/general/viewmodels/company_structure_info.viewmodel.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
 import 'package:orient/modules/shared_more_screen/aboutus/logic/aboutus_logic.dart';
@@ -18,7 +19,7 @@ class AboutUsScreen extends StatefulWidget {
 }
 
 class _AboutUsScreenState extends State<AboutUsScreen> {
-  List<String> taps = ["About", "history", "Certificates", "Partners"];
+  List<String> taps = [AppStrings.about.tr(), AppStrings.history.tr(), AppStrings.certificates.tr(), AppStrings.partners.tr()];
   int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -86,21 +87,17 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                                   ),
                               )
                               : (selectIndex == 1)
-                                  ? SizedBox(
-                            height: MediaQuery.sizeOf(context)
-                                .height *
-                                0.45,
-                                    child: SingleChildScrollView(
-                                      child: Text(
-                                          value.aboutUsModel!.page!.history!,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
+                                  ? SingleChildScrollView(
+                                    child:Html(
+                                        data: value.aboutUsModel!.page!.history!,
+                                        style: {
+                                          "p": Style(
                                               fontWeight: FontWeight.w400,
                                               color: Color(0xffFFFFFF),
-                                              fontSize: 14,
-                                              height: 24 / 14),
-                                        ),
-                                    ),
+                                              fontSize: FontSize(14),
+                                              lineHeight: LineHeight(1.5),
+                                              ),
+                                        }),
                                   )
                                   : (selectIndex == 2)
                                       ? Container(

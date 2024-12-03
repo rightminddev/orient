@@ -25,12 +25,16 @@ class SliverAppBarPoints extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeViewModel>(
       builder: (context, value, child) {
-      var balancePoints;
-      var availablePoints;
-      value.userSettings2!.balance!.forEach((key, balance) {
-        balancePoints = balance.max;
-        availablePoints = balance.available;
-      });
+      var balancePoints = 0;
+      var availablePoints = 0;
+      if(!value.isLoading){
+        balancePoints = value.userSettings2!.points!.total!;
+        availablePoints = value.userSettings2!.points!.available!;
+      }
+      // value.userSettings2!.balance!.forEach((key, balance) {
+      //   balancePoints = balance.max;
+      //   availablePoints = balance.available;
+      // });
       return SliverAppBar(
         elevation: 0,
         pinned: true,

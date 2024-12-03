@@ -8,43 +8,39 @@ class NotificationProviderModel extends ChangeNotifier {
   bool hasMoreNotifications = true; // Track if there are more notifications to load
   String? getNotificationErrorMessage;
   List notifications = [];
-  int currentPage = 1;  // Start with the first page
-  final int itemsCount = 9; // Number of items per page
+  List newNotifications = [];
+  int currentPage = 1;
+  final int itemsCount = 9;
 
-  Future<void> getNotification(BuildContext context) async {
-    if (isGetNotificationLoading || !hasMoreNotifications) return;
-
+  Future<void> getNotification(BuildContext context, {int? page}) async {
     isGetNotificationLoading = true;
     notifyListeners();
-
     try {
       final response = await DioHelper.getData(
         url: "/rmnotifications/entities-operations",
-        context: context,
+        context: context, // Pass this explicitly only if necessary
         query: {
           "itemsCount": itemsCount,
-          "page": currentPage,
+          "page": page ?? currentPage,
         },
       );
-      final List newNotifications = response.data['data'];
-      if (newNotifications.isEmpty) {
-        hasMoreNotifications = false;
-      } else {
+
+       newNotifications = response.data['data'] ?? [];
+      if (newNotifications.isNotEmpty) {
         notifications.addAll(newNotifications);
         currentPage++;
-      }
-      isGetNotificationLoading = false;
-      isGetNotificationSuccess = true;
-      notifyListeners();
-    } catch (error) {
-      if (error is DioError) {
-        getNotificationErrorMessage = error.response?.data['message'] ?? 'Something went wrong';
       } else {
-        getNotificationErrorMessage = error.toString();
+        hasMoreNotifications = false; // No more data to fetch
       }
+
+      isGetNotificationSuccess = true;
+    } catch (error) {
+      getNotificationErrorMessage = error is DioError
+          ? error.response?.data['message'] ?? 'Something went wrong'
+          : error.toString();
+    } finally {
       isGetNotificationLoading = false;
       notifyListeners();
     }
   }
 }
-

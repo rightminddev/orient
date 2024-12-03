@@ -19,6 +19,7 @@ class _SearchSizesWidgetState extends State<SearchSizesWidget> {
   Widget build(BuildContext context) {
     return Consumer<SearchControllerProvider>(
       builder: (context, value, child) {
+        print("Product ----- > ${value.searchProductsAttributesSize}");
         return Container(
           height: 50,
           child: Row(

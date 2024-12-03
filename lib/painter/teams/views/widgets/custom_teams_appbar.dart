@@ -33,16 +33,17 @@ class CustomTeamsAppbar extends StatelessWidget {
               color: Color(AppColors.textC5)),
         ),
         const Spacer(),
-        isShare
-            ? GestureDetector(
+        isShare?  GestureDetector(
                 onTap: shareFun,
                 child: SvgPicture.asset(
                   AppImages.share,
                   width: AppSizes.s26,
                   height: AppSizes.s26,
                 ),
-              )
-            : const SizedBox(),
+              ):GestureDetector(
+            onTap: (){},
+            child: const Icon(Icons.arrow_back, color: Colors.transparent,)
+        ),
       ],
     );
   }

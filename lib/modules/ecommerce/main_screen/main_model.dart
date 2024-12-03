@@ -58,7 +58,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case EcommerceNavbarPages.eCommerceMyOrderScreen:
         return const EcommerceOrderScreen();
       case EcommerceNavbarPages.eCommerceSearchScreen:
-        return  ECommerceSearchScreen();
+        return  ECommerceSearchScreen(viewArrow: false,);
       case EcommerceNavbarPages.eCommerceMoreScreen:
         return SettingsPage();
       default:

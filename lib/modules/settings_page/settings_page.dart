@@ -25,7 +25,10 @@ import '../../utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (context) => ContactUsController()..getGeneral(context),
+    return MultiProvider(providers: [
+        ChangeNotifierProvider(create: (context) => ContactUsController()..getGeneral(context),),
+        ChangeNotifierProvider(create: (context) => HomeViewModel()..initializeHomeScreen(context),),
+    ],
     child: Consumer<ContactUsController>(
       builder: (context, contactUsController, child) {
         return Consumer<HomeViewModel>(
@@ -296,10 +299,10 @@ class SettingsPage extends StatelessWidget {
                             const SizedBox(height: 15,),
                             Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(horizontal: 50),
+                              padding: const EdgeInsets.symmetric(horizontal: 40),
                               width: MediaQuery.sizeOf(context).width * 1,
                               child: Text((value.userSettings != null && value.userSettings2 != null )?"${value.userSettings!.name}".toUpperCase(): "",
-                                maxLines: 1,
+                                maxLines: 2,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     color: Color(0xffE6007E),

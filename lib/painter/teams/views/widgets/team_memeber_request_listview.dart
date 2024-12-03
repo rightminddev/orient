@@ -21,6 +21,9 @@ class TeamMembersRequestListViewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TeamsActionsViewModel>(
       builder: (context, value, child) {
+        if(member![index].pivot!.status == "pending") {
+          print("LENTHENG IS ${member!.length} ");
+        }
         return (member![index].pivot!.status == "pending")?Container(
             margin: const EdgeInsets.symmetric(vertical: AppSizes.s8),
             padding: const EdgeInsets.symmetric(
@@ -166,6 +169,7 @@ class TeamMembersRequestListViewItem extends StatelessWidget {
                               ),
                               subTitle: AppStrings.areYouSureYouAddedThisUser.tr().toLowerCase(),
                               onTapButton: (){
+                                print("MEMBER IS --> ${member![index].id}");
                                 value.approveRequest(
                                     context,
                                     teamId,

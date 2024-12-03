@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 import '../../constants/app_sizes.dart';
 import '../../platform/platform_is.dart';
 import 'custom_alert.dart';
@@ -175,7 +177,7 @@ abstract class AlertsService {
                                 borderRadius: BorderRadius.circular(50.0)),
                             onPressed: () =>
                                 Navigator.of(dialogContext).pop(true),
-                            child: Text(isArabic ?? false ? 'نعم' : 'Yes',
+                            child: Text(AppStrings.yes.tr(),
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -191,7 +193,7 @@ abstract class AlertsService {
                             color: Colors.white,
                             onPressed: () =>
                                 Navigator.of(dialogContext).pop(false),
-                            child: Text(isArabic ?? false ? 'لا' : 'No',
+                            child: Text(AppStrings.no.tr(),
                                 style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.primary)),

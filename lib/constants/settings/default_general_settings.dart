@@ -1,3 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/constants/app_strings.dart';
+
 import '../../models/settings/general_settings.model.dart';
 import '../app_images.dart';
 
@@ -59,16 +62,14 @@ Map<String, dynamic> _defaultGeneralSettingsMap = {
     "date": "2022-02-10",
     "items": [
       {
-        "title": "COMPLETE CONTROL OVER VACATION BALANCE",
+        "title": AppStrings.completeControlOverVacationBalance,
         "image": AppImages.onboardingBackground1,
-        "info":
-            "Know your balance moment by moment, request leave from your manager, and control your permissions",
+        "info": AppStrings.knowYourBalanceMomentByMomentRequestLeaveFromYourManagerAndControlYourPermissions,
       },
       {
-        "title": "SMART FINGERPRINT",
+        "title": AppStrings.smartFingerprint,
         "image": AppImages.onboardingBackground2,
-        "info":
-            "Record attendance in multiple ways, and watch live all attendance records and their dates",
+        "info": AppStrings.recordAttendanceInMultipleWaysAndWatchLiveAllAttendanceRecordsAndTheirDates,
       }
     ]
   },

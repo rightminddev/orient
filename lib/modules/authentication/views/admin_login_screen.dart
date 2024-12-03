@@ -82,7 +82,7 @@ class AdminLoginScreenState extends State<AdminLoginScreen>
                                 gapH32,
                                 // Login Page Headline
                                 AutoSizeText(
-                                  AppStrings.welcomeTo.tr(),
+                                  AppStrings.welcomeToOrientApp.tr(),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,

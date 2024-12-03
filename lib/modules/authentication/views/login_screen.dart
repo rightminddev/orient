@@ -1,6 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/localization.service.dart';
+import 'package:orient/modules/shared_more_screen/lang_setting/logic/lang_controller.dart';
 import 'package:orient/utils/media_query_values.dart';
 import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/custom_elevated_button.widget.dart';
@@ -165,15 +168,33 @@ class LoginScreenState extends State<LoginScreen>
                                 ),
                                 gapH16,
                                 // LOGIN BUTTON
-                                CustomElevatedButton(
-                                  title: AppStrings.login.tr(),
-                                  onPressed: () async {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    await viewModel.login(context: context);
-                                  },
-                                  isPrimaryBackground: false,
-                                ),
+                                ChangeNotifierProvider(
+                                  create: (context) => LangControllerProvider(),
+                                child: Consumer<LangControllerProvider>(builder: (context, value, child){
+                                  return CustomElevatedButton(
+                                    title: AppStrings.login.tr(),
+                                    onPressed: () async {
+                                      if(LocalizationService.isArabic(context: context)){
+                                        await value.setDeviceSysLang(
+                                            state:  "ar",
+                                            context: context,
+                                            notiToken:await FirebaseMessaging.instance.getToken()
+                                        );
+                                      }else{
+                                        await value.setDeviceSysLang(
+                                            state:  "en",
+                                            context: context,
+                                            notiToken:await FirebaseMessaging.instance.getToken()
+                                        );
+                                      }
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      await viewModel.login(context: context);
+                                    },
+                                    isPrimaryBackground: false,
+                                  );
+                                },),
+                                )
                               ],
                             ),
                           ),

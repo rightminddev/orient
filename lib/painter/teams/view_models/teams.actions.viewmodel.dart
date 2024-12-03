@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/painter/teams/services/teams.service.dart';
 
@@ -78,6 +81,17 @@ class TeamsActionsViewModel extends ChangeNotifier {
       ).then((value){
         isLoading = false;
         joinTeamSuccess = true;
+        if(value.data['status'] == true){
+          AlertsService.success(
+              context: context,
+              message: value.data['message'],
+              title: AppStrings.successful.tr());
+        } if(value.data['status'] == false){
+          AlertsService.error(
+            context: context,
+            message: value.data['message'],
+            title: AppStrings.failed.tr(),);
+        }
         notifyListeners();
         print(value.data);
       });
@@ -117,6 +131,17 @@ class TeamsActionsViewModel extends ChangeNotifier {
             "user_id": userId
           }
       ).then((value){
+        if(value.data['status'] == true){
+          AlertsService.success(
+              context: context,
+              message: value.data['message'],
+              title: AppStrings.successful.tr());
+        } if(value.data['status'] == false){
+          AlertsService.error(
+            context: context,
+            message: value.data['message'],
+            title: AppStrings.failed.tr(),);
+        }
         if (value.data != null) {
           print(value.data);
           isLoadingWidget.value = false;
@@ -184,6 +209,17 @@ class TeamsActionsViewModel extends ChangeNotifier {
           "user_id": userId
         }
     ).then((value){
+     if(value.data['status'] == true){
+       AlertsService.success(
+           context: context,
+           message: value.data['message'],
+           title: AppStrings.successful.tr());
+     } if(value.data['status'] == false){
+       AlertsService.error(
+           context: context,
+           message: value.data['message'],
+           title: AppStrings.failed.tr(),);
+     }
       if (value.data != null) {
         print(value.data);
         isLoadingWidget.value = false;
@@ -192,6 +228,7 @@ class TeamsActionsViewModel extends ChangeNotifier {
       notifyListeners();
     }).catchError((err){
       isLoadingWidget.value = false;
+
       notifyListeners();
       debugPrint(
           "error while getting Employee Details  ${err.toString()} " );

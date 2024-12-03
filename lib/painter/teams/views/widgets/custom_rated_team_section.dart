@@ -30,53 +30,34 @@ class CustomRatedTeamSection extends StatelessWidget {
       children: [
         Stack(
           clipBehavior: Clip.none,
-          alignment: AlignmentDirectional.bottomEnd,
+          alignment: Alignment.bottomLeft,
           children: [
-            Container(
-              width: 74,
-              height: 74,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [Color(0xffE6007E), Color(0xff224982)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(74),
+              child: CachedNetworkImage(
+                imageUrl: "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg",
+                fit: BoxFit.cover,
+                height: 74,
+                width: 74,
+                placeholder: (context, url) => const ShimmerAnimatedLoading(
+                  width: 74.0,
+                  height: 74,
+                  circularRaduis: 74,
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(2),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(74),
-                  child: CachedNetworkImage(
-                      imageUrl: "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg",
-                      fit: BoxFit.cover,
-                      height: 74,
-                      width: 74,
-                      placeholder: (context, url) => const ShimmerAnimatedLoading(
-                        width: 74.0,
-                        height: 74,
-                        circularRaduis: 74,
-                      ),
-                      errorWidget: (context, url, error) => const Icon(
-                        Icons.image_not_supported_outlined,
-                      )),
-                ),
+                errorWidget: (context, url, error) => const Icon(Icons.image_not_supported_outlined),
               ),
             ),
-            Positioned(
-              top: 45,
-               left: 40,
-              child: Image.asset(
-                ratedImage,
-                width: ratedImageWidth,
-                height: ratedImageHeight,
-              ),
+            Image.asset(
+              ratedImage,
+              width: ratedImageWidth,
+              height: ratedImageHeight,
             ),
           ],
         ),
         gapH10,
         Text(
           points.toUpperCase(),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: AppSizes.s16,
             fontWeight: FontWeight.w600,
@@ -90,6 +71,7 @@ class CustomRatedTeamSection extends StatelessWidget {
           child: Text(
             teamName.toUpperCase(),
             maxLines: 1,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: AppSizes.s12,
               fontWeight: FontWeight.w500,

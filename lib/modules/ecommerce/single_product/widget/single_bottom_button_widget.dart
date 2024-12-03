@@ -13,9 +13,10 @@ import 'package:orient/utils/components/general_components/button_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 class SingleBottomButtonWidget extends StatelessWidget {
-  var totalPrice;
+  var totalPriceAfter;
+  var totalPriceBefore;
   var id;
-  SingleBottomButtonWidget({@required this.totalPrice, required this.id});
+  SingleBottomButtonWidget({@required this.totalPriceAfter,@required this.totalPriceBefore, required this.id});
   @override
   Widget build(BuildContext context) {
     return Consumer<SingleProductProvider>(builder:
@@ -36,6 +37,8 @@ class SingleBottomButtonWidget extends StatelessWidget {
               });
               bookmarkControllerProvider.isSuccessAdd =false;
             }
+            print("totalPriceBefore $totalPriceBefore");
+            print("totalPriceAfter $totalPriceAfter");
             return Container(
               height: 136,
               decoration: BoxDecoration(
@@ -69,11 +72,23 @@ class SingleBottomButtonWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "$totalPrice ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                        "$totalPriceAfter ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                         style:const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: Color(0xff1B1B1B)
+                        ),
+                      ),
+                      if(value.singleProductModel!.product!.price_after_discount != value.singleProductModel!.product!.price_before_discount)Text(
+                        "$totalPriceBefore ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}"!,
+                        style: const TextStyle(
+                          color: Color(0xffE6007E),
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Color(0xffE6007E),
+                          decorationThickness: 2,
                         ),
                       ),
                     ],

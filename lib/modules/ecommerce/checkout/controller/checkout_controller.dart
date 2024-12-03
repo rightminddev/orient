@@ -41,6 +41,10 @@ class CheckoutControllerProvider extends ChangeNotifier {
   List checkoutUserAddress = [];
   List shippingAddresses = [];
   var checkoutSubtotal;
+  var checkoutAddress;
+  var checkoutAddressId;
+  var checkoutDefualtAddress;
+  var checkoutDefualtAddressId;
   var checkoutFees;
   var checkoutTotal;
   var checkoutDiscountTotal;
@@ -86,12 +90,22 @@ class CheckoutControllerProvider extends ChangeNotifier {
       isPrepareCheckoutLoading = false;
       isPrepareCheckoutSuccess = true;
       checkoutUserAddress = value.data['user_addresses'];
+      checkoutAddress = value.data['user_address'];
+      checkoutAddressId = value.data['cart']['address_id'];
       checkoutListItems = value.data['cart']['items'];
       checkoutPaymentMethods = value.data['payment_methods'];
       checkoutSubtotal = value.data['cart']['sub_total'];
       checkoutFees = value.data['cart']['fees_total'];
       checkoutTotal = value.data['cart']['total'];
       checkoutDiscountTotal = value.data['cart']['discount_total'];
+      if(checkoutAddressId != null){
+        checkoutUserAddress.forEach((e){
+          if(e['id'] == checkoutAddressId){
+            checkoutDefualtAddress = e['address'];
+            checkoutDefualtAddressId = e['id'];
+          }
+        });
+      }
       if(CheckConst.selectedPaymentId != null){
       }else{
         //CheckConst.selectedPaymentId = value.data['payment_methods'][0]['id'];
@@ -131,7 +145,6 @@ class CheckoutControllerProvider extends ChangeNotifier {
       CheckConst.userAddressModel!.id = value.data['id'];
       userAddressModel!.id = value.data['id'];
       userAddressModel!.address  = address;
-
       notifyListeners();
     } catch (e) {
       isAddAddressLoading = false;

@@ -138,8 +138,10 @@ class OnboardingViewModel extends ChangeNotifier {
               context.goNamed(AppRoutes.painterHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});
             }else if (role!.contains('admin')){
-              context.goNamed(AppRoutes.loginAdmin.name,
-                  pathParameters: {'lang': context.locale.languageCode});
+              context.goNamed(
+                AppRoutes.loginAdmin.name,
+                pathParameters: {'lang': context.locale.languageCode},
+              );
             }else{
               context.goNamed(AppRoutes.merchantHomeScreen.name,
                   pathParameters: {'lang': context.locale.languageCode});

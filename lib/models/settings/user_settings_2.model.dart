@@ -9,12 +9,14 @@ class UserSettings2Model extends AppSettingsModel {
   final List<String>? weekend;
   final List<Holiday>? holidays;
   final Worktime? worktime;
+  final Points? points;
   final Map<String, RequestType>? requestTypes;
 
   UserSettings2Model({
     required super.lastUpdateDate,
     this.lastLogin,
     this.readList,
+    this.points,
     this.bookmark,
     this.balance,
     this.canUseHolidays,
@@ -53,8 +55,8 @@ class UserSettings2Model extends AppSettingsModel {
       holidays: (json['holidays'] as List<dynamic>?)
           ?.map((e) => Holiday.fromJson(e))
           .toList(),
-      worktime:
-          json['worktime'] != null ? Worktime.fromJson(json['worktime']) : null,
+      worktime: json['worktime'] != null ? Worktime.fromJson(json['worktime']) : null,
+      points: json['points'] != null ? Points.fromJson(json['points']) : null,
       requestTypes: (json['request_types'] as Map<String, dynamic>?)?.map(
         (key, value) => MapEntry(key, RequestType.fromJson(value)),
       ),
@@ -73,6 +75,7 @@ class UserSettings2Model extends AppSettingsModel {
       'weekend': weekend,
       'holidays': holidays?.map((e) => e.toJson()).toList(),
       'worktime': worktime?.toJson(),
+      'points': points?.toJson(),
       'request_types':
           requestTypes?.map((key, value) => MapEntry(key, value.toJson())),
     };
@@ -232,5 +235,23 @@ class Fields {
       'attaching_file': attachingFile,
       'money_value': moneyValue,
     };
+  }
+}
+class Points {
+  int? total;
+  int? available;
+
+  Points({this.total, this.available});
+
+  Points.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
+    available = json['available'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['total'] = this.total;
+    data['available'] = this.available;
+    return data;
   }
 }

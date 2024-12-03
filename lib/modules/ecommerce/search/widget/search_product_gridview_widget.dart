@@ -29,9 +29,7 @@ class SearchProductGridviewWidget extends StatelessWidget {
                 });
                 searchControllerProvider.isSuccessSearch = false;
               }
-              if (searchControllerProvider.isLoadingSearch && searchControllerProvider.pageNumber == 1) {
-                return HomeLoadingPage(viewAppbar: false);
-              } else if (searchControllerProvider.searchProduct.isEmpty) {
+               if (searchControllerProvider.searchProduct.isEmpty) {
                 return Center(child: Text('No products found.'));
               } else {
                 return Padding(
@@ -54,10 +52,10 @@ class SearchProductGridviewWidget extends StatelessWidget {
                           productId: searchControllerProvider.searchProduct[index]['id'],
                           productName: searchControllerProvider.searchProduct[index]['title'],
                           productType: searchControllerProvider.searchProduct[index]['type'],
-                          productPrice: "${searchControllerProvider.searchProduct[index]['price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
-                          discountPrice: "${searchControllerProvider.searchProduct[index]['regular_price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
-                          showSale: (searchControllerProvider.searchProduct[index]['sell_price'] != null)? true : false ,
-                          showDiscount: (searchControllerProvider.searchProduct[index]['sell_price'] != null)? true : false ,
+                          productPrice: "${searchControllerProvider.searchProduct[index]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                          discountPrice: "${searchControllerProvider.searchProduct[index]['price_before_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                          showSale: (searchControllerProvider.searchProduct[index]['price_after_discount'] != searchControllerProvider.searchProduct[index]['price_before_discount'])? true : false ,
+                          showDiscount: (searchControllerProvider.searchProduct[index]['price_after_discount'] != searchControllerProvider.searchProduct[index]['price_before_discount'])? true : false ,
                           productImageUrl: searchControllerProvider.searchProduct[index]['main_cover'][0]['file'],
                           boxShadow: [
                             BoxShadow(
@@ -77,8 +75,9 @@ class SearchProductGridviewWidget extends StatelessWidget {
                     itemCount: searchControllerProvider.searchProduct.length,
                   ),
                 );
-              }
-            },
+               }
+            }
+
           );
         },);
   }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/painter/teams/views/rated_team_screen.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:provider/provider.dart';
@@ -44,10 +45,12 @@ class _CustomTeamsSearchBarState extends State<CustomTeamsSearchBar> {
                     child: TextField(
                       controller: _searchController,
                       onChanged: (String? values){
+                        value.pageNumber = 1;
+                        print("ONEEE");
                         value.initializeTeamList(context, "teams", name: values);
                       },
                       decoration: InputDecoration(
-                          hintText: 'Search'.toUpperCase(),
+                          hintText: AppStrings.search.tr().toUpperCase(),
                           hintStyle: const TextStyle(
                               fontSize: AppSizes.s12,
                               fontWeight: FontWeight.w400,

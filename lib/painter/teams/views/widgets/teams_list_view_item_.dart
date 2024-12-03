@@ -14,9 +14,8 @@ import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dar
 class TeamsListViewItem extends StatelessWidget {
   final List<TeamModel> model;
   var userTeamId;
-  var roles;
   final int index;
-  TeamsListViewItem({super.key, required this.model, required this.index, required this.userTeamId, required this.roles});
+  TeamsListViewItem({super.key, required this.model, required this.index, required this.userTeamId,});
   @override
   Widget build(BuildContext context) {
     final team = model[index];
@@ -25,7 +24,7 @@ class TeamsListViewItem extends StatelessWidget {
         context.pushNamed(AppRoutes.painterMemberTeamsScreen.name,
             pathParameters: {'lang': context.locale.languageCode,
               'id' : "${team.id}",
-              'roles' : "$roles",
+              'roles' : "s",
               "admin" : (userTeamId == team.id) ?"true" : "false"
             });
       },

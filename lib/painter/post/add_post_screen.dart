@@ -145,7 +145,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             },
             child: const Icon(Icons.arrow_back, color: Color(0XFF224982),)),
         title: Text(
-          "create team".toUpperCase(),
+          AppStrings.createPost.tr().toUpperCase(),
           style: const TextStyle(
               fontSize: AppSizes.s16,
               fontWeight: FontWeight.w700,

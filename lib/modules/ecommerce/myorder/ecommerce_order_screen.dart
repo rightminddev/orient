@@ -48,7 +48,7 @@ class EcommerceOrderScreen extends StatelessWidget {
               padding: EdgeInsets.zero,
               child: SingleChildScrollView(
                 child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 1,
+                  height: MediaQuery.sizeOf(context).height * 0.78,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                     child:(!value.isLoading)? ListView.separated(
@@ -56,7 +56,7 @@ class EcommerceOrderScreen extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         reverse: false,
                         physics: const ClampingScrollPhysics(),
-                        itemBuilder: (context, index) => (value.myOrders[index]['status'] != "processing")?Container(
+                        itemBuilder: (context, index) => Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.white,
@@ -132,7 +132,7 @@ class EcommerceOrderScreen extends StatelessWidget {
                               )
                             ],
                           ),
-                        ):const SizedBox(height: 0.0,),
+                        ),
                         separatorBuilder: (context, index) => const SizedBox(height: 24,),
                         itemCount: value.myOrders.length
                     ):ListView.separated(

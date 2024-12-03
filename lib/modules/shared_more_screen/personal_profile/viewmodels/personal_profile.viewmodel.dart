@@ -261,20 +261,37 @@ class PersonalProfileViewModel extends ChangeNotifier {
               ),
             );
           });
-
   Future<void> selectBirthDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: userData?.birthDate,
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
+      locale:  const Locale('en', ''),
     );
     if (picked != null && picked != birthDate) {
       birthDate = picked;
-      birthDateController.text = DateService.formatDateTime(birthDate, format: 'yyyy-MM-dd');
+      var outputFormat = DateFormat('yyyy-MM-dd');
+      var outputDate = outputFormat.format(birthDate!);
+      birthDateController.text = outputDate;
+      notifyListeners();
+      print( birthDateController.text);
     }
-    notifyListeners();
   }
+  // Future<void> selectBirthDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: userData?.birthDate,
+  //     firstDate: DateTime(1900),
+  //     lastDate: DateTime(2101),
+  //     locale:  const Locale('en', ''),
+  //   );
+  //   if (picked != null && picked != birthDate) {
+  //     birthDate = picked;
+  //     birthDateController.text = DateService.formatDateTime(birthDate, format: 'yyyy-MM-dd');
+  //   }
+  //   notifyListeners();
+  // }
 
   Future<void> activate2FA({required BuildContext context}) async {
     try {
@@ -292,7 +309,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
       final result = await PersonalProfileService.activateTfa(context: context);
       if (result.success) {
         // show dialog that contains qrcode of the serial and serial to connect to authenticaor app manualy
-        String serial = result.data?['serial'];
+        String serial = result.data?['serial_qr'];
         await _showQRCodeDialog(context, serial);
         return;
       } else {
@@ -532,8 +549,8 @@ class PersonalProfileViewModel extends ChangeNotifier {
   ///LOGOUT
   Future<void> logout({required BuildContext context}) async {
     try {
-      bool isLogout = await AlertsService.confirmMessage(context, 'Log Out',
-          message: 'Are you sure you want to log');
+      bool isLogout = await AlertsService.confirmMessage(context, AppStrings.logout.tr(),
+          message: AppStrings.areYouSureYouWantToLog.tr());
       if (isLogout == false) return;
       final result = await PersonalProfileService.logout(context: context);
       if (result.success) {

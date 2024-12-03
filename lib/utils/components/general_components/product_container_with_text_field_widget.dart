@@ -153,6 +153,7 @@ class _ProductContainerWithTextFieldWidgetState
                           child: defaultTextFormField(
                             controller: controller,
                             hasShadows: false,
+                            hintText: AppStrings.input.tr(),
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.number,
                             onChanged: (value) {

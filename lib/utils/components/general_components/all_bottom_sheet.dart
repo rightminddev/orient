@@ -84,7 +84,7 @@ defaultActionBottomSheet(
                             color: const Color(0xffE6007E).withOpacity(0.05),
                           ),
                           child: Container(
-                            padding: const EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(10),
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(0xffE6007E),

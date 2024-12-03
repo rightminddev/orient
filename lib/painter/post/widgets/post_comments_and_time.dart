@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/painter/core/api/api_services_implementation.dart';
 import 'package:orient/painter/post/data/models/post_response.dart';
 import 'package:orient/painter/post/data/repositories/comment_repository/comment_repository_implementation.dart';
@@ -20,12 +21,21 @@ class PostCommentAndTime extends StatelessWidget {
    final User user;
   final SocialPost post;
   final int socialGroupId;
-   String formatRelativeTime(String timestamp) {
-     final dateTime = DateTime.parse(timestamp);
-     return timeago.format(dateTime, locale: 'en');
-   }
+
   @override
   Widget build(BuildContext context) {
+    String formatRelativeTime(String timestamp, {required BuildContext context}) {
+      try {
+        final dateTime = DateTime.parse(timestamp);
+        timeago.setLocaleMessages('ar', timeago.ArMessages());
+        timeago.setLocaleMessages('en', timeago.EnMessages());
+        final isArabic = LocalizationService.isArabic(context: context);
+        final locale = isArabic ? 'ar' : 'en';
+        return timeago.format(dateTime, locale: locale);
+      } catch (e) {
+        return 'Invalid date';
+      }
+    }
     return Consumer<PostsProvider>(
       builder: (context, provider, child) {
         return Row(
@@ -72,7 +82,7 @@ class PostCommentAndTime extends StatelessWidget {
             ),
             const Spacer(),
              Text(
-             formatRelativeTime(post.createAt!) ,
+               formatRelativeTime(post.createAt!, context: context) ,
               style: const TextStyle(
                   fontSize: 9,
                   color: Color(0xff9E9898),

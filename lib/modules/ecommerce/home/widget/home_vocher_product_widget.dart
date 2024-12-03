@@ -27,9 +27,9 @@ class HomeVocherProductWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: (){
-                  context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
-                      pathParameters: {'lang': context.locale.languageCode,
-                        'id' : "${value.premiumProductImage[index]['id']}"});
+                  // context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
+                  //     pathParameters: {'lang': context.locale.languageCode,
+                  //       'id' : "${value.premiumProductImage[index]['id']}"});
                 },
                 child: Container(
                   decoration: BoxDecoration(

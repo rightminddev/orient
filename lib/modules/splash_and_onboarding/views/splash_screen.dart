@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/layout.service.dart';
 import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/shared_more_screen/lang_setting/logic/lang_controller.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_images.dart';
 import '../../../constants/app_sizes.dart';
@@ -22,10 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
   late final OnboardingViewModel viewModel;
   late final HomeViewModel homeViewModel;
   late final MerchantMainViewModel merchantMainViewModel;
+  late final LangControllerProvider langControllerProvider;
   @override
   void initState() {
     super.initState();
     homeViewModel = HomeViewModel();
+    langControllerProvider = LangControllerProvider();
     merchantMainViewModel = MerchantMainViewModel();
     merchantMainViewModel.selectIndexs = 0;
     viewModel = OnboardingViewModel();
@@ -33,10 +37,20 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> initializeHomeAndSplash() async {
-    if(homeViewModel.userSettings == null){
-      print("FETCHING");
       await homeViewModel.initializeHomeScreen(context);
-    }
+      if(LocalizationService.isArabic(context: context)){
+        await langControllerProvider.setDeviceSysLang(
+            state:  "ar",
+            context: context,
+            notiToken:await FirebaseMessaging.instance.getToken()
+        );
+      }else{
+        await langControllerProvider.setDeviceSysLang(
+            state:  "en",
+            context: context,
+            notiToken:await FirebaseMessaging.instance.getToken()
+        );
+      }
     if(homeViewModel.userSettings != null){
       print("Model is -> ${homeViewModel.userSettings!.name}");
     }

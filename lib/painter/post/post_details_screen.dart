@@ -10,9 +10,10 @@ import 'package:orient/utils/components/general_components/gradient_bg_image.dar
 import 'package:provider/provider.dart';
 
 class PostDetailsScreen extends StatefulWidget {
-  PostDetailsScreen({super.key, required this.socialGroupId});
+  PostDetailsScreen({super.key, required this.socialGroupId, required this.groupName});
 
   final int socialGroupId;
+  final String groupName;
 
   @override
   State<PostDetailsScreen> createState() => _PostDetailsScreenState();
@@ -48,38 +49,47 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
       create: (_) => postProvider,
       child: Scaffold(
         backgroundColor: const Color(0xffFFFFFF),
-        body: GradientBgImage(
-          padding: EdgeInsets.zero,
-          child: SizedBox(
-            height: MediaQuery.sizeOf(context).height,
-            child: Consumer<PostsProvider>(
-              builder: (context, provider, child) {
+        body: RefreshIndicator.adaptive(
+          onRefresh: () async {
+            await postProvider.refreshPosts(widget.socialGroupId, context);
+          },
+          child: GradientBgImage(
+            padding: EdgeInsets.zero,
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height,
+              child: Consumer<PostsProvider>(
+                builder: (context, provider, child) {
 
-                if (provider.status == PostsStatus.failure) {
-                  return Center(child: Text(provider.errorMessage!));
-                }
+                  if (provider.status == PostsStatus.failure) {
+                    return Center(child: Text(provider.errorMessage!));
+                  }
 
-                return Column(
-                  children: [
-                    SizedBox(
-                      height:(provider.status == PostsStatus.loading)?
-                      MediaQuery.sizeOf(context).height * 0.9: MediaQuery.sizeOf(context).height * 1,
-                      child: (provider.status == PostsStatus.loading && provider.pageNumber ==1) ?
-                      const PostLoading()
-                      :CustomScrollView(
-                        physics: ClampingScrollPhysics(),
-                        controller: _scrollController,
-                        slivers: [
-                          CustomSliverAppBar(widget.socialGroupId),
-                          CustomSliverList(socialGroupId: widget.socialGroupId),
-                        ],
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height:(provider.status == PostsStatus.loading)?
+                        MediaQuery.sizeOf(context).height * 0.9: MediaQuery.sizeOf(context).height * 1,
+                        child: (provider.status == PostsStatus.loading && provider.pageNumber ==1) ?
+                        const PostLoading()
+                        :CustomScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          controller: _scrollController,
+                          slivers: [
+                            CustomSliverAppBar(widget.socialGroupId, widget.groupName),
+                            CustomSliverList(socialGroupId: widget.socialGroupId),
+                            SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    if (provider.status == PostsStatus.loading && provider.pageNumber != 1) const Center(child: CircularProgressIndicator())
+                      if (provider.status == PostsStatus.loading && provider.pageNumber != 1) const Center(child: CircularProgressIndicator())
 
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),

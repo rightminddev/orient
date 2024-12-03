@@ -2,7 +2,26 @@
 
 abstract class AppStrings {
   static const loading = 'loading';
+  static const completeControlOverVacationBalance = 'completeControlOverVacationBalance';
+  static const smartFingerprint = 'smartFingerprint';
+  static const recordAttendanceInMultipleWaysAndWatchLiveAllAttendanceRecordsAndTheirDates = 'recordAttendanceInMultipleWaysAndWatchLiveAllAttendanceRecordsAndTheirDates';
+  static const knowYourBalanceMomentByMomentRequestLeaveFromYourManagerAndControlYourPermissions = 'knowYourBalanceMomentByMomentRequestLeaveFromYourManagerAndControlYourPermissions';
+  static const orientPrints = 'orientPrints';
   static const faqs = 'faqs';
+  static const colorBlog = 'colorBlog';
+  static const yes  = 'yes';
+  static const no = 'no';
+  static const joinMyTeamOnTheOrientApp = 'joinMyTeamOnTheOrientApp';
+  static const downloadFromPlayStore = 'downloadFromPlayStore';
+  static const downloadFromAppleStore = 'downloadFromAppleStore';
+  static const posts = 'posts';
+  static const about = 'about';
+  static const sendNow = 'sendNow';
+  static const certificates = 'certificates';
+  static const partners = 'partners';
+  static const areYouSureYouWantToLog = 'areYouSureYouWantToLog';
+  static const input = 'input';
+  static const controlYourStore = 'controlYourStore';
   static const branchesAndDistributors = 'branchesAndDistributors';
   static const calculator = 'calculator';
   static const deactivate = 'deactivate';
@@ -32,7 +51,7 @@ abstract class AppStrings {
   static const delete = 'delete';
   static const deleteAccount = 'deleteAccount';
   static const loginTo = 'loginTo';
-  static const welcomeTo = 'welcomeTo';
+  static const welcomeToOrientApp = 'welcomeToOrientApp';
   static const orientApp = 'orientApp';
   static const ecommerceStore = 'ecommerceStore';
   static const paintersCommunity = 'paintersCommunity';

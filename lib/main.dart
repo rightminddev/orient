@@ -39,11 +39,9 @@ void main() async {
   );
 
   await EasyLocalization.ensureInitialized();
-  // using pathUrl strategy for flutter web to change the default hash strategy of url and make url more clean and seem as native web url.
   if (!PlatformIs.android && !PlatformIs.iOS) {
     changeUrlStrategyService();
   }
-  // gorouter configuration
   GoRouter.optionURLReflectsImperativeAPIs = true;
   try {
     final appDocumentDirectory = await getApplicationDocumentsDirectory();
@@ -60,7 +58,7 @@ void main() async {
       child: MultiProvider(
         // inject all providers to make it accessable intire all application via context.
         providers: [
-          ChangeNotifierProvider(create: (_) => NotificationProviderModel()),
+          ChangeNotifierProvider(create: (context) => NotificationProviderModel()),
           ChangeNotifierProvider(create: (_) => BlogProviderModel()),
           ChangeNotifierProvider(create: (context) => CompanyStructureInfoViewModel()..initializeCompanyinformationScreen(context: context)),
           ChangeNotifierProvider<AppConfigService>(

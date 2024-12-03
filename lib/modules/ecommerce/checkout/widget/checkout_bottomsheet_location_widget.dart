@@ -86,7 +86,7 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
                                     CheckConst.selectedAddressId = value.shippingAddresses[index]['id'];
                                     value.updateCart(
                                         context: context,
-                                        address_id: CheckConst.userAddressModel!.id,
+                                        address_id: CheckConst.selectedAddressId,
                                         payment_method_id: CheckConst.selectedPaymentId);
                                   },
                                   location: value.shippingAddresses[index]['address'],

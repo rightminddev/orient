@@ -18,7 +18,7 @@ class ColorTrendBlog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Color Blog",
+               Text(AppStrings.colorBlog.tr(),
               style: TextStyle(
                 color: Color(0xff1B1B1B),
                 fontWeight: FontWeight.w600,
@@ -37,7 +37,6 @@ class ColorTrendBlog extends StatelessWidget {
                       onTap: (){
                         context.pushNamed(AppRoutes.blogDetails.name,
                             pathParameters: {'lang': context.locale.languageCode,
-                              'id' : "${homeProvider.colorTrendBlog[index]['id']}",
                               "date" : "${homeProvider.colorTrendBlog[index]['created_at']}",
                               "image" : "${homeProvider.colorTrendBlog[index]['main_thumbnail'][0]['file']}",
                               "title" : "${homeProvider.colorTrendBlog[index]['title']}",

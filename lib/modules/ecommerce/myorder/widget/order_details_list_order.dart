@@ -75,7 +75,7 @@ class OrderDetailsListOrder extends StatelessWidget {
                           Row(
                             children: [
                                Text(
-                                 (items![index].priceAfterDiscount!=null)? "${items![index].priceAfterDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}":"${items![index].price} EGP",
+                                 "${items![index].priceAfterDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                                 style: const TextStyle(
                                   color: Color(0xff1B1B1B),
                                   fontSize: 13,
@@ -83,8 +83,8 @@ class OrderDetailsListOrder extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              Text(
-                                "${items![index].price}",
+                              if(items![index].priceAfterDiscount != items![index].priceBeforeDiscount) Text(
+                                "${items![index].priceBeforeDiscount}",
                                 style: TextStyle(
                                   color: const Color(0xff1B1B1B).withOpacity(0.5),
                                   fontSize: 11,

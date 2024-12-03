@@ -31,10 +31,11 @@ class DioHelper{
         compact: true,
         maxWidth: 90));
   }
-  static Future<Response> getData({@required url, @required Map<String, dynamic>? query,context, token, Map<String, dynamic>? data})async{
+  static Future<Response> getData({@required url, @required Map<String, dynamic>? query,context,lang,  token,bool sendLang = false, Map<String, dynamic>? data})async{
     final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
     dio!.options.headers = {
       'Accept':'application/json',
+      if(sendLang == true)"Accept-Language" : CacheHelper.getString("lang") ?? "en",
       'device-unique-id' : appConfigServiceProvider.deviceInformation.deviceUniqueId,
       'Authorization': 'Bearer ${appConfigServiceProvider.token}',
       "lang" : CacheHelper.getString("lang") ?? "en",
@@ -50,7 +51,7 @@ class DioHelper{
 
     return await dio!.delete(url, queryParameters: query, data: data??null);
   }
-  static Future<Response> postData({ context ,@required url,@required Map<String, dynamic>? query, token, @required Map<String, dynamic>? data})async{
+  static Future<Response> postData({ context ,@required url,@required Map<String, dynamic>? query, token, @required  data})async{
     final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
     dio!.options.headers = {
       'Accept':'application/json',

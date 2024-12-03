@@ -44,7 +44,8 @@ class HomeMetalPointsProduct extends StatelessWidget {
                                   onTap: (){
                                     context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
                                         pathParameters: {'lang': context.locale.languageCode,
-                                          'id' : "${homeProvider.moreProducts[index]['id']}"
+                                          'id' : "${homeProvider.moreProducts[index]['id']}",
+                                          'arrow' : "yes"
                                         });
                                   },
                                   child: Text(AppStrings.seeMore.tr().toUpperCase(),
@@ -79,11 +80,11 @@ class HomeMetalPointsProduct extends StatelessWidget {
                                     productId: homeProvider.moreProducts[index]['products'][indexs]['id'],
                                     productName: homeProvider.moreProducts[index]['products'][indexs]['title'],
                                     productType: homeProvider.moreProducts[index]['products'][indexs]['type'] ?? "",
-                                    productPrice: "${homeProvider.moreProducts[index]['products'][indexs]['price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
-                                    showSale: (homeProvider.moreProducts[index]['products'][indexs]['sell_price'] != null)? true : false ,
-                                    showDiscount: (homeProvider.moreProducts[index]['products'][indexs]['sell_price'] != null)? true : false ,
-                                    discountPrice: "${homeProvider.moreProducts[index]['products'][indexs]['regular_price']} EGP",
-                                    productImageUrl: (homeProvider.moreProducts[index]['products'][indexs]['main_cover'].isNotEmpty)?homeProvider.products[index]['main_cover'][0]['file']:"",
+                                    productPrice: "${homeProvider.moreProducts[index]['products'][indexs]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                                    showSale: (homeProvider.moreProducts[index]['products'][indexs]['price_after_discount'] != homeProvider.moreProducts[index]['products'][indexs]['price_before_discount'])? true : false ,
+                                    showDiscount: (homeProvider.moreProducts[index]['products'][indexs]['price_after_discount'] != homeProvider.moreProducts[index]['products'][indexs]['price_before_discount'])? true : false ,
+                                    discountPrice: "${homeProvider.moreProducts[index]['products'][indexs]['price_before_discount']} EGP",
+                                    productImageUrl: (homeProvider.moreProducts[index]['products'][indexs]['main_cover'].isNotEmpty)?homeProvider.moreProducts[index]['products'][indexs]['main_cover'][0]['file']:"",
                                     boxShadow: [
                                       BoxShadow(
                                         color: Color(0xffC9CFD2).withOpacity(0.5),
@@ -92,6 +93,7 @@ class HomeMetalPointsProduct extends StatelessWidget {
                                       )
                                     ],
                                     onTap: (){
+                                    print("pic is ----> ${homeProvider.moreProducts[index]['products'][indexs]['main_cover']}");
                                       context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
                                           pathParameters: {'lang': context.locale.languageCode,
                                             'id' : "${homeProvider.moreProducts[index]['products'][indexs]['id']}"});

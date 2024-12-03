@@ -27,7 +27,7 @@ class MapWidget extends StatelessWidget {
           initialCenter: positionSelected,
           initialZoom: initialZoom,
           onTap: onMapTap,
-
+          initialRotation: 0.0,
           // (_, latlong) {
           //   latLngSelected.value = latlong;
           //   // mapController.move(latlong, 5.0);

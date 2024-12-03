@@ -7,7 +7,8 @@ import 'package:orient/utils/components/general_components/general_components.da
 
 class CustomSliverAppBar extends StatelessWidget {
   final socialGroupId;
-  CustomSliverAppBar(this.socialGroupId);
+  final socialGroupName;
+  CustomSliverAppBar(this.socialGroupId, this.socialGroupName);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class CustomSliverAppBar extends StatelessWidget {
       pinned: true,
       centerTitle: true,
       title: Text(
-        "Mas Stars".toUpperCase(),
+        socialGroupName.toUpperCase(),
         style: const TextStyle(
           fontSize: 16,
           color: Colors.white,

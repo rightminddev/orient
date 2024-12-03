@@ -9,7 +9,7 @@ import 'package:orient/utils/components/general_components/gradient_bg_image.dar
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
 class BlogListDetailsScreen extends StatelessWidget {
-  final String date;
+  final String? date;
   final String image;
   final String title;
   final String contant;
@@ -17,6 +17,8 @@ class BlogListDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("contant is -----> $contant");
+    print("contant is -----> $date");
     return Scaffold(
       backgroundColor: const Color(0xffFFFFFF),
       body: GradientBgImage(
@@ -73,7 +75,7 @@ class BlogListDetailsScreen extends StatelessWidget {
                   ),
                   gapH24,
                   Text(
-                    (date != null)?date : "",
+                    (date != null && date != "null")?date! : "",
                     style: const TextStyle(
                         fontSize: AppSizes.s10,
                         fontWeight: FontWeight.w400,

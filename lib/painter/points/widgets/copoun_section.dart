@@ -143,7 +143,7 @@ class CopounSection extends StatelessWidget {
                         children: [
                           SvgPicture.asset("assets/images/png/verified.svg"),
                           gapW4,
-                          const Text(AppStrings.sendCoupon,style: TextStyle(
+                           Text(AppStrings.sendCoupon.tr(),style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,

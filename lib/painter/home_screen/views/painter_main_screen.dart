@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+  import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,6 +31,7 @@ class HomeScreen extends StatelessWidget {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => NotificationProviderModel()..getNotification(context),),
       ChangeNotifierProvider(create: (context) => HomeModelProvider(),),
+      ChangeNotifierProvider(create: (context) => HomeViewModel()..initializeHomeScreen(context),),
     ],
     child: Consumer<HomeModelProvider>(
       builder: (context, homeModelProvider, child) {
@@ -67,13 +68,13 @@ class HomeScreen extends StatelessWidget {
                 homeModelProvider.isSuccess = false;
               }
               if(!value.isLoading){
-                value.userSettings2!.balance!.forEach((key, balance) {
-                  totalPoints = balance.available;
-                });
+                totalPoints = value.userSettings2!.points!.available;
+                // value.userSettings2!.balance!.forEach((key, balance) {
+                //   totalPoints = balance.available;
+                // });
               }
-              return (value.userSettings == null && value.userSettings2 == null || notificationProviderModel.isGetNotificationLoading)?
-              HomePainterLoadingPage()
-                  :Scaffold(
+              return (value.userSettings != null && value.userSettings2 != null && !notificationProviderModel.isGetNotificationLoading)?
+              Scaffold(
                 backgroundColor: const Color(0xffFFFFFF),
                 body:
                 SafeArea(
@@ -264,7 +265,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              );
+              ):HomePainterLoadingPage();
             },
             );
           },

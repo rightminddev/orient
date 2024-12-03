@@ -97,8 +97,9 @@ class TeamsViewModel extends ChangeNotifier {
         teamDetails = TeamDetailsModel.fromJson(result.data?['team']);
         teamDetails!.members!.forEach((e){
           if(e.pivot!.status == "pending"){
-            requestMembers.clear();
+            print("IS PENDEND");
             requestMembers.add(e);
+            print("LENGTH IS ---> ${requestMembers.length}");
           }else{
             teamMembers.clear();
             teamMembers.add(e);

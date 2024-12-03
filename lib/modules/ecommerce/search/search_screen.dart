@@ -17,7 +17,8 @@ import 'package:provider/provider.dart';
 
 class ECommerceSearchScreen extends StatefulWidget {
   var categoryId;
-  ECommerceSearchScreen({this.categoryId});
+  final bool viewArrow;
+  ECommerceSearchScreen({this.categoryId, required this.viewArrow});
   @override
   State<ECommerceSearchScreen> createState() => _ECommerceSearchScreenState();
 }
@@ -61,8 +62,7 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
             builder: (context, value, child) {
               return Scaffold(
                 backgroundColor: const Color(0xffFFFFFF),
-                body: (searchControllerProvider.isLoadingSearch &&
-                       value.isLoading )
+                body: (searchControllerProvider.isLoadingSearch && value.isLoading )
                     ? const GradientBgImage(
                     padding: EdgeInsets.zero,
                     child: SearchScreenLoading())
@@ -85,10 +85,10 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       IconButton(
-                                        icon: const Icon(Icons.arrow_back,
-                                            color: Color(0xff224982)),
+                                        icon:  Icon(Icons.arrow_back,
+                                            color: (widget.viewArrow == true)? Color(0xff224982) : Colors.transparent),
                                         onPressed: () {
-                                          Navigator.pop(context);
+                                        if (widget.viewArrow == true){ Navigator.pop(context);}
                                         },
                                       ),
                                       Text(
@@ -124,6 +124,8 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
                                             searchControllerProvider.getSearch(
                                               context: context,
                                               crossSells: true,
+                                              isNewPage: false,
+                                              pages: 1,
                                               colorId: SearchConstant.selectColorId ,
                                               sizeId: SearchConstant.selectSizeId,
                                               attributesSizeId: SearchConstant.selectSizeAttributesId,

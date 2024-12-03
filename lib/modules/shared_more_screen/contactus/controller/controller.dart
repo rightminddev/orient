@@ -18,6 +18,7 @@ class ContactUsController extends ChangeNotifier{
  var twitter;
  var youtube;
  var linkedIn;
+ var links;
  List branchs = [];
  getGeneral(context){
    isLoading = true;
@@ -45,8 +46,9 @@ class ContactUsController extends ChangeNotifier{
      whatsApp = value.data['general_settings']['data']['company_contacts']!['whatsapp'];
      twitter = value.data['general_settings']['data']['company_contacts']!['twitter'];
      youtube = value.data['general_settings']['data']['company_contacts']!['youtube'];
-     youtube = value.data['general_settings']['data']['company_contacts']!['linkedin'];
+     linkedIn = value.data['general_settings']['data']['company_contacts']!['linkedin'];
      branchs = value.data['general_settings']['data']['company_contacts']!['branches'];
+     links = value.data['general_settings']['data']['store_url'];
      apiResponse = GeneralSettings.fromJson(value.data);
      notifyListeners();
    }).catchError((e){

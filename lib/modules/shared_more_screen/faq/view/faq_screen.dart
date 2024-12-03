@@ -12,27 +12,6 @@ class FaqScreen extends StatefulWidget {
 }
 
 class _FaqScreenState extends State<FaqScreen> {
-  List<FaqItem> faqItems = [
-    FaqItem(
-      question: "What countries do you ship to?",
-      answer: "We ship worldwide. Shipping times may vary depending on the destination.",
-    ),
-    FaqItem(
-      question: "What is your return/exchange policy?",
-      answer: "Another pressing question that every retail brand is tired of answering: how do you handle returns and exchanges?\n\n"
-          "Make sure that you're clear about:\n"
-          "- Which products can be returned\n"
-          "- How long the return period lasts\n"
-          "- What the process involves\n"
-          "- How returns are issued\n"
-          "- How returns are shipped back\n"
-          "- The exchange process and when exchanges are an option",
-    ),
-    FaqItem(
-      question: "How long will it take to get my order?",
-      answer: "Delivery times vary depending on your location and shipping method selected.",
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {

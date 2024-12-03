@@ -39,7 +39,8 @@ class ClorTrendProduct extends StatelessWidget {
                             onTap: (){
                               context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
                                   pathParameters: {'lang': context.locale.languageCode,
-                                    'id' : '-1'
+                                    'id' : '-1',
+                                    'arrow' : "yes"
                                   });
                             },
                             child: Text(AppStrings.seeMore.tr().toUpperCase(),
@@ -74,10 +75,10 @@ class ClorTrendProduct extends StatelessWidget {
                               productId: homeProvider.colorTrendProducts[index]['id'],
                               productName: homeProvider.colorTrendProducts[index]['title'],
                               productType: homeProvider.colorTrendProducts[index]['type']['value'],
-                              productPrice: "${homeProvider.colorTrendProducts[index]['price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
-                              showSale: (homeProvider.colorTrendProducts[index]['sell_price'] != null)? true : false ,
-                              showDiscount: (homeProvider.colorTrendProducts[index]['sell_price'] != null)? true : false ,
-                              discountPrice: "${homeProvider.colorTrendProducts[index]['regular_price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                              productPrice: "${homeProvider.colorTrendProducts[index]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                              showSale: (homeProvider.colorTrendProducts[index]['price_after_discount'] != homeProvider.colorTrendProducts[index]['price_before_discount'])? true : false ,
+                              showDiscount: (homeProvider.colorTrendProducts[index]['price_after_discount'] != homeProvider.colorTrendProducts[index]['price_before_discount'])? true : false ,
+                              discountPrice: "${homeProvider.colorTrendProducts[index]['price_before_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               productImageUrl: (homeProvider.colorTrendProducts[index]['main_cover'].isNotEmpty)?homeProvider.colorTrendProducts[index]['main_cover'][0]['file']:"",
                               boxShadow: [
                                 BoxShadow(
@@ -89,7 +90,7 @@ class ClorTrendProduct extends StatelessWidget {
                               onTap: (){
                                 context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
                                     pathParameters: {'lang': context.locale.languageCode,
-                                      'id' : "${homeProvider.products[index]['id']}"});
+                                      'id' : "${homeProvider.colorTrendProducts[index]['id']}"});
                                 //  Navigator.push(context, MaterialPageRoute(builder: (context)=> EcommerceSingleProductDetailScreen()));
                               }
                           ),

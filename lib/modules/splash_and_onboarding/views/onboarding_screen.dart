@@ -106,9 +106,7 @@ class OnBoardingScreen extends StatelessWidget {
                                   children: [
                                     AutoSizeText(
                                       viewModel
-                                              .getOnboardingDataWithIndex(
-                                                  index, context)
-                                              ?.title ??
+                                              .getOnboardingDataWithIndex(index, context)!.title!.tr().toUpperCase() ??
                                           '',
                                       style: Theme.of(context)
                                           .textTheme
@@ -123,7 +121,7 @@ class OnBoardingScreen extends StatelessWidget {
                                       viewModel
                                               .getOnboardingDataWithIndex(
                                                   index, context)
-                                              ?.info ??
+                                              ?.info!.tr() ??
                                           "",
                                       style: Theme.of(context)
                                           .textTheme

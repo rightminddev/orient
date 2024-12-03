@@ -324,20 +324,20 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                               gapH20,
                               const CustomDivider(),
                               //Enable 2FA
-                              Center(
-                                child: CustomElevatedButton(
-                                  blue: true,
-                                  titleSize: AppSizes.s14,
-                                  width: LayoutService.getWidth(context),
-                                  radius: AppSizes.s10,
-                                  backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                                  title: AppStrings.enable2fa.tr(),
-                                  onPressed: () async => () async =>
-                                  await viewModel.activate2FA(
-                                      context: context),
-                                ),
-                              ),
+                              // Center(
+                              //   child: CustomElevatedButton(
+                              //     blue: true,
+                              //     titleSize: AppSizes.s14,
+                              //     width: LayoutService.getWidth(context),
+                              //     radius: AppSizes.s10,
+                              //     backgroundColor:
+                              //     Theme.of(context).colorScheme.primary,
+                              //     title: AppStrings.enable2fa.tr(),
+                              //     onPressed: () async => () async =>
+                              //     await viewModel.activate2FA(
+                              //         context: context),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

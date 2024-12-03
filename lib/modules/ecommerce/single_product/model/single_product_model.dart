@@ -51,9 +51,8 @@ class Product {
   int? reviewRate;
   int? reviewCount;
   int? commentsCount;
-  int? regularPrice;
-  var sellPrice;
-  int? price;
+  var price_before_discount;
+  var price_after_discount;
   AutoDiscount? autoDiscount;
   var manualDiscount;
   int? parentId;
@@ -89,9 +88,8 @@ class Product {
         this.reviewRate,
         this.reviewCount,
         this.commentsCount,
-        this.regularPrice,
-        this.sellPrice,
-        this.price,
+        this.price_before_discount,
+        this.price_after_discount,
         this.autoDiscount,
         this.manualDiscount,
         this.parentId,
@@ -128,9 +126,8 @@ class Product {
     reviewRate = json['review_rate'];
     reviewCount = json['review_count'];
     commentsCount = json['comments_count'];
-    regularPrice = json['regular_price'];
-    sellPrice = json['sell_price'];
-    price = json['price'];
+    price_before_discount = json['price_before_discount'];
+    price_after_discount = json['price_after_discount'];
     autoDiscount = json['auto_discount'] != null
         ? new AutoDiscount.fromJson(json['auto_discount'])
         : null;
@@ -169,9 +166,8 @@ class Product {
     data['review_rate'] = this.reviewRate;
     data['review_count'] = this.reviewCount;
     data['comments_count'] = this.commentsCount;
-    data['regular_price'] = this.regularPrice;
-    data['sell_price'] = this.sellPrice;
-    data['price'] = this.price;
+    data['price_after_discount'] = this.price_after_discount;
+    data['price_before_discount'] = this.price_before_discount;
     if (this.autoDiscount != null) {
       data['auto_discount'] = this.autoDiscount!.toJson();
     }

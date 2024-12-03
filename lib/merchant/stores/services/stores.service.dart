@@ -67,10 +67,10 @@ abstract class StoresService {
     required int id,
     required Map<String, dynamic> data,
   }) async {
-    final String url =
-        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.calculateOrder).url}';
+    final String url = "https://lab.r-m.dev/api/rm_ecommarce/v1/stores/$id/stock/orders/calculate-order";
 
     //stock/availability
+    print("DATA--->${data}");
     final response = await DioApiService().post<Map<String, dynamic>>(
       url,
       data,
@@ -78,6 +78,7 @@ abstract class StoresService {
       allData: true,
       dataKey: 'data',
     );
+    print("RESPONSE IS ---> ${response.data}");
     return response;
   }
 
@@ -86,10 +87,10 @@ abstract class StoresService {
     required int id,
     required Map<String, dynamic> data,
   }) async {
-    final String url =
-        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id${EndpointServices.getApiEndpoint(EndpointsNames.completeOrder).url}';
+    final String url = "https://lab.r-m.dev/api/rm_ecommarce/v1/stores/$id/stock/orders/complete-order";
 
     //stock/availability
+    print("DATA IS ---> ${data}");
     final response = await DioApiService().post<Map<String, dynamic>>(
       url,
       data,
@@ -97,6 +98,7 @@ abstract class StoresService {
       allData: true,
       dataKey: 'data',
     );
+    print("RESPONSE IS ---> ${response.data}");
     return response;
   }
 

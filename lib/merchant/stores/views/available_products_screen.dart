@@ -44,15 +44,10 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
     storeActionsViewModel = StoreActionsViewModel();
     storesViewModel.initializeAvailableProductsScreen(context, widget.storeId);
   }
-
   @override
   void dispose() {
     controller.dispose();
     searchController.dispose();
-    if (!context.mounted) {
-      storesViewModel.dispose();
-      storeActionsViewModel.dispose();
-    }
     super.dispose();
   }
 
@@ -102,14 +97,11 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ButtonWidget(
-                        onPressed: () {
-                          if (widget.isInAvailable == true) {
-                            viewModel.updateAvailableProducts(
-                                context, widget.storeId);
-                          } else {
-                            viewModel.calculateOrders(
-                                context, viewModel, widget.storeId);
-                          }
+                        onPressed: () async{
+                          print("calculateOrders is done");
+                         await viewModel.calculateOrders(
+                              context, viewModel, widget.storeId);
+                        Navigator.pop(context);
                         },
                         isLoading: viewModel.isLoading,
                         // isLoading: viewModel.isLoading,
@@ -166,7 +158,6 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                   isLoading: storesViewModel.isLoading,
                   firstFetch: () {
                     storesViewModel.pageNumber = 1;
-
                     storesViewModel.products = List.empty(growable: true);
                     storesViewModel.initializeAvailableProductsScreen(
                         context, widget.storeId);

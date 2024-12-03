@@ -1,8 +1,8 @@
 class GroupResponse {
   bool status;
-  String message;
-  String create;
-  int count;
+  var message;
+  var create;
+  var count;
   List<Group> data;
 
   GroupResponse({
@@ -26,11 +26,11 @@ class GroupResponse {
 }
 
 class Group {
-  int id;
-  String title;
-  String? image; // Can be an empty string or image data
+  var id;
+  var title;
+  var image; // Can be an empty string or image data
   List<ImageData>? imageData;
-  int postsCount;
+  var postsCount;
 
   Group({
     required this.id,
@@ -55,11 +55,11 @@ class Group {
 }
 
 class ImageData {
-  int id;
-  String type;
-  String title;
-  String alt;
-  String file;
+  var id;
+  var type;
+  var title;
+  var alt;
+  var file;
   ImageSizes sizes;
 
   ImageData({
@@ -85,14 +85,14 @@ class ImageData {
 }
 
 class ImageSizes {
-  String thumbnail;
-  String medium;
-  String large;
-  String size1200x800;
-  String size800x1200;
-  String size1200x300;
-  String size300x1200;
-  String webp;
+  var thumbnail;
+  var medium;
+  var large;
+  var size1200x800;
+  var size800x1200;
+  var size1200x300;
+  var size300x1200;
+  var webp;
 
   ImageSizes({
     required this.thumbnail,

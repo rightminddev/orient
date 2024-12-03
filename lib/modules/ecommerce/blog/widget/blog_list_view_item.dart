@@ -21,9 +21,9 @@ class BlogListViewItem extends StatelessWidget {
         context.pushNamed(AppRoutes.blogDetails.name,
             pathParameters: {'lang': context.locale.languageCode,
               "date" : "${blog[index]['created_at']}",
-              "image" : "${blog[index]['main_thumbnail'][0]['file']}",
+              "image" : (blog[index]['main_thumbnail'].isNotEmpty)?"${blog[index]['main_thumbnail'][0]['file']}": "https://th.bing.com/th/id/R.234a9f3cd371aaa8c7ff9f07354530a5?rik=nDLlZSdsVzVsyA&pid=ImgRaw&r=0",
               "title" : "${blog[index]['title']}",
-              "contant" : "${blog[index]['content']}"
+              "contant" : "${blog[index]['short_description']}"
             });
       },
       child: Container(
@@ -90,7 +90,7 @@ class BlogListViewItem extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.zero,
                     child: Html(shrinkWrap: true,
-                        data: "${blog[index]['content']}".toUpperCase(),
+                        data: "${blog[index]['title']}".toUpperCase(),
                         style: {
                           "p" : Style(
                               fontSize: FontSize(12),maxLines: 2,padding: HtmlPaddings.all(0),margin: Margins.all(0),

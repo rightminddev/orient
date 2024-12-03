@@ -74,10 +74,10 @@ class PostsProvider extends ChangeNotifier {
     }
   }
 
-  void refreshPosts(int socialGroupId) {
+  Future<void> refreshPosts(int socialGroupId, context) async{
     pageNumber = 1;
     hasMore = true;
-    getPosts(socialGroupId: socialGroupId);
+   await getPosts(socialGroupId: socialGroupId,context: context);
   }
   Future<void> addPosts({required int socialGroupId,required context, required List<XFile>? attachments, String? content}) async {
     notifyListeners();

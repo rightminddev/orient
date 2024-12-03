@@ -30,7 +30,7 @@ class ShowImageWidget extends StatelessWidget {
                 ),
           child: CachedNetworkImage(
             imageUrl: mediaItem,
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
             height:  200,
             width: double.infinity,
             placeholder: (context, url) =>

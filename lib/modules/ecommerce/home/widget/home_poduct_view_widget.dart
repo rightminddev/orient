@@ -40,7 +40,8 @@ class HomePoductViewWidget extends StatelessWidget {
                             onTap: (){
                               context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
                                   pathParameters: {'lang': context.locale.languageCode,
-                                    'id' : '-1'
+                                    'id' : '-1',
+                                    'arrow' : "yes"
                                   });
                             },
                             child: Text(AppStrings.seeMore.tr().toUpperCase(),
@@ -75,10 +76,10 @@ class HomePoductViewWidget extends StatelessWidget {
                               productId: homeProvider.products[index]['id'],
                               productName: homeProvider.products[index]['title'],
                               productType: homeProvider.products[index]['type']['value'],
-                              productPrice: "${homeProvider.products[index]['price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
-                              showSale: (homeProvider.products[index]['sell_price'] != null)? true : false ,
-                              showDiscount: (homeProvider.products[index]['sell_price'] != null)? true : false ,
-                              discountPrice: "${homeProvider.products[index]['regular_price']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                              productPrice: "${homeProvider.products[index]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                              showSale: (homeProvider.products[index]['price_after_discount'] != homeProvider.products[index]['price_before_discount'])? true : false ,
+                              showDiscount: (homeProvider.products[index]['price_after_discount'] != homeProvider.products[index]['price_before_discount'])? true : false ,
+                              discountPrice: "${homeProvider.products[index]['price_before_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               productImageUrl: (homeProvider.products[index]['main_cover'].isNotEmpty)?homeProvider.products[index]['main_cover'][0]['file']:"",
                               boxShadow: [
                                 BoxShadow(

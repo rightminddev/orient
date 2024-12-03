@@ -6,8 +6,10 @@ import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/cart/controller/cart_controller.dart';
+import 'package:orient/utils/convert_number.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class CartItemViewWidget extends StatefulWidget {
   const CartItemViewWidget({super.key});
@@ -19,6 +21,7 @@ class CartItemViewWidget extends StatefulWidget {
 class _CartItemViewWidgetState extends State<CartItemViewWidget> {
   int count = 0;
   int? selectIndex;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CartControllerProvider>(
@@ -44,7 +47,9 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                       borderRadius: BorderRadius.circular(30),
                       color:const Color(0xffFFFFFF),
                     ),
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      padding: EdgeInsets.zero,
+                      separatorBuilder: (context, index) => const SizedBox(height: 10,),
                       shrinkWrap: true,
                       reverse: false,
                       physics: ClampingScrollPhysics(),
@@ -109,8 +114,8 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                                               ),
                                             ),
                                             const SizedBox(width: 10),
-                                            Text(
-                                              "${value.cartModel!.cart!.items![index].price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                                           if(value.cartModel!.cart!.items![index].priceBeforeDiscount != value.cartModel!.cart!.items![index].priceAfterDiscount) Text(
+                                              "${value.cartModel!.cart!.items![index].priceBeforeDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                                               style: TextStyle(
                                                 color: const Color(0xff1B1B1B).withOpacity(0.5),
                                                 fontSize: 11,
@@ -188,7 +193,17 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: (){},
+                                    onTap: (){
+                                      setState(() {
+                                        value.cartModel!.cart!.items![index].quantity = 0;
+                                      });
+                                      value.addItemCount(
+                                          context: context,
+                                          qty: value.cartModel!.cart!.items![index].quantity,
+                                          from: "other-page",
+                                          item_id: value.cartModel!.cart!.items![index].id
+                                      );
+                                    },
                                     child: SvgPicture.asset("assets/images/svg/delete.svg"),
                                   )
                                 ],
@@ -214,10 +229,14 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                         if(value.isGetCartLoading || value.isAddItemCountLoading)Container(
                             padding: EdgeInsets.symmetric(horizontal: AppSizes.s18,),
                             child: CircularProgressIndicator(color: Color(0xffFFFFFF),)),
-                       if(!value.isGetCartLoading && !value.isAddItemCountLoading) Text("${value.cartModel!.cart!.subTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
+                       if(!value.isGetCartLoading && !value.isAddItemCountLoading)
+                         Text("${value.cartModel!.cart!.subTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: Color(0xffFFFFFF),
+                              decorationThickness: 2,
                               color: Color(0xffFFFFFF)
                           ),
                         ),

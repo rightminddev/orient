@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
@@ -20,7 +21,7 @@ class PainterNotificationListViewItem extends StatelessWidget {
          context.pushNamed(AppRoutes.notificationDetails.name,
             pathParameters: {'lang': context.locale.languageCode,
               "date" : "${notifications[index]['created_at']}",
-              "image" : "${notifications[index]['main_thumbnail'][0]['file']}",
+              "image" :(notifications[index]['main_thumbnail'].isNotEmpty)? "${notifications[index]['main_thumbnail'][0]['file']}": "https://th.bing.com/th/id/R.234a9f3cd371aaa8c7ff9f07354530a5?rik=nDLlZSdsVzVsyA&pid=ImgRaw&r=0",
               "title" : "${notifications[index]['title']}",
               "contant" : "${notifications[index]['content']}"
             });
@@ -86,15 +87,15 @@ class PainterNotificationListViewItem extends StatelessWidget {
                         color: Color(0xff606060)),
                   ),
                   gapH4,
-                  Text(
-                    "${notifications[index]['content']}"
-                        .toUpperCase(),
-                    maxLines: 2,
-                    style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff0D3B6F)),
-                  ),
+                  Html(
+                      shrinkWrap: true,
+                      data: "${notifications[index]['title']}",
+                      style: {
+                        "p": Style(
+                            fontSize: FontSize(12),
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff0D3B6F)),
+                      }),
                 ],
               ),
             )

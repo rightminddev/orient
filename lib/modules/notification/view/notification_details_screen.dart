@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
@@ -60,7 +61,7 @@ class SingleListDetailsScreen extends StatelessWidget {
                     child: CachedNetworkImage(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.225,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       imageUrl: image,
                       placeholder: (context, url) =>
                       const ShimmerAnimatedLoading(),
@@ -88,15 +89,14 @@ class SingleListDetailsScreen extends StatelessWidget {
                         color: Color(AppColors.oC1Color)),
                   ),
                   gapH14,
-                   Text(
-                     contant,
-                    style: const TextStyle(
-                        fontSize: AppSizes.s12,
-                        fontWeight: FontWeight.w400,
-                        height: 2,
-                        color: Color(AppColors.black1Color)),
-                  ),
-
+                  Html(
+                      data: contant,
+                      style: {
+                        "p": Style(
+                            fontSize: FontSize(AppSizes.s12),
+                            fontWeight: FontWeight.w400,
+                            color: const Color(AppColors.black1Color)),
+                      }),
                 ],
               ),
             )),

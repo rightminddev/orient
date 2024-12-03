@@ -26,7 +26,7 @@ class HomeAddsWidget extends StatelessWidget {
                     context.pushNamed(AppRoutes.blogDetails.name,
                         pathParameters: {'lang': context.locale.languageCode,
                           "date" : "${homeProvider.productsBlog[index]['created_at']}",
-                          "image" : "${homeProvider.productsBlog[index]['main_thumbnail'][0]['file']}",
+                          "image" : (homeProvider.productsBlog[index]['main_thumbnail'].isNotEmpty)?"${homeProvider.productsBlog[index]['main_thumbnail'][0]['file']}": "https://th.bing.com/th/id/R.234a9f3cd371aaa8c7ff9f07354530a5?rik=nDLlZSdsVzVsyA&pid=ImgRaw&r=0",
                           "title" : "${homeProvider.productsBlog[index]['title']}",
                           "contant" : "${homeProvider.productsBlog[index]['short_description']}"
                         });

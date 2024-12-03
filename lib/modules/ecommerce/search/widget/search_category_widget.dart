@@ -23,7 +23,8 @@ class SearchCategoryWidget extends StatelessWidget {
                   onTap: (){
                     context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
                         pathParameters: {'lang': context.locale.languageCode,
-                          'id' : "${homeProvider.productsCategories[index]['id']}"
+                          'id' : "${homeProvider.productsCategories[index]['id']}",
+                          'arrow' : "yes"
                         });
                   },
                   child: Stack(

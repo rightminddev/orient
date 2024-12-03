@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/general_services/alert_service/alerts.service.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/general_services/validation_service.dart';
 import 'package:orient/info/countries/view_models/countries.viewmodel.dart';
 import 'package:orient/info/states/view_models/states.viewmodel.dart';
@@ -145,16 +146,32 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
       });
     } else {
       countriesViewModel.initializeCountries(context).then((_) {
-        final country = countriesViewModel.countries
-            .firstWhere((element) => element.title?.toLowerCase() == 'egypt');
-        countrySelected.value = country.title;
-        storeCreateEditModel.createEditStoreModel.countryId =
-            (country.id ?? 0).toString();
-        areCountriesLoaded.value = true;
-        statesViewModel.initializeStates(context, country.iso2 ?? '').then((_) {
-          toggleCountrySelected.value = true;
-        });
+        final country ;
+        if(LocalizationService.isArabic(context: context)){
+          country = countriesViewModel.countries.firstWhere(
+              (element) => element.title?.toLowerCase() == 'مصر',
+          orElse: () => CountryModel(),
+        );}else{
+           country = countriesViewModel.countries.firstWhere(
+                (element) => element.title?.toLowerCase() == 'egypt',
+            orElse: () => CountryModel(),
+          );
+        }
+        if (country.title != null) {
+          countrySelected.value = country.title;
+          storeCreateEditModel.createEditStoreModel.countryId =
+              (country.id ?? 0).toString();
+          areCountriesLoaded.value = true;
+          statesViewModel.initializeStates(context, country.iso2 ?? '').then((_) {
+            toggleCountrySelected.value = true;
+          });
+        } else {
+          areCountriesLoaded.value = false;
+          toggleCountrySelected.value = false;
+          print('Country "Egypt" not found in the list');
+        }
       });
+
     }
     super.didChangeDependencies();
   }

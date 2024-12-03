@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:orient/modules/ecommerce/home/color_trend/color_trend_loading.dart';
 import 'package:orient/modules/ecommerce/home/controller/const.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
@@ -21,6 +22,7 @@ class ColorTrendScreen extends StatelessWidget {
     child: Consumer<HomeProvider>(
       builder: (context, value, child) {
         if(value.isColorTrendSuccess == true){
+          print("CONTENT IS ----> ${value.colorTrendContant}");
           WidgetsBinding.instance.addPostFrameCallback((_) {
             value.getCheck(context: context, ids: HomeConst.Ids);
           });
@@ -38,20 +40,18 @@ class ColorTrendScreen extends StatelessWidget {
                   children: [
                     ColorTrendAppbarWidget(),
                     const SizedBox(height: 20,),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          value.colorTrendContant,
-                          textAlign: TextAlign.center,
-                          style:const TextStyle(
-                            color: Color(0xff525252),
-                            height: 24/12,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400
-                          ),
-                        ),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Html(
+                          data: value.colorTrendContant,
+                          style: {
+                            "p": Style(
+                              color: Color(0xff525252),
+                              lineHeight: LineHeight(1.5),
+                              fontSize: FontSize(14), // Adjust font size for better visibility
+                              fontWeight: FontWeight.w400,
+                            ),
+                          }),
                     ),
                     const SizedBox(height: 20,),
                     defaultViewImageGallery(listImagesUrl: value.colorTrendGallery,),
@@ -64,7 +64,8 @@ class ColorTrendScreen extends StatelessWidget {
                         height: 180,
                         child: ColorTrendBlog(),
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 20,)
                   ],
                 ),
               ),

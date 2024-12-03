@@ -9,37 +9,46 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NotificationScreen extends StatefulWidget {
-  bool viewArrow = true;
+  final bool viewArrow;
   NotificationScreen(this.viewArrow);
+
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  _NotificationScreenState createState() => _NotificationScreenState();
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
   final ScrollController _scrollController = ScrollController();
+  late NotificationProviderModel notificationProvider;
+
   @override
   void initState() {
     super.initState();
-    final notificationProvider = Provider.of<NotificationProviderModel>(context, listen: false);
-    notificationProvider.getNotification(context); // Load initial notifications
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notificationProvider = Provider.of<NotificationProviderModel>(context, listen: false);
+      notificationProvider.getNotification(context, page: 1);
+    });
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent &&
-          !notificationProvider.isGetNotificationLoading) {
-        notificationProvider.getNotification(context);
+          !notificationProvider.isGetNotificationLoading &&
+          notificationProvider.hasMoreNotifications) {
+        notificationProvider.getNotification(context, page: notificationProvider.currentPage);
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<NotificationProviderModel>(
       builder: (context, notificationProviderModel, child) {
+        print('UI Rebuilding due to provider update');
+        print('UI Rebuilding'); // Add this to verify rebuild
         return SafeArea(
           child: Scaffold(
             backgroundColor: const Color(0xffFFFFFF),
-            body: GradientBgImage(
-              padding: EdgeInsets.zero,
-              child: SingleChildScrollView(
-                controller: _scrollController,
+            body: SingleChildScrollView(
+              controller: _scrollController,
+              child: GradientBgImage(
+                padding: EdgeInsets.zero,
                 child: Column(
                   children: [
                     Container(
@@ -51,55 +60,55 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Color(0xff224982)),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            icon: Icon(Icons.arrow_back, color: widget.viewArrow ? const Color(0xff224982) : Colors.transparent),
+                            onPressed: () => widget.viewArrow ? Navigator.pop(context) : null,
                           ),
                           Text(
                             AppStrings.notificationsCenter.tr().toUpperCase(),
                             style: const TextStyle(color: Color(0xff224982), fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           IconButton(
-                              icon: const Icon(Icons.arrow_back, color: Colors.transparent),
-                              onPressed: (){}
+                            icon: const Icon(Icons.arrow_back, color: Colors.transparent),
+                            onPressed: () {},
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: AppSizes.s20,),
-                    ListView.separated(
+                    const SizedBox(height: AppSizes.s20),
+                    // Notification List inside ListView
+                    ListView.builder(
                       padding: EdgeInsets.zero,
-                      separatorBuilder: (context, index)=> const SizedBox(height: 18,),
                       shrinkWrap: true,
                       reverse: false,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount:(notificationProviderModel.isGetNotificationLoading && notificationProviderModel.currentPage ==1 )? 5 : notificationProviderModel.notifications.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) =>
-                        (notificationProviderModel.isGetNotificationLoading&& notificationProviderModel.currentPage ==1)?
-                        Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: AppSizes.s12),
-                            padding: const EdgeInsetsDirectional.symmetric(
-                                horizontal: AppSizes.s15, vertical: AppSizes.s12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(AppSizes.s15),
+                      itemCount: notificationProviderModel.isGetNotificationLoading && notificationProviderModel.notifications.isEmpty
+                          ? 12 // Show 5 loading items initially
+                          : notificationProviderModel.notifications.length,
+                      itemBuilder: (context, index) {
+                        if (notificationProviderModel.isGetNotificationLoading && notificationProviderModel.currentPage == 1) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: AppSizes.s12),
+                              padding: const EdgeInsetsDirectional.symmetric(horizontal: AppSizes.s15, vertical: AppSizes.s12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(AppSizes.s15),
+                              ),
+                              height: 100,
                             ),
-                            height: 100,  // Adjust height to match your layout
-                          ),
-                        )
-                            :
-                        PainterNotificationListViewItem(
-                          notifications: notificationProviderModel.notifications,
-                          index: index ,)
-                      ,
+                          );
+                        } else {
+                          return PainterNotificationListViewItem(
+                            notifications: notificationProviderModel.notifications,
+                            index: index,
+                          );
+                        }
+                      },
                     ),
-                    if(notificationProviderModel.isGetNotificationLoading&& notificationProviderModel.currentPage !=1)const SizedBox(height: 10,),
-                    if(notificationProviderModel.isGetNotificationLoading&& notificationProviderModel.currentPage !=1) const Center(child: CircularProgressIndicator(),),
+                    if (notificationProviderModel.isGetNotificationLoading)
+                      const Center(child: CircularProgressIndicator()),
                   ],
                 ),
               ),

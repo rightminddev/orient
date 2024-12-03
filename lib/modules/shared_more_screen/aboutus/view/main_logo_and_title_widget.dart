@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
 
 class MainLogoAndTitleWidget extends StatelessWidget {
   const MainLogoAndTitleWidget({super.key});
@@ -23,7 +25,7 @@ class MainLogoAndTitleWidget extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          "Orient Prints".toUpperCase(),
+          AppStrings.orientPrints.tr().toUpperCase(),
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,

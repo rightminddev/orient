@@ -110,7 +110,7 @@ Widget defaultTap2BarItem(
                     child: Text(
                       items![index].toUpperCase(),
                       style: const TextStyle(
-                          fontSize: 11,
+                          fontSize: 8,
                           color: Color(0xffFFFFFF),
                           fontWeight: FontWeight.w500,
                           fontFamily: "Poppins"),
@@ -130,14 +130,15 @@ Widget defaultBottomNavigationBar(
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
       double containerWidth = tapBarItemsWidth ?? MediaQuery.sizeOf(context).width;
-      double itemWidth = containerWidth / items!.length * 0.9;
+      double itemWidth =(items!.length > 4)? containerWidth / items!.length * 0.9 :containerWidth / items!.length * 0.95;
       double itemHeight = itemWidth * 1;
-      double itemRadius = itemWidth / 2;
+      double itemRadius = (items.length > 4)?itemWidth / 2 : itemHeight;
       print("SELECTED => ${selectIndex}");
       return Center(
         child: Container(
+          alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7.5),
-            height: itemHeight + 15,
+            height:(items.length > 4)? itemHeight + 15 : itemHeight,
             width: containerWidth,
             decoration: BoxDecoration(
                 color: const Color(0xff0D3B6F),
@@ -157,7 +158,7 @@ Widget defaultBottomNavigationBar(
                     });
                   },
                   child: Container(
-                      width: itemWidth,
+                      width: (items.length > 4)? itemWidth:itemWidth - 12,
                       height: itemHeight,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
@@ -511,6 +512,7 @@ Widget defaultViewProductGrid(
                     child: Text(
                       productName!,
                       maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: Color(0xff0D3B6F),
                         fontFamily: "Poppins",
@@ -555,47 +557,51 @@ Widget defaultViewProductGrid(
 }
 
 Widget defaultMinImageAppbar({
-  double? containerHeight
-}){
+  double? containerHeight,
+}) {
   return Container(
     height: containerHeight ?? 298,
     decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30))),
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(30),
+        topLeft: Radius.circular(30),
+      ),
+    ),
     width: double.infinity,
     child: Stack(
       alignment: Alignment.center,
       children: [
-        Positioned.fill(
-          child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30)),
-              child: Image.asset(
-                "assets/images/png/back_ground_fill.png",
-                fit: BoxFit.fill,
-              )),
-        ),
+        // Background Image
         ClipRRect(
           borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(30),
-              topLeft: Radius.circular(30)),
-          child: Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    topLeft: Radius.circular(30)),
-                gradient: LinearGradient(
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft,
-                  colors: [
-                    const Color(0xFF0D3B6F).withOpacity(0.8),
-                    const Color(0xFF0D3B6F).withOpacity(0.8),
-                  ],
-                  stops:const [1.0, 1.0],
-                ),
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          ),
+          child: Image.asset(
+            "assets/images/png/back_ground_fill.png",
+            fit: BoxFit.fill,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ),
+        // Gradient Overlay
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          ),
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+                colors: [
+                  const Color(0xFF0D3B6F).withOpacity(0.8),
+                  const Color(0xFF0D3B6F).withOpacity(0.8),
+                ],
+                stops: const [1.0, 1.0],
               ),
             ),
           ),
@@ -604,6 +610,7 @@ Widget defaultMinImageAppbar({
     ),
   );
 }
+
 Widget defaultFillImageAppbar({
   double? containerHeight
 }){

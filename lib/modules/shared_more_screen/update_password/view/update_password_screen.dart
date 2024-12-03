@@ -36,7 +36,11 @@ class UpdatePasswordScreen extends StatelessWidget {
               backgroundColor: const Color(0xffFFFFFF),
               appBar: AppBar(
                 backgroundColor: const Color(0xffFFFFFF),
-                leading: const Icon(Icons.arrow_back, color: Color(0XFF224982),),
+                leading: GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(Icons.arrow_back, color: Color(0XFF224982),)),
                 title: Text(
                   AppStrings.updatePassword.tr().toUpperCase(),
                   style: const TextStyle(

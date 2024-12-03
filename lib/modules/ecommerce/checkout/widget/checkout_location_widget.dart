@@ -29,7 +29,7 @@ class CheckoutLocationWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text((CheckConst.userAddressModel != null)?(CheckConst.userAddressModel!.address != null)?'${CheckConst.userAddressModel!.address}'.toUpperCase() : "" : "",
+                      Text((value.checkoutAddressId != null)?'${value.checkoutDefualtAddress}'.toUpperCase() : "${value.checkoutAddress['address']}" ,
                         style:const TextStyle(color: Color(0xff1B1B1B), fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                     ],
@@ -48,7 +48,7 @@ class CheckoutLocationWidget extends StatelessWidget {
                       },
                     );
                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                       value.updateScreen();
+                       value.getPrepareCheckout(context: context);
                      });
                   },
                   child: Text(

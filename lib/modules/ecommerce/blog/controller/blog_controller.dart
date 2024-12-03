@@ -19,7 +19,7 @@ class BlogProviderModel extends ChangeNotifier {
 
     try {
       final response = await DioHelper.getData(
-        url: "/rmnotifications/entities-operations",
+        url: "/blogs/entities-operations?with=tags,category_id",
         context: context,
         query: {
           "itemsCount": itemsCount,

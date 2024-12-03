@@ -93,15 +93,13 @@ class _WebViewStackState extends State<WebViewStack> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: Stack(
-        children: [
-          WebViewWidget(controller: controller),
-          if (loadingPercentage < 100)
-            LinearProgressIndicator(value: loadingPercentage / 100.0),
-        ],
-      ),
+    return Stack(
+      children: [
+        SizedBox(height: 30,),
+        WebViewWidget(controller: controller),
+        if (loadingPercentage < 100)
+          LinearProgressIndicator(value: loadingPercentage / 100.0),
+      ],
     );
   }
 }

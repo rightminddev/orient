@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/general_services/localization.service.dart';
 
 import '../../../constants/app_colors.dart';
 
@@ -80,7 +81,7 @@ class ButtonWidget extends StatelessWidget {
                       children: [
                         svgIcon != null
                             ? Padding(
-                                padding: EdgeInsets.only(right: AppSizes.s12),
+                                padding: LocalizationService.isArabic(context: context)?const EdgeInsets.only(left: AppSizes.s12) :const EdgeInsets.only(right: AppSizes.s12),
                                 child: SvgPicture.asset(
                                   svgIcon!,
                                   colorFilter: ColorFilter.mode(
@@ -117,7 +118,7 @@ class ButtonWidget extends StatelessWidget {
                   children: [
                     svgIcon != null
                         ? Padding(
-                            padding: EdgeInsets.only(right: AppSizes.s12),
+                      padding: LocalizationService.isArabic(context: context)?const EdgeInsets.only(left: AppSizes.s12) :const EdgeInsets.only(right: AppSizes.s12),
                             child: SvgPicture.asset(
                               svgIcon!,
                               colorFilter: ColorFilter.mode(

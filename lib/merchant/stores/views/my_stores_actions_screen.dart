@@ -4,7 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/constants/settings/app_icons.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/merchant/stores/models/my_stores_action_model.dart';
 import 'package:orient/routing/app_router.dart';
 
@@ -56,6 +59,8 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Why? ... ${LocalizationService.isArabic(context: context)}");
+    print("test --- > ${AppStrings.viewOrders.tr()}");
     return TemplatePage(
       backgroundColor: Colors.white,
       pageContext: context,
@@ -78,6 +83,8 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                 children: getMyStoresAction.map((element) {
                   return GestureDetector(
                     onTap: () {
+                      print(" element.title is ${ element.title}");
+                      print(" element.title is ${ element.title}");
                       goTo(
                         context: context,
                         page: element.goToLocation,
@@ -125,7 +132,7 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                           ),
                           const SizedBox(height: AppSizes.s8),
                           Text(
-                            element.title,
+                            element.title.tr().toUpperCase(),
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
@@ -139,7 +146,7 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            element.subtitle,
+                            element.subtitle.tr(),
                             textAlign: TextAlign.center,
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -161,3 +168,62 @@ class _MyStoreActionsScreenState extends State<MyStoreActionsScreen> {
     );
   }
 }
+class MyStoresActionModel {
+  final String icon;
+  final String title;
+  final String subtitle;
+  final String goToLocation;
+  final Map<String, String> pathParameters;
+  final Map<String, dynamic> queryParameters;
+  MyStoresActionModel({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.goToLocation,
+    required this.pathParameters,
+    required this.queryParameters,
+  });
+}
+
+List<MyStoresActionModel> getMyStoresAction = [
+  MyStoresActionModel(
+    icon: AppIcons.bag,
+    title: AppStrings.viewOrders,
+    subtitle: AppStrings.theOrdersRequestedFromYouThroughTheApplication,
+    goToLocation: AppRoutes.merchantStoreOrders.name,
+    pathParameters: {},
+    queryParameters: {},
+  ),
+  MyStoresActionModel(
+    icon: AppIcons.availableShoppingCart,
+    title: AppStrings.availabilityOfProducts,
+    subtitle: AppStrings.selectTheProductsYouHaveAvailableForSaleOnline,
+    goToLocation: AppRoutes.storeAvailableProducts.name,
+    pathParameters: {},
+    queryParameters: {"isInAvailable": "true"},
+  ),
+  MyStoresActionModel(
+    icon: AppIcons.addReqShoppingCart,
+    title: AppStrings.addRequestCap,
+    subtitle: AppStrings.orderProductsForYourStoreFromTheCompanysStores,
+    goToLocation: AppRoutes.storeAvailableProducts.name,
+    pathParameters: {},
+    queryParameters: {"isInAvailable": "false"},
+  ),
+  MyStoresActionModel(
+    icon: AppIcons.notes,
+    title: AppStrings.getMyInvoices,
+    subtitle: AppStrings.viewYourPreviousInvoicesWithOrient,
+    goToLocation: '',
+    pathParameters: {},
+    queryParameters: {},
+  ),
+  MyStoresActionModel(
+    icon: AppIcons.edit,
+    title: AppStrings.editStore,
+    subtitle: AppStrings.editThisStoresData,
+    goToLocation: AppRoutes.editStore.name,
+    pathParameters: {},
+    queryParameters: {},
+  ),
+];

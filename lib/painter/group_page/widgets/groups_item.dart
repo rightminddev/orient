@@ -76,7 +76,7 @@ class GroupsItem extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    "${data.postsCount} POSTS",
+                    "${data.postsCount} ${AppStrings.posts.tr().toUpperCase()}",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -101,6 +101,7 @@ class GroupsItem extends StatelessWidget {
                           AppRoutes.postDetailsScreen.name,
                           pathParameters: {
                             'id': data.id.toString(),
+                            'groupName': data.title.toString(),
                             'lang': context.locale.languageCode
                           },
                         );

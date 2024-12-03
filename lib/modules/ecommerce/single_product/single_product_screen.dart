@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/bookmark/controller/bookmark_controller.dart';
@@ -41,6 +42,10 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
     child: Consumer<SingleProductProvider>(
       builder: (context, singleProductProvider, child){
         print("PRODUCT ID IS ------> ${widget.id}");
+       if(singleProductProvider.singleProductModel!= null){
+         print("PRICE ID IS ------> ${singleProductProvider.singleProductModel!.product!.id}");
+       }
+
         return (singleProductProvider.singleProductModel != null )?
       SafeArea(
           child: Scaffold(
@@ -76,16 +81,25 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                               onTap: (){
                                 Navigator.pop(context);
                               },
-                              child: Container(
-                                  padding: const EdgeInsets.all(7),
-                                  height: 30,
-                                  width: 30,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: const Color(0xff000000).withOpacity(0.5)
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.all(7),
+                                      height: 30,
+                                      width: 30,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: const Color(0xff000000).withOpacity(0.5)
+                                      ),
+                                      child: const Icon(Icons.arrow_back, color: Color(0xffFFFFFF),size: 16,)),
+                                  Spacer(),
+                                  if(singleProductProvider.singleProductModel!.product!.price_before_discount != singleProductProvider.singleProductModel!.product!.price_after_discount)SvgPicture.asset(
+                                    'assets/images/svg/sale.svg',
                                   ),
-                                  child: const Icon(Icons.arrow_back, color: Color(0xffFFFFFF),size: 16,)),
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -128,7 +142,9 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                 ),
               ),
               bottomNavigationBar:(singleProductProvider.singleProductModel == null)?Container(height: 136,) :
-              SingleBottomButtonWidget(totalPrice: "${singleProductProvider.singleProductModel!.product!.price}",id: singleProductProvider.singleProductModel!.product!.id)
+              SingleBottomButtonWidget(
+                  totalPriceBefore: "${singleProductProvider.singleProductModel!.product!.price_before_discount}",id: singleProductProvider.singleProductModel!.product!.id,
+              totalPriceAfter: singleProductProvider.singleProductModel!.product!.price_after_discount)
           ),
         ) : const SingleProductScreenLoading();
       },

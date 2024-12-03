@@ -56,7 +56,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
               backgroundColor: const Color(0xffFFFFFF),
               elevation: 0.0,
               title: Text(
-                  AppStrings.teams.toUpperCase(),
+                  AppStrings.teams.tr().toUpperCase(),
                 style: const TextStyle(
                     fontSize: AppSizes.s16,
                     fontWeight: FontWeight.w700,
@@ -98,8 +98,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                 return TeamsListViewItem(
                                     model: teamsViewModel.teamsList,
                                     index: index,
-                                  roles: homeViewModel.userSettings!.userTeam!.permssion,
-                                  userTeamId: homeViewModel.userSettings!.userTeam!.id,
+                                  userTeamId: (homeViewModel.userSettings!.userTeam != null)?homeViewModel.userSettings!.userTeam!.id : 0,
                                 );
                               },
                             ),
@@ -111,7 +110,9 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 ),
               ),
             ),
-           floatingActionButton: (homeViewModel.userSettings != null)?(homeViewModel.userSettings?.userTeam == null)?SizedBox(
+           floatingActionButton:
+           (homeViewModel.userSettings != null)?(homeViewModel.userSettings?.userTeam == null)?
+           SizedBox(
               width: 64,
               height: 64,
               child: FloatingActionButton.large(

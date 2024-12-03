@@ -86,10 +86,8 @@ class HomeAppbarWidget extends StatelessWidget {
                                           child: SvgPicture.asset("assets/images/ecommerce/svg/notification.svg")),
                                       GestureDetector(
                                           onTap: (){
-                                            if(values.cartModel!.cart!.items!.isNotEmpty){
                                               context.pushNamed(AppRoutes.eCommerceShoppingCartView.name,
                                                   pathParameters: {'lang': context.locale.languageCode});
-                                            }
                                           },
                                           child: SvgPicture.asset("assets/images/ecommerce/svg/cart.svg")),
                                     ],
@@ -130,7 +128,8 @@ class HomeAppbarWidget extends StatelessWidget {
                                   onTap: (){
                                     context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
                                         pathParameters: {'lang': context.locale.languageCode,
-                                          'id' : "${homeProvider.productsCategories[index]['id']}"
+                                          'id' : "${homeProvider.productsCategories[index]['id']}",
+                                          'arrow' : "yes"
                                         });
                                   },
                                   child: Stack(

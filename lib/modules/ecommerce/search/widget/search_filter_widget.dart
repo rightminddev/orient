@@ -24,8 +24,9 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final searchControllerProvider = Provider.of<SearchControllerProvider>(widget.contexts!, listen: false);
-        searchControllerProvider.getSearch(context: widget.contexts!, addAll: true);
+      final searchControllerProvider = Provider.of<SearchControllerProvider>(widget.contexts!, listen: false,);
+
+        searchControllerProvider.getSearch(context: widget.contexts!, addAll: true, isNewPage: false ,pages: 1);
     });
   }
   @override

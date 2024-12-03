@@ -12,8 +12,7 @@ import '../../../utils/components/general_components/all_bottom_sheet.dart';
 import '../services/stores.service.dart';
 
 class StoreActionsViewModel extends ChangeNotifier {
-  AvailabilityModel addedToStock =
-      AvailabilityModel(items: List.empty(growable: true));
+  AvailabilityModel addedToStock = AvailabilityModel(items: List.empty(growable: true));
   bool isLoading = false;
   bool isLoadingDialog = false;
 
@@ -52,36 +51,40 @@ class StoreActionsViewModel extends ChangeNotifier {
   }
 
   Future<void> _updateAvailableProducts(BuildContext context, int id) async {
-    try {
-      final result = await StoresService.updateAvailableProducts(
-          context: context, id: id, data: addedToStock.toJson());
-      //TODO: add bottom sheet for success or fail
+    if(addedToStock.toJson()['availabilities'].isNotEmpty){
+      print("STOCK IS ---> ${addedToStock.toJson()['availabilities']} ");
+      try {
+        final result = await StoresService.updateAvailableProducts(
+            context: context, id: id, data: addedToStock.toJson());
+        //TODO: add bottom sheet for success or fail
 
-      if (result.success && result.data != null) {
-        // (result.data?['products'] ?? []).forEach((v) {
-        //   products.add(ProductModel.fromJson(v));
-        // });
-        context.pop();
-        AlertsService.success(
-            title: AppStrings.success.tr(),
-            context: context,
-            message: result.message ?? AppStrings.updatedSuccessfully.tr());
-      } else {
-        AlertsService.error(
-            title: AppStrings.failed.tr(),
-            context: context,
-            message: result.message ?? AppStrings.failedPleaseTryAgain.tr());
+        if (result.success && result.data != null) {
+          // (result.data?['products'] ?? []).forEach((v) {
+          //   products.add(ProductModel.fromJson(v));
+          // });
+          context.pop();
+          AlertsService.success(
+              title: AppStrings.success.tr(),
+              context: context,
+              message: result.message ?? AppStrings.updatedSuccessfully.tr());
+        } else {
+          AlertsService.error(
+              title: AppStrings.failed.tr(),
+              context: context,
+              message: result.message ?? AppStrings.failedPleaseTryAgain.tr());
+        }
+        //   debugPrint(products.length.toString());
+      } catch (err, t) {
+        debugPrint(
+            "error while getting Employee Details  ${err.toString()} at :- $t");
       }
-      //   debugPrint(products.length.toString());
-    } catch (err, t) {
-      debugPrint(
-          "error while getting Employee Details  ${err.toString()} at :- $t");
     }
   }
 
   Future<void> _calculateOrders(BuildContext context,
       StoreActionsViewModel storeActionsViewModel, int id) async {
     try {
+
       final result = await StoresService.calculateOrders(
           context: context, id: id, data: requestedOrders.toJson());
       //TODO: add bottom sheet for success or fail
@@ -99,7 +102,9 @@ class StoreActionsViewModel extends ChangeNotifier {
             onTapButton: () async {
               await completeOrders(context, id);
             });
+        notifyListeners();
       }
+      notifyListeners();
       //   debugPrint(products.length.toString());
     } catch (err, t) {
       debugPrint(
@@ -114,10 +119,10 @@ class StoreActionsViewModel extends ChangeNotifier {
       //TODO: add bottom sheet for success or fail
 
       if (result.success && result.data != null) {
-        Navigator.of(context).pop();
         await defaultActionBottomSheet(
           context: context,
           headerIcon: SvgPicture.asset(
+            fit: BoxFit.scaleDown,
             AppIcons.successRequest,
             width: 40,
             height: 40,

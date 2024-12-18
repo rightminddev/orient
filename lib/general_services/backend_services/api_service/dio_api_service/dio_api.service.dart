@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,10 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:go_router/go_router.dart';
 
 import '../../../../models/operation_result.model.dart';
+import '../../../../routing/app_router.dart';
 import '../../../app_config.service.dart';
 import '../../api_service_helpers.dart';
 import '../../backend_services_interface.dart';
@@ -24,6 +27,7 @@ class DioApiService implements BackEndServicesInterface {
   static Uri _getUri(String url) {
     return Uri.parse(url);
   }
+
   static Future<OperationResult<T>> _handleResponse<T>(
       {required Response response,
       required bool applyTokenLogic,
@@ -70,26 +74,111 @@ class DioApiService implements BackEndServicesInterface {
       case 400:
         respond = 'Bad Request';
         // _toast.toastMethod(LocaleKeys.respond_400.tr());
+        final appConfigServiceProvider =
+            Provider.of<AppConfigService>(context, listen: false);
+        await appConfigServiceProvider.resetConfig();
+        // await appConfigService.logout();
+        // appConfigService.clearSettings(type: SettingsType.userSettings);
+        // appConfigService.clearSettings(type: SettingsType.user2Settings);
+        await appConfigServiceProvider.setAuthenticationStatusWithToken(
+          isLogin: false,
+          token: null,
+        );
+        while (context.canPop()) {
+          context.pop();
+        }
+        context.goNamed(AppRoutes.login.name, pathParameters: {
+          'lang': context.locale.languageCode,
+          //   'id': '39'
+        });
         return OperationResult<T>(success: false, message: respond);
 
       case 401:
         respond = 'Unauthorized';
         // _toast.toastMethod(LocaleKeys.respond_401.tr());
+        final appConfigServiceProvider =
+            Provider.of<AppConfigService>(context, listen: false);
+        await appConfigServiceProvider.resetConfig();
+        // await appConfigService.logout();
+        // appConfigService.clearSettings(type: SettingsType.userSettings);
+        // appConfigService.clearSettings(type: SettingsType.user2Settings);
+        await appConfigServiceProvider.setAuthenticationStatusWithToken(
+          isLogin: false,
+          token: null,
+        );
+        while (context.canPop()) {
+          context.pop();
+        }
+        context.goNamed(AppRoutes.login.name, pathParameters: {
+          'lang': context.locale.languageCode,
+          //   'id': '39'
+        });
         return OperationResult<T>(success: false, message: respond);
 
       case 429:
         respond = 'Too Many Requests';
         // _toast.toastMethod(LocaleKeys.respond_429.tr());
+        final appConfigServiceProvider =
+            Provider.of<AppConfigService>(context, listen: false);
+        await appConfigServiceProvider.resetConfig();
+        // await appConfigService.logout();
+        // appConfigService.clearSettings(type: SettingsType.userSettings);
+        // appConfigService.clearSettings(type: SettingsType.user2Settings);
+        await appConfigServiceProvider.setAuthenticationStatusWithToken(
+          isLogin: false,
+          token: null,
+        );
+        while (context.canPop()) {
+          context.pop();
+        }
+        context.goNamed(AppRoutes.login.name, pathParameters: {
+          'lang': context.locale.languageCode,
+          //   'id': '39'
+        });
         return OperationResult<T>(success: false, message: respond);
 
       case 404:
         respond = 'Not Found';
         // _toast.toastMethod(LocaleKeys.respond_404.tr());
+        final appConfigServiceProvider =
+            Provider.of<AppConfigService>(context, listen: false);
+        await appConfigServiceProvider.resetConfig();
+        // await appConfigService.logout();
+        // appConfigService.clearSettings(type: SettingsType.userSettings);
+        // appConfigService.clearSettings(type: SettingsType.user2Settings);
+        await appConfigServiceProvider.setAuthenticationStatusWithToken(
+          isLogin: false,
+          token: null,
+        );
+        while (context.canPop()) {
+          context.pop();
+        }
+        context.goNamed(AppRoutes.login.name, pathParameters: {
+          'lang': context.locale.languageCode,
+          //   'id': '39'
+        });
         return OperationResult<T>(success: false, message: respond);
 
       case 500:
         respond = 'Server Error';
         // _toast.toastMethod(LocaleKeys.respond_500.tr());
+        final appConfigServiceProvider =
+            Provider.of<AppConfigService>(context, listen: false);
+        await appConfigServiceProvider.resetConfig();
+        // await appConfigService.logout();
+        // appConfigService.clearSettings(type: SettingsType.userSettings);
+        // appConfigService.clearSettings(type: SettingsType.user2Settings);
+        await appConfigServiceProvider.setAuthenticationStatusWithToken(
+          isLogin: false,
+          token: null,
+        );
+        while (context.canPop()) {
+          context.pop();
+        }
+        context.goNamed(AppRoutes.login.name, pathParameters: {
+          'lang': context.locale.languageCode,
+          //   'id': '39'
+        });
         return OperationResult<T>(success: false, message: respond);
 
       default:
@@ -200,6 +289,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed get() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -230,6 +336,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed post() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -286,6 +409,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           'Failed postWithFormData() ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult<T>(
         success: false,
         message: err.toString(),
@@ -379,6 +519,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed put() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -407,6 +564,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed delete() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -460,6 +634,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           'Failed postFileWithDio() ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult<T>(
         success: false,
         message: err.toString(),
@@ -491,6 +682,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed put() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -525,6 +733,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed get() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -579,6 +804,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed post() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -628,6 +870,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed put() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -708,6 +967,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed postFile() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -756,6 +1032,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed postEx() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -805,6 +1098,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed putEx() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -863,6 +1173,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed getDynamic() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -962,6 +1289,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed deleteDynamic() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -1011,7 +1355,23 @@ class DioApiService implements BackEndServicesInterface {
     } catch (err, t) {
       debugPrint(
           '--------- Failed deleteDynamicEx() from Api Service ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
-
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(success: false, message: err.toString());
     }
   }
@@ -1045,6 +1405,23 @@ class DioApiService implements BackEndServicesInterface {
             success: false, message: 'Result code = ${response.statusCode}');
       }
     } catch (err, t) {
+      final appConfigServiceProvider =
+          Provider.of<AppConfigService>(context, listen: false);
+      await appConfigServiceProvider.resetConfig();
+      // await appConfigService.logout();
+      // appConfigService.clearSettings(type: SettingsType.userSettings);
+      // appConfigService.clearSettings(type: SettingsType.user2Settings);
+      await appConfigServiceProvider.setAuthenticationStatusWithToken(
+        isLogin: false,
+        token: null,
+      );
+      while (context.canPop()) {
+        context.pop();
+      }
+      context.goNamed(AppRoutes.login.name, pathParameters: {
+        'lang': context.locale.languageCode,
+        //   'id': '39'
+      });
       return OperationResult(
           success: false, message: err.toString() + t.toString());
     }

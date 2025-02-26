@@ -30,21 +30,44 @@ abstract class AuthenticationService {
     required String countryKey,
     required String password,
     required String email,
+    required String registerAs,
     required int departmentId,
+    var nationalId,
+    var assignedBy,
+    var countryId,
+    var stateId,
+    var locationAddress,
+    var cityId,
     required Map<String, dynamic> deviceInformation,
     required BuildContext context,
   }) async {
     Map<String, dynamic> body = {
       "name": name,
       "phone": phone,
-      "email": email,
+     if(email != "" && email != null) "email": email,
+      "location_address" : locationAddress,
+      "register_as" : registerAs,
       "country_key": countryKey,
       "password": password,
+      "national_id": nationalId,
+      if(assignedBy != "" && assignedBy != null) "assigned_by": assignedBy,
+      "country_id": countryId,
+      "state_id": stateId,
+      "city_id": cityId,
       "department_id": departmentId,
       "device_info": deviceInformation
     };
     return await DioApiService().post<Map<String, dynamic>>(
         EndpointServices.getApiEndpoint(EndpointsNames.registration).url, body,
         dataKey: 'data', allData: true, context: context);
+  }
+  static Future<OperationResult<Map<String, dynamic>>> getDeviceToken({
+    required BuildContext context,
+  }) async {
+    return await DioApiService().get<Map<String, dynamic>>(
+        EndpointServices.getApiEndpoint(EndpointsNames.getDeviceToken).url,
+        dataKey: 'data',
+        allData: true,
+        context: context);
   }
 }

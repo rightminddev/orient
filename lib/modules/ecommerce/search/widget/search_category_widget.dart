@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
@@ -24,7 +25,8 @@ class SearchCategoryWidget extends StatelessWidget {
                     context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
                         pathParameters: {'lang': context.locale.languageCode,
                           'id' : "${homeProvider.productsCategories[index]['id']}",
-                          'arrow' : "yes"
+                          'arrow' : "yes",
+                          'categoryName' : homeProvider.productsCategories[index]['title']
                         });
                   },
                   child: Stack(

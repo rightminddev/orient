@@ -67,7 +67,7 @@ abstract class StoresService {
     required int id,
     required Map<String, dynamic> data,
   }) async {
-    final String url = "https://lab.r-m.dev/api/rm_ecommarce/v1/stores/$id/stock/orders/calculate-order";
+    final String url = "https://backend.orient-paints.com/api/rm_ecommarce/v1/stores/$id/stock/orders/calculate-order";
 
     //stock/availability
     print("DATA--->${data}");
@@ -87,7 +87,7 @@ abstract class StoresService {
     required int id,
     required Map<String, dynamic> data,
   }) async {
-    final String url = "https://lab.r-m.dev/api/rm_ecommarce/v1/stores/$id/stock/orders/complete-order";
+    final String url = "https://backend.orient-paints.com/api/rm_ecommarce/v1/stores/$id/stock/orders/complete-order";
 
     //stock/availability
     print("DATA IS ---> ${data}");
@@ -127,7 +127,7 @@ abstract class StoresService {
   }) async {
     final String url =
         '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$id/update';
-//https://lab.r-m.dev/api/rm_ecommarce/v1/stores/3/update
+//https://backend.orient-paints.com/api/rm_ecommarce/v1/stores/3/update
     //stock/availability
 
     final response = await DioApiService().put<Map<String, dynamic>>(

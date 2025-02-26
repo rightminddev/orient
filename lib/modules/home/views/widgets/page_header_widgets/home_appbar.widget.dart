@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import '../../../../../common_modules_widgets/vocation_list.widget.dart';
 import '../../../../../constants/app_images.dart';
 import '../../../../../constants/app_sizes.dart';
@@ -17,15 +18,12 @@ import 'notification_icon.widget.dart';
 
 class HomeAppbarWidget extends StatelessWidget {
   final bool? isExpanded;
-  final UserSettingsModel? userSettings;
-  final UserSettings2Model? user2Settings;
   final List<RequestModel>? requests;
   const HomeAppbarWidget(
       {super.key,
       this.requests,
       this.isExpanded = true,
-      this.userSettings,
-      this.user2Settings});
+     });
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +55,8 @@ class HomeAppbarWidget extends StatelessWidget {
                   onTap: () async => context.pushNamed(
                       AppRoutes.personalProfile.name,
                       pathParameters: {'lang': context.locale.languageCode}),
-                  child: (userSettings?.photo == null ||
-                          (userSettings?.photo?.isEmpty == true))
+                  child: (UserSettingConst.userSettings?.photo == null ||
+                          (UserSettingConst.userSettings?.photo?.isEmpty == true))
                       ? Container(
                           width: AppSizes.s40,
                           height: AppSizes.s40,
@@ -80,7 +78,7 @@ class HomeAppbarWidget extends StatelessWidget {
                               width: double.infinity,
                               height: double.infinity,
                               fit: BoxFit.cover,
-                              imageUrl: userSettings!.photo!,
+                              imageUrl: UserSettingConst.userSettings!.photo!,
                               placeholder: (context, url) =>
                                   const ShimmerAnimatedLoading(),
                               errorWidget: (context, url, error) => const Icon(
@@ -93,7 +91,7 @@ class HomeAppbarWidget extends StatelessWidget {
                         ),
                 ),
                 gapW12,
-                userSettings == null
+                UserSettingConst.userSettings == null
                     ? const ShimmerAnimatedLoading(
                         height: AppSizes.s32,
                         width: AppSizes.s50,
@@ -101,7 +99,7 @@ class HomeAppbarWidget extends StatelessWidget {
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AutoSizeText(userSettings?.name ?? '',
+                          AutoSizeText(UserSettingConst.userSettings?.name ?? '',
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineLarge
@@ -121,7 +119,7 @@ class HomeAppbarWidget extends StatelessWidget {
                 NotificationIcon(
                   hasNewNotifications: true,
                   numOfUnreadNotifications:
-                      userSettings?.newNotificationCount ?? 0,
+                      UserSettingConst.userSettings?.newNotificationCount ?? 0,
                   // onTap: () async => await context.pushNamed(
                   //     AppRoutes.rewardsAndPenalties.name,
                   //     extra: {'employeeName': null, 'employeeId': null},
@@ -134,7 +132,7 @@ class HomeAppbarWidget extends StatelessWidget {
             gapH32,
             if (isExpanded == true)
               VacationListWidget(
-                userSettings: user2Settings,
+                userSettings: UserSettingConst.userSettings2,
                 requests: requests,
               ),
           ],

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:orient/general_services/app_config.service.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:provider/provider.dart';
 
 
@@ -13,8 +14,6 @@ class ApiServicesImplementation implements ApiServices {
     BaseOptions baseOptions = BaseOptions(
       baseUrl: EndPoints.baseUrl,
       receiveDataWhenStatusError: true,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
     );
     _dio = Dio(baseOptions);
   }
@@ -25,12 +24,15 @@ class ApiServicesImplementation implements ApiServices {
     Map<String, dynamic>? queryParameters,
     context
   }) async {
-    var gets = Provider.of<AppConfigService>(context, listen: false);
+    final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
     _dio!.options.headers = {
-      'Authorization': 'Bearer ${gets.token}' ?? '',
+      'Authorization': 'Bearer ${appConfigServiceProvider.token}' ?? '',
+      "lang" : "${CacheHelper.getString("lang")}",
       'Accept': 'application/json',
-      'device-unique-id': gets.deviceInformation.deviceUniqueId,
+      'device-unique-id': appConfigServiceProvider.deviceInformation.deviceUniqueId,
     };
+    print("TOKENS IS --> ${appConfigServiceProvider.token}");
+    print("TOKENS IS --> ${appConfigServiceProvider.deviceInformation.deviceUniqueId}");
     Response data = await _dio!.get(endPoint, queryParameters: queryParameters,);
     return data;
   }
@@ -45,6 +47,7 @@ class ApiServicesImplementation implements ApiServices {
     _dio!.options.headers = {
       'Authorization': 'Bearer ${gets.token}' ?? '',
       'Accept': 'application/json',
+      "lang" : "${CacheHelper.getString("lang")}",
       'device-unique-id': gets.deviceInformation.deviceUniqueId,
     };
     return await _dio!.post(
@@ -65,6 +68,7 @@ class ApiServicesImplementation implements ApiServices {
     _dio!.options.headers = {
       'Authorization': 'Bearer ${gets.token}' ?? '',
       'Accept': 'application/json',
+    "lang" : "${CacheHelper.getString("lang")}",
       'device-unique-id': gets.deviceInformation.deviceUniqueId,
     };
     return await _dio!.delete(

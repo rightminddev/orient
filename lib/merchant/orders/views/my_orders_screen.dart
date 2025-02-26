@@ -10,8 +10,10 @@ import '../../../utils/components/general_components/pagination_widget.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   final int storeId;
-
-  const MyOrdersScreen({super.key, required this.storeId});
+  final String odoo;
+  final String invoice;
+  final String goToInvoice;
+  const MyOrdersScreen({super.key, required this.storeId,required this.goToInvoice, required this.odoo, required this.invoice});
 
   @override
   State<MyOrdersScreen> createState() => _MyOrdersScreenState();
@@ -25,7 +27,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   void initState() {
     super.initState();
     viewModel = OrdersViewModel();
-    viewModel.initializeMyOrdersScreen(context, widget.storeId);
+  if(widget.odoo == "no")  {viewModel.initializeMyOrdersScreen(context, widget.storeId);}
+  if(widget.odoo == "yes") {viewModel.initializeMyOrdersOdooScreen(context, widget.storeId);}
   }
 
   @override
@@ -42,7 +45,6 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
         builder: (context, viewModel, child) {
           return TemplatePage(
             backgroundColor: Colors.white,
-
             pageContext: context,
             //  title: 'EMPLOYEES LIST',
             // onRefresh: () async =>
@@ -61,25 +63,42 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       viewModel.pageNumber = 1;
 
                       viewModel.myOrders = List.empty(growable: true);
-                      viewModel.initializeMyOrdersScreen(
-                          context, widget.storeId);
+                      if(widget.odoo == "no"){ viewModel.initializeMyOrdersScreen(
+                          context, widget.storeId);}
+                      if(widget.odoo == "yes"){ viewModel.initializeMyOrdersOdooScreen(
+                          context, widget.storeId);}
                     },
                     scrollController: controller,
                     paginationFetch: () {
                       final hasMoreData =
                           viewModel.hasMoreData(viewModel.myOrders.length);
                       if (hasMoreData) {
-                        viewModel.initializeMyOrdersScreen(
-                            context, widget.storeId);
+                        if(widget.odoo == "no"){ viewModel.initializeMyOrdersScreen(
+                            context, widget.storeId);}
+                        if(widget.odoo == "yes"){ viewModel.initializeMyOrdersOdooScreen(
+                            context, widget.storeId);}
                       } else {}
                     },
                     scrollableWidget: SingleChildScrollView(
                       controller: controller,
                       child: Column(
-                        children: viewModel.myOrders.map((element) {
+                        children: widget.odoo == "no"? viewModel.myOrders.map((element) {
                           return OrderContainerWidget(
                             orderModel: element,
                             storeId: widget.storeId,
+                            odoo : widget.odoo,
+                              invoice : "no",
+                            goToInvoice: widget.goToInvoice,
+                            invoiceDetails: false,
+                          );
+                        }).toList() : viewModel.orders.map((element) {
+                          return OrderContainerWidget(
+                            storeId: widget.storeId,
+                            orders: element,
+                            odoo : widget.odoo,
+                              goToInvoice: widget.goToInvoice,
+                              invoiceDetails: false,
+                              invoice : "no"
                           );
                         }).toList(),
                       ),

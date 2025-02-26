@@ -191,7 +191,23 @@ List<MyStoresActionModel> getMyStoresAction = [
     title: AppStrings.viewOrders,
     subtitle: AppStrings.theOrdersRequestedFromYouThroughTheApplication,
     goToLocation: AppRoutes.merchantStoreOrders.name,
-    pathParameters: {},
+    pathParameters: {
+      "odoo" : "no",
+      "invoice" : "no",
+      "goToInvoice" : "no"
+    },
+    queryParameters: {},
+  ),
+  MyStoresActionModel(
+    icon: AppIcons.bag,
+    title: AppStrings.viewOdooOrders,
+    subtitle: AppStrings.viewYourPreviousOrderWithOrient,
+    goToLocation: AppRoutes.merchantStoreOrders.name,
+    pathParameters: {
+      "odoo" : "yes",
+      "invoice" : "no",
+      "goToInvoice" : "no"
+    },
     queryParameters: {},
   ),
   MyStoresActionModel(
@@ -214,8 +230,12 @@ List<MyStoresActionModel> getMyStoresAction = [
     icon: AppIcons.notes,
     title: AppStrings.getMyInvoices,
     subtitle: AppStrings.viewYourPreviousInvoicesWithOrient,
-    goToLocation: '',
-    pathParameters: {},
+    goToLocation: AppRoutes.merchantStoreOrders.name,
+    pathParameters: {
+      "odoo" : "yes",
+      "invoice" : "no",
+      "goToInvoice" : "yes"
+    },
     queryParameters: {},
   ),
   MyStoresActionModel(

@@ -21,20 +21,20 @@ class _SingleSizesWidgetState extends State<SingleSizesWidget> {
     return Consumer<SingleProductProvider>(
         builder: (context, value, child) {
           return Container(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: (widget.viewSize == true)? MainAxisAlignment.center : MainAxisAlignment.start,
+            height: 55,
+            child: Column(
+              mainAxisAlignment:  MainAxisAlignment.center,
               children: [
                 if(widget.viewSize == true && value.productAttributesSizes.isNotEmpty) Text("${AppStrings.size.tr().toUpperCase()}:", style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xff1B1B1B)
                 ),),
-                if(value.productAttributesSizes.isNotEmpty) const SizedBox(width: 8),
+                if(value.productAttributesSizes.isNotEmpty) const SizedBox(height: 8),
                 if(value.productAttributesSizes.isNotEmpty) Container(
-                  height: 24,
-                  alignment: Alignment.topLeft,
-                  width: MediaQuery.sizeOf(context).width * 0.5,
+                  alignment: Alignment.center,
+                  height: 25,
+                  width: MediaQuery.sizeOf(context).width * 0.7,
                   child: ListView.separated(
                       shrinkWrap: true,
                       reverse: false,

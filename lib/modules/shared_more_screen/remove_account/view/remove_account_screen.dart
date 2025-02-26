@@ -73,6 +73,7 @@ class RemoveAccountScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: (){
                       defaultActionBottomSheet(
+                        home: false,
                         context: context,
                         textFormFieldController: passwordController,
                         title: AppStrings.confirmDeletion.tr().toLowerCase(),

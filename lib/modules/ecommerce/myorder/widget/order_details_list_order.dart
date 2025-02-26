@@ -64,7 +64,6 @@ class OrderDetailsListOrder extends StatelessWidget {
                         children: [
                            Text(
                             "${items![index].title}",
-                            maxLines: 2,
                             style: const TextStyle(
                               color: Color(0xffE6007E),
                               fontSize: 13,
@@ -84,7 +83,7 @@ class OrderDetailsListOrder extends StatelessWidget {
                               ),
                               const SizedBox(width: 10),
                               if(items![index].priceAfterDiscount != items![index].priceBeforeDiscount) Text(
-                                "${items![index].priceBeforeDiscount}",
+                                "${items![index].priceBeforeDiscount} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                                 style: TextStyle(
                                   color: const Color(0xff1B1B1B).withOpacity(0.5),
                                   fontSize: 11,

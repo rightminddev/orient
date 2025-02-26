@@ -14,13 +14,20 @@ final User user;
     return Consumer<CommentProvider>(
       builder: (context, provider, child) {
         if (provider.status == CommentStatus.success) {
-          if (provider.getCommentModel!.comments!.isNotEmpty) {
-            return ListView.separated(
-              padding: EdgeInsets.zero,
-                itemBuilder: (context, index) => CommentsItem(comments: provider.getCommentModel!.comments![index], user: user,),
-                separatorBuilder: (context, index) => const SizedBox(height: 14,),
-                itemCount: provider.getCommentModel!.comments!.length
-            );
+          if (provider.getCommentModel != null) {
+            if(provider.getCommentModel!.comments != null && provider.getCommentModel!.comments!.isNotEmpty){
+              return ListView.separated(
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) => CommentsItem
+                    (comments: provider.getCommentModel!.comments![index], getCommentModel: provider.getCommentModel!,),
+                  separatorBuilder: (context, index) => const SizedBox(height: 14,),
+                  itemCount: provider.getCommentModel!.comments!.length
+              );
+            }else{
+              return Center(
+                child: Text(AppStrings.noCommentsYet.tr(), style: const TextStyle(color: Colors.black),),
+              );
+            }
           }
           else{
             return Center(

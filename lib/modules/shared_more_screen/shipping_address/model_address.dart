@@ -2,7 +2,7 @@ class AddressModel {
   bool? status;
   String? message;
   String? create;
-  int? count;
+  String? count;
   List<Data>? data;
 
   AddressModel(

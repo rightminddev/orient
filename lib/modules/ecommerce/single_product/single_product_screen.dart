@@ -112,7 +112,7 @@ class _EcommerceSingleProductDetailScreenState extends State<EcommerceSingleProd
                             SingleDetailsAndColorsWidget(widget.id),
                             if(singleProductProvider.productAttributesSizes.isNotEmpty) const SizedBox(height: 16),
                             if(singleProductProvider.productAttributesSizes.isNotEmpty)  SingleSizesWidget(viewSize: true, id: widget.id,),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 20),
                             const SingleChangeCountWidget(),
                             const SizedBox(
                               height: 30,

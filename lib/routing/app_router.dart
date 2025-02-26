@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:orient/merchant/main/subviews/merchant_home_screen.dart';
 import 'package:orient/merchant/main/subviews/merchant_stores_screen.dart';
 import 'package:orient/merchant/main/views/merchant_main_screen.dart';
+import 'package:orient/merchant/orders/views/invoice_details_screen.dart';
+import 'package:orient/merchant/orders/views/my_invoice_screen.dart';
 import 'package:orient/merchant/orders/views/my_orders_screen.dart';
 import 'package:orient/merchant/orders/views/order_details_screen.dart';
 import 'package:orient/merchant/stores/views/available_products_screen.dart';
@@ -31,6 +33,7 @@ import 'package:orient/modules/shared_more_screen/aboutus/view/aboutus_screen.da
 import 'package:orient/modules/shared_more_screen/branches/view/branches_screen.dart';
 import 'package:orient/modules/shared_more_screen/contactus/view/contact_screen.dart';
 import 'package:orient/modules/shared_more_screen/faq/view/faq_screen.dart';
+import 'package:orient/modules/shared_more_screen/general_screen/general_screen.dart';
 import 'package:orient/modules/shared_more_screen/lang_setting/view/lang_setting_screen.dart';
 import 'package:orient/modules/shared_more_screen/personal_profile/views/personal_profile_screen.dart';
 import 'package:orient/modules/shared_more_screen/promocode/view/promocode_screen.dart';
@@ -41,6 +44,7 @@ import 'package:orient/modules/notification/view/notification_details_screen.dar
 import 'package:orient/modules/notification/view/notification_screen.dart';
 import 'package:orient/painter/layout_page/layout_page.dart';
 import 'package:orient/painter/points/points_screen.dart';
+import 'package:orient/painter/points/prize_screen.dart';
 import 'package:orient/painter/post/add_post_screen.dart';
 import 'package:orient/painter/post/post_details_screen.dart';
 import 'package:orient/painter/teams/views/create_team_screen.dart';
@@ -71,6 +75,7 @@ enum AppRoutes {
   promoCodeScreen,
   faqScreen,
   contactUs,
+  generalDetails,
   updatePassword,
   aboutusScreen,
   shippingAddress,
@@ -81,6 +86,7 @@ enum AppRoutes {
   blogDetails,
   onboarding,
   login,
+  orderInvoice,
   loginAdmin,
   storeActions,
   orderDetails,
@@ -94,6 +100,7 @@ enum AppRoutes {
   more,
   branchScreen,
   bookMark,
+  invoiceDetails,
   requestsById,
   requestDetails,
   addRequest,
@@ -145,7 +152,9 @@ enum AppRoutes {
   painterSingleListDetailsScreen,
   postDetailsScreen,
   addPostScreen,
+  blogDetailsTrend,
   postDetailsTwoScreen,
+  prizePointsViewScreen,
 }
 
 const TestVSync ticker = TestVSync();
@@ -275,8 +284,9 @@ GoRouter goRouter(BuildContext context) => GoRouter(
         if (isLoggedIn == false &&
             (state.fullPath?.contains('splash') == false &&
                 state.fullPath?.contains('offline') == false &&
+                state.fullPath?.contains('login-screen') == false &&
                 state.fullPath?.contains('onboarding') == false)) {
-          return '/$lang/login-screen';
+          return '/$lang/adminLogin/true';
         }
         return null;
   },
@@ -539,7 +549,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
         });
         return AppRouterTransitions.slideTransition(
           key: state.pageKey,
-          child: const BookmarkScreen(),
+          child:  BookmarkScreen(),
           animation: animationController,
           begin: const Offset(1.0, 0.0),
         );
@@ -614,13 +624,14 @@ GoRouter goRouter(BuildContext context) => GoRouter(
       builder: (context, state) => NotificationScreen(true),
     ),
     GoRoute(
-      path: '/:lang/notification-details-screen/:title/:image/:contant/:date',
+      path: '/:lang/notification-details-screen/:title/:image/:contant/:date/:id',
       parentNavigatorKey: _rootNavigatorKey,
       name: AppRoutes.notificationDetails.name,
       pageBuilder: (context, state) {
         Offset? begin = state.extra as Offset?;
         final lang = state.uri.queryParameters['lang'];
         final title = state.pathParameters['title'] ?? '';
+        final id = state.pathParameters['id'] ?? '';
         final image = state.pathParameters['image'] ?? '';
         final contant = state.pathParameters['contant'] ?? '';
         final date = state.pathParameters['date'] ?? '';
@@ -646,6 +657,40 @@ GoRouter goRouter(BuildContext context) => GoRouter(
             title: title,
             image: image,
             contant: contant,
+            id: id,
+          ),
+          animation: animationController,
+          begin: begin ?? const Offset(1.0, 0.0),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/:lang/notification-details-screen/:slug',
+      parentNavigatorKey: _rootNavigatorKey,
+      name: AppRoutes.generalDetails.name,
+      pageBuilder: (context, state) {
+        Offset? begin = state.extra as Offset?;
+        final lang = state.uri.queryParameters['lang'];
+        final slug = state.pathParameters['slug'] ?? '';
+
+        if (lang != null) {
+          final locale = Locale(lang);
+          context.setLocale(locale);
+        }
+        final animationController = AnimationController(
+          vsync: ticker,
+        );
+        // Make sure to dispose the controller after the transition is complete
+        animationController.addStatusListener((status) {
+          if (status == AnimationStatus.completed ||
+              status == AnimationStatus.dismissed) {
+            animationController.dispose();
+          }
+        });
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: GeneralDataScreen(
+            slug: slug,
           ),
           animation: animationController,
           begin: begin ?? const Offset(1.0, 0.0),
@@ -675,55 +720,33 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           );
         }),
     GoRoute(
-      path: '/:lang/adminLogin',
-      parentNavigatorKey: _rootNavigatorKey,
+      path: '/:lang/adminLogin/:fromSplash',
       name: AppRoutes.loginAdmin.name,
       pageBuilder: (context, state) {
         final lang = state.pathParameters['lang'];
+        final arrowString = state.pathParameters['fromSplash'];
         if (lang != null) {
-          final locale = Locale(lang);
-          context.setLocale(locale);
+          context.setLocale(Locale(lang));
         }
-
-        final animationController = AnimationController(
-          vsync: ticker,
-        );
-        animationController.addStatusListener((status) {
-          if (status == AnimationStatus.completed ||
-              status == AnimationStatus.dismissed) {
-            animationController.dispose();
-          }
-        });
         return AppRouterTransitions.slideTransition(
           key: state.pageKey,
-          child: const AdminLoginScreen(),
-          animation: animationController,
+          child: AdminLoginScreen(fromSplash: arrowString == "true"),
+          animation: AnimationController(vsync: ticker),
           begin: const Offset(1.0, 0.0),
         );
       },
     ),
     GoRoute(
-        path: '/:lang/login-screen',
-        parentNavigatorKey: _rootNavigatorKey,
-        name: AppRoutes.login.name,
-        pageBuilder: (context, state) {
-          final animationController = AnimationController(
-            vsync: ticker,
-          );
-          // Make sure to dispose the controller after the transition is complete
-          animationController.addStatusListener((status) {
-            if (status == AnimationStatus.completed ||
-                status == AnimationStatus.dismissed) {
-              animationController.dispose();
-            }
-          });
-          return AppRouterTransitions.slideTransition(
-            key: state.pageKey,
-            child: const LoginScreen(),
-            animation: animationController,
-            begin: const Offset(1.0, 0.0),
-          );
-        },
+      path: '/:lang/login-screen',
+      name: AppRoutes.login.name,
+      pageBuilder: (context, state) {
+        return AppRouterTransitions.slideTransition(
+          key: state.pageKey,
+          child: const LoginScreen(),
+          animation: AnimationController(vsync: ticker),
+          begin: const Offset(1.0, 0.0),
+        );
+      },
     ),
     GoRoute(
       path: '/:lang/offline-screen',
@@ -898,7 +921,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   },
                 ),
                 GoRoute(
-                  path: 'store-orders-merchant/:id',
+                  path: 'store-orders-merchant/:id/:odoo/:invoice/:goToInvoice',
                   parentNavigatorKey: _rootNavigatorKey,
                   name: AppRoutes.merchantStoreOrders.name,
                   pageBuilder: (context, state) {
@@ -906,6 +929,9 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                     final lang = state.uri.queryParameters['lang'];
 
                     final id = int.parse(state.pathParameters['id'] ?? '0');
+                    final odoo = state.pathParameters['odoo'] ?? "yes";
+                    final invoice = state.pathParameters['invoice'] ?? "yes";
+                    final goToInvoice = state.pathParameters['goToInvoice'] ?? "yes";
 
                     if (lang != null) {
                       final locale = Locale(lang);
@@ -925,6 +951,9 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                       key: state.pageKey,
                       child: MyOrdersScreen(
                         storeId: id,
+                        invoice: invoice,
+                        odoo : odoo,
+                        goToInvoice: goToInvoice,
                       ),
                       animation: animationController,
                       begin: begin ?? const Offset(1.0, 0.0),
@@ -941,6 +970,8 @@ GoRouter goRouter(BuildContext context) => GoRouter(
 
                         final orderId = int.parse(
                             state.pathParameters['orderId'] ?? '0');
+                        final odoo = state.uri.queryParameters['odoo'] ?? "yes";
+
 
                         final storeId = int.parse(
                             state.pathParameters['storeId'] ?? '0');
@@ -964,6 +995,52 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                           child: OrderDetailsScreen(
                             storeId: storeId,
                             orderId: orderId,
+                            odoo: odoo,
+                          ),
+                          animation: animationController,
+                          begin: begin ?? const Offset(1.0, 0.0),
+                        );
+                      },
+                    ),
+                    GoRoute(
+                      path: 'invoice-details-merchant/:orderId/:storeId/:invoiceId',
+                      parentNavigatorKey: _rootNavigatorKey,
+                      name: AppRoutes.invoiceDetails.name,
+                      pageBuilder: (context, state) {
+                        Offset? begin = state.extra as Offset?;
+                        final lang = state.uri.queryParameters['lang'];
+
+                        final orderId = int.parse(
+                            state.pathParameters['orderId'] ?? '0');
+                        final invoiceId = int.parse(
+                            state.pathParameters['invoiceId'] ?? '0');
+                        final odoo = state.uri.queryParameters['odoo'] ?? "yes";
+
+
+                        final storeId = int.parse(
+                            state.pathParameters['storeId'] ?? '0');
+
+                        if (lang != null) {
+                          final locale = Locale(lang);
+                          context.setLocale(locale);
+                        }
+                        final animationController = AnimationController(
+                          vsync: ticker,
+                        );
+                        // Make sure to dispose the controller after the transition is complete
+                        animationController.addStatusListener((status) {
+                          if (status == AnimationStatus.completed ||
+                              status == AnimationStatus.dismissed) {
+                            animationController.dispose();
+                          }
+                        });
+                        return AppRouterTransitions.slideTransition(
+                          key: state.pageKey,
+                          child: InvoiceDetailsScreen(
+                            storeId: storeId,
+                            orderId: orderId,
+                            odoo: odoo,
+                            invoiceId: invoiceId,
                           ),
                           animation: animationController,
                           begin: begin ?? const Offset(1.0, 0.0),
@@ -1000,6 +1077,42 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                     return AppRouterTransitions.slideTransition(
                       key: state.pageKey,
                       child: CreateEditStoreScreen(storeModel: storeModel),
+                      animation: animationController,
+                      begin: begin ?? const Offset(1.0, 0.0),
+                    );
+                  },
+                ),
+                GoRoute(
+                  path: 'order-invoices-merchant/:storeId/:orderId',
+                  parentNavigatorKey: _rootNavigatorKey,
+                  name: AppRoutes.orderInvoice.name,
+                  pageBuilder: (context, state) {
+                    Offset? begin = state.extra as Offset?;
+                    final lang = state.uri.queryParameters['lang'];
+                    final storeId = int.parse(
+                        state.pathParameters['storeId'] ?? '0');
+                   final orderId = int.parse(
+                        state.pathParameters['orderId'] ?? '0');
+                    if (lang != null) {
+                      final locale = Locale(lang);
+                      context.setLocale(locale);
+                    }
+                    final animationController = AnimationController(
+                      vsync: ticker,
+                    );
+                    // Make sure to dispose the controller after the transition is complete
+                    animationController.addStatusListener((status) {
+                      if (status == AnimationStatus.completed ||
+                          status == AnimationStatus.dismissed) {
+                        animationController.dispose();
+                      }
+                    });
+                    return AppRouterTransitions.slideTransition(
+                      key: state.pageKey,
+                      child: MyInvoicesScreen(
+                        storeId: storeId,
+                        orderId: orderId,
+                      ),
                       animation: animationController,
                       begin: begin ?? const Offset(1.0, 0.0),
                     );
@@ -1292,6 +1405,39 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                     begin: begin ?? const Offset(1.0, 0.0),
                   );
                 },
+                routes: [
+                  GoRoute(
+                    path: 'blog_details_trend/:title',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    name: AppRoutes.blogDetailsTrend.name,
+                    pageBuilder: (context, state) {
+                      Offset? begin = state.extra as Offset?;
+                      final lang = state.uri.queryParameters['lang'];
+                      final title = Uri.decodeComponent(state.pathParameters['title'] ?? '');
+                     if (lang != null) {
+                        final locale = Locale(lang);
+                        context.setLocale(locale);
+                      }
+                      final animationController = AnimationController(
+                        vsync: ticker,
+                      );
+                      animationController.addStatusListener((status) {
+                        if (status == AnimationStatus.completed ||
+                            status == AnimationStatus.dismissed) {
+                          animationController.dispose();
+                        }
+                      });
+                      return AppRouterTransitions.slideTransition(
+                        key: state.pageKey,
+                        child: BlogListDetailsScreen(
+                          title: title,
+                        ),
+                        animation: animationController,
+                        begin: begin ?? const Offset(1.0, 0.0),
+                      );
+                    },
+                  ),
+                ]
               ),
               GoRoute(
                 path: 'get-inspired',
@@ -1323,7 +1469,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                 },
               ),
               GoRoute(
-                path: 'search_view/:id/:arrow',
+                path: 'search_view/:id/:arrow/:categoryName',
                 parentNavigatorKey: _rootNavigatorKey,
                 name: AppRoutes.eCommerceSearchScreenView.name,
                 pageBuilder: (context, state) {
@@ -1331,6 +1477,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   final arrowString = state.pathParameters['arrow'];  // The 'arrow' parameter as String?
 
                   final idString = state.pathParameters['id'];
+                  final categoryName = state.pathParameters['categoryName'];
                   if (idString == null) {
                     throw Exception('Product ID is required');
                   }
@@ -1355,7 +1502,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                   });
                   return AppRouterTransitions.slideTransition(
                     key: state.pageKey,
-                    child: ECommerceSearchScreen(categoryId: id,viewArrow: (arrowString == "yes")? true: false ,),
+                    child: ECommerceSearchScreen(categoryId: id,viewArrow: (arrowString == "yes")? true: false,categoryName: categoryName,),
                     animation: animationController,
                     begin:  const Offset(1.0, 0.0),
                   );
@@ -1391,17 +1538,13 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                 },
                 routes: [
                   GoRoute(
-                    path: 'blog-details/:title/:image/:contant/:date',
+                    path: 'blog-details/:title',
                     parentNavigatorKey: _rootNavigatorKey,
                     name: AppRoutes.blogDetails.name,
                     pageBuilder: (context, state) {
                       Offset? begin = state.extra as Offset?;
                       final lang = state.uri.queryParameters['lang'];
                       final title = state.pathParameters['title'] ?? '';
-                      final image = state.pathParameters['image'] ?? '';
-                      final contant = state.pathParameters['contant'] ?? '';
-                      final date = state.pathParameters['date'] ?? '';
-
                       if (lang != null) {
                         final locale = Locale(lang);
                         context.setLocale(locale);
@@ -1418,10 +1561,8 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                       return AppRouterTransitions.slideTransition(
                         key: state.pageKey,
                         child: BlogListDetailsScreen(
-                          date: date,
+
                           title: title,
-                          image: image,
-                          contant: contant,
                         ),
                         animation: animationController,
                         begin: begin ?? const Offset(1.0, 0.0),
@@ -1530,11 +1671,12 @@ GoRouter goRouter(BuildContext context) => GoRouter(
           ]
         ),
           GoRoute(
-            path: '/:lang/searchEcommerce/:id/:arrow',
+            path: '/:lang/searchEcommerce/:id/:arrow/:categoryName',
             parentNavigatorKey: _shellNavigatorKey,
             name: AppRoutes.eCommerceSearchScreen.name,
             pageBuilder: (context, state) {
               final idString = state.pathParameters['id'];
+              final categoryName = state.pathParameters['categoryName'];
               final arrowString = state.pathParameters['arrow'];  // The 'arrow' parameter as String?
               bool arrow = true;  // Default value
 
@@ -1566,7 +1708,7 @@ GoRouter goRouter(BuildContext context) => GoRouter(
               });
               return AppRouterTransitions.slideTransition(
                 key: state.pageKey,
-                child: ECommerceSearchScreen(categoryId: id, viewArrow: arrow ,),
+                child: ECommerceSearchScreen(categoryId: id, viewArrow: arrow ,categoryName: categoryName,),
                 animation: animationController,
                 begin: begin ?? const Offset(1.0, 0.0),
               );
@@ -1936,6 +2078,35 @@ GoRouter goRouter(BuildContext context) => GoRouter(
                     begin: const Offset(1.0, 0.0),
                   );
                 },
+                routes: [
+                  GoRoute(
+                      path: 'prize-point-screen',
+                      parentNavigatorKey: _rootNavigatorKey,
+                      name: AppRoutes.prizePointsViewScreen.name,
+                      pageBuilder: (context, state) {
+                        final lang = state.uri.queryParameters['lang'];
+                        if (lang != null) {
+                          final locale = Locale(lang);
+                          context.setLocale(locale);
+                        }
+                        final animationController = AnimationController(
+                          vsync: ticker,
+                        );
+                        animationController.addStatusListener((status) {
+                          if (status == AnimationStatus.completed ||
+                              status == AnimationStatus.dismissed) {
+                            animationController.dispose();
+                          }
+                        });
+                        return AppRouterTransitions.slideTransition(
+                          key: state.pageKey,
+                          child: PrizeScreen(true,),
+                          animation: animationController,
+                          begin: const Offset(1.0, 0.0),
+                        );
+                      }
+                  ),
+                ]
               ),
             ]
         ),

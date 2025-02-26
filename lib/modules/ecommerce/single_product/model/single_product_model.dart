@@ -51,6 +51,8 @@ class Product {
   int? reviewRate;
   int? reviewCount;
   int? commentsCount;
+  var per_meter_unit;
+  var per_meter_value;
   var price_before_discount;
   var price_after_discount;
   AutoDiscount? autoDiscount;
@@ -69,6 +71,8 @@ class Product {
         this.shortDescription,
         this.mainCover,
         this.length,
+        this.per_meter_unit,
+        this.per_meter_value,
         this.width,
         this.height,
         this.weight,
@@ -102,6 +106,8 @@ class Product {
     sku = json['sku'];
     stockStatus = json['stock_status'];
     title = json['title'];
+    per_meter_unit = json['per_meter_unit'];
+    per_meter_value = json['per_meter_value'];
     description = json['description'];
     shortDescription = json['short_description'];
     if (json['main_cover'] != null) {
@@ -142,6 +148,8 @@ class Product {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['sku'] = this.sku;
+    data['per_meter_unit'] = this.per_meter_unit;
+    data['per_meter_value'] = this.per_meter_value;
     data['stock_status'] = this.stockStatus;
     data['title'] = this.title;
     data['description'] = this.description;

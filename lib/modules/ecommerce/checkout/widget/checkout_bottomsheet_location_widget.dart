@@ -119,7 +119,7 @@ class _CheckoutBottomsheetLocationWidgetState extends State<CheckoutBottomsheetL
                           ),
                           const SizedBox(height: 20,),
                           ButtonWidget(
-                            title: AppStrings.addAddress.tr().toUpperCase(),
+                            title: AppStrings.addressSaved.tr().toUpperCase(),
                             svgIcon: "assets/images/ecommerce/svg/add.svg",
                             onPressed: ()async{
                               await showModalBottomSheet(

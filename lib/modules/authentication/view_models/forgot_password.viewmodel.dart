@@ -45,9 +45,13 @@ class ForgotPasswordViewModel extends ChangeNotifier {
         Provider.of<AppConfigService>(context, listen: false);
     if ((isPhoneLogin && phoneController.text.isNotEmpty) ||
         (!isPhoneLogin && emailController.text.isNotEmpty)) {
+      final completePhoneNumber = (countryCodeController.text.isEmpty
+          ? '+20${phoneController.text}'
+          : countryCodeController.text + phoneController.text)
+          .trim();
       final result = await ForgotPasswordService.prepareForgetPassword(
           context: context,
-          username: isPhoneLogin ? phoneController.text : emailController.text,
+          username: isPhoneLogin ? completePhoneNumber : emailController.text,
           deviceUniqueId:
               appConfigServiceProvider.deviceInformation.deviceUniqueId);
       if (result.success &&
@@ -99,7 +103,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
     }
     AlertsService.showLoading(context);
     final completePhoneNumber = (countryCodeController.text.isEmpty
-            ? '+02'
+            ? '+20${phoneController.text}'
             : countryCodeController.text + phoneController.text)
         .trim();
     final result = await ForgotPasswordService.forgetPassword(
@@ -134,7 +138,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
         Provider.of<AppConfigService>(context, listen: false);
     if (codeFormKey.currentState?.validate() == true) {
       final completePhoneNumber = (countryCodeController.text.isEmpty
-              ? '+02'
+              ? '+20${phoneController.text}'
               : countryCodeController.text + phoneController.text)
           .trim();
       final result = await ForgotPasswordService.codeNewPassword(

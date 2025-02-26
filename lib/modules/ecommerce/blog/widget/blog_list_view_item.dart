@@ -20,10 +20,7 @@ class BlogListViewItem extends StatelessWidget {
       onTap: () {
         context.pushNamed(AppRoutes.blogDetails.name,
             pathParameters: {'lang': context.locale.languageCode,
-              "date" : "${blog[index]['created_at']}",
-              "image" : (blog[index]['main_thumbnail'].isNotEmpty)?"${blog[index]['main_thumbnail'][0]['file']}": "https://th.bing.com/th/id/R.234a9f3cd371aaa8c7ff9f07354530a5?rik=nDLlZSdsVzVsyA&pid=ImgRaw&r=0",
-              "title" : "${blog[index]['title']}",
-              "contant" : "${blog[index]['short_description']}"
+             "title" : "${blog[index]['id']}",
             });
       },
       child: Container(
@@ -79,25 +76,35 @@ class BlogListViewItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "${blog[index]['created_at']}".toUpperCase(),
+                 if (blog[index]['created_at'] != null) Text(
+                  (blog[index]['created_at'] != null)?  "${blog[index]['created_at']}".toUpperCase() : "0",
                     style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff606060)),
                   ),
-                  gapH4,
+                  if (blog[index]['created_at'] != null)  gapH4,
                   Padding(
                     padding: EdgeInsets.zero,
-                    child: Html(shrinkWrap: true,
-                        data: "${blog[index]['title']}".toUpperCase(),
-                        style: {
-                          "p" : Style(
-                              fontSize: FontSize(12),maxLines: 2,padding: HtmlPaddings.all(0),margin: Margins.all(0),
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff0D3B6F)),
-                        }
-                    ),
+                    child: Text(
+                        blog[index]['title'].toUpperCase(),
+                        maxLines: 2,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff0D3B6F)),
+                    )
+                    // Html(
+                    //     shrinkWrap: true,
+                    //     data: "${blog[index]['title']}".toUpperCase(),
+                    //     style: {
+                    //       "p" : Style(
+                    //           fontSize: FontSize(12),maxLines: 2,padding: HtmlPaddings.all(0),margin: Margins.all(0),
+                    //           fontWeight: FontWeight.w600,
+                    //           color: Color(0xff0D3B6F)),
+                    //     }
+                    // ),
+
                   )
                 ],
               ),

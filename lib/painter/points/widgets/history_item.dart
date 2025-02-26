@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/painter/points/logic/history_cubit/history_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -31,8 +32,8 @@ class HistoryItem extends StatelessWidget {
                     DateTime.parse(apiDate); // Parses ISO 8601 format
 
                 // Step 2: Format the parsed date
-                String formattedDate =
-                    DateFormat('MMM d, yyyy').format(parsedDate);
+                  String formattedDate =
+                      DateFormat('MMM d, yyyy',LocalizationService.isArabic(context: context)? "ar": "en").format(parsedDate);
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: Container(

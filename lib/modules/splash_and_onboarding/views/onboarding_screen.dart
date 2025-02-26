@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/general_services/layout.service.dart';
+import 'package:orient/general_services/localization.service.dart';
 import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/custom_elevated_button.widget.dart';
 import '../../../common_modules_widgets/language_dropdown_button.widget.dart';
@@ -16,6 +18,8 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CacheHelper.setString(key: "watchScreen", value: "yes");
+    CacheHelper.setString(key: "dateWatchScreen", value: DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(DateTime.now().toUtc()));
     return ChangeNotifierProvider<OnboardingViewModel>(
       create: (context) => OnboardingViewModel(),
       child: Scaffold(
@@ -33,7 +37,7 @@ class OnBoardingScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final image = viewModel
                           .getOnboardingDataWithIndex(index, context)
-                          ?.image;
+                          ?.image![0].file;
                       if (image?.startsWith('http') == true ||
                           image?.startsWith('https') == true) {
                         // Network image
@@ -105,10 +109,8 @@ class OnBoardingScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     AutoSizeText(
-                                      viewModel
-                                              .getOnboardingDataWithIndex(index, context)!.title!.tr().toUpperCase() ??
-                                          '',
-                                      style: Theme.of(context)
+                                LocalizationService.isArabic(context: context)? viewModel.getOnboardingDataWithIndex(index, context)!.title!.ar!.toUpperCase() :viewModel.getOnboardingDataWithIndex(index, context)!.title!.en!.toUpperCase()
+                                      ,style: Theme.of(context)
                                           .textTheme
                                           .displayLarge
                                           ?.copyWith(height: 1.2),
@@ -118,12 +120,8 @@ class OnBoardingScreen extends StatelessWidget {
                                     ),
                                     gapH20,
                                     AutoSizeText(
-                                      viewModel
-                                              .getOnboardingDataWithIndex(
-                                                  index, context)
-                                              ?.info!.tr() ??
-                                          "",
-                                      style: Theme.of(context)
+                                    LocalizationService.isArabic(context: context)? viewModel.getOnboardingDataWithIndex(index, context)!.info!.ar!.toUpperCase() :viewModel.getOnboardingDataWithIndex(index, context)!.info!.en!.toUpperCase(),
+                                style: Theme.of(context)
                                           .textTheme
                                           .displaySmall
                                           ?.copyWith(height: 1.4),

@@ -77,7 +77,7 @@ class CustomElevatedButtonState extends State<CustomElevatedButton>
           child: ElevatedButton(
             style: widget.buttonStyle ??
                 ElevatedButton.styleFrom(
-                  backgroundColor:  Color((widget.blue == true)?AppColors.oc1 :AppColors.oc2),
+                  backgroundColor: widget.backgroundColor ?? Color((widget.blue == true)?AppColors.oc1 :AppColors.oc2),
                   foregroundColor: Colors.white, // Text color
                   disabledForegroundColor: Colors.white,
                   elevation: 2,

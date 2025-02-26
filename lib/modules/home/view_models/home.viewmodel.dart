@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:provider/provider.dart';
 import '../../../general_services/app_config.service.dart';
 import '../../../general_services/birthday_checker.service.dart';
@@ -11,8 +12,6 @@ import '../../../services/crud_operation.service.dart';
 import '../../../services/requests.services.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  UserSettingsModel? userSettings;
-  UserSettings2Model? userSettings2;
   List<RequestModel>? myRequests;
   List<RequestModel>? myTeamRequests;
   List<RequestModel>? allCompanyRequests;
@@ -25,36 +24,33 @@ class HomeViewModel extends ChangeNotifier {
     homeScrollController.dispose();
     super.dispose();
   }
-
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
     notifyListeners();
   }
-
-  Future<void> initializeHomeScreen(BuildContext context) async {
+  Future<void> initializeHomeScreen(BuildContext context, {bool closeDate = false}) async {
     updateLoadingStatus(laodingValue: true);
-    final appConfigServiceProvider =
-        Provider.of<AppConfigService>(context, listen: false);
-    if (appConfigServiceProvider.isLogin != true ||
-        appConfigServiceProvider.token.isEmpty) {
-      return;
-    }
+    final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
+    // if (appConfigServiceProvider.isLogin != true ||
+    //     appConfigServiceProvider.token.isEmpty) {
+    //   return;
+    // }
     // initialize [userSettings] and [userSettings2] after chackings about token
     await AppSettingsService.getUserSettingsAndUpdateTheStoredSettings(
-        allData: true, context: context);
+        allData: true, context: context, closeDate: closeDate );
     if (!context.mounted) return;
-    userSettings = AppSettingsService.getSettings(
+    UserSettingConst.userSettings = AppSettingsService.getSettings(
         settingsType: SettingsType.userSettings,
         context: context) as UserSettingsModel;
-    userSettings2 = AppSettingsService.getSettings(
+    UserSettingConst.userSettings2 = AppSettingsService.getSettings(
         settingsType: SettingsType.user2Settings,
         context: context) as UserSettings2Model;
     // get user requests
     //await _getAllUserRequests(context);
-    await _getUserNotification(context);
+   // await _getUserNotification(context);
     // Checking for user BirthDate
     try {
-      final userBirthDate = userSettings?.birthDate;
+      final userBirthDate = UserSettingConst.userSettings?.birthDate;
       if (userBirthDate != null) {
         // intialize Birthday Service Checker
         BirthdayChecker.checkBirthday(
@@ -89,10 +85,10 @@ class HomeViewModel extends ChangeNotifier {
     }
 
     // get team request and other department requests if i manager (Manager || team leader)
-    if ((userSettings?.isManagerIn != null &&
-            (userSettings?.isManagerIn?.isNotEmpty ?? false)) ||
-        (userSettings?.isTeamleaderIn != null &&
-            (userSettings?.isTeamleaderIn?.isNotEmpty ?? false))) {
+    if ((UserSettingConst.userSettings?.isManagerIn != null &&
+            (UserSettingConst.userSettings?.isManagerIn?.isNotEmpty ?? false)) ||
+        (UserSettingConst.userSettings?.isTeamleaderIn != null &&
+            (UserSettingConst.userSettings?.isTeamleaderIn?.isNotEmpty ?? false))) {
       // get my Team Requests
       try {
         final result =
@@ -134,7 +130,7 @@ class HomeViewModel extends ChangeNotifier {
     }
 
     // get all Company Requests
-    if (userSettings?.topManagement == true) {
+    if (UserSettingConst.userSettings?.topManagement == true) {
       try {
         final result =
             (await RequestsServices.getRequestsByTypeDependsOnUserPrivileges(

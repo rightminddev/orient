@@ -15,7 +15,7 @@ class InspiredScreen extends StatefulWidget {
 }
 
 class _InspiredScreenState extends State<InspiredScreen> {
-  int selectIndex = 0;
+  int? selectIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -50,52 +50,54 @@ class _InspiredScreenState extends State<InspiredScreen> {
                 ),),
             ),
           ),
-          body: GradientBgImage(
-            padding: EdgeInsets.zero,
-            child: Column(
-              children: [
-                if(value.isInspiredCategoryLoading)InspiredCategoryShimmerLoading(),
-                if(!value.isInspiredCategoryLoading)Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: SizedBox(
-                    height: 36,
-                    child: ListView.separated(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: const ClampingScrollPhysics(),
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: (){
-                            setState(() {
-                              selectIndex = index;
-                            });
-                            value.getInspired(context: context, inspired_categories: value.inspiredCategories[index]['id']);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 100,
-                            height: 36,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: (selectIndex == index)? const Color(0xffE6007E):const Color(0xff6F6F6E).withOpacity(0.1)
+          body: SingleChildScrollView(
+            child: GradientBgImage(
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  if(value.isInspiredCategoryLoading)InspiredCategoryShimmerLoading(),
+                  if(!value.isInspiredCategoryLoading)Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: SizedBox(
+                      height: 36,
+                      child: ListView.separated(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: const ClampingScrollPhysics(),
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                selectIndex = index;
+                              });
+                              value.getInspired(context: context, inspired_categories: value.inspiredCategories[index]['id']);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 100,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: (selectIndex == index)? const Color(0xffE6007E):const Color(0xff6F6F6E).withOpacity(0.1)
+                              ),
+                              child: Text(value.inspiredCategories[index]['title'], style: TextStyle(fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: (selectIndex == index)? const Color(0xffFFFFFF):const Color(0xff1B1B1B)
+                              ),),
                             ),
-                            child: Text(value.inspiredCategories[index]['title'], style: TextStyle(fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: (selectIndex == index)? const Color(0xffFFFFFF):const Color(0xff1B1B1B)
-                            ),),
                           ),
-                        ),
-                        padding: EdgeInsets.zero,
-                        separatorBuilder: (context, index) => const SizedBox(width: 10,),
-                        itemCount: value.inspiredCategories.length
+                          padding: EdgeInsets.zero,
+                          separatorBuilder: (context, index) => const SizedBox(width: 10,),
+                          itemCount: value.inspiredCategories.length
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 25,),
-                if(value.isInspiredLoading)InspiredGaleryShimmerLoading(),
-                if(!value.isInspiredLoading)Padding(padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: defaultViewImageGallery(listImagesUrl: value.inspireds, url: true ),
-                )
-              ],
+                  const SizedBox(height: 25,),
+                  if(value.isInspiredLoading)InspiredGaleryShimmerLoading(),
+                  if(!value.isInspiredLoading)Padding(padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: defaultViewImageGallery(listImagesUrl: value.inspireds, url: true ),
+                  )
+                ],
+              ),
             ),
           ),
         );

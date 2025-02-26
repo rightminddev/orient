@@ -229,8 +229,13 @@ abstract class EndpointServices {
       case EndpointsNames.myStores:
         return EndPoint(
             name: name, url: '${AppConstants.baseUrl}/rm_ecommarce/v1/stores');
+        case EndpointsNames.myOrdersOdoo:
+        return EndPoint(
+            name: name, url: '${AppConstants.baseUrl}/rm_ecommarce/v1/stores');
       case EndpointsNames.myOrders:
         return EndPoint(name: name, url: 'orders');
+        case EndpointsNames.myOrderss:
+        return EndPoint(name: name, url: 'stock/orders');
       case EndpointsNames.avaialbleProducts:
         return EndPoint(name: name, url: '/stock/availability');
       case EndpointsNames.calculateOrder:
@@ -261,6 +266,10 @@ abstract class EndpointServices {
         return EndPoint(
             name: name,
             url: '${AppConstants.baseUrl}/rm_social/v1/team/delete-member');
+        case EndpointsNames.getDeviceToken:
+        return EndPoint(
+            name: name,
+            url: '${AppConstants.baseUrl}/rm_users/v1/get_device_token');
     }
   }
 }

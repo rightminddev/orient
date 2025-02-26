@@ -107,31 +107,72 @@ class _AddPostScreenState extends State<AddPostScreen> {
   File? attachmentImage;
   List listAttachmentImage = [];
   List<XFile> listXAttachmentImage = [];
+  XFile? XImageFileAttachmentVideo;
+  File? attachmentImageVideo;
+  List listAttachmentVideo = [];
+  List<XFile> listXAttachmentVideo = [];
   Future<void> getProfileImageByCam(
-      {image1, image2, list, list2, one}) async {
-    XFile? imageFileProfile =
-    await picker.pickImage(source: ImageSource.camera);
-    if (imageFileProfile == null) return;
-    setState(() {
-      image1 = File(imageFileProfile.path);
-      image2 = imageFileProfile;
-      if(one == false)list.add({"image": image2, "view": image1});
-      if(one == false)list2.add(image2);
-    });
-    print(image1);
-  }
+      {image1, image2, list, list2, one, required bool isVideo}) async {
+    XFile? mediaFile;
 
-  Future<void> getProfileImageByGallery(
-      {image1, image2, list, list2, one}) async {
-    XFile? imageFileProfile =
-    await picker.pickImage(source: ImageSource.gallery);
-    if (imageFileProfile == null) return null;
+    mediaFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (mediaFile == null) return;
+
     setState(() {
-      image1 = File(imageFileProfile.path);
-      image2 = imageFileProfile;
-      if(one == false) list.add({"image": image2, "view": image1});
-      if(one == false)list2.add(image2);
+      image1 = File(mediaFile!.path);
+      image2 = mediaFile;
+      if (!one) list.add({"media": image2, "view": image1});
+      if (!one) list2.add(image2);
     });
+
+    print("Media picked: ${image1.path}");
+  }
+  Future<void> getProfileVideoByCam(
+      {image1, image2, list, list2, one, required bool isVideo}) async {
+    XFile? mediaFile;
+    mediaFile = await picker.pickVideo(source: ImageSource.camera);
+    if (mediaFile == null) return;
+    setState(() {
+      image1 = File(mediaFile!.path);
+      image2 = mediaFile;
+      if (!one) list.add({"media": image2, "view": image1});
+      if (!one) list2.add(image2);
+    });
+
+    print("Media picked: ${image1.path}");
+  }
+  Future<void> getProfileImageByGallery(
+      {image1, image2, list, list2, one, required bool isVideo}) async {
+    XFile? mediaFile;
+    mediaFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (mediaFile == null) return;
+
+    setState(() {
+      image1 = File(mediaFile!.path);
+      image2 = mediaFile;
+      if (!one) list.add({"media": image2, "view": image1});
+      if (!one) list2.add(image2);
+    });
+
+    print("Media picked: ${image1.path}");
+  }
+  Future<void> getProfileVideoByGallery(
+      {image1, image2, list, list2, one, required bool isVideo}) async {
+    XFile? mediaFile;
+    mediaFile = await picker.pickVideo(source: ImageSource.gallery);
+
+    if (mediaFile == null) return;
+
+    setState(() {
+      image1 = File(mediaFile!.path);
+      image2 = mediaFile;
+      if (!one) list.add({"media": image2, "view": image1});
+      if (!one) list2.add(image2);
+    });
+
+    print("Media picked: ${image1.path}");
   }
   @override
   Widget build(BuildContext context) {
@@ -186,11 +227,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       children: [
                         gapH16,
                         defaultTextFormField(
+                          context: context,
                           controller: titleController,
                           hintText: AppStrings.title.tr(),
                         ),
                         gapH18,
                         defaultTextFormField(
+                          context: context,
                           controller: contentController,
                           maxLines: 5,
                           containerHeight: 150,
@@ -200,6 +243,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         GestureDetector(
                           onTap: ()async{
                             await getImage(
+                              image1V: attachmentImageVideo,
+                                image2V: XImageFileAttachmentVideo,
+                                listV: listAttachmentVideo,
+                                list2V: listXAttachmentVideo,
                                 image1: attachmentImage,
                                 image2: XImageFileAttachment,
                                 list2: listXAttachmentImage,
@@ -216,7 +263,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             );
                           },
                           child: Container(
-                          height: 140,
                           alignment: Alignment.center,
                           margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
                           padding: const EdgeInsets.only(
@@ -278,6 +324,22 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                     },
                                   ),
                                ),
+                               if(listAttachmentVideo.isNotEmpty) SizedBox(
+                                 height: 90,
+                                 child: GridView.builder(
+                                    physics: const ClampingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listAttachmentVideo.length,
+                                    gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4),
+                                    itemBuilder: (c, i) {
+                                      return buildCustomContainer(
+                                          file: listAttachmentVideo[i]['view']);
+                                    },
+                                  ),
+                               ),
                               ],
                             ),
                           ),
@@ -290,7 +352,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                               context: context,
                               content: contentController.text,
                               socialGroupId: widget.id,
-                              attachments: listXAttachmentImage
+                              attachments: listXAttachmentImage,
+                              attachmentsVedio: listXAttachmentVideo
                             );
                           },
                           icon: SvgPicture.asset(
@@ -346,7 +409,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       ),
     );
   }
-  Future<void> getImage({image1, image2, list, bool one = true, list2}) =>
+  Future<void> getImage({image1, image2, list, bool one = true, list2,image1V, image2V, listV, list2V,}) =>
       showModalBottomSheet<void>(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -358,7 +421,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           context: context,
           builder: (BuildContext context) {
             return SizedBox(
-              height: 200,
+              height: 440,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -380,6 +443,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             InkWell(
                               onTap: () async {
                                 await getProfileImageByGallery(
+                                  isVideo: false,
                                     image1: image1,
                                     image2: image2,
                                     list: list,
@@ -412,10 +476,94 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             InkWell(
                               onTap: () async {
                                 await getProfileImageByCam(
+                                  isVideo: false,
                                     image1: image1,
                                     image2: image2,
                                     list: list,
                                     list2: list2,
+                                    one: one
+                                );
+                                print(image1);
+                                print(image2);
+                                await image2 == null
+                                    ? null
+                                    : Image.asset(
+                                    "assets/images/profileImage.png");
+                                Navigator.pop(context);
+                              },
+                              child: const CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  Icons.camera,
+                                  color: Color(0xFF011A51),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              AppStrings.camera.tr(),
+                              style: TextStyle(fontSize: 18, color: Color(0xFF011A51)),
+                            ),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    Text(AppStrings.selectVideo.tr(),
+                      style: const TextStyle(
+                          fontSize: 18, color: Color(0xFF011A51)),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                await getProfileVideoByGallery(
+                                    image1: image1V,
+                                    image2: image2V,
+                                    isVideo: true,
+                                    list: listV,
+                                    list2: list2V,
+                                    one: one
+                                );
+                                await image2 == null
+                                    ? null
+                                    : Image.asset(
+                                    "assets/images/profileImage.png");
+                                Navigator.pop(context);
+                              },
+                              child: const CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  Icons.image,
+                                  color: Color(0xFF011A51),
+                                ),
+                              ),
+                            ),
+                            Text(AppStrings.gallery.tr(),
+                              style: const TextStyle(
+                                  fontSize: 18, color: Color(0xFF011A51)),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                await getProfileVideoByCam(
+                                    image1: image1V,
+                                    isVideo: true ,
+                                    image2: image2V,
+                                    list: listV,
+                                    list2: list2V,
                                     one: one
                                 );
                                 print(image1);

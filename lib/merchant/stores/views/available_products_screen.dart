@@ -56,7 +56,7 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
     return ChangeNotifierProvider<StoresViewModel>.value(
       value: storesViewModel,
       child: Consumer<StoresViewModel>(
-        builder: (context, viewModel, child) => TemplatePage(
+        builder: (context, viewModels, child) => TemplatePage(
           backgroundColor: Colors.white,
           pageContext: context,
           // onRefresh: () async {
@@ -99,9 +99,13 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
                       ButtonWidget(
                         onPressed: () async{
                           print("calculateOrders is done");
-                         await viewModel.calculateOrders(
-                              context, viewModel, widget.storeId);
-                        Navigator.pop(context);
+                          if(widget.isInAvailable == true){
+                            await viewModel.postAvailableProducts(context, widget.storeId);
+                          }
+                          if(widget.isInAvailable == false){
+                            await viewModel.calculateOrders(
+                                context, viewModel, widget.storeId);
+                          }
                         },
                         isLoading: viewModel.isLoading,
                         // isLoading: viewModel.isLoading,
@@ -129,6 +133,7 @@ class _AvailableProductsScreenState extends State<AvailableProductsScreen> {
               children: [
                 defaultTextFormField(
                   hasShadows: false,
+                  context: context,
                   controller: searchController,
                   hintText: AppStrings.search.tr(),
                   textInputAction: TextInputAction.search,

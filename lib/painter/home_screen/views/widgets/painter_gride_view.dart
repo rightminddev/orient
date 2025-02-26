@@ -55,9 +55,9 @@ class PainterGrideView extends StatelessWidget {
            top: AppSizes.s90),
       sliver: SliverGrid.count(
           crossAxisCount: 2,
-          mainAxisSpacing: 65,
+          mainAxisSpacing: 5,
           crossAxisSpacing: 12,
-          childAspectRatio: 14 / 9,
+          childAspectRatio: 0.8,
           children: [
             ...grideItems.map((item) {
               return PainterGridViewItem(

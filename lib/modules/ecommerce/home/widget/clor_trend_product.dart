@@ -18,13 +18,13 @@ class ClorTrendProduct extends StatelessWidget {
     return Consumer<HomeProvider>(
         builder: (context, homeProvider, child){
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding:LocalizationService.isArabic(context: context)? const EdgeInsets.only(right: 15) : const EdgeInsets.only(left: 15),
             child: Column(
               children: [
                 Container(
                   height: 30,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(AppStrings.recommendedForYou.tr().toUpperCase(),
                         style: const TextStyle(
@@ -33,38 +33,18 @@ class ClorTrendProduct extends StatelessWidget {
                           color: Color(0xff1B1B1B),
                         ),
                       ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
-                                  pathParameters: {'lang': context.locale.languageCode,
-                                    'id' : '-1',
-                                    'arrow' : "yes"
-                                  });
-                            },
-                            child: Text(AppStrings.seeMore.tr().toUpperCase(),
-                              style:const TextStyle(
-                                  color: Color(0xff1B1B1B),
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.w400
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10,),
-                          const Icon(Icons.arrow_forward, color: Color(0xff1B1B1B),size: 14,)
-                        ],
-                      )
                     ],
                   ),
                 ),
                 SizedBox(
                     height: 240,
+                    width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10,),
                       child: ListView.separated(
                           shrinkWrap: true,
                           reverse: false,
+                          padding: EdgeInsets.zero,
                           scrollDirection: Axis.horizontal,
                           clipBehavior: Clip.none,
                           itemBuilder: (context, index)=> defaultViewProductGrid(
@@ -74,7 +54,7 @@ class ClorTrendProduct extends StatelessWidget {
                               value: homeProvider.checkResponse,
                               productId: homeProvider.colorTrendProducts[index]['id'],
                               productName: homeProvider.colorTrendProducts[index]['title'],
-                              productType: homeProvider.colorTrendProducts[index]['type']['value'],
+                              productType: homeProvider.colorTrendProducts[index]['category']['title'],
                               productPrice: "${homeProvider.colorTrendProducts[index]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               showSale: (homeProvider.colorTrendProducts[index]['price_after_discount'] != homeProvider.colorTrendProducts[index]['price_before_discount'])? true : false ,
                               showDiscount: (homeProvider.colorTrendProducts[index]['price_after_discount'] != homeProvider.colorTrendProducts[index]['price_before_discount'])? true : false ,

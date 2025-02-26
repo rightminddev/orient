@@ -1,13 +1,20 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:orient/app.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/general_services/localization.service.dart';
+import 'package:orient/models/settings/user_settings.model.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:orient/modules/notification/logic/notification_provider.dart';
 import 'package:orient/modules/notification/view/notification_list_view_item.dart';
 import 'package:orient/painter/home_screen/views/widgets/home_loading_page.dart';
+import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:provider/provider.dart';
@@ -25,14 +32,22 @@ class MerchantHomeScreen extends StatelessWidget {
         ChangeNotifierProvider(
         create: (context) =>
     NotificationProviderModel()..getNotification(context),),
-      ChangeNotifierProvider(
-        create: (context) =>
-        HomeViewModel()..initializeHomeScreen(context),),
+      // ChangeNotifierProvider(
+      //   create: (context) =>
+      //   HomeViewModel()..initializeHomeScreen(context),),
     ],
     child: Consumer<HomeViewModel>(
       builder: (context, value, child) {
         return Consumer<NotificationProviderModel>(
           builder: (context, notificationProviderModel, child) {
+            CacheHelper.setString(key: "faq", value: "faq-merchant");
+            final json1String = CacheHelper.getString("US1");
+            var us1Cache;
+            if (json1String != null && json1String != "") {
+              us1Cache = json.decode(json1String) as Map<String, dynamic>;// Convert String back to JSON
+              print("S1 IS --> $us1Cache");
+              UserSettingConst.userSettings = UserSettingsModel.fromJson(us1Cache);
+            }
             return (notificationProviderModel.isGetNotificationLoading)
                 ? HomePainterLoadingPage()
                 : Scaffold(
@@ -71,23 +86,28 @@ class MerchantHomeScreen extends StatelessWidget {
                                         AppImages.backgroundImage,
                                       ),
                                     )),
-                                child: value.userSettings != null
+                                child: us1Cache != null
                                     ? Column(
                                   children: [
                                     gapH64,
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: defaultProfileContainer(
-                                              imageUrl:
-                                              '${value.userSettings?.photo}',
-                                              userName:
-                                              "${value.userSettings!.name}".split(" ")[0],
-                                              userRole: value
-                                                  .userSettings
-                                                  ?.role?[0] ??
-                                                  '',
-                                              context: context),
+                                          child: GestureDetector(
+                                            onTap: (){
+                                              context.pushNamed(AppRoutes.personalInfoScreen.name,
+                                                  pathParameters: {'lang': context.locale.languageCode,
+                                                  });
+                                            },
+                                            child: defaultProfileContainer(
+                                                imageUrl:(us1Cache['photo'] != null)?
+                                                "${us1Cache['photo']}" : '',
+                                                userName:(us1Cache['name'] != null)?
+                                                "${us1Cache['name']}" : "",
+                                                userRole:(us1Cache['role'] != null)?(us1Cache['role'].isNotEmpty)?
+                                                "${us1Cache['role'][0]}".tr() : "" : "",
+                                                context: context),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -101,7 +121,7 @@ class MerchantHomeScreen extends StatelessWidget {
                                           .center,
                                       children: [
                                         Text(
-                                          '${LocalizationService.isArabic(context: context) ? "مرحبا":"HELLO"} ${value.userSettings!.name!.split(" ")[0]}',
+                                          '${LocalizationService.isArabic(context: context) ? "مرحبا":"HELLO"} ${UserSettingConst.userSettings!.name!.split(" ")[0]}',
                                           style:
                                           const TextStyle(
                                             color: Colors.white,

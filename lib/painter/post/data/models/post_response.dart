@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class PostResponse {
-  final bool status;
-  final String message;
-  final String create;
-  final int count;
-  final List<SocialPost> data;
+   bool? status;
+   String? message;
+   String? create;
+   int? count;
+   List<SocialPost>? data;
 
   PostResponse({
     required this.status,
@@ -27,19 +27,19 @@ class PostResponse {
 }
 
 class SocialPost {
-  final int id;
-  final String content;
-  final List<Media> video;
-  final List<Media> image;
-  final String? imag;
-  final String? createAt;
-  final User user;
-  final int userId;
-  final SocialGroup socialGroup;
-  final int socialGroupId;
-  final int commentsCount;
-  final int emotionsCount;
-  final String? userEmotion;
+   int? id;
+   String? content;
+   List<Media>? video;
+   List<Media>? image;
+   String? imag;
+   String? createAt;
+   User? user;
+   int? userId;
+   SocialGroup? socialGroup;
+   int? socialGroupId;
+   int? commentsCount;
+   int? emotionsCount;
+   String? userEmotion;
 
   SocialPost( {
     required this.id,
@@ -83,13 +83,13 @@ class SocialPost {
 }
 
 class Media {
-  final int id;
-  final String type;
-  final String title;
-  final String alt;
-  final String file;
-  final String thumbnail;
-  final MediaSizes sizes;
+   int id;
+   String type;
+   String title;
+   String alt;
+   String file;
+   String thumbnail;
+   MediaSizes sizes;
 
   Media({
     required this.id,
@@ -115,14 +115,14 @@ class Media {
 }
 
 class MediaSizes {
-  final String thumbnail;
-  final String medium;
-  final String large;
-  final String size1200x800;
-  final String size800x1200;
-  final String size1200x300;
-  final String size300x1200;
-  final String webpFile;
+   String thumbnail;
+   String medium;
+   String large;
+   String size1200x800;
+   String size800x1200;
+   String size1200x300;
+   String size300x1200;
+   String webpFile;
 
   MediaSizes({
     required this.thumbnail,
@@ -163,18 +163,18 @@ class MediaSizes {
 }
 
 class User {
-  final int id;
-  final String? avatar;
-  final String name;
-  final String? username;
-  final String? email;
-  final String? birthDay;
-  final CountryKey countryKey;
-  final String? phone;
-  final String roles;
-  final Language defaultLanguage;
-  final Status status;
-  final String tags;
+   int id;
+   String? avatar;
+   String name;
+   String? username;
+   String? email;
+   String? birthDay;
+   CountryKey countryKey;
+   String? phone;
+   String roles;
+   Language defaultLanguage;
+   Status status;
+   String tags;
 
   User({
     required this.id,
@@ -192,6 +192,7 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    print("AVATAR IS --> ${json["avatar"]}");
     return User(
       id: json['id'],
       avatar: json['avatar']??'',
@@ -210,8 +211,8 @@ class User {
 }
 
 class CountryKey {
-  final String? key;
-  final String? value;
+   String? key;
+   String? value;
 
   CountryKey({this.key, this.value});
 
@@ -224,8 +225,8 @@ class CountryKey {
 }
 
 class Language {
-  final String? key;
-  final String? value;
+   String? key;
+   String? value;
 
   Language({this.key, this.value});
 
@@ -238,8 +239,8 @@ class Language {
 }
 
 class Status {
-  final String? key;
-  final String? value;
+   String? key;
+   String? value;
 
   Status({this.key, this.value});
 
@@ -252,10 +253,10 @@ class Status {
 }
 
 class SocialGroup {
-  final int id;
-  final String title;
-  final String imag;
-  final List<Media> image;
+   int id;
+   String title;
+   String imag;
+   List<Media> image;
 
   SocialGroup({
     required this.id,
@@ -279,11 +280,11 @@ class SocialGroup {
 
 
 // class PostResponse {
-//   final bool status;
-//   final String message;
-//   final String create;
-//   final int count;
-//   final List<Post> data;
+//    bool status;
+//    String message;
+//    String create;
+//    int count;
+//    List<Post> data;
 //
 //   PostResponse({
 //     required this.status,
@@ -305,19 +306,19 @@ class SocialGroup {
 // }
 //
 // class Post {
-//   final int id;
-//   final String content;
-//   // final String video;
-//   // final List<VideoData>? videoData;
-//   final String? image;
-//   final List<ImageData>? imageData;
-//   final User user;
-//   final int userId;
-//   final SocialGroup socialGroup;
-//   final int socialGroupId;
-//   final int commentsCount;
-//   final int emotionsCount;
-//   final String? userEmotion;
+//    int id;
+//    String content;
+//   //  String video;
+//   //  List<VideoData>? videoData;
+//    String? image;
+//    List<ImageData>? imageData;
+//    User user;
+//    int userId;
+//    SocialGroup socialGroup;
+//    int socialGroupId;
+//    int commentsCount;
+//    int emotionsCount;
+//    String? userEmotion;
 //
 //   Post({
 //     required this.id,
@@ -359,10 +360,10 @@ class SocialGroup {
 // }
 //
 // class ImageData {
-//   final int id;
-//   final String type;
-//   final String title;
-//   final String alt;
+//    int id;
+//    String type;
+//    String title;
+//    String alt;
 //   final String file;
 //   final String thumbnail;
 //   ImageSizes sizes;

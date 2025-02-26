@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../constants/app_strings.dart';
@@ -29,9 +30,9 @@ class RequestDetailsScreen extends StatelessWidget {
               request: request,
             ),
             Expanded(child: CustomTabbarViewRequestDetails(request: request)),
-            if ((viewModel.userSettings?.userId == request.userId &&
+            if ((UserSettingConst.userSettings!.userId == request.userId &&
                 request.userId != null &&
-                viewModel.userSettings?.userId != null))
+                UserSettingConst.userSettings!.userId != null))
               // Case  : the current request is my request
               (request.status?.value?.trim() == 'waiting_seen' ||
                       request.status?.value?.trim() == 'waiting' ||

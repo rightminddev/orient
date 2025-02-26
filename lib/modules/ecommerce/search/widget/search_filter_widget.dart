@@ -1,13 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
+import 'package:orient/modules/ecommerce/search/consts.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
 import 'package:orient/modules/ecommerce/search/widget/search_sizes_widget.dart';
 import 'package:orient/modules/ecommerce/single_product/widget/single_sizes_widget.dart';
 import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart';
 import 'package:provider/provider.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 
 class SearchFilterWidget extends StatefulWidget {
   BuildContext? contexts;
@@ -25,194 +28,255 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final searchControllerProvider = Provider.of<SearchControllerProvider>(widget.contexts!, listen: false,);
-
-        searchControllerProvider.getSearch(context: widget.contexts!, addAll: true, isNewPage: false ,pages: 1);
+      SearchConsts.minPriceController.clear();
+      SearchConsts.maxPriceController.clear();
+        searchControllerProvider.getSearch(context: widget.contexts!, addAll: true, isNewPage: false ,pages: 1,
+        category_id: null,
+          price_to: null,
+          attributesColorId: null,
+          attributesSizeId: null
+        );
     });
   }
   @override
   Widget build(BuildContext context) {
     final searchControllerProvider = Provider.of<SearchControllerProvider>(widget.contexts!);
-    final homeProvider = Provider.of<HomeProvider>(widget.contexts!);
-    return Container(
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-          color: Color(0xffFFFFFF)
-      ),
-      width: double.infinity,
-      height: MediaQuery.sizeOf(context).height * 0.72,
-      alignment: Alignment.topCenter,
-      child:(searchControllerProvider.isLoadingSearch)?
-      HomeLoadingPage(viewAppbar: false)
-      :SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 10,),
-            Center(
-              child:Container(
-                width: 63,
-                height: 5,
-                decoration: BoxDecoration(
-                    color:const Color(0xffB9C0C9),
-                    borderRadius: BorderRadius.circular(100)
+    print("object --> ${CacheHelper.getInt("categoryId")}");
+    if(CacheHelper.getString("minPrice") != "" && CacheHelper.getString("minPrice") != null){
+      SearchConsts.minPriceController.text = CacheHelper.getString("minPrice");
+    } if(CacheHelper.getString("maxPrice") != "" && CacheHelper.getString("maxPrice") != null){
+      SearchConsts.maxPriceController.text = CacheHelper.getString("maxPrice");
+    }
+    if(CacheHelper.getInt("categoryId") != "" && CacheHelper.getInt("categoryId") != null){
+      SearchConstant.selectId  = CacheHelper.getInt("categoryId");
+    }if(CacheHelper.getInt("colorId") != "" && CacheHelper.getInt("colorId") != null){
+      SearchConstant.selectColorId  = CacheHelper.getInt("colorId");
+    }
+    SearchConstant.filter = true;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom, // This ensures the bottom is not covered by the keyboard
+        ),
+        child: Container(
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+              color: Color(0xffFFFFFF)
+          ),
+          width: double.infinity,
+          height: MediaQuery.sizeOf(context).height * 0.72,
+          alignment: Alignment.topCenter,
+          child:(searchControllerProvider.isLoadingSearch)?
+          HomeLoadingPage(viewAppbar: false)
+          :SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 10,),
+                Center(
+                  child:Container(
+                    width: 63,
+                    height: 5,
+                    decoration: BoxDecoration(
+                        color:const Color(0xffB9C0C9),
+                        borderRadius: BorderRadius.circular(100)
+                    ),
+                  ) ,
                 ),
-              ) ,
-            ),
-            const SizedBox(height: 10,),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  defaultTitleText(title: AppStrings.productsCategory.tr()),
-                  const SizedBox(height: 15),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 5.0,
-                      mainAxisSpacing: 10.0,
-                      childAspectRatio: 3,
-                    ),
-                    itemCount: searchControllerProvider.searchProductsCategories.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectIndex = index;
-                          SearchConstant.selectId = searchControllerProvider.searchProductsCategories[index]['id'];
-                          print("selectId ---> $selectId");
-                        });
-                      },
-                      child: Container(
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: (selectIndex != index) ? Colors.transparent : const Color(0xffE6007E),
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(
-                            color: (selectIndex != index) ? Colors.grey : Colors.transparent,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "${searchControllerProvider.searchProductsCategories[index]['title']}".toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: (selectIndex != index)
-                                  ? const Color(0xff0D3B6F)
-                                  : const Color(0xffFFFFFF),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30,),
-                  defaultTitleText(title: AppStrings.productsColors.tr()),
-                  const SizedBox(height: 15),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    height: 25,
-                    width: MediaQuery.sizeOf(context).width * 0.8,
-                    child: ListView.separated(
+                const SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      defaultTitleText(title: AppStrings.productsCategory.tr()),
+                      const SizedBox(height: 15),
+                      GridView.builder(
                         shrinkWrap: true,
-                        reverse: false,
-                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 5.0,
+                          mainAxisSpacing: 10.0,
+                          childAspectRatio: 3,
+                        ),
+                        itemCount: searchControllerProvider.searchProductsCategories.length,
                         itemBuilder: (context, index) => GestureDetector(
-                          onTap: (){
-                            searchControllerProvider.changeColorIndex(index);
-                            SearchConstant.selectColorId = searchControllerProvider.searchProductsAttributesColor[index]['id'];
+                          onTap: () {
+                            setState(() {
+                              searchControllerProvider.selectCatIndex = index;
+                              SearchConstant.selectId = searchControllerProvider.searchProductsCategories[index]['id'];
+                              CacheHelper.setInt("categoryId",searchControllerProvider.searchProductsCategories[index]['id']);
+                              print("object1 ${searchControllerProvider.searchProductsCategories[index]['id']}");
+                              print("object2 ${CacheHelper.getInt("categoryId")}");
+                              SearchConstant.selectId = searchControllerProvider.searchProductsCategories[index]['id'];
+                              print("selectId ---> $selectId");
+                            });
                           },
-                            child: defaultCircleColor(
-                                Color(int.parse("0xff${searchControllerProvider.searchProductsAttributesColor[index]['data']}")),
-                                (searchControllerProvider.selectColorIndex == index)? const Color(0xffFFFFFF):Colors.transparent
-                            )),
-                        separatorBuilder: (context, index) =>const SizedBox.shrink(),
-                        itemCount: searchControllerProvider.searchProductsAttributesColor.length
-                    ),
-                  ),
-                  const SizedBox(height: 40,),
-                  defaultTitleText(title: AppStrings.productsSize.tr()),
-                  const SizedBox(height: 0),
-                  SearchSizesWidget(viewSize: false,),
-                  const SizedBox(height: 30,),
-                  defaultTitleText(title: AppStrings.priceRange.tr()),
-                  const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      defaultTextFormField(
-                          hintText: AppStrings.minPrice.tr().toUpperCase(),
-                          controller: SearchConstant.minPriceController
-                      ),
-                      const SizedBox(width: 10,),
-                      defaultTextFormField(
-                          hintText: AppStrings.maxPrice.tr().toUpperCase(),
-                          controller: SearchConstant.maxPriceController
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border.all(color: const Color(0xff0D3B6F)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding:const EdgeInsets.symmetric(horizontal: 40),
-                          child: Text(
-                            AppStrings.clear.tr().toUpperCase(),
-                            style:const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff0D3B6F)
+                          child: Container(
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: searchControllerProvider.selectCatIndex != index ? Colors.transparent : const Color(0xffE6007E),
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                color: searchControllerProvider.selectCatIndex != index ? Colors.grey : Colors.transparent,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "${searchControllerProvider.searchProductsCategories[index]['title']}".toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: (searchControllerProvider.selectCatIndex != index )
+                                      ? const Color(0xff0D3B6F)
+                                      : const Color(0xffFFFFFF),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: (){
-                          print("VALUE IS -> ${SearchConstant.minPriceController.text}");
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff0D3B6F),
-                            borderRadius: BorderRadius.circular(50),
+                      const SizedBox(height: 30,),
+                      defaultTitleText(title: AppStrings.productsColors.tr()),
+                      const SizedBox(height: 15),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        height: 25,
+                        width: MediaQuery.sizeOf(context).width * 0.8,
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            reverse: false,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: (){
+                                searchControllerProvider.selectColorIndex = index;
+                                print("COLOR IS ---> ${searchControllerProvider.searchProductsAttributesColor[index]['data']}");
+                                searchControllerProvider.changeColorIndex(index);
+                                SearchConstant.selectColorId = searchControllerProvider.searchProductsAttributesColor[index]['id'];
+                                CacheHelper.setInt("colorId",searchControllerProvider.searchProductsCategories[index]['id']);
+      
+                              },
+                                child: defaultCircleColor(
+                                  colors: searchControllerProvider.selectColorIndex == index ? Colors.black : Colors.transparent,
+                                  width: (searchControllerProvider.selectColorIndex == index && searchControllerProvider.searchProductsAttributesColor[index]['data'] != "123456")? 15.0 : 25.0,
+                                    height: (searchControllerProvider.selectColorIndex == index &&searchControllerProvider.searchProductsAttributesColor[index]['data'] != "123456" )? 10.0 : 25.0,
+                                    radius: (searchControllerProvider.selectColorIndex == index && searchControllerProvider.searchProductsAttributesColor[index]['data'] != "123456")? 4.0 : 5.0,
+                                    (searchControllerProvider.searchProductsAttributesColor[index]['data'] != "123456")?
+                                    (searchControllerProvider.searchProductsAttributesColor[index]['data'] != "S5540-Y90R" && searchControllerProvider.searchProductsAttributesColor[index]['data'] != "S8010-Y70R")?
+                                    Color(int.parse("0xff${searchControllerProvider.searchProductsAttributesColor[index]['data']}")) : null : Color(0xff123456),
+                                    (searchControllerProvider.selectColorIndex == index)? const Color(0xffFFFFFF):Colors.transparent
+                                )),
+                            separatorBuilder: (context, index) =>const SizedBox.shrink(),
+                            itemCount: searchControllerProvider.searchProductsAttributesColor.length
+                        ),
+                      ),
+                      const SizedBox(height: 40,),
+                      defaultTitleText(title: AppStrings.productsSize.tr()),
+                      const SizedBox(height: 0),
+                      SearchSizesWidget(viewSize: false,),
+                      const SizedBox(height: 30,),
+                      defaultTitleText(title: AppStrings.priceRange.tr()),
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          defaultTextFormField(
+                              hintText: AppStrings.minPrice.tr().toUpperCase(),
+                              controller: SearchConsts.minPriceController,
+                            onTap: (){
+                                CacheHelper.deleteData(key: "minPrice");
+                              SearchConsts.minPriceController.clear();
+                            }
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset("assets/images/ecommerce/svg/apply_filter.svg"),
-                              const SizedBox(width: 15,),
-                              Text(
-                                AppStrings.applyFilter.tr().toUpperCase(),
+                          const SizedBox(width: 10,),
+                          defaultTextFormField(
+                              hintText: AppStrings.maxPrice.tr().toUpperCase(),
+                              controller: SearchConsts.maxPriceController,
+                              onTap: (){
+                                CacheHelper.deleteData(key: "maxPrice");
+                                SearchConsts.maxPriceController.clear();
+                              }
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              SearchConsts.minPriceController.clear();
+                              SearchConsts.maxPriceController.clear();
+                              CacheHelper.deleteData(key: "minPrice");
+                              CacheHelper.deleteData(key: "maxPrice");
+                              CacheHelper.deleteData(key: "colorId");
+                              CacheHelper.deleteData(key: "categoryId");
+                              CacheHelper.deleteData(key: "sizeId");
+                              SearchConstant.selectColorId = null;
+                              SearchConstant.selectSizeId = null;
+                              SearchConstant.selectId = null;
+                              searchControllerProvider.selectSizeIndex = null;
+                              searchControllerProvider.selectCatIndex = null;
+                              searchControllerProvider.selectColorIndex = null;
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                border: Border.all(color: const Color(0xff0D3B6F)),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding:const EdgeInsets.symmetric(horizontal: 40),
+                              child: Text(
+                                AppStrings.clear.tr().toUpperCase(),
                                 style:const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xffFFFFFF)
+                                    color: Color(0xff0D3B6F)
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
+                          GestureDetector(
+                            onTap: (){
+                              CacheHelper.setString( key:"minPrice", value: SearchConsts.minPriceController.text);
+                              CacheHelper.setString( key:"maxPrice", value: SearchConsts.maxPriceController.text);
+                              print("VALUE IS -> ${SearchConsts.minPriceController.text}");
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff0D3B6F),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 40),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset("assets/images/ecommerce/svg/apply_filter.svg"),
+                                  const SizedBox(width: 15,),
+                                  Text(
+                                    AppStrings.applyFilter.tr().toUpperCase(),
+                                    style:const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xffFFFFFF)
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -220,6 +284,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   Widget defaultTextFormField({
     TextEditingController? controller,
     String? hintText,
+    onTap
   }){
     return Container(
       height: 48,
@@ -233,6 +298,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
       ),
       child: TextFormField(
           controller: controller,
+          onTap: onTap,
           decoration: InputDecoration(
             hintText: hintText ?? "Input",
             labelStyle: const TextStyle(
@@ -269,19 +335,39 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
           fontSize: 10
       ),
     );
-  Widget defaultCircleColor(
-      final Color? color,
-      final Color? borderColor,
-      ){
-    return Container(
+  Widget defaultCircleColor(final Color? color, final Color? borderColor,  {width, height, radius, colors}){
+    return (color != null && color != Color(0xff123456))?Container(
       margin:const EdgeInsets.symmetric(horizontal: 4),
-      width: 25,
-      height: 25,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: borderColor!)
+        color:  color,
+         boxShadow: [
+           (color == Color(0xffffffff))? BoxShadow(
+          color: Color(0xffC9CFD2).withOpacity(0.7),
+      blurRadius: 0.5,
+      spreadRadius: 0.5,
+    ): BoxShadow(
+             color: Colors.transparent,
+             blurRadius: AppSizes.s5,
+             spreadRadius: 1,
+           )
+    ],
+        borderRadius: BorderRadius.circular(radius),
+
       ),
-    );
+    ) :(color != null && color == Color(0xff123456))? Container(
+      margin:const EdgeInsets.symmetric(horizontal: 4),
+      width: width,
+      height: height,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: colors,
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color:Color(0xffC9CFD2)),
+      ),
+      child: Text(AppStrings.all.tr(), style: (colors != Colors.black)?
+      Theme.of(context).textTheme.bodySmall : Theme.of(context).textTheme.bodySmall!.copyWith(color: Color(0xffFFFFFF))),
+    ) : Container();
   }
 }

@@ -51,7 +51,7 @@ class CartBottomButtonWidget extends StatelessWidget {
                       ),
                     ),
                      Text(
-                      "${value.cartModel!.cart!.total} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                      "${double.parse(value.cartModel!.cart!.total.toString()).toStringAsFixed(2)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                       style:const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,

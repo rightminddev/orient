@@ -17,4 +17,9 @@ class AppIcons {
 
   static const String info = 'assets/icons/info.svg';
   static const String successRequest = 'assets/icons/success-request.svg';
+  static const String google = "assets/icons/google.svg";
+  static const String massanger = "assets/icons/massanger.svg";
+  static const String tiktok = "assets/icons/tiktok.svg";
+  static const String facebookColored = "assets/icons/facebook-colored.svg";
+  static const String linkedInColored = "assets/icons/linkedIn-colored.svg";
 }

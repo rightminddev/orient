@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import '../../../general_services/settings.service.dart';
 import '../../../models/settings/user_settings.model.dart';
 import '../models/employee_profile.model.dart';
@@ -6,7 +7,6 @@ import '../services/employee.service.dart';
 
 class EmployeeDetailsViewModel extends ChangeNotifier {
   EmployeeProfileModel? employee;
-  UserSettingsModel? currentUserSettings;
   bool isLoading = true;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
@@ -16,7 +16,7 @@ class EmployeeDetailsViewModel extends ChangeNotifier {
   Future<void> initializeEmployeesListScreen(
       {required BuildContext context, required String employeeId}) async {
     updateLoadingStatus(laodingValue: true);
-    currentUserSettings = (AppSettingsService.getSettings(
+    UserSettingConst.userSettings = (AppSettingsService.getSettings(
         settingsType: SettingsType.userSettings,
         context: context)) as UserSettingsModel;
     await _getEmployeeData(context: context, employeeId: employeeId);

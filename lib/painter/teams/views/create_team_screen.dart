@@ -160,16 +160,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                       children: [
                         gapH16,
                         defaultTextFormField(
+                          context: context,
                           controller: teamNameController,
                           hintText: AppStrings.teamName.tr().toUpperCase(),
                         ),
                         gapH18,
                         defaultTextFormField(
+                          context: context,
                           controller: aboutTeamController,
                           hintText: AppStrings.teamAbout.tr().toUpperCase(),
                         ),
                         gapH18,
                         defaultTextFormField(
+                            context: context,
                             controller: uploadImageController,
                             hintText: AppStrings.uploadImage.tr(),
                             suffixIcon: Padding(

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 
 import '../../constants/app_images.dart';
 import '../../platform/platform_is.dart';
@@ -129,22 +130,27 @@ abstract class PushNotificationService {
       required BuildContext context,
       Map<String, dynamic>? requestBody}) async {
     if (_isTokenInit) return;
+   var cacheToken = CacheHelper.getString("fcmToken");
     var userToken = await fcm?.getToken();
-
-    var result = await DioApiService().post(
-        context: context,
-        apiUrlThatReciveUserToken,
-        requestBody ??
-            {
-              "action": 'set',
-              "key": 'notification_token',
-              "value": userToken,
-              'deviceType': PlatformIs.getCurrentPlatformType()
-            },
-        dataKey: 'data',
-        allData: true);
+    if(cacheToken != userToken){
+      CacheHelper.setString(key: "fcmToken", value: userToken);
+      var result = await DioApiService().post(
+          context: context,
+          apiUrlThatReciveUserToken,
+          requestBody ??
+              {
+                "action": 'set',
+                "key": 'notification_token',
+                "value": userToken,
+                'deviceType': PlatformIs.getCurrentPlatformType()
+              },
+          dataKey: 'data',
+          allData: true);
+      debugPrint(
+          'New Device Notification Token: $userToken, Operation Status: ${result.success}');
+    }
     debugPrint(
-        'New Device Notification Token: $userToken, Operation Status: ${result.success}');
+        'New Device Notification Token: $userToken,');
     _isTokenInit = true;
   }
 

@@ -49,7 +49,7 @@ class CustomSliverAppBar extends StatelessWidget {
                     });
               },
               icon: const Icon(
-                Icons.share,
+                Icons.add,
                 color: Colors.white,
               )),
         )

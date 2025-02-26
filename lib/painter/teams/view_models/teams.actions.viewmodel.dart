@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
@@ -155,24 +156,50 @@ class TeamsActionsViewModel extends ChangeNotifier {
             "error while getting Employee Details  ${err.toString()} " );
       });
   }
-  
 
+var leaveStatus;
   Future<void> leaveTeam({
     BuildContext? context,
     int? teamId,
-    int? newOwnerId,
+    var newOwnerId,
   }) async {
     try {
       isLoading = true;
       DioHelper.postData(url: "/rm_social/v1/team/leave",
+          context: context,
           data: {
-        "team_id": teamId,
- if(newOwnerId != null) "new_owner_id": newOwnerId
-          }
+            "team_id": teamId,
+             if(newOwnerId != null) "new_owner_id": newOwnerId
+      }
       ).then((value){
+        leaveStatus = value.data['status'];
         isLoading = false;
-        leaveTeamSuccess = true;
+        if(value.data['status'] == false){
+          Fluttertoast.showToast(
+              msg:value.data['message'],
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+          leaveTeamSuccess = true;
+        }
+        if(value.data['status'] == true){
+          Fluttertoast.showToast(
+              msg:value.data['message'],
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+          leaveTeamSuccess = true;
+        }
         print(value.data);
+        notifyListeners();
       });
     } catch (err, t) {
       debugPrint(

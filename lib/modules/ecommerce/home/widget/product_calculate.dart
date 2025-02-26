@@ -8,14 +8,15 @@ import 'package:orient/utils/components/general_components/button_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProductCalculate extends StatefulWidget {
+  var id;
+  bool single = false;
+  ProductCalculate({this.id, required this.single});
   @override
   State<ProductCalculate> createState() => _ProductCalculateState();
 }
 
 class _ProductCalculateState extends State<ProductCalculate> {
-  TextEditingController numberOfMetersController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  String? selectCategory;
   double? result = 0;
   String units = '';
   @override
@@ -31,60 +32,81 @@ class _ProductCalculateState extends State<ProductCalculate> {
           children: [
             Form(
               key: formKey,
-              child: defaultTextFormField(
-                  controller:numberOfMetersController,
-                  hintText: AppStrings.numberOfMeters.tr(),
-                  borderColor: const Color(0xffE3E5E5),
-                  validator: (String? value){
-                    if(value!.isEmpty){
-                      return AppStrings.numberOfMeters.tr();
-                    }
-                  }
+              child: Row(
+                children: [
+                  Expanded(
+                    child: defaultTextFormField(
+                        context: context,
+                        keyboardType: TextInputType.number,
+                        controller: value.heightController,
+                        hintText: AppStrings.height.tr(),
+                        borderColor: const Color(0xffE3E5E5),
+                        validator: (String? value){
+                          if(value!.isEmpty){
+                            return AppStrings.height.tr();
+                          }
+                        }
+                    ),
+                  ),
+                  const SizedBox(width: 10,),
+                  Expanded(
+                    child: defaultTextFormField(
+                        context: context,
+                        keyboardType: TextInputType.number,
+                        controller: value.widthController,
+                        hintText: AppStrings.width.tr(),
+                        borderColor: const Color(0xffE3E5E5),
+                        validator: (String? value){
+                          if(value!.isEmpty){
+                            return AppStrings.width.tr();
+                          }
+                        }
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 15,),
-            defaultDropdownField(
+            if(widget.single == false) const SizedBox(height: 15,),
+           if(widget.single == false) defaultDropdownField(
                 borderColor: const Color(0xffE3E5E5),
                 items: value.productsCalculate.map((value) {
                   return DropdownMenuItem(
-                    value: value['space'].toString(),
+                    value: value['id'].toString(),
                     child: Text(
-                      value['category']['title'].toString(),
+                      value['title'].toString(),
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color:const Color(0xff000000)
                               .withOpacity(0.74)),
                     ),
                   );
                 }).toList(),
-                title: AppStrings.type.tr(),
+                title: AppStrings.product.tr(),
                 isExpanded: true,
-                value: selectCategory,
+                value:  value.selectCategory,
               onChanged: (String? newValue) {
                 setState(() {
-                  selectCategory = newValue;
+                  value.selectCategory = newValue;
                 });
+
               },
             ),
             const SizedBox(height: 20,),
-            ButtonWidget(
+            if(value.isPostProductCalculateLoading)const Center(child: CircularProgressIndicator(),),
+            if(!value.isPostProductCalculateLoading) ButtonWidget(
               onPressed: (){
-                if(formKey.currentState!.validate() && selectCategory != null){
+                if(formKey.currentState!.validate()){
                  setState(() {
-                   result = double.parse(numberOfMetersController.text) / double.parse("$selectCategory");
+                   result = double.parse(value.heightController.text) * double.parse(value.widthController.text);
                    final selectedIndex = value.productsCalculate.indexWhere(
-                         (item) => item['space'].toString() == selectCategory,
+                         (item) => item['id'].toString() ==  value.selectCategory,
                    );
-                   if (selectedIndex != -1) {
-                     units = LocalizationService.isArabic(context: context)
-                         ? value.productsCalculate[selectedIndex]['unit']['ar']
-                         : value.productsCalculate[selectedIndex]['unit']['en'];
-                   }
                  });
+                 value.postProductCalculate(context: context, id: (widget.single == false)?value.selectCategory : widget.id.toString(), area: result.toString());
                 }
               },
-              title: "Calculate",
+              title: AppStrings.calculate.tr(),
               padding: EdgeInsets.zero,
               svgIcon: "assets/images/ecommerce/svg/calculate.svg",
             ),
@@ -107,7 +129,7 @@ class _ProductCalculateState extends State<ProductCalculate> {
                     ),
                   ),
                   Text(
-                    "${result!.toStringAsFixed(2)} ${units.toUpperCase()}",
+        (value.calculateResult != null)? value.calculateResult.toString() : "0",
                     style:const TextStyle(fontSize: 20,
                         color: Color(0xffE6007E),
                         fontWeight: FontWeight.w600
@@ -129,6 +151,6 @@ showCalculateDialog({context, controller, value})=> AlertDialog(
       surfaceTintColor:const Color(0xffFFFFFF),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ProductCalculate()
+        child: ProductCalculate(single: false,)
       ),
     );

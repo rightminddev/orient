@@ -496,7 +496,7 @@ abstract class MainFabServices {
       final result = await Navigator.push<String?>(
         context,
         MaterialPageRoute(
-          builder: (context) => QRScannerView(qrKey: qrKey),
+          builder: (context) => const QRScannerView(),
         ),
       );
       // If scanning was successful, return the scanned text

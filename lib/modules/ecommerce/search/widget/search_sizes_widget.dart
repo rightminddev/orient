@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
 import 'package:orient/modules/ecommerce/single_product/controller/single_product_controller.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,9 @@ class _SearchSizesWidgetState extends State<SearchSizesWidget> {
   Widget build(BuildContext context) {
     return Consumer<SearchControllerProvider>(
       builder: (context, value, child) {
+        if(CacheHelper.getInt("sizeId") != "" && CacheHelper.getInt("sizeId") != null){
+          SearchConstant.selectSizeId = CacheHelper.getInt("sizeId");
+        }
         print("Product ----- > ${value.searchProductsAttributesSize}");
         return Container(
           height: 50,
@@ -43,22 +47,23 @@ class _SearchSizesWidgetState extends State<SearchSizesWidget> {
                     itemBuilder: (context, index)=> GestureDetector(
                       onTap: (){
                         setState(() {
-                          sizeIndex = index;
+                          value.selectSizeIndex = index;
+                          CacheHelper.setInt("sizeId", value.searchProductsAttributesSize[index]['id']);
                           SearchConstant.selectSizeId = value.searchProductsAttributesSize[index]['id'];
                         });
                       },
                       child: Container(
                         margin:const EdgeInsets.symmetric(horizontal: 4),
-                        padding: EdgeInsets.symmetric(horizontal: 4),
+                        padding: EdgeInsets.symmetric(horizontal: (value.searchProductsAttributesSize[index]['title'] == AppStrings.all.tr())?8 : 4),
                         height: 30,
                         alignment: Alignment.center ,
                         decoration: BoxDecoration(
-                          color: (sizeIndex != index) ? Colors.transparent : const Color(0xffE6007E),
-                          border: Border.all(color:(sizeIndex != index) ? const Color(0xff000000).withOpacity(0.43): Colors.transparent),
+                          color: (value.selectSizeIndex != index) ? Colors.transparent : const Color(0xffE6007E),
+                          border: Border.all(color:(value.selectSizeIndex != index) ? const Color(0xff000000).withOpacity(0.43): Colors.transparent),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(value.searchProductsAttributesSize[index]['title'], style: TextStyle(
-                            color: (sizeIndex != index) ?const Color(0xff1B1B1B) : const Color(0xffFFFFFF),
+                            color: (value.selectSizeIndex != index) ?const Color(0xff1B1B1B) : const Color(0xffFFFFFF),
                             fontSize: 8,
                             fontWeight: FontWeight.w500
                         ),),

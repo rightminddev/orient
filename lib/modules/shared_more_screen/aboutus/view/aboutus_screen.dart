@@ -11,6 +11,7 @@ import 'package:orient/modules/shared_more_screen/aboutus/logic/aboutus_logic.da
 import 'package:orient/modules/shared_more_screen/aboutus/view/main_logo_and_title_widget.dart';
 import 'package:orient/utils/components/general_components/general_components.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
+import 'package:orient/utils/styles.dart';
 import 'package:provider/provider.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -77,27 +78,14 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                                     child: Html(
                                         shrinkWrap: true,
                                         data: value.aboutUsModel!.page!.content,
-                                        style: {
-                                          "p": Style(
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xffFFFFFF),
-                                            fontSize: FontSize(14),
-                                          ),
-                                        }),
+                                        style: TextsStyles.htmlStyles),
                                   ),
                               )
                               : (selectIndex == 1)
                                   ? SingleChildScrollView(
                                     child:Html(
                                         data: value.aboutUsModel!.page!.history!,
-                                        style: {
-                                          "p": Style(
-                                              fontWeight: FontWeight.w400,
-                                              color: Color(0xffFFFFFF),
-                                              fontSize: FontSize(14),
-                                              lineHeight: LineHeight(1.5),
-                                              ),
-                                        }),
+                                        style: TextsStyles.htmlStyles),
                                   )
                                   : (selectIndex == 2)
                                       ? Container(
@@ -145,7 +133,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                                                                   index]
                                                               .file ??
                                                           "",
-                                                      fit: BoxFit.fill,
+                                                      fit: BoxFit.contain,
                                                       placeholder: (context,
                                                               url) =>
                                                           const ShimmerAnimatedLoading(),
@@ -185,9 +173,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                                                   return Container(
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius
-                                                              .circular(12),
+                                                      borderRadius: BorderRadius.circular(12),
                                                       boxShadow: [
                                                         BoxShadow(
                                                           color: Colors.black
@@ -213,7 +199,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                                                                       index]
                                                                   .file ??
                                                               "",
-                                                          fit: BoxFit.fill,
+                                                          fit: BoxFit.contain,
                                                           placeholder: (context,
                                                                   url) =>
                                                               const ShimmerAnimatedLoading(),

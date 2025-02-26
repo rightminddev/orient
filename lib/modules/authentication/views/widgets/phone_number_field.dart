@@ -12,9 +12,11 @@ class PhoneNumberField extends StatefulWidget {
   final TextEditingController countryCodeController;
   final String? initialCountry;
   final void Function()? triggerFunction;
+  bool? create = false;
 
-  const PhoneNumberField({
+   PhoneNumberField({
     super.key,
+    this.create,
     required this.controller,
     this.triggerFunction,
     this.initialCountry = 'EG',
@@ -32,7 +34,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 64,
+      height: 60,
       alignment: Alignment.center,
       margin: const EdgeInsets.symmetric(vertical: AppSizes.s10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
@@ -71,7 +73,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               errorBorder: InputBorder.none,
               focusedErrorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              hintText: AppStrings.yourPhone.tr(),
+              hintText: (widget.create == false)?AppStrings.yourPhone.tr():"*${AppStrings.yourPhone.tr()}",
               counter: const SizedBox.shrink()),
           initialCountryCode: widget.initialCountry,
           onChanged: (value) {

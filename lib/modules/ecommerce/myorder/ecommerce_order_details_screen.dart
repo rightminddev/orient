@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/myorder/model/ecommerce_order_details_model.dart';
 import 'package:orient/modules/ecommerce/myorder/widget/get_order_details_loading.dart';
@@ -22,6 +25,12 @@ class EcommerceOrderDetailsScreen extends StatelessWidget {
     return ChangeNotifierProvider(create: (context) => EcommerceOrderDetailsModel()..getMyOrderDetails(context, id),
     child: Consumer<EcommerceOrderDetailsModel>(
       builder: (context, value, child) {
+        var gCache;
+        final jsonString = CacheHelper.getString("USG");
+        if (jsonString != null) {
+          gCache = json.decode(jsonString) as Map<String, dynamic>;// Convert String back to JSON
+          print("USG IS --> $gCache");
+        }
         return Scaffold(
           backgroundColor: const Color(0xffFFFFFF),
           appBar: AppBar(
@@ -75,7 +84,7 @@ class EcommerceOrderDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        Text(value.orderDetailsModel!.order!.status!.toUpperCase(), style: const TextStyle(color: Color(0xff2AA952), fontSize: 14, fontWeight: FontWeight.w500),),
+                        Text(value.orderDetailsModel!.order!.status!.tr().toUpperCase(), style: const TextStyle(color: Color(0xff2AA952), fontSize: 14, fontWeight: FontWeight.w500),),
                       ],
                     ),
                     const SizedBox(height: 30,),
@@ -92,8 +101,9 @@ class EcommerceOrderDetailsScreen extends StatelessWidget {
                     defaultOrderInfo("${AppStrings.date.tr()}:", "${value.orderDetailsModel!.order!.date}",context),
                     defaultOrderInfo("${AppStrings.shippingAddress.tr()}:", "${value.orderDetailsModel!.order!.shippingInfo!.addressText}",context),
                     defaultOrderInfo("${AppStrings.paymentMethods.tr()}:", "${value.orderDetailsModel!.order!.paymentGateway!.title}",context),
-                    defaultOrderInfo("${AppStrings.shippingCost.tr()}:", "${value.orderDetailsModel!.order!.shippingCost}",context),
-                    defaultOrderInfo("${AppStrings.totalAmount.tr()}:", "${value.orderDetailsModel!.order!.total}", context),
+                    defaultOrderInfo("${AppStrings.shippingCost.tr()}:", "${value.orderDetailsModel!.order!.shippingCost}${gCache['default_currency']['code']}",context),
+                   if(value.orderDetailsModel!.order!.taxesTotal != null) defaultOrderInfo("${AppStrings.tax.tr()}:", "${value.orderDetailsModel!.order!.taxesTotal!.toDouble().toStringAsFixed(2)}",context),
+                    defaultOrderInfo("${AppStrings.totalAmount.tr()}:", "${value.orderDetailsModel!.order!.total}${gCache['default_currency']['code']}", context),
                     const SizedBox(height: 25,),
                     // ButtonWidget(
                     //   title: AppStrings.needHelp.tr().toUpperCase(),

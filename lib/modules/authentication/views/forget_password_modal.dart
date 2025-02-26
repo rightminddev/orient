@@ -25,7 +25,9 @@ class ForgotPasswordModal extends StatelessWidget {
             children: [
               if (!viewModel.goToChooseForgotMethod && !viewModel.codeSent) ...[
                 SwitchRow(
-                  value: viewModel.isPhoneLogin,
+                  rightText: AppStrings.byEmail.tr(),
+                  leftText: AppStrings.byPhone.tr(),
+                  value: viewModel.isPhoneLogin = true,
                   onChanged: (newValue) =>
                       viewModel.toggleLoginMethod(newValue),
                 ),

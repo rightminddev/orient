@@ -25,6 +25,51 @@ abstract class OrdersService {
     );
     return response;
   }
+  static Future<OperationResult<Map<String, dynamic>>> getMyOrdersInvoices({
+    required BuildContext context,
+    required int storeId,
+    required int orderId,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$storeId/${EndpointServices.getApiEndpoint(EndpointsNames.myOrderss).url}/$orderId/invoices';
+    final response = await DioApiService().get<Map<String, dynamic>>(
+      url,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+  static Future<OperationResult<Map<String, dynamic>>> getMyOrdersInvoicesDetails({
+    required BuildContext context,
+    required int storeId,
+    required int orderId,
+    required int invoiceId,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$storeId/${EndpointServices.getApiEndpoint(EndpointsNames.myOrderss).url}/$orderId/invoices/$invoiceId';
+    final response = await DioApiService().get<Map<String, dynamic>>(
+      url,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+  static Future<OperationResult<Map<String, dynamic>>> getMyOrdersOdoo({
+    required BuildContext context,
+    required int id,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myOrdersOdoo).url}/$id/${EndpointServices.getApiEndpoint(EndpointsNames.myOrderss).url}';
+    final response = await DioApiService().get<Map<String, dynamic>>(
+      url,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
 
   static Future<OperationResult<Map<String, dynamic>>> getOrderDetails({
     required BuildContext context,
@@ -33,6 +78,23 @@ abstract class OrdersService {
   }) async {
     final String url =
         '${EndpointServices.getApiEndpoint(EndpointsNames.myStores).url}/$storeId/${EndpointServices.getApiEndpoint(EndpointsNames.myOrders).url}/$orderId';
+
+    //stock/availability
+    final response = await DioApiService().get<Map<String, dynamic>>(
+      url,
+      context: context,
+      allData: true,
+      dataKey: 'data',
+    );
+    return response;
+  }
+  static Future<OperationResult<Map<String, dynamic>>> getOrderOdooDetails({
+    required BuildContext context,
+    required int storeId,
+    required int orderId,
+  }) async {
+    final String url =
+        '${EndpointServices.getApiEndpoint(EndpointsNames.myOrdersOdoo).url}/$storeId/${EndpointServices.getApiEndpoint(EndpointsNames.myOrderss).url}/$orderId';
 
     //stock/availability
     final response = await DioApiService().get<Map<String, dynamic>>(

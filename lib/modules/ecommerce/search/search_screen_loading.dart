@@ -64,10 +64,6 @@ class SearchScreenLoading extends StatelessWidget {
                                 width: 50, // Adjust width as needed
                               ),
                               SizedBox(width: 10),
-                              Icon(
-                                Icons.arrow_forward,
-                                size: 14,
-                              ),
                             ],
                           ),
                         ],

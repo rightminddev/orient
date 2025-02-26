@@ -1,21 +1,25 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:orient/general_services/app_config.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/general_services/localization.service.dart';
+import 'package:orient/routing/app_router.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
 
 class DioHelper{
   static Dio? dio;
-  static initail(){
+  static initail(BuildContext context){
     dio = Dio(
         BaseOptions(
-            baseUrl: "https://lab.r-m.dev/api",
+            baseUrl: "https://backend.orient-paints.com/api",
             receiveDataWhenStatusError: true,
             headers: {
               'Accept':'application/json',
+              "lang" : "${CacheHelper.getString("lang")}",
               // 'Content-Type' : 'multipart/form-data'
               'Content-Type':"application/json",
 
@@ -30,6 +34,24 @@ class DioHelper{
         error: true,
         compact: true,
         maxWidth: 90));
+    dio!.interceptors.add(
+      InterceptorsWrapper(
+        onResponse: (response, handler) {
+          return handler.next(response);
+        },
+        onError: (DioError error, handler) {
+          if (error.response?.statusCode == 401) {
+            final appConfigService =
+            Provider.of<AppConfigService>(context, listen: false);
+            appConfigService.logout().then((v){
+              context.goNamed(AppRoutes.splash.name,
+                  pathParameters: {'lang': context.locale.languageCode});
+            });
+          }
+          return handler.next(error);
+        },
+      ),
+    );
   }
   static Future<Response> getData({@required url, @required Map<String, dynamic>? query,context,lang,  token,bool sendLang = false, Map<String, dynamic>? data})async{
     final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
@@ -38,7 +60,7 @@ class DioHelper{
       if(sendLang == true)"Accept-Language" : CacheHelper.getString("lang") ?? "en",
       'device-unique-id' : appConfigServiceProvider.deviceInformation.deviceUniqueId,
       'Authorization': 'Bearer ${appConfigServiceProvider.token}',
-      "lang" : CacheHelper.getString("lang") ?? "en",
+       "lang" : "${CacheHelper.getString("lang")}",
     };
     print("Headers: ${dio!.options.headers}");
     return await dio!.get(url, queryParameters: query );
@@ -51,11 +73,12 @@ class DioHelper{
 
     return await dio!.delete(url, queryParameters: query, data: data??null);
   }
-  static Future<Response> postData({ context ,@required url,@required Map<String, dynamic>? query, token, @required  data})async{
+  static Future<Response> postData({ context ,@required url,@required Map<String, dynamic>? query, token, @required data})async{
     final appConfigServiceProvider = Provider.of<AppConfigService>(context, listen: false);
     dio!.options.headers = {
       'Accept':'application/json',
       'Content-Type': 'application/json',
+      "lang" : "${CacheHelper.getString("lang")}",
       'device-unique-id' : appConfigServiceProvider.deviceInformation.deviceUniqueId,
       'Authorization': 'Bearer ${appConfigServiceProvider.token}',
 

@@ -1,7 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/home/controller/const.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
@@ -21,12 +24,23 @@ class SearchProductGridviewWidget extends StatelessWidget {
         builder: (context, value, child) {
           return Consumer<SearchControllerProvider>(
             builder: (context, searchControllerProvider, child){
-
               if(searchControllerProvider.isSuccessSearch == true){
                 print("A7A");
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   value.getCheck(context: context, ids: HomeConst.Ids);
                 });
+                if(searchControllerProvider.productss.isEmpty && SearchConstant.filter == true){
+                  print("000000");
+                  Fluttertoast.showToast(
+                      msg: AppStrings.noProductsFounded.tr(),
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 5,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                }
                 searchControllerProvider.isSuccessSearch = false;
               }
                if (searchControllerProvider.searchProduct.isEmpty) {
@@ -51,7 +65,7 @@ class SearchProductGridviewWidget extends StatelessWidget {
                           search: true,
                           productId: searchControllerProvider.searchProduct[index]['id'],
                           productName: searchControllerProvider.searchProduct[index]['title'],
-                          productType: searchControllerProvider.searchProduct[index]['type'],
+                          productType: searchControllerProvider.searchProduct[index]['category']['title'],
                           productPrice: "${searchControllerProvider.searchProduct[index]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                           discountPrice: "${searchControllerProvider.searchProduct[index]['price_before_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                           showSale: (searchControllerProvider.searchProduct[index]['price_after_discount'] != searchControllerProvider.searchProduct[index]['price_before_discount'])? true : false ,

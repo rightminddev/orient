@@ -48,10 +48,11 @@ class EcommerceOrderScreen extends StatelessWidget {
               padding: EdgeInsets.zero,
               child: SingleChildScrollView(
                 child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.78,
+                  height: MediaQuery.sizeOf(context).height * 1,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    child:(!value.isLoading)? ListView.separated(
+                    child:(!value.isLoading)?
+                    (value.myOrders.isNotEmpty)?ListView.separated(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         reverse: false,
@@ -127,7 +128,7 @@ class EcommerceOrderScreen extends StatelessWidget {
                                     fontColor: const Color(AppColors.oc1),
                                     backgroundColor: Colors.transparent,
                                   ),
-                                  Text(value.myOrders[index]['status'].toUpperCase(), style: const TextStyle(color: Color(0xff2AA952), fontSize: 14, fontWeight: FontWeight.w500),),
+                                  Text("${value.myOrders[index]['status']}".tr().toUpperCase(), style: const TextStyle(color: Color(0xff2AA952), fontSize: 14, fontWeight: FontWeight.w500),),
                                 ],
                               )
                             ],
@@ -135,7 +136,12 @@ class EcommerceOrderScreen extends StatelessWidget {
                         ),
                         separatorBuilder: (context, index) => const SizedBox(height: 24,),
                         itemCount: value.myOrders.length
-                    ):ListView.separated(
+                    ):
+                        Container(height: MediaQuery.sizeOf(context).height * 0.8,
+                        alignment: Alignment.center,
+                          child: Text(AppStrings.noOrdersHaveBeenPlacedYet.tr().toUpperCase(), style: TextStyle(fontSize: 20),),
+                        )
+                        :ListView.separated(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         reverse: false,

@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
@@ -48,6 +51,9 @@ class CheckoutControllerProvider extends ChangeNotifier {
   var checkoutFees;
   var checkoutTotal;
   var checkoutDiscountTotal;
+  var checkoutTax;
+  var checkoutShipping;
+  List address = [];
   void setPaymentStatus(String? status) {
    CheckConst.paymentStatus = status;
     notifyListeners();
@@ -56,26 +62,29 @@ class CheckoutControllerProvider extends ChangeNotifier {
     notifyListeners();
   }
   Future<void> getShippingAddress({required BuildContext context}) async {
+    notifyListeners();
     isShippingAddressLoading = true;
     errorPrepareCheckoutMessage = null;
     CheckConst.selectedPaymentId = null;
-    notifyListeners();
-    try {
-      var value = await DioHelper.getData(
-        url: "/shipping-addresses/entities-operations",
-        context: context,
-      );
+    await DioHelper.getData(
+      url: "/shipping-addresses/entities-operations",
+      query: {
+        "itemsCount" : 50
+      },
+      context: context,
+    ).then((value){
       isShippingAddressLoading = false;
       isPrepareCheckoutSuccess = true;
+      address = value.data['data'];
       addressModel = AddressModel.fromJson(value.data);
       print("userAddressModel_>$addressModel");
       print("userAddressModel_>${addressModel!}");
       notifyListeners();
-    } catch (e) {
+    }).catchError((e){
       isShippingAddressLoading = false;
       errorPrepareCheckoutMessage = e.toString();
       notifyListeners();
-    }
+    });
   }
   Future<void> getPrepareCheckout({required BuildContext context}) async {
     isPrepareCheckoutLoading = true;
@@ -98,6 +107,8 @@ class CheckoutControllerProvider extends ChangeNotifier {
       checkoutFees = value.data['cart']['fees_total'];
       checkoutTotal = value.data['cart']['total'];
       checkoutDiscountTotal = value.data['cart']['discount_total'];
+      checkoutTax = value.data['cart']['taxes_total'];
+      checkoutShipping = value.data['cart']['shipping_cost'];
       if(checkoutAddressId != null){
         checkoutUserAddress.forEach((e){
           if(e['id'] == checkoutAddressId){
@@ -128,6 +139,9 @@ class CheckoutControllerProvider extends ChangeNotifier {
     try {
       var value = await DioHelper.postData(
         url: "/shipping-addresses/entities-operations/store",
+          query: {
+            "itemsCount" : 50
+          },
         context: context,
         data: {
          if(phone != null) "phone": phone,
@@ -160,6 +174,9 @@ class CheckoutControllerProvider extends ChangeNotifier {
       var value = await DioHelper.getData(
         url: "/shipping-addresses/entities-operations",
         context: context,
+        query: {
+          "itemsCount" : 50
+        },
       );
       shippingAddresses = value.data['data'];
       isGetAddressLoading = false;
@@ -237,6 +254,13 @@ class CheckoutControllerProvider extends ChangeNotifier {
     }
   }
   Future<void> confirmOrder({required BuildContext context,email, name,  phone, country_key, address, country_id, state_id,city_id }) async {
+    if(address == null){
+      AlertsService.error(
+          context: context,
+          message: AppStrings.pleaseSelectAddress.tr(),
+          title: AppStrings.failed.tr());
+      return ;
+    }
     isConfirmOrderLoading = true;
     errorConfirmOrderMessage = null;
     notifyListeners();
@@ -256,14 +280,32 @@ class CheckoutControllerProvider extends ChangeNotifier {
           "city_id" : city_id
         }
       );
-      CheckConst.selectedPaymentId = null;
-      isConfirmOrderLoading = false;
-      paymentUrl = value.data['url'];
-      isConfirmOrderSuccess = true;
+      if(value.data['status'] == true){
+        CheckConst.selectedPaymentId = null;
+        isConfirmOrderLoading = false;
+        paymentUrl = value.data['url'];
+        isConfirmOrderSuccess = true;
+      }else{
+        CheckConst.selectedPaymentId = null;
+        isConfirmOrderLoading = false;
+        AlertsService.error(
+            context: context,
+            message: value.data['message'],
+            title: AppStrings.failed.tr());
+      }
       notifyListeners();
     } catch (e) {
       isConfirmOrderLoading = false;
       errorConfirmOrderMessage = e.toString();
+      if (e is DioError) {
+        errorConfirmOrderMessage = e.response?.data['message'] ?? 'Something went wrong';
+      } else {
+        errorConfirmOrderMessage = e.toString();
+      }
+        AlertsService.error(
+            context: context,
+            message: errorConfirmOrderMessage!,
+            title: AppStrings.failed.tr());
       notifyListeners();
     }
   }

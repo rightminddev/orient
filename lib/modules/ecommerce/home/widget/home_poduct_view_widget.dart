@@ -18,11 +18,11 @@ class HomePoductViewWidget extends StatelessWidget {
     print("DOES");
     return Consumer<HomeProvider>(
         builder: (context, homeProvider, child){
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Container(
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
                   height: 30,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,48 +34,51 @@ class HomePoductViewWidget extends StatelessWidget {
                           color: Color(0xff1B1B1B),
                         ),
                       ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
-                                  pathParameters: {'lang': context.locale.languageCode,
-                                    'id' : '-1',
-                                    'arrow' : "yes"
-                                  });
-                            },
-                            child: Text(AppStrings.seeMore.tr().toUpperCase(),
+                      GestureDetector(
+                        onTap: (){
+                          context.pushNamed(AppRoutes.eCommerceSearchScreenView.name,
+                              pathParameters: {'lang': context.locale.languageCode,
+                                'id' : '-1',
+                                'arrow' : "yes","categoryName" : "null"
+                              });
+                        },
+                        child: Row(
+                          children: [
+                            Text(AppStrings.seeMore.tr().toUpperCase(),
                               style:const TextStyle(
                                   color: Color(0xff1B1B1B),
                                   fontSize: 8,
                                   fontWeight: FontWeight.w400
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10,),
-                          const Icon(Icons.arrow_forward, color: Color(0xff1B1B1B),size: 14,)
-                        ],
+                            const SizedBox(width: 10,),
+                            const Icon(Icons.arrow_forward, color: Color(0xff1B1B1B),size: 14,)
+                          ],
+                        ),
                       )
                     ],
                   ),
                 ),
-                SizedBox(
+              ),
+              Padding(
+                padding:LocalizationService.isArabic(context: context)? const EdgeInsets.only(right: 15) : const EdgeInsets.only(left: 15),
+                child: SizedBox(
                     height: 240,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10,),
                       child: ListView.separated(
-                        shrinkWrap: true,
+                          shrinkWrap: true,
                           reverse: false,
                           scrollDirection: Axis.horizontal,
                           clipBehavior: Clip.none,
                           itemBuilder: (context, index)=> defaultViewProductGrid(
-                            containerHeight: 240,
+                              containerHeight: 240,
                               bookMark: true,
                               search: false,
                               value: homeProvider.checkResponse,
                               productId: homeProvider.products[index]['id'],
                               productName: homeProvider.products[index]['title'],
-                              productType: homeProvider.products[index]['type']['value'],
+                              productType: homeProvider.products[index]['category']['title'],
                               productPrice: "${homeProvider.products[index]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               showSale: (homeProvider.products[index]['price_after_discount'] != homeProvider.products[index]['price_before_discount'])? true : false ,
                               showDiscount: (homeProvider.products[index]['price_after_discount'] != homeProvider.products[index]['price_before_discount'])? true : false ,
@@ -99,9 +102,9 @@ class HomePoductViewWidget extends StatelessWidget {
                           itemCount: homeProvider.products.length
                       ),
                     )
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           );
         }
     );

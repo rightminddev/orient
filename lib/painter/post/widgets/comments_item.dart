@@ -10,11 +10,20 @@ import 'package:orient/utils/media_query_values.dart';
 import '../../../utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import '../data/models/comments_model/get_comment_model.dart';
 class CommentsItem extends StatelessWidget {
-  CommentsItem({super.key, required this.comments, required this.user});
+  CommentsItem({super.key, required this.comments, required this.getCommentModel});
   final Comments comments;
-  final User user;
+  GetCommentModel? getCommentModel;
   @override
   Widget build(BuildContext context) {
+    String formatName(String fullName) {
+      List<String> nameParts = fullName.split(' ');
+      if (nameParts.length < 2) {
+        return fullName; // Return the full name if no last name is provided.
+      }
+      String firstName = nameParts[0];
+      String lastInitial = nameParts[1][0].toUpperCase();
+      return '$firstName $lastInitial.';
+    }
     return Container(
       padding: const EdgeInsets.symmetric(
           vertical: AppSizes.s8, horizontal: AppSizes.s12),
@@ -63,7 +72,7 @@ class CommentsItem extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(63),
                     child: CachedNetworkImage(
-                        imageUrl: user.avatar!,
+                        imageUrl: comments.user!.avatar!,
                         fit: BoxFit.cover,
                         height: 63,
                         width: 63,
@@ -91,7 +100,7 @@ class CommentsItem extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          user.name,
+                          formatName(comments.user!.name!.toUpperCase()) ,
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall

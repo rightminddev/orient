@@ -1,3 +1,4 @@
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,6 +31,7 @@ class _WebViewStackState extends State<WebViewStack> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
+            print("onPageStarted is -> ${url}");
             if (mounted) {
               setState(() {
                 loadingPercentage = 0;
@@ -44,13 +46,24 @@ class _WebViewStackState extends State<WebViewStack> {
             }
           },
           onPageFinished: (url) {
+            print("onPageFinished is -> ${url}");
             if (mounted) {
               setState(() {
                 loadingPercentage = 100;
               });
             }
           },
+          onHttpError: (error) {
+            print("onHttpError is --- > ${error.response!.statusCode}");
+            print("onHttpError is --- > ${error.response!.headers}");
+            print("onHttpError is --- > ${error.response!.uri}");
+            print("onHttpError is --- > ${error.request!.uri}");
+          },
+          onWebResourceError: (error) {
+            print("onWebResourceError is --- > $error");
+          },
           onNavigationRequest: (navigation) {
+            print("NAV is -> ${navigation.url}");
             final host = Uri.parse(navigation.url).host;
             if (navigation.url.contains('status=success')) {
               if (mounted) {

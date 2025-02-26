@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/ecommerce/home/controller/const.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
+import 'package:orient/modules/ecommerce/search/consts.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
 import 'package:orient/modules/ecommerce/search/search_screen_loading.dart';
 import 'package:orient/modules/ecommerce/search/widget/search_category_widget.dart';
@@ -17,8 +18,9 @@ import 'package:provider/provider.dart';
 
 class ECommerceSearchScreen extends StatefulWidget {
   var categoryId;
+  var categoryName;
   final bool viewArrow;
-  ECommerceSearchScreen({this.categoryId, required this.viewArrow});
+  ECommerceSearchScreen({this.categoryId, required this.viewArrow, required this.categoryName});
   @override
   State<ECommerceSearchScreen> createState() => _ECommerceSearchScreenState();
 }
@@ -27,22 +29,54 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
   late SearchControllerProvider searchControllerProvider;
   late HomeProvider homeProvider;
   late ScrollController _scrollController;
+  Set<int> _loadedPages = {}; // Keep track of loaded pages
+
   @override
   void initState() {
     super.initState();
+
     print("ID-------------------> ${widget.categoryId}");
     searchControllerProvider = SearchControllerProvider();
     homeProvider = HomeProvider();
-    searchControllerProvider.getSearch(context: context, category_id: widget.categoryId, isNewPage: false);
-    homeProvider.getPages(context: context, fromHome: false);
+
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
-        searchControllerProvider.getSearch(
-            context: context, category_id: widget.categoryId,isNewPage: true);
+        SearchConstant.filter = false;
+        print("SearchConstant.filter is --> ${SearchConstant.filter}");
+
+        int nextPage = searchControllerProvider.pageNumber; // Get the next page number
+
+        if (!_loadedPages.contains(nextPage)) { // Check if the page was already loaded
+          _loadedPages.add(nextPage); // Mark this page as loaded
+
+          searchControllerProvider.getSearch(
+              context: context,
+              category_id: widget.categoryId,
+              isNewPage: true
+          );
+        } else {
+          print("Page $nextPage is already loaded. Skipping request.");
+        }
       }
     });
+
+    // Load the first page
+    if (!_loadedPages.contains(1)) {
+      _loadedPages.add(1);
+      searchControllerProvider.getSearch(
+          context: context,
+          category_id: widget.categoryId,
+          isNewPage: false
+      );
+    }
+
+    homeProvider.getPages(
+        context: context,
+        fromHome: false
+    );
   }
+
   @override
   void dispose() {
     _scrollController.dispose(); // Dispose of the controller
@@ -62,7 +96,7 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
             builder: (context, value, child) {
               return Scaffold(
                 backgroundColor: const Color(0xffFFFFFF),
-                body: (searchControllerProvider.isLoadingSearch && value.isLoading )
+                body: (value.isLoading )
                     ? const GradientBgImage(
                     padding: EdgeInsets.zero,
                     child: SearchScreenLoading())
@@ -92,7 +126,7 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
                                         },
                                       ),
                                       Text(
-                                        AppStrings.shop.tr().toUpperCase(),
+                                          (widget.categoryName != "null")? widget.categoryName : AppStrings.shop.tr().toUpperCase(),
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700,
@@ -120,12 +154,15 @@ class _ECommerceSearchScreenState extends State<ECommerceSearchScreen> {
                                               },
                                             );
                                             print(
-                                                "MIN----->${SearchConstant.minPriceController.text}");
+                                                "MIN----->${SearchConsts.minPriceController.text}");
                                             searchControllerProvider.getSearch(
                                               context: context,
                                               crossSells: true,
                                               isNewPage: false,
+                                              price_from: SearchConsts.minPriceController.text,
+                                              price_to: SearchConsts.maxPriceController.text,
                                               pages: 1,
+                                              category_id: SearchConstant.selectId,
                                               colorId: SearchConstant.selectColorId ,
                                               sizeId: SearchConstant.selectSizeId,
                                               attributesSizeId: SearchConstant.selectSizeAttributesId,

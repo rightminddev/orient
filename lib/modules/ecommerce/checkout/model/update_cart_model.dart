@@ -31,7 +31,7 @@ class Cart {
   int? feesTotal;
   int? taxesTotal;
   int? shippingCost;
-  Null? appliedCoupon;
+  var appliedCoupon;
   int? total;
   List<Items>? items;
 
@@ -124,7 +124,7 @@ class Items {
     id = json['id'];
     productId = json['product_id'];
     quantity = json['quantity'];
-    price = json['price'];
+    price = json['price_before_discount'];
     priceAfterDiscount = json['price_after_discount'];
     title = json['title'];
     if (json['image'] != null) {

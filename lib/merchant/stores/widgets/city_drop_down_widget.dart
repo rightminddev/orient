@@ -86,13 +86,14 @@ import '../../../utils/components/general_components/all_text_field.dart';
 
 class CityDropDownWidget extends StatelessWidget {
   final bool? isSelected;
-
+  final String? title;
   final ValueNotifier<String?> citySelected;
   final List<CityModel> cities;
   final void Function(CityModel) setCityChanged;
 
   const CityDropDownWidget({
     super.key,
+    this.title,
     required this.isSelected,
     required this.citySelected,
     required this.cities,
@@ -109,7 +110,7 @@ class CityDropDownWidget extends StatelessWidget {
           valueListenable: citySelected,
           builder: (context, citySelectedValue, child) {
             return defaultDropdownField(
-              title: AppStrings.storeCity.tr(),
+              title: title ??"*${AppStrings.storeCity.tr()}",
               value: citySelectedValue,
               items: cities.map(
                     (element) => DropdownMenuItem<String>(

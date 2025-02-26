@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../general_services/alert_service/alerts.service.dart';
 import '../../../general_services/settings.service.dart';
@@ -14,10 +15,9 @@ import '../views/widgets/modals/statistics.modal.dart';
 
 class RequestDetailsViewModel extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
-  UserSettingsModel? userSettings;
 
   void initializeRequestDetails({required BuildContext context}) {
-    userSettings = AppSettingsService.getSettings(
+    UserSettingConst.userSettings = AppSettingsService.getSettings(
         settingsType: SettingsType.userSettings,
         context: context) as UserSettingsModel?;
   }

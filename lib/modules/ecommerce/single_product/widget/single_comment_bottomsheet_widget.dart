@@ -19,194 +19,212 @@ class SingleCommentBottomsheetWidget extends StatefulWidget {
 
 class _SingleCommentBottomsheetWidgetState extends State<SingleCommentBottomsheetWidget> {
   TextEditingController commentController = TextEditingController();
-  String selectRate = "4";
+  String selectRate = "5";
+  String formatName(String fullName) {
+    List<String> nameParts = fullName.split(' ');
+    if (nameParts.length < 2) {
+      return fullName; // Return the full name if no last name is provided.
+    }
+    String firstName = nameParts[0];
+    String lastInitial = nameParts[1][0].toUpperCase();
+    return '$firstName $lastInitial.';
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (context)=> SingleProductProvider()..getComments(context: context, id: widget.id),
     child: Consumer<SingleProductProvider>(
         builder: (context, singleProductProvider, child){
-          if(singleProductProvider.isAddCommentSuccess == true){
-            singleProductProvider.getComments(context: context, id: widget.id);
+          if(singleProductProvider.isAddCommentSuccess == true && singleProductProvider.commentMessage != "Can't review tha same product twice"){
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              singleProductProvider.getComments(context: context, id: widget.id);
+            });
+            singleProductProvider.isAddCommentSuccess = false;
           }
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xffF4F7FF),
-                  Color(0xffFDFDFD),
-                ],
-                stops:  [0.0, 0.5],
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom, // This ensures the bottom is not covered by the keyboard
               ),
-            ),
-            width: double.infinity,
-            height: MediaQuery.sizeOf(context).height * 0.72,
-            alignment: Alignment.topCenter,
-            child: (singleProductProvider.isShowCommentLoading || singleProductProvider.isAddCommentLoading)?
-             HomeLoadingPage(viewAppbar: false,)
-                :Column(
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: Container(
-                    height: 5,
-                    width: 63,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: const Color(0xffB9C0C9)),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xffF4F7FF),
+                      Color(0xffFDFDFD),
+                    ],
+                    stops:  [0.0, 0.5],
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
+                width: double.infinity,
+                height: MediaQuery.sizeOf(context).height * 0.72,
+                alignment: Alignment.topCenter,
+                child: (singleProductProvider.isShowCommentLoading || singleProductProvider.isAddCommentLoading)?
+                 HomeLoadingPage(viewAppbar: false,)
+                    :Column(
                   children: [
-                    Expanded(
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Center(
                       child: Container(
-                        height: 1,
-                        color: const Color(0xffE0E0E0),
+                        height: 5,
+                        width: 63,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: const Color(0xffB9C0C9)),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            color: const Color(0xffE0E0E0),
+                          ),
+                        ),
+                        Container(
+                            alignment: Alignment.center,
+                            width: 120,
+                            child: Text(
+                              AppStrings.comments.tr().toUpperCase(),
+                              style: const TextStyle(
+                                  color: Color(0xffEE3F80),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            )),
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            color: const Color(0xffE0E0E0),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Container(
-                        alignment: Alignment.center,
-                        width: 120,
-                        child: Text(
-                          AppStrings.comments.tr().toUpperCase(),
-                          style: const TextStyle(
-                              color: Color(0xffEE3F80),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        )),
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: const Color(0xffE0E0E0),
-                      ),
+                      height: MediaQuery.sizeOf(context).height * 0.47,
+                      child: ListView.separated(
+                          shrinkWrap: true,
+                          reverse: false,
+                          itemBuilder: (context, index) => CommentWidget(
+                            isImageUrl: true,
+                            image: singleProductProvider.comments[index]['user']['avatar'],
+                            name: formatName("${singleProductProvider.comments[index]['user']['name'].toUpperCase()}"),
+                            nameFontSize: 12,
+                            dateFontSize: 11,
+                            commentFontSize: 11,
+                            commentFontWeight: FontWeight.w400,
+                            dateFontWeight: FontWeight.w400,
+                            date:  DateFormat('MM/dd/yyyy hh:mm:ss a').format(DateTime.parse("${singleProductProvider.comments[index]['created_at']}")),
+                            comment: singleProductProvider.comments[index]['content'],
+                            isVerified: (singleProductProvider.comments[index]['user_did_buy'] == false)? false: true,
+                            rate: "${singleProductProvider.comments[index]['rating']}",
+                          ),
+                          separatorBuilder: (context, index) => const SizedBox.shrink(),
+                          itemCount: singleProductProvider.comments.length),
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: MediaQuery.sizeOf(context).height * 0.47,
-                  child: ListView.separated(
-                      shrinkWrap: true,
-                      reverse: false,
-                      itemBuilder: (context, index) => CommentWidget(
-                        isImageUrl: true,
-                        image: singleProductProvider.comments[index]['user']['avatar'],
-                        name: singleProductProvider.comments[index]['user']['name'].toUpperCase(),
-                        nameFontSize: 12,
-                        dateFontSize: 11,
-                        commentFontSize: 11,
-                        commentFontWeight: FontWeight.w400,
-                        dateFontWeight: FontWeight.w400,
-                        date:  DateFormat('MM/dd/yyyy hh:mm:ss a').format(DateTime.parse("${singleProductProvider.comments[index]['created_at']}")),
-                        comment: singleProductProvider.comments[index]['content'],
-                        isVerified: (singleProductProvider.comments[index]['user_did_buy'] == false)? false: true,
-                        rate: "${singleProductProvider.comments[index]['rating']}",
-                      ),
-                      separatorBuilder: (context, index) => const SizedBox.shrink(),
-                      itemCount: singleProductProvider.comments.length),
-                ),
-                Spacer(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: const Color(0xffE0E0E0),
-                      ),
+                    Spacer(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            color: const Color(0xffE0E0E0),
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.symmetric(horizontal: 15),
+                            alignment: Alignment.center,
+                            child: Text(
+                              AppStrings.addNewComment.tr().toUpperCase(),
+                              style: const TextStyle(
+                                  color: Color(0xffEE3F80),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600),
+                            )),
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            color: const Color(0xffE0E0E0),
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                        margin: EdgeInsets.symmetric(horizontal: 15),
-                        alignment: Alignment.center,
-                        child: Text(
-                          AppStrings.addNewComment.tr().toUpperCase(),
-                          style: const TextStyle(
-                              color: Color(0xffEE3F80),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600),
-                        )),
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: const Color(0xffE0E0E0),
-                      ),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                defaultCommentTextFormField(
-                  hintText: AppStrings.typeYourMessage.tr().toUpperCase(),
-                  onTapSend: (){
-                    singleProductProvider.addComments(context: context, id: widget.id,
-                    content: commentController.text,
-                      rating: selectRate.toString()
-                    );
-                  },
-                  maxLines: 1,
-                  borderColor: const Color(0xffE3E5E5),
-                  controller: commentController,
-                  viewDropDownRates: true,
-                  dropDownValue: selectRate,
-                  dropDownOnChanged: (String? value){
-                    setState(() {
-                      selectRate = value!;
-                    });
-                  },
-                  dropDownItems: ['1', '2', '3', '4', '5'].map((e) {
-                    return DropdownMenuItem(
-                      value: e.toString(),
-                      child: Row(
+                    defaultCommentTextFormField(
+                      hintText: AppStrings.typeYourMessage.tr().toUpperCase(),
+                      onTapSend: (){
+                        singleProductProvider.addComments(context: context, id: widget.id,
+                          rating: selectRate.toString()
+                        );
+                      },
+                      maxLines: 1,
+                      borderColor: const Color(0xffE3E5E5),
+                      controller: singleProductProvider.commentController,
+                      viewDropDownRates: true,
+                      dropDownValue: selectRate,
+                      dropDownOnChanged: (String? value){
+                        setState(() {
+                          selectRate = value!;
+                        });
+                      },
+                      dropDownItems: ['1', '2', '3', '4', '5'].map((e) {
+                        return DropdownMenuItem(
+                          value: e.toString(),
+                          child: Row(
+                            children: [
+                              Text(
+                                e.toString(),
+                                style: const TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff1B1B1B)),
+                              ),
+                              const Icon(
+                                Icons.star,
+                                color: Color(0xffE6007E),
+                                size: 16,
+                              )
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      dropDownHint: Row(
                         children: [
                           Text(
-                            e.toString(),
-                            style: const TextStyle(
+                            "${selectRate.toString()} ",
+                            style:const TextStyle(
                                 fontFamily: "Poppins",
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff1B1B1B)),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.star,
                             color: Color(0xffE6007E),
                             size: 16,
                           )
                         ],
                       ),
-                    );
-                  }).toList(),
-                  dropDownHint: Row(
-                    children: [
-                      Text(
-                        "${selectRate.toString()} ",
-                        style:const TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff1B1B1B)),
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Color(0xffE6007E),
-                        size: 16,
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    )
+                  ],
                 ),
-                const SizedBox(
-                  height: 30,
-                )
-              ],
+              ),
             ),
           );
         }),

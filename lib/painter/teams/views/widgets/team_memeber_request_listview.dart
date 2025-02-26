@@ -103,6 +103,7 @@ class TeamMembersRequestListViewItem extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           defaultActionBottomSheet(
+                            home: false,
                             context: context,
                             title: AppStrings.deleteUser.tr().toLowerCase(),
                             headerIcon: Padding(
@@ -156,6 +157,7 @@ class TeamMembersRequestListViewItem extends StatelessWidget {
                           ? InkWell(
                         onTap: () {
                           defaultActionBottomSheet(
+                            home: false,
                               context: context,
                               title: AppStrings.addUser.tr().toLowerCase(),
                               headerIcon: Padding(

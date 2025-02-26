@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/models/info/country_model.dart';
 import '../../../services/crud_operation.service.dart';
 
@@ -22,7 +25,7 @@ class CountriesViewModel extends ChangeNotifier {
         context: context,
         slug: 'countries',
         queryParams: {
-          "itemsCount": 100,
+          "itemsCount": 200,
           //'page': 1,
           // 'with': 'cate',
           // 'trash': 1,
@@ -34,6 +37,11 @@ class CountriesViewModel extends ChangeNotifier {
         (result.data?['data'] ?? []).forEach((v) {
           countries.add(CountryModel.fromJson(v));
         });
+      }else{
+        AlertsService.error(
+            context: context,
+            message: result.message!,
+            title: AppStrings.failed.tr());
       }
       debugPrint(countries.length.toString());
     } catch (err, t) {

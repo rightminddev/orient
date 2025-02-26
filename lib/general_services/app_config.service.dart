@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/device_information.model.dart';
 import '../models/settings/app_settings_model.dart';
@@ -140,21 +141,26 @@ class AppConfigService extends ChangeNotifier {
 
   /// setter used to set settings to local storage depends on SettingsType { generalSettings, userSettings, user2Settings }.
   void setSettings(
-      {required SettingsType type, required Map<String, dynamic>? data}) {
+      {required SettingsType type, required Map<String, dynamic>? data, Map<String, dynamic>? dataS1, Map<String, dynamic>? dataS2}) {
     switch (type) {
       case SettingsType.generalSettings || SettingsType.startupSettings:
-        if (data != null) {
+        if (data != null && dataS1 != null && dataS2 != null) {
+          print("Done S");
           _generalSettigns = data;
+          _userSettings = dataS1;
+          _user2Settings = dataS2;
           return;
         }
-      case SettingsType.userSettings:
-        if (data != null) {
-          _userSettings = data;
+      case SettingsType.userSettings|| SettingsType.startupSettings:
+        if (dataS1 != null) {
+          print("Done S1");
+          _userSettings = dataS1;
         }
         return;
-      case SettingsType.user2Settings:
-        if (data != null) {
-          _user2Settings = data;
+      case SettingsType.user2Settings|| SettingsType.startupSettings:
+        if (dataS2 != null) {
+          print("Done S2");
+          _user2Settings = dataS2;
         }
         return;
     }
@@ -301,14 +307,19 @@ class AppConfigService extends ChangeNotifier {
   /// remove all local config values
   Future<bool> resetConfig() async {
     if (_prefs == null) return false;
+
+    // Fetch all keys from shared preferences
     var keys = _prefs!.getKeys();
     var result = true;
+
     for (var key in keys) {
-      if (!dontClearKeys.contains(key)) {
+      // Skip the "dateWatchScreen" key
+      if (key != "dateWatchScreen") {
         var r = await _prefs!.remove(key);
         if (!r) result = false;
       }
     }
+
     return result;
   }
 
@@ -379,6 +390,13 @@ class AppConfigService extends ChangeNotifier {
   }
   Future<void> logout() async {
     await clearToken();
+    await CacheHelper.deleteData(key: "US1");
+    await CacheHelper.deleteData(key: "US2");
+   // await CacheHelper.deleteData(key: "USG");
+    await CacheHelper.deleteData(key: "gDate");
+    await CacheHelper.deleteData(key: "s1Date");
+    await CacheHelper.deleteData(key: "s2Date");
+    await CacheHelper.deleteData(key: "fcmToken");
     await setIsLogin(false);
     debugPrint('User has been logged out, and token is cleared.');
   }

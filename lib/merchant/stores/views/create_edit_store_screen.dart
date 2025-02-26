@@ -126,11 +126,10 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
           storeCreateEditModel.createEditStoreModel.stateId =
               (state.id ?? 0).toString();
           citiesViewModel.initializeCities(context, state.id ?? 0).then((_) {
-            CityModel storeCities = CityModel();
-            final cities = citiesViewModel.cities;
-
-            storeCities = cities
-                .firstWhere((city) => widget.storeModel?.cityId == city.id);
+            toggleStateSelected.value = true;
+            final storeCities =  citiesViewModel.cities
+                .firstWhere((element) => element.id == widget.storeModel!.city!.id);
+            citySelected.value = storeCities.title;
             storeCreateEditModel.createEditStoreModel.cityId =
                 (storeCities.id ?? 0).toString();
             // storeCreateEditModel.createEditStoreModel.cityId = storeCities
@@ -139,8 +138,6 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
             // initialCitiesSelected = storeCities
             //     .map((element) => (element.title ?? 0).toString())
             //     .toList();
-            citySelected.value = storeCities.title;
-            toggleStateSelected.value = true;
           });
         });
       });
@@ -148,12 +145,18 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
       countriesViewModel.initializeCountries(context).then((_) {
         final country ;
         if(LocalizationService.isArabic(context: context)){
+          print("مصر مصر");
           country = countriesViewModel.countries.firstWhere(
-              (element) => element.title?.toLowerCase() == 'مصر',
+              (element) => element.title == 'مصر',
           orElse: () => CountryModel(),
         );}else{
+          print("Eygpt Eygpt");
            country = countriesViewModel.countries.firstWhere(
-                (element) => element.title?.toLowerCase() == 'egypt',
+                (element) {
+                  print("ELEMENT IS ---> ${element}");
+                  return element.title == 'Egypt';
+                },
+
             orElse: () => CountryModel(),
           );
         }
@@ -279,6 +282,32 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
           builder: (context, viewModel, child) {
             return CustomBottomSheetForCreateEditStore(
               onPressed: () {
+                if (phoneController.text.isEmpty) {
+                  AlertsService.warning(
+                      context: context,
+                      message: AppStrings.phoneNumberIsRequired.tr(),
+                      title: AppStrings.warning.tr());
+                  return;
+                }
+                if (countrySelected.value == null) {
+                  AlertsService.warning(
+                      context: context,
+                      message: AppStrings.countryIsRequired.tr(),
+                      title: AppStrings.warning.tr());
+                  return;
+                }if (citySelected.value == null) {
+                  AlertsService.warning(
+                      context: context,
+                      message: AppStrings.cityIsRequired.tr(),
+                      title: AppStrings.warning.tr());
+                  return;
+                }if (stateSelected.value == null) {
+                  AlertsService.warning(
+                      context: context,
+                      message: AppStrings.stateIsRequired.tr(),
+                      title: AppStrings.warning.tr());
+                  return;
+                }
                 if (_formKey.currentState!.validate() && checkValidation()) {
                   storeCreateEditModel
                       .getPlaceByLatAndLong(
@@ -325,95 +354,97 @@ class _CreateEditStoreScreenState extends State<CreateEditStoreScreen> {
       ),
       body: GradientBgImage(
         child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                // SizedBox(height: 24),
-                defaultTextFormField(
-                  controller: nameArController,
-                  hintText: AppStrings.storeNameInArabic.tr(),
-                  validator: ValidationService.validateRequired,
-                ),
-                SizedBox(height: 18),
-                defaultTextFormField(
-                  controller: nameEnController,
-                  hintText: AppStrings.storeNameInEnglish.tr(),
-                  validator: ValidationService.validateRequired,
-                ),
-                SizedBox(height: 18),
-                PhoneNumberField(
-                  controller: phoneController,
-                  countryCodeController: countryCodeController,
-                ),
-                SizedBox(height: 18),
-                ValueListenableBuilder(
-                  valueListenable: areCountriesLoaded,
-                  builder: (context, isSelected, child) {
-                    return CountryDropDownWidget(
-                      countrySelected: countrySelected,
-                      countries: countriesViewModel.countries,
-                      isSelected: isSelected,
-                      onTap: setCountryChanged,
-                    );
-                  },
-                ),
-                SizedBox(height: 18),
-                ValueListenableBuilder(
-                  valueListenable: toggleCountrySelected,
-                  builder: (context, isSelected, child) {
-                    return StateDropDownWidget(
-                      stateSelected: stateSelected,
-                      states: statesViewModel.states,
-                      isSelected: isSelected,
-                      onTap: setStateChanged,
-                    );
-                  },
-                ),
-                SizedBox(height: 18),
-                ValueListenableBuilder(
-                  valueListenable: toggleStateSelected,
-                  builder: (context, isSelected, child) {
-                    return CityDropDownWidget(
-                      isSelected: isSelected,
-                      citySelected: citySelected,
-                      cities: citiesViewModel.cities,
-                      setCityChanged: (element) {
-                        storeCreateEditModel.createEditStoreModel.cityId =
-                            (element.id ?? 0).toString();
-                        citySelected.value = element.title;
+          child: SizedBox(
+            height : MediaQuery.sizeOf(context).height * 0.9,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  // SizedBox(height: 24),
+                  defaultTextFormField(
+                    controller: nameArController,
+                    hintText: "*${AppStrings.storeNameInArabic.tr()}",
+                    validator: ValidationService.validateRequired,
+                  ),
+                  defaultTextFormField(
+                    controller: nameEnController,
+                    hintText: "*${AppStrings.storeNameInEnglish.tr()}",
+                    validator: ValidationService.validateRequired,
+                  ),
+                  PhoneNumberField(
+                    controller: phoneController,
+                    create: true,
+                    countryCodeController: countryCodeController,
+                  ),
+                  SizedBox(height: 8),
+                  ValueListenableBuilder(
+                    valueListenable: areCountriesLoaded,
+                    builder: (context, isSelected, child) {
+                      return CountryDropDownWidget(
+                        countrySelected: countrySelected,
+                        countries: countriesViewModel.countries,
+                        isSelected: isSelected,
+                        onTap: setCountryChanged,
+                      );
+                    },
+                  ),
+                  SizedBox(height: 18),
+                  ValueListenableBuilder(
+                    valueListenable: toggleCountrySelected,
+                    builder: (context, isSelected, child) {
+                      return StateDropDownWidget(
+                        stateSelected: stateSelected,
+                        states: statesViewModel.states,
+                        isSelected: isSelected,
+                        onTap: setStateChanged,
+                      );
+                    },
+                  ),
+                  SizedBox(height: 18),
+                  ValueListenableBuilder(
+                    valueListenable: toggleStateSelected,
+                    builder: (context, isSelected, child) {
+                      return CityDropDownWidget(
+                        isSelected: isSelected,
+                        citySelected: citySelected,
+                        cities: citiesViewModel.cities,
+                        setCityChanged: (element) {
+                          storeCreateEditModel.createEditStoreModel.cityId =
+                              (element.id ?? 0).toString();
+                          citySelected.value = element.title;
 
-                        // storeCreateEditModel.createEditStoreModel.cities =
-                        //     element;
-                      },
-                    );
-                  },
-                ),
-                SizedBox(height: 18),
-                ValueListenableBuilder(
-                  valueListenable: toggleStateSelected,
-                  builder: (context, isSelected, child) {
-                    return isSelected == true //    latLngSelected.value
-                        ? ValueListenableBuilder(
-                            valueListenable: latLngSelected,
-                            builder: (context, positionSelected, child) {
-                              return MapWidget(
-                                mapController: mapController,
-                                positionSelected: positionSelected,
-                                initialZoom: initialZoom,
-                                onMapTap: (_, latlong) {
-                                  latLngSelected.value = latlong;
-                                  // mapController.move(latlong, 5.0);
-                                },
-                              );
+                          // storeCreateEditModel.createEditStoreModel.cities =
+                          //     element;
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: 18),
+                  ValueListenableBuilder(
+                    valueListenable: toggleStateSelected,
+                    builder: (context, isSelected, child) {
+                      return isSelected == true //    latLngSelected.value
+                          ? ValueListenableBuilder(
+                        valueListenable: latLngSelected,
+                        builder: (context, positionSelected, child) {
+                          return MapWidget(
+                            mapController: mapController,
+                            positionSelected: positionSelected,
+                            initialZoom: initialZoom,
+                            onMapTap: (_, latlong) {
+                              latLngSelected.value = latlong;
+                              // mapController.move(latlong, 5.0);
                             },
-                          )
-                        : SizedBox.shrink();
-                  },
-                ),
-              ],
+                          );
+                        },
+                      )
+                          : SizedBox.shrink();
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
+          )
         ),
       ),
     );

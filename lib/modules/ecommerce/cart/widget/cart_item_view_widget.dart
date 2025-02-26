@@ -214,7 +214,7 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -230,11 +230,10 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                             padding: EdgeInsets.symmetric(horizontal: AppSizes.s18,),
                             child: CircularProgressIndicator(color: Color(0xffFFFFFF),)),
                        if(!value.isGetCartLoading && !value.isAddItemCountLoading)
-                         Text("${value.cartModel!.cart!.subTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
+                         Text("${double.parse(value.cartModel!.cart!.subTotal.toString()).toStringAsFixed(2)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
-                              decoration: TextDecoration.lineThrough,
                               decorationColor: Color(0xffFFFFFF),
                               decorationThickness: 2,
                               color: Color(0xffFFFFFF)
@@ -244,6 +243,100 @@ class _CartItemViewWidgetState extends State<CartItemViewWidget> {
                       ],
                     ),
                   ),
+                  if(value.cartModel!.cart!.discountTotal != null && value.cartModel!.cart!.discountTotal != 0)SizedBox(height: 10,),
+                 if(value.cartModel!.cart!.discountTotal != null && value.cartModel!.cart!.discountTotal != 0) Padding(
+                    padding: EdgeInsets.only(right: 15, left: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(AppStrings.discount.tr().toUpperCase(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: Color(0xffFFFFFF)
+                          ),
+                        ),
+                        if(value.isGetCartLoading || value.isAddItemCountLoading)Container(
+                            padding: EdgeInsets.symmetric(horizontal: AppSizes.s18,),
+                            child: CircularProgressIndicator(color: Color(0xffFFFFFF),)),
+                       if(!value.isGetCartLoading && !value.isAddItemCountLoading)
+                         Text("-${value.cartModel!.cart!.discountTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              decorationColor: Color(0xffFFFFFF),
+                              decorationThickness: 2,
+                              color: Color(0xffFFFFFF)
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                  if(value.cartModel!.cart!.shippingCost != null && value.cartModel!.cart!.shippingCost != 0) SizedBox(height: 10,),
+                  if(value.cartModel!.cart!.shippingCost != null && value.cartModel!.cart!.shippingCost != 0) Padding(
+                    padding: EdgeInsets.only(right: 15, left: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(AppStrings.shippingCost.tr().toUpperCase(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: Color(0xffFFFFFF)
+                          ),
+                        ),
+                        if(value.isGetCartLoading || value.isAddItemCountLoading)Container(
+                            padding: EdgeInsets.symmetric(horizontal: AppSizes.s18,),
+                            child: CircularProgressIndicator(color: Color(0xffFFFFFF),)),
+                        if(!value.isGetCartLoading && !value.isAddItemCountLoading)
+                          Text("${value.cartModel!.cart!.shippingCost} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 15,
+                                decorationColor: Color(0xffFFFFFF),
+                                decorationThickness: 2,
+                                color: Color(0xffFFFFFF)
+                            ),
+                          ),
+
+                      ],
+                    ),
+                  ),
+                  if(value.cartModel!.cart!.taxesTotal != null && value.cartModel!.cart!.taxesTotal != 0) SizedBox(height: 10,),
+                 if(value.cartModel!.cart!.taxesTotal != null && value.cartModel!.cart!.taxesTotal != 0) Padding(
+                   padding: EdgeInsets.only(right: 15, left: 15),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     crossAxisAlignment: CrossAxisAlignment.center,
+                     children: [
+                       Text(AppStrings.tax.tr().toUpperCase(),
+                         style: const TextStyle(
+                             fontWeight: FontWeight.w400,
+                             fontSize: 15,
+                             color: Color(0xffFFFFFF)
+                         ),
+                       ),
+                       if(value.isGetCartLoading || value.isAddItemCountLoading)Container(
+                           padding: EdgeInsets.symmetric(horizontal: AppSizes.s18,),
+                           child: CircularProgressIndicator(color: Color(0xffFFFFFF),)),
+                      if(!value.isGetCartLoading && !value.isAddItemCountLoading)
+                        Text("${value.cartModel!.cart!.taxesTotal.toDouble().toStringAsFixed(2)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(),
+                         style: const TextStyle(
+                             fontWeight: FontWeight.w400,
+                             fontSize: 15,
+                             decorationColor: Color(0xffFFFFFF),
+                             decorationThickness: 2,
+                             color: Color(0xffFFFFFF)
+                         ),
+                       ),
+
+                     ],
+                   ),
+                 ),
+                const SizedBox(height: 20,)
                 ],
               ),
             ),

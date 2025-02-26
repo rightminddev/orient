@@ -7,13 +7,14 @@ import '../../../utils/components/general_components/all_text_field.dart';
 
 class StateDropDownWidget extends StatelessWidget {
   final bool? isSelected;
-
+  final String? title;
   final ValueNotifier<String?> stateSelected;
   final List<StateModel> states;
   final void Function(StateModel) onTap;
 
   const StateDropDownWidget(
       {super.key,
+        this.title,
       required this.isSelected,
       required this.stateSelected,
       required this.states,
@@ -29,7 +30,7 @@ class StateDropDownWidget extends StatelessWidget {
           valueListenable: stateSelected,
           builder: (context, stateSelectedValue, child) {
             return defaultDropdownField(
-              title: AppStrings.storeGovernorate.tr(),
+              title: title ??"*${AppStrings.storeGovernorate.tr()}",
               value: stateSelectedValue,
               items: states
                   .map(

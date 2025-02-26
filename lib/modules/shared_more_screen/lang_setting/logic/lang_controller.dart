@@ -32,6 +32,7 @@ class LangControllerProvider extends ChangeNotifier{
       );
       isLoading = false;
       isSuccess = true;
+      print("i will put lang 2");
       CacheHelper.setString(key: "lang", value: state);
       print(response.data);
       notifyListeners();

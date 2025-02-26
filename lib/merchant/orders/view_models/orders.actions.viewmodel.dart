@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import '../../../constants/app_strings.dart';
 import '../../../general_services/alert_service/alerts.service.dart';
@@ -9,6 +10,7 @@ class OrderActionsViewModel extends ChangeNotifier {
   String? orderStatus;
 
   bool isLoading = false;
+  bool isUpdate = false;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
     notifyListeners();
@@ -31,22 +33,34 @@ class OrderActionsViewModel extends ChangeNotifier {
 
   Future<bool> _updateOrderStatus(
       BuildContext context, int orderId, int storeId) async {
+    print("orderStatus---> ${orderStatus}");
+    //Ready for shipping
     try {
       final result = await OrdersService.updateOrderStatus(
         context: context,
         orderId: orderId,
         storeId: storeId,
-        status: orderStatus!,
+        status: orderStatus == "Ready for shipping" ? "ready_to_ship" : "not_available",
       );
 
       if (result.success && result.data != null) {
         context.pop();
+        isUpdate = true;
         AlertsService.success(
             title: AppStrings.success.tr(),
             context: context,
             message: result.message ?? AppStrings.updatedSuccessfully.tr());
         return true;
       } else {
+        Fluttertoast.showToast(
+            msg: result.message!,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         context.pop();
         AlertsService.error(
             title: AppStrings.failed.tr(),

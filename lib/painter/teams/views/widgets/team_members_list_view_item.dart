@@ -128,6 +128,7 @@ class TeamMembersListViewItem extends StatelessWidget {
                           onTap: () {
                             defaultActionBottomSheet(
                                 context: context,
+                                home: false,
                                 title: AppStrings.addUser.tr().toLowerCase(),
                                 headerIcon: Padding(
                                   padding: const EdgeInsets.all(8.0),

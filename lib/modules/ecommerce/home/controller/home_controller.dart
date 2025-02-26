@@ -24,6 +24,8 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
     List products = [];
     List moreProducts = [];
     List premiumProductImage = [];
+    var premiumImage;
+    var premiumId;
     List colorTrendGallery = [];
     List colorTrendProducts = [];
     List colorTrendBlog = [];
@@ -95,6 +97,8 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
         products = value.data['page']['products_list'];
         moreProducts = value.data['page']['more_products'];
         premiumProductImage = value.data['page']['premium_product_image'];
+        premiumId = value.data['page']['premium_product']['id'];
+        premiumImage = value.data['page']['premium_product_image'][0]['file'];
         coverImage = value.data['page']['cover_image'][0]['file'];
         isLoading = false;
         if(fromHome == true){
@@ -193,7 +197,7 @@ import 'package:orient/modules/ecommerce/home/model/color_trend_model.dart';
             "inspired_categories" : inspired_categories
           }
         );
-        inspireds = value.data['data'];
+        inspireds = value.data['data'][0]['images'];
         isInspiredLoading = false;
         isInspiredSuccess = true;
         notifyListeners();

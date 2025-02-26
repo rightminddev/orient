@@ -34,6 +34,9 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
               if (CheckConst.paymentStatus == 'failure') {
                 defaultActionBottomSheet(
                   context: context,
+                  isDismissible: false,
+                  home: false,
+                  enableDrag: false,
                   title: "${AppStrings.failed.tr().toUpperCase()}!",
                   buttonText: AppStrings.repayment.tr().toUpperCase(),
                   subTitle: AppStrings.paymentFailed.tr().toUpperCase(),
@@ -49,11 +52,12 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
             });
           }
           if (CheckConst.paymentStatus == 'success') {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance.addPostFrameCallback((_){
               if (CheckConst.paymentStatus == 'success') {
                 defaultActionBottomSheet(
                   context: context,
-                  title: "${AppStrings.successful.tr().toUpperCase()}!",
+                  home: true,
+                  title: "${AppStrings.successfulPurchase.tr().toUpperCase()}!",
                   buttonText: AppStrings.continueShopping.tr().toUpperCase(),
                   subTitle: AppStrings.yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp.tr().toUpperCase(),
                   viewCheckIcon: true,
@@ -64,7 +68,7 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
                   },
                   headerIcon: SvgPicture.asset("assets/images/ecommerce/svg/cart_success.svg", height: 42, width: 40),
                 );
-                CheckConst.paymentStatus = 'none';
+               CheckConst.paymentStatus = 'none';
               }
             });
           }
@@ -110,7 +114,7 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
                           const SizedBox(height: 15,),
                           defaultHeaderText(title: AppStrings.shippingAddress.tr().toUpperCase()),
                           const SizedBox(height: 15),
-                          const CheckoutLocationWidget(),
+                          CheckoutLocationWidget(),
                           const SizedBox(height: 16),
                           defaultHeaderText(title: AppStrings.paymentMethods.tr().toUpperCase()),
                           const SizedBox(height: 8),
@@ -125,7 +129,8 @@ class _ECommerceCheckoutScreenState extends State<ECommerceCheckoutScreen> {
                                     ),
                                   ),
                   ),
-              bottomNavigationBar: (value.isPrepareCheckoutLoading)?Container(height: 180,) :const CheckoutBottomButtonWidget()
+              bottomNavigationBar: (value.isPrepareCheckoutLoading)?Container(height: 180,) :
+              const CheckoutBottomButtonWidget()
           );
         },
       ),

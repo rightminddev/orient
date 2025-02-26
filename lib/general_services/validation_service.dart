@@ -1,3 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/constants/app_strings.dart';
+
 abstract class ValidationService {
   // Validate email format
   static String? validateEmail(String? value) {
@@ -28,19 +31,42 @@ abstract class ValidationService {
   }
 
   // Validate password format
-  static String? validatePassword(String? value) {
+  static String? validatePassword(String? value, {bool login = false}) {
     if (value == null || value.isEmpty) {
-      return 'Please enter a password';
+      return AppStrings.pleaseEnterAPassword.tr();
     }
-    // Example: Password should be at least 8 characters with one uppercase letter, one lowercase letter, one number, and one special character
-    String pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-    ///
-    ///
-    // RegExp regex = RegExp(pattern);
-    // if (!regex.hasMatch(value)) {
-    //   return 'Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character';
-    // }
+
+    if (!login) {
+      String upperCasePattern = r'(?=.*?[A-Z])'; // At least one uppercase letter
+      String lowerCasePattern = r'(?=.*?[a-z])'; // At least one lowercase letter
+      String numberPattern = r'(?=.*?[0-9])';    // At least one number
+      String specialCharPattern = r'(?=.*?[!@#\$&*~])'; // At least one special character
+      String minLengthPattern = r'.{8,}';        // At least 8 characters
+
+      List<String> missingCriteria = [];
+
+      // Check each requirement
+      if (!RegExp(upperCasePattern).hasMatch(value)) {
+        missingCriteria.add(AppStrings.atLeastOneUppercaseLetter.tr());
+      }
+      if (!RegExp(lowerCasePattern).hasMatch(value)) {
+        missingCriteria.add(AppStrings.atLeastOneLowercaseLetter.tr());
+      }
+      if (!RegExp(numberPattern).hasMatch(value)) {
+        missingCriteria.add(AppStrings.atLeastOneNumber.tr());
+      }
+      if (!RegExp(specialCharPattern).hasMatch(value)) {
+        missingCriteria.add(AppStrings.atLeastOneSpecialCharacter.tr());
+      }
+      if (!RegExp(minLengthPattern).hasMatch(value)) {
+        missingCriteria.add(AppStrings.aMinimumOfEightCharacters.tr());
+      }
+
+      if (missingCriteria.isNotEmpty) {
+        return "${AppStrings.mustInclude.tr()}: ${missingCriteria.join(', ')}.";
+      }
+    }
+
     return null;
   }
 

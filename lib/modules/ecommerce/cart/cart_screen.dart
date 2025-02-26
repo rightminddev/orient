@@ -72,11 +72,31 @@ class _ECommerceShoppingCartState extends State<ECommerceShoppingCart> {
                           ),
                         ),
                         const SizedBox(height: 10,),
-                        const CartItemViewWidget(),
+                        if(value.cartModel!.cart!.items!.isNotEmpty) const CartItemViewWidget(),
                         const SizedBox(height: 20,),
-                        CartEnterPromoWidget(),
+                        if(value.cartModel!.cart!.items!.isEmpty)Container(
+                          height: MediaQuery.sizeOf(context).height * 0.8,
+                          alignment: Alignment.center,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset("assets/images/ecommerce/svg/cart.svg"),
+                              const SizedBox(height: 10,),
+                              Text(
+                                AppStrings.theCartIsEmpty.tr().toUpperCase(),
+                                style: const TextStyle(
+                                    color: Color(0xff1B1B1B),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if(value.cartModel!.cart!.items!.isNotEmpty) CartEnterPromoWidget(),
                         const SizedBox(height: 15,),
-                        Row(
+                        if(value.cartModel!.cart!.items!.isNotEmpty)  Row(
                           children: [
                             SvgPicture.asset("assets/images/svg/vocher.svg"),
                             const SizedBox(width: 12,),
@@ -96,7 +116,7 @@ class _ECommerceShoppingCartState extends State<ECommerceShoppingCart> {
                                 ),
                               ),
                 ),
-            bottomNavigationBar: CartBottomButtonWidget()
+            bottomNavigationBar: value.cartModel!.cart!.items!.isNotEmpty?CartBottomButtonWidget() : const SizedBox.shrink()
         );
       },
     ),

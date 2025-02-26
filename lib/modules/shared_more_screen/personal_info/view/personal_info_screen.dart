@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
+import 'package:orient/models/settings/user_settings.model.dart';
 import 'package:orient/modules/authentication/views/widgets/phone_number_field.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:orient/modules/shared_more_screen/personal_info/logic/personal_info_model.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
@@ -21,16 +26,25 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   HomeViewModel? homeViewModel;
+  var jsonString;
+  var gCache;
   @override
   void initState() {
     homeViewModel = HomeViewModel();
-    if(homeViewModel!.userSettings != null){
-      if(homeViewModel!.userSettings!.phone != null){
-        phoneController.text = homeViewModel!.userSettings!.phone ?? "";
-      }if(homeViewModel!.userSettings!.email != null){
-        emailController.text = homeViewModel!.userSettings!.email ?? "";
-      }if(homeViewModel!.userSettings!.name != null){
-        nameController.text = homeViewModel!.userSettings!.name ?? "";
+    jsonString = CacheHelper.getString("US1");
+    if (jsonString != null && jsonString.isNotEmpty && jsonString != "") {
+      print("jsonString is --> $jsonString");
+       gCache = json.decode(jsonString) as Map<String, dynamic>; // Convert String back to JSON
+      print("S1 IS --> $gCache");
+      UserSettingConst.userSettings = UserSettingsModel.fromJson(gCache);
+    }
+    if(UserSettingConst.userSettings != null){
+      if(UserSettingConst.userSettings!.phone != null){
+        phoneController.text = UserSettingConst.userSettings!.phone ?? "";
+      }if(UserSettingConst.userSettings!.email != null){
+        emailController.text = UserSettingConst.userSettings!.email ?? "";
+      }if(UserSettingConst.userSettings!.name != null){
+        nameController.text = UserSettingConst.userSettings!.name ?? "";
       }
     }
     super.initState();
@@ -38,6 +52,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("jsonString is ${jsonString}");
     return ChangeNotifierProvider(create: (context) => PersonalInfoModelProvider(),
     child: Consumer<HomeViewModel>(
       builder: (context, homeViewModel, child) {
@@ -84,6 +99,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           onTap: (){}
                       ),
                       defaultTextFormField(
+                        context: context,
                         controller: emailController,
                         hintText: AppStrings.email.tr(),
                       ),

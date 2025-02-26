@@ -88,15 +88,16 @@ class _LangSettingScreenState extends State<LangSettingScreen> {
                                   selectIndex = index;
                                   selectValue = lang![index].toString();
                                 });
+                                print("selectValue --> ${selectValue}");
+                                print("selectValue is ----> $selectValue");
+                                CacheHelper.setString(key: "lang", value: (selectValue == "ar"|| selectValue == "اللغه العربية")? "ar" : "en");
+                                LocalizationService.setLocaleAndUpdateUrl(
+                                    context: context, newLangCode: (selectValue == "ar"|| selectValue == "اللغه العربية")? "ar" : "en");
                                await value.setDeviceSysLang(
-                                    state: (selectValue == "اللغه العربية")? "ar" : "en",
+                                    state: (selectValue == "ar" || selectValue == "اللغه العربية")? "ar" : "en",
                                   context: context,
                                   notiToken:await FirebaseMessaging.instance.getToken()
                                 );
-                                LocalizationService.setLocaleAndUpdateUrl(
-                                    context: context, newLangCode: (selectValue == "اللغه العربية")? "ar" : "en");
-                                print("selectValue is ----> $selectValue");
-                                CacheHelper.setString(key: "lang", value: (selectValue == "اللغه العربية")? "ar" : "en");
                               },
                               child: Container(
                                 width: double.infinity,
@@ -128,9 +129,7 @@ class _LangSettingScreenState extends State<LangSettingScreen> {
                                     const SizedBox(width: 15,),
                                     Text((lang![index].contains("English language")||lang![index].contains("en"))?"English language".toUpperCase() : "اللغه العربية", style: const TextStyle(color: Color(0xff191C1F), fontWeight: FontWeight.w500, fontSize: 14),)
                                     ,const Spacer(),
-                                    GestureDetector(
-                                        onTap: (){},
-                                        child: Text((lang![index].contains("en"))?"change".toUpperCase() : "تغيير", style: const TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500, color: Color(0xffE6007E)),))
+                                    Text((lang![index].contains("en"))?"change".toUpperCase() : "تغيير", style: const TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500, color: Color(0xffE6007E)),)
                                   ],
                                 ),
                               ),

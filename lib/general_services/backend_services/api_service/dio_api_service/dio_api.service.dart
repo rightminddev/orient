@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+import 'package:orient/routing/app_router.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -17,10 +20,27 @@ import '../../backend_services_interface.dart';
 
 class DioApiService implements BackEndServicesInterface {
   static final DioApiService _singleton = DioApiService._internal();
+  late Dio _dio;
+
   factory DioApiService() {
     return _singleton;
   }
-  DioApiService._internal();
+
+  DioApiService._internal() {
+    // Initialize Dio with PrettyDioLogger
+    _dio = Dio();
+    _dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        error: true,
+        compact: false,
+        maxWidth: 90,
+      ),
+    );
+  }
   static Uri _getUri(String url) {
     return Uri.parse(url);
   }
@@ -75,7 +95,14 @@ class DioApiService implements BackEndServicesInterface {
       case 401:
         respond = 'Unauthorized';
         // _toast.toastMethod(LocaleKeys.respond_401.tr());
+        final appConfigService =
+        Provider.of<AppConfigService>(context, listen: false);
+        appConfigService.logout().then((v){
+          context.goNamed(AppRoutes.splash.name,
+              pathParameters: {'lang': context.locale.languageCode});
+        });
         return OperationResult<T>(success: false, message: respond);
+
 
       case 429:
         respond = 'Too Many Requests';
@@ -176,19 +203,12 @@ class DioApiService implements BackEndServicesInterface {
       bool? allData = false,
       required BuildContext context}) async {
     try {
-      final dio = Dio();
-      dio.interceptors.add(PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseHeader: true,
-        responseBody: true,
-        compact: false,
-      ));
-      final response = await dio.get(
+      final response = await _dio.get(
         url,
         data: data,
         queryParameters: queryParameters,
         options: Options(
+            sendTimeout: const Duration(minutes: 2),
             headers: ApiServiceHelpers.buildHeaders(
                 additionalHeaders: header, context: context)),
       );
@@ -215,7 +235,7 @@ class DioApiService implements BackEndServicesInterface {
     bool? checkOnTokenExpiration = true,
   }) async {
     try {
-      final response = await Dio().post(
+      final response = await _dio.post(
         url,
         data: jsonEncode(data),
         options: Options(
@@ -363,7 +383,7 @@ class DioApiService implements BackEndServicesInterface {
       bool? allData = false,
       bool? checkOnTokenExpiration = true}) async {
     try {
-      final response = await Dio().put(
+      final response = await _dio.put(
         url,
         data: jsonEncode(data),
         options: Options(
@@ -391,7 +411,7 @@ class DioApiService implements BackEndServicesInterface {
       bool? allData = false,
       bool? checkOnTokenExpiration = true}) async {
     try {
-      final response = await Dio().delete(
+      final response = await _dio.delete(
         url,
         data: jsonEncode(data),
         options: Options(
@@ -436,7 +456,7 @@ class DioApiService implements BackEndServicesInterface {
         ),
       });
 
-      final response = await Dio().post(
+      final response = await _dio.post(
         url,
         data: formData,
         options: Options(
@@ -459,7 +479,7 @@ class DioApiService implements BackEndServicesInterface {
       }
     } catch (err, t) {
       debugPrint(
-          'Failed postFileWithDio() ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
+          'Failed postFileWith_dio ❌ \n error ${err.toString()} - in Line :- ${t.toString()}');
       return OperationResult<T>(
         success: false,
         message: err.toString(),
@@ -475,7 +495,7 @@ class DioApiService implements BackEndServicesInterface {
       bool? allData = false,
       required BuildContext context}) async {
     try {
-      final response = await Dio().patch(
+      final response = await _dio.patch(
         url,
         data: jsonEncode(data),
         options: Options(

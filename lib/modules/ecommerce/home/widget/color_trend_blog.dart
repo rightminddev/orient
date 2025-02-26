@@ -35,13 +35,13 @@ class ColorTrendBlog extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index)=> GestureDetector(
                       onTap: (){
-                        context.pushNamed(AppRoutes.blogDetails.name,
-                            pathParameters: {'lang': context.locale.languageCode,
-                              "date" : "${homeProvider.colorTrendBlog[index]['created_at']}",
-                              "image" : "${homeProvider.colorTrendBlog[index]['main_thumbnail'][0]['file']}",
-                              "title" : "${homeProvider.colorTrendBlog[index]['title']}",
-                              "contant" : "${homeProvider.colorTrendBlog[index]['short_description']}"
-                            });
+                        context.pushNamed(
+                          AppRoutes.blogDetailsTrend.name,
+                          pathParameters: {
+                            'lang': context.locale.languageCode,
+                           'title': Uri.encodeComponent("${homeProvider.colorTrendBlog[index]['id']}"),
+                           },
+                        );
                       },
                       child: Container(
                         height: 145,
@@ -105,19 +105,19 @@ class ColorTrendBlog extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Row(
-                              children: [
-                                Text(AppStrings.seeMore.tr().toUpperCase(),
-                                  style:const TextStyle(
-                                      color: Color(0xffE6007E),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400
-                                  ),
-                                ),
-                                const SizedBox(width: 5,),
-                                const Icon(Icons.arrow_forward, color: Color(0xffE6007E),size: 14,)
-                              ],
-                            )
+                            // Row(
+                            //   children: [
+                            //     Text(AppStrings.seeMore.tr().toUpperCase(),
+                            //       style:const TextStyle(
+                            //           color: Color(0xffE6007E),
+                            //           fontSize: 10,
+                            //           fontWeight: FontWeight.w400
+                            //       ),
+                            //     ),
+                            //     const SizedBox(width: 5,),
+                            //     const Icon(Icons.arrow_forward, color: Color(0xffE6007E),size: 14,)
+                            //   ],
+                            // )
                           ],
                         ),
                       ),

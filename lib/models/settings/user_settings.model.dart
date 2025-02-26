@@ -2,8 +2,6 @@ import 'app_settings_model.dart';
 
 class UserSettingsModel extends AppSettingsModel {
   final int? userId;
-
-  /// count od non-seen notifications
   final int? newNotificationCount;
   final String? name;
   final String? email;
@@ -17,8 +15,8 @@ class UserSettingsModel extends AppSettingsModel {
   final List<dynamic>? emergencyContacts;
   final dynamic departmentInfo;
   final List<dynamic>? departments;
-  final Map<String, dynamic>? managers;
-  final Map<String, dynamic>? teamleaders;
+ // final Map<String, dynamic>? managers;
+ // final Map<String, dynamic>? teamleaders;
   final List<dynamic>? approvalOfSubDepartments;
   final List<dynamic>? isManagerIn;
   final List<dynamic>? isTeamleaderIn;
@@ -50,8 +48,8 @@ class UserSettingsModel extends AppSettingsModel {
     this.emergencyContacts,
     this.departmentInfo,
     this.departments,
-    this.managers,
-    this.teamleaders,
+   // this.managers,
+   // this.teamleaders,
     this.approvalOfSubDepartments,
     this.isManagerIn,
     this.isTeamleaderIn,
@@ -96,8 +94,8 @@ class UserSettingsModel extends AppSettingsModel {
       emergencyContacts: json['emergency_contacts'] as List<dynamic>?,
       departmentInfo: json['department_info'],
       departments: json['departments'] as List<dynamic>?,
-      managers: json['managers'] as Map<String, dynamic>?,
-      teamleaders: json['teamleaders'] as Map<String, dynamic>?,
+     // managers: json['managers'] as Map<String, dynamic>?,
+    //  teamleaders: json['teamleaders'] as Map<String, dynamic>?,
       approvalOfSubDepartments:
       json['approval_of_sub_departments'] as List<dynamic>?,
       isManagerIn: json['is_manager_in'] as List<dynamic>?,
@@ -145,8 +143,8 @@ class UserSettingsModel extends AppSettingsModel {
       'emergency_contacts': emergencyContacts,
       'department_info': departmentInfo,
       'departments': departments,
-      'managers': managers,
-      'teamleaders': teamleaders,
+      //'managers': managers,
+      //'teamleaders': teamleaders,
       'approval_of_sub_departments': approvalOfSubDepartments,
       'is_manager_in': isManagerIn,
       'is_teamleader_in': isTeamleaderIn,

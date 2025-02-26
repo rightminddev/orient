@@ -17,40 +17,45 @@ class PainterGridViewItem extends StatelessWidget {
       onTap: itemModel.onTap,
       child: Stack(
         alignment: Alignment.topCenter,
-        clipBehavior: Clip.none,
         children: [
           Container(
-            decoration: BoxDecoration(
-                color: const Color(AppColors.textC5),
-                borderRadius: BorderRadius.circular(AppSizes.s15)),
-            padding: const EdgeInsetsDirectional.only(
-              bottom: AppSizes.s30,
-              start: AppSizes.s12,
-              end: AppSizes.s12,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  itemModel.title.toUpperCase(),
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff224982)),
-                ),
-                gapH4,
-                Text(
-                  AppStrings.customizeNotifications.tr().toUpperCase(),
-                  style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff231F20)),
-                ),
-              ],
+            padding:EdgeInsets.symmetric(vertical: 25),
+            width: AppSizes.s150,
+            height: AppSizes.s200,
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: const Color(AppColors.textC5),
+                  borderRadius: BorderRadius.circular(AppSizes.s15)),
+              padding: const EdgeInsetsDirectional.only(
+                bottom: AppSizes.s30,
+                start: AppSizes.s12,
+                end: AppSizes.s12,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    itemModel.title.toUpperCase(),
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff224982)),
+                  ),
+                  gapH4,
+                  Text(
+                    AppStrings.customizeNotifications.tr().toUpperCase(),
+                    style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff231F20)),
+                  ),
+                ],
+              ),
             ),
           ),
-          Positioned(
-            top: -MediaQuery.of(context).size.height*0.0500,
+          GestureDetector(
+            onTap: itemModel.onTap,
             child: Container(
               width: AppSizes.s64,
               height: AppSizes.s64,

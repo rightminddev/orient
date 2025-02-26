@@ -1,0 +1,18 @@
+[
+   {
+      "key":"notification",
+      "route":"notification"
+   },
+   {
+      "key":"notificationShow",
+      "route":"notification/{id}"
+   },
+   {
+      "key":"jobShow",
+      "route":"hospital/{hospitalId}/job/{jobId}"
+   },
+   {
+      "key":"store",
+      "route":"store"
+   }
+]

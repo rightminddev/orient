@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
 import 'package:orient/constants/settings/app_icons.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/utils/cached_network_image_widget.dart';
@@ -75,6 +77,7 @@ class CommentWidget extends StatelessWidget {
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: context.width * 0.15,
@@ -124,91 +127,114 @@ class CommentWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(
-                                fontWeight: nameFontWeight ?? FontWeight.w600,
-                                color: nameFontColor ??
-                                    AppThemeService
-                                        .colorPalette.secondaryTextColor.color,
-                                fontSize: nameFontSize,
-                              ),
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.3,
+                          child: Text(
+                            name,
+                            maxLines: 1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                              fontWeight: nameFontWeight ?? FontWeight.w600,
+                              color: nameFontColor ??
+                                  AppThemeService
+                                      .colorPalette.secondaryTextColor.color,
+                              fontSize: nameFontSize,
+                            ),
+                          ),
                         ),
-                        isVerified == true
-                            ? Padding(
-                                padding: EdgeInsets.only(left: 4),
-                                child: SvgPicture.asset(
-                                  AppIcons.checkMarkDashed,
-                                  width: 12,
-                                  height: 12,
-                                  colorFilter: ColorFilter.mode(
-                                      AppThemeService.colorPalette
-                                          .quaternaryTextColor.color,
-                                      BlendMode.srcIn),
-                                  fit: BoxFit.scaleDown,
-                                ),
-                              )
-                            : SizedBox.shrink(),
+
                       ],
                     ),
                     Text(
                       date,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        fontWeight: dateFontWeight,
+                        color: dateFontColor ??
+                            AppThemeService
+                                .colorPalette.quaternaryTextColor.color,
+                        fontSize: dateFontSize,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height:comment != null ? 5 : 0,),
+                comment != null ? Text(
+                  comment!,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontWeight: commentFontWeight,
+                    color: commentFontColor ??
+                        AppThemeService
+                            .colorPalette.tertiaryTextColor.color,
+                    fontSize: commentFontSize ?? AppSizes.s10,
+                  ),
+                ) : SizedBox.shrink(),
+                SizedBox(height:rate != null ? 5 : 0,),
+                rate != null ? Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 1),
+                      decoration: ShapeDecoration(
+                        color: Color(0xffFFFABB),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppSizes.s18),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            rate!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                              fontWeight: commentFontWeight,
+                              color: commentFontColor ??
+                                  AppThemeService.colorPalette
+                                      .tertiaryTextColor.color,
+                              fontSize: commentFontSize,
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            AppIcons.star,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20,),
+                    if(isVerified == true)  Row(
+                      children: [
+                        Text(
+                          AppStrings.verifiedPurchase.tr(),
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
                             fontWeight: dateFontWeight,
                             color: dateFontColor ??
                                 AppThemeService
                                     .colorPalette.quaternaryTextColor.color,
                             fontSize: dateFontSize,
                           ),
+                        ),
+                        SizedBox(width: 2,),
+                        Padding(
+                          padding: EdgeInsets.only(left: 4),
+                          child: SvgPicture.asset(
+                            AppIcons.checkMarkDashed,
+                            width: 12,
+                            height: 12,
+                            colorFilter: ColorFilter.mode(
+                                AppThemeService.colorPalette
+                                    .quaternaryTextColor.color,
+                                BlendMode.srcIn),
+                            fit: BoxFit.scaleDown,
+                          ),
+                        )
+                      ],
                     )
                   ],
-                ),
-                SizedBox(height:comment != null ? 5 : 0,),
-                comment != null ? Text(
-                        comment!,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              fontWeight: commentFontWeight,
-                              color: commentFontColor ??
-                                  AppThemeService
-                                      .colorPalette.tertiaryTextColor.color,
-                              fontSize: commentFontSize ?? AppSizes.s10,
-                            ),
-                      ) : SizedBox.shrink(),
-                SizedBox(height:rate != null ? 5 : 0,),
-                rate != null ? Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 1),
-                        decoration: ShapeDecoration(
-                          color: Color(0xffFFFABB),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppSizes.s18),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '5',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    fontWeight: commentFontWeight,
-                                    color: commentFontColor ??
-                                        AppThemeService.colorPalette
-                                            .tertiaryTextColor.color,
-                                    fontSize: commentFontSize,
-                                  ),
-                            ),
-                            SvgPicture.asset(
-                              AppIcons.star,
-                            ),
-                          ],
-                        ),
-                      ) : SizedBox.shrink(),
+                ) : SizedBox.shrink(),
               ],
             ),
           ),

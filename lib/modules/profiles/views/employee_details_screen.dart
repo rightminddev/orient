@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../utils/placeholder_no_existing_screen/no_existing_placeholder_screen.dart';
@@ -50,23 +51,20 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                     if (
                         // if the current employee open his profile
                         ((widget.employee?.id ==
-                                    viewModel.currentUserSettings?.userId) &&
+                                    UserSettingConst.userSettings!.userId) &&
                                 (widget.employee?.id != null &&
-                                    viewModel.currentUserSettings?.userId !=
+                                    UserSettingConst.userSettings!.userId !=
                                         null)) ||
                             //if the current user is manager || the current user is leader of the opened employee profile
-                            (viewModel.currentUserSettings?.managers?.keys
-                                    .contains(
-                                        widget.employee?.departmentId?.value) ==
-                                true) ||
-                            (viewModel.currentUserSettings?.isManagerIn !=
+
+                            (UserSettingConst.userSettings!.isManagerIn !=
                                     null &&
-                                (viewModel.currentUserSettings?.isManagerIn
+                                (UserSettingConst.userSettings!.isManagerIn
                                         ?.isNotEmpty ??
                                     false)) ||
-                            (viewModel.currentUserSettings?.isTeamleaderIn !=
+                            (UserSettingConst.userSettings!.isTeamleaderIn !=
                                     null &&
-                                (viewModel.currentUserSettings?.isTeamleaderIn
+                                (UserSettingConst.userSettings!.isTeamleaderIn
                                         ?.isNotEmpty ??
                                     false)))
                       viewModel.isLoading

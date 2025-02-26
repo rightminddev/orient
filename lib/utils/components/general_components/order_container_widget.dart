@@ -6,6 +6,7 @@ import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/app_theme.service.dart';
 import 'package:orient/general_services/localization.service.dart';
+import 'package:orient/models/invoice_model.dart';
 import 'package:orient/routing/app_router.dart';
 
 import '../../../merchant/orders/models/order_status.dart';
@@ -13,10 +14,17 @@ import '../../../models/orders/order_model.dart';
 import 'button_widget.dart';
 
 class OrderContainerWidget extends StatelessWidget {
-  final OrderModel orderModel;
+   OrderModel? orderModel;
+   InvoiceModel? invoiceModel;
+  var orders;
+  bool invoiceDetails = false;
+  String? invoice = "no";
+  String? goToInvoice = "no";
   final int storeId;
-  const OrderContainerWidget(
-      {super.key, required this.orderModel, required this.storeId});
+  var orderId;
+  var odoo;
+   OrderContainerWidget(
+      {super.key,this.orderModel,this.goToInvoice,this.orderId,required this.invoiceDetails,this.invoiceModel,this.invoice, required this.storeId, this.odoo, this.orders});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,7 @@ class OrderContainerWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'ORDER № ${orderModel.uuid}',
+           invoice == "yes" ?'${AppStrings.orderNo.tr().toUpperCase()} ${invoiceModel!.invoiceName ?? ""}' : odoo == "no" ?'${AppStrings.orderNo.tr().toUpperCase()} ${orderModel!.uuid}':'${AppStrings.orderNo.tr().toUpperCase()} ${orders['sales_order_name']}',
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                   color: AppThemeService.colorPalette.secondaryTextColor.color,
                   height: 0,
@@ -50,12 +58,14 @@ class OrderContainerWidget extends StatelessWidget {
                 ),
           ),
           TitleWithDataWidget(
-            data: orderModel.date ?? '',
-            title: 'Date',
+            status: false,
+            data: invoice == "yes" ?'${invoiceModel!.invoiceDateOnly ?? ""}':odoo == "no" ?orderModel!.date ?? '' : orders['sales_order_date_only'],
+            title: AppStrings.date.tr(),
           ),
           TitleWithDataWidget(
-            data: '${orderModel.total} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}', //TODO: currency
-            title: 'Total Amount',
+            status: false,
+            data:invoice == "yes" ?'${invoiceModel!.invoiceAmount ?? "0"}':odoo == "no" ? '${orderModel!.total} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}':'${orders['sales_order_amount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}', //TODO: currency
+            title: AppStrings.totalAmount.tr(),
           ),
           const SizedBox(height: 12),
           Row(
@@ -68,24 +78,68 @@ class OrderContainerWidget extends StatelessWidget {
                   //   MaterialPageRoute(
                   //     builder: (context) => OrderDetailsScreen(
                   //       storeId: storeId,
-                  //       orderId: orderModel.id ?? 0,
+                  //       orderId: orderModel!.id ?? 0,
                   //     ),
                   //   ),
                   // );
                   Offset begin = const Offset(1.0, 0.0);
-                  context.pushNamed(
-                    AppRoutes.orderDetails.name,
-                    pathParameters: {
-                      'lang': context.locale.languageCode,
-                      "id": orderModel.id.toString(),
-                      "orderId": orderModel.id.toString(),
-                      "storeId": storeId.toString(),
-                    },
-                    queryParameters: {
-                      'lang': context.locale.languageCode,
-                    },
-                    extra: begin,
-                  );
+                  if(invoiceDetails == true){
+                    context.pushNamed(
+                      AppRoutes.invoiceDetails.name,
+                      pathParameters: {
+                        "orderId": orderId.toString(),
+                        "storeId": storeId.toString(),
+                        "invoiceId" : invoiceModel!.invoiceId.toString(),
+                        "id" : orderId.toString(),
+                        "odoo" : "yes",
+                        "invoice" : "yes",
+                        "goToInvoice" : "yes",
+                        'lang': context.locale.languageCode,
+                      },
+                      queryParameters: {
+                        'lang': context.locale.languageCode,
+                      },
+                      extra: begin,
+                    );
+                  }else{
+                    if(goToInvoice == "yes" && odoo == "yes"){
+                      context.pushNamed(
+                        AppRoutes.orderInvoice.name,
+                        pathParameters: {
+                          "orderId": orders['sales_order_id'].toString(),
+                          "storeId": storeId.toString(),
+                          'lang': context.locale.languageCode,
+                        },
+                        queryParameters: {
+                          'lang': context.locale.languageCode,
+                        },
+                        extra: begin,
+                      );
+                    }
+                    else {
+                      context.pushNamed(
+                        AppRoutes.orderDetails.name,
+                        pathParameters: {
+                          'lang': context.locale.languageCode,
+                          "goToInvoice" : "no",
+                          "id": odoo == "no"
+                              ? orderModel!.id.toString()
+                              : orders['sales_order_id'].toString(),
+                          "orderId": odoo == "no"
+                              ? orderModel!.id.toString()
+                              : orders['sales_order_id'].toString(),
+                          "storeId": storeId.toString(),
+                          "odoo": odoo,
+                          "invoice" : "no"
+                        },
+                        queryParameters: {
+                          'lang': context.locale.languageCode,
+                        },
+                        extra: begin,
+                      );
+
+                    }
+                  }
                 },
                 borderSide:
                     const BorderSide(width: 1, color: Color(AppColors.oc1)),
@@ -95,17 +149,23 @@ class OrderContainerWidget extends StatelessWidget {
                 fontColor: const Color(AppColors.oc1),
                 backgroundColor: Colors.transparent,
               ),
-              Text(
-                (orderStatusApiKeys.containsValue(orderModel.merchantStatus)
+             if(invoice != "yes") Text(
+                   odoo == "no" ?  (orderStatusApiKeys.containsValue(orderModel!.merchantStatus)
                         ? orderStatusMap[orderStatusApiKeys.entries
                             .firstWhere((value) =>
-                                value.value == orderModel.merchantStatus)
-                            .key]
-                        : orderModel.merchantStatus) ??
-                    '',
+                                value.value == orderModel!.merchantStatus!)
+                            .key]!.tr()
+                        : orderModel!.merchantStatus) ??
+                    '': orders['sales_status'].toString().tr(),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: const Color(0xFF2AA952),
+                      color:invoice == "yes" ? const Color(0xFF2AA952): odoo == "no" ?(orderStatusApiKeys.containsValue(orderModel!.merchantStatus))?(orderStatusMap[orderStatusApiKeys.entries
+                          .firstWhere((value) =>
+                      value.value == orderModel!.merchantStatus!)
+                          .key]!.tr().contains("متوفر") || orderStatusMap[orderStatusApiKeys.entries
+                          .firstWhere((value) =>
+                      value.value == orderModel!.merchantStatus!)
+                          .key]!.tr().contains("available"))? Colors.red :const Color(0xFF2AA952) : Colors.transparent??Colors.transparent : const Color(0xFF2AA952) ,
                     ),
               ),
             ],
@@ -117,10 +177,11 @@ class OrderContainerWidget extends StatelessWidget {
 }
 
 class TitleWithDataWidget extends StatelessWidget {
-  final String title;
-  final String data;
-  const TitleWithDataWidget(
-      {super.key, required this.title, required this.data});
+   String? title;
+   String? data;
+  bool? status = false;
+   TitleWithDataWidget(
+      {super.key, this.title, this.data, this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -133,10 +194,17 @@ class TitleWithDataWidget extends StatelessWidget {
                 color: AppThemeService.colorPalette.secondaryTextColor.color,
               ),
         ),
-        Text(
-          data,
+        if(status == false)Text(
+          data!,
           style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 color: AppThemeService.colorPalette.quaternaryTextColor.color,
+              ),
+        ),if(status == true)Text(
+          data!,
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                color: (data != null)?
+                (data!.contains("متوفر") || data!.contains("available"))?Colors.red: const Color(0xFF2AA952)
+            :Colors.transparent,
               ),
         ),
       ],

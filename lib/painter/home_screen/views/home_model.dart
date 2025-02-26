@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 
 class HomeModelProvider extends ChangeNotifier{
@@ -8,6 +11,7 @@ class HomeModelProvider extends ChangeNotifier{
  bool isSuccess = false;
  bool isError = false;
  bool _isLoading = false;
+ bool? status;
  bool gif = false;
  String? errorMessage = '';
  void startLoading() {
@@ -35,10 +39,33 @@ class HomeModelProvider extends ChangeNotifier{
         url: "/rm_pointsys/v1/redeem_gift_card",
         context: context,
         data: {
-          "serial" : serial
+          "serial" : serial.replaceAll('-', '')
         }
     ).then((value){
       print(value.data);
+      status = value.data['status'];
+      if(value.data['status'] == false){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            AlertsService.error(
+                context: context,
+                message: value.data['message'],
+                title: AppStrings.failed.tr()
+            );
+          }
+        });
+      }
+      if(value.data['status'] == true){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            AlertsService.success(
+                context: context,
+                message: "${value.data['message']}",
+                title: AppStrings.success.tr()
+            );
+          }
+        });
+      }
       isLoading = false;
       errorMessage = value.data['message'];
       isSuccess = true;

@@ -25,10 +25,7 @@ class HomeAddsWidget extends StatelessWidget {
                   onTap: (){
                     context.pushNamed(AppRoutes.blogDetails.name,
                         pathParameters: {'lang': context.locale.languageCode,
-                          "date" : "${homeProvider.productsBlog[index]['created_at']}",
-                          "image" : (homeProvider.productsBlog[index]['main_thumbnail'].isNotEmpty)?"${homeProvider.productsBlog[index]['main_thumbnail'][0]['file']}": "https://th.bing.com/th/id/R.234a9f3cd371aaa8c7ff9f07354530a5?rik=nDLlZSdsVzVsyA&pid=ImgRaw&r=0",
-                          "title" : "${homeProvider.productsBlog[index]['title']}",
-                          "contant" : "${homeProvider.productsBlog[index]['short_description']}"
+                           "title" : "${homeProvider.productsBlog[index]['id']}",
                         });
                   },
                   child: Container(
@@ -93,18 +90,25 @@ class HomeAddsWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Row(
-                          children: [
-                            Text(AppStrings.seeMore.tr().toUpperCase(),
-                              style:const TextStyle(
-                                  color: Color(0xffE6007E),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400
+                        GestureDetector(
+                          onTap: (){
+                            context.pushNamed(AppRoutes.blog.name,
+                                pathParameters: {'lang': context.locale.languageCode,
+                                });
+                          },
+                          child: Row(
+                            children: [
+                              Text(AppStrings.seeMore.tr().toUpperCase(),
+                                style:const TextStyle(
+                                    color: Color(0xffE6007E),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 5,),
-                            const Icon(Icons.arrow_forward, color: Color(0xffE6007E),size: 14,)
-                          ],
+                              const SizedBox(width: 5,),
+                              const Icon(Icons.arrow_forward, color: Color(0xffE6007E),size: 14,)
+                            ],
+                          ),
                         )
                       ],
                     ),

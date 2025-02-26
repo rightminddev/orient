@@ -54,7 +54,7 @@ class DefaultTextFieldCodeSendNow extends StatelessWidget {
                       focusedErrorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
                       contentPadding: const EdgeInsets.only(top: 12),
-                      hintText: '1294-1256-5523-5520',
+                      hintText: '1234-5678-1234-5678',
                       suffixIcon: GestureDetector(
                         onTap: (){
                           if(codeController.text.isNotEmpty){

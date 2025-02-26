@@ -1,16 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/modules/ecommerce/home/controller/const.dart';
+import 'package:orient/modules/ecommerce/search/consts.dart';
 class SearchConstant{
-static  TextEditingController minPriceController = TextEditingController();
- static TextEditingController maxPriceController = TextEditingController();
+
  static var selectId;
  static var selectSizeId;
  static var selectSizeAttributesId;
  static var selectColorId;
  static var selectColorAttributesId;
+ static bool? filter = false;
 }
 class SearchControllerProvider extends ChangeNotifier {
   bool isLoadingSearch = false;
@@ -23,6 +25,8 @@ class SearchControllerProvider extends ChangeNotifier {
   List searchProductsAttributesSize= [];
   List ids = [];
   int? selectColorIndex;
+  int? selectCatIndex;
+  int? selectSizeIndex;
   bool hasMore = true;
   final ScrollController controller = ScrollController();
   final int expectedPageSize = 9;
@@ -52,94 +56,125 @@ class SearchControllerProvider extends ChangeNotifier {
       return true;
     }
   }
-  Future<void> getSearch({required BuildContext context, int? id, bool crossSells = false,
-    category_id, price_from, price_to,pages, bool addAll = false,bool? isNewPage, colorId, sizeId,attributesColorId,attributesSizeId
+  List productss = [];
+  Set<int> productIds = {}; // Track unique product IDs
+
+  Future<void> getSearch({
+    required BuildContext context,
+    int? id,
+    bool crossSells = false,
+    category_id,
+    price_from,
+    price_to,
+    pages,
+    bool addAll = false,
+    bool? isNewPage,
+    colorId,
+    sizeId,
+    attributesColorId,
+    attributesSizeId,
   }) async {
+    print(isNewPage);
     isLoadingSearch = true;
     errorMessageSearch = null;
     notifyListeners();
+
     try {
       var value = await DioHelper.getData(
         url: "/rm_ecommarce/v1/products/search",
         context: context,
         query: {
-          "page":pages ?? pageNumber,
-          if(crossSells == true)  "with": "crossSells",
-          if(colorId != null && attributesColorId != null)"attributes[$attributesColorId]" : colorId,
-          if(sizeId != null && attributesSizeId != null)"attributes[$attributesSizeId}]" : sizeId,
-          if(SearchConstant.selectId != null && SearchConstant.selectId != '-1'&& SearchConstant.selectId != -1)"category_id" : SearchConstant.selectId,
-          if(category_id != null && category_id != '-1' && category_id != -1)"category_id" : category_id,
-          if(SearchConstant.minPriceController.text.isNotEmpty)"price_from" : SearchConstant.minPriceController.text,
-          if(SearchConstant.maxPriceController.text.isNotEmpty)"price_to" : SearchConstant.maxPriceController.text
+          "page": pages ?? pageNumber,
+          if (attributesColorId != null) "attributes[$attributesColorId]": colorId != -1 ? colorId : null,
+          if (attributesSizeId != null) "attributes[$attributesSizeId]": sizeId != -1 ? sizeId : null,
+          if (SearchConstant.selectId != null && SearchConstant.selectId != '-1' && SearchConstant.selectId != -1)
+            "category_id": SearchConstant.selectId,
+          if (category_id != '-1' && category_id != -1) "category_id": category_id,
+          "price_from": (SearchConsts.minPriceController.text.isNotEmpty) ? SearchConsts.minPriceController.text : null,
+          "price_to": (SearchConsts.maxPriceController.text.isNotEmpty) ? SearchConsts.maxPriceController.text : null,
         },
       );
+
       print("API Response: ${value.data}");
       isSuccessSearch = true;
       isLoadingSearch = false;
+      productss = value.data['products'];
+
       if (value.data['products'] != null && value.data['products'].isNotEmpty) {
+        List newProducts = value.data['products'];
+
+        // Remove duplicates based on ID
+        List uniqueProducts = newProducts.where((p) => !productIds.contains(p['id'])).toList();
+
         if (isNewPage == true) {
-          searchProduct.addAll(value.data['products'] );
+          searchProduct.addAll(uniqueProducts);
         } else {
-          searchProduct = value.data['products'];
+          searchProduct = uniqueProducts;
           print("PRODUCTS SUCCESS");
         }
+
+        // Update product ID tracker
+        productIds.addAll(uniqueProducts.map((p) => p['id']));
+
         if (hasMore) pageNumber++;
-       // pageNumber++;
       }
+
       print("111");
       SearchConstant.selectId = null;
-      print("222");
-      SearchConstant.minPriceController.clear();
-      print("333");
-      SearchConstant.maxPriceController.clear();
-      print("444");
+      SearchConsts.minPriceController.clear();
+      SearchConsts.maxPriceController.clear();
       searchProductsCategories = value.data['categories'];
-      print("555");
       HomeConst.Ids = [];
-      print("666");
-      if(searchProduct.isNotEmpty){
+
+      if (searchProduct.isNotEmpty) {
         for (var e in searchProduct) {
           idsCheck.add(e['id']);
           HomeConst.Ids = idsCheck;
           print("IDS CHECK SEARCH products---> $idsCheck");
         }
       }
-      print("777");
-      value.data['attributes'].forEach((e){
-        if(e['slug'] == "color"){
+
+      // Process attributes
+      value.data['attributes'].forEach((e) {
+        if (e['slug'] == "color") {
           searchProductsAttributesColor = e['options'];
-          print("888");
+          searchProductsAttributesColor.insert(0, {"id": null, "title": 0, "data": "123456"});
           SearchConstant.selectColorAttributesId = e['id'];
-          print("searchProductsAttributesColor is ---> $searchProductsAttributesColor");
         }
       });
-      print("999");
-      value.data['attributes'].forEach((e){
-        if(e['slug'] == "wight"){
+
+      value.data['attributes'].forEach((e) {
+        if (e['slug'] == "wight") {
           searchProductsAttributesSize = e['options'];
           SearchConstant.selectSizeAttributesId = e['id'];
+          searchProductsAttributesSize.insert(0, {"id": null, "title": AppStrings.all.tr(), "data": "123456"});
         }
       });
-      value.data['categories'].forEach((e){
+
+      value.data['categories'].forEach((e) {
         ids.add(e['id']);
       });
-      if(addAll == true){
+
+      if (addAll == true) {
         searchProductsCategories.add({
-          "id": ids,
+          "id": null,
           "title": AppStrings.all.tr().toUpperCase(),
           "status": "publish",
-          "parent_id": null
-        },);
-        final allCategoryIndex = searchProductsCategories.indexWhere((item) => item['title'] == AppStrings.all.tr().toUpperCase());
+          "parent_id": null,
+        });
+
+        final allCategoryIndex = searchProductsCategories.indexWhere(
+                (item) => item['title'] == AppStrings.all.tr().toUpperCase());
+
         if (allCategoryIndex != -1) {
           final allCategory = searchProductsCategories.removeAt(allCategoryIndex);
           searchProductsCategories.insert(0, allCategory);
         }
-        addAll == false;
       }
+
       print("Search products: $searchProduct");
       notifyListeners();
-      } catch (e) {
+    } catch (e) {
       isLoadingSearch = false;
       errorMessageSearch = e.toString();
       isSuccessSearch = false;
@@ -147,6 +182,7 @@ class SearchControllerProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   bool isLoadingCategory = false;
   String? errorMessageCategory;
   List categories = [];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../general_services/layout.service.dart';
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     viewModel = HomeViewModel();
-    viewModel.initializeHomeScreen(context);
+    //viewModel.initializeHomeScreen(context);
   }
 
   @override
@@ -47,8 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
               expandedHeight: AppSizes.s300,
               shrinkChild: Consumer<HomeViewModel>(
                   builder: (context, viewModel, child) => HomeAppbarWidget(
-                        userSettings: viewModel.userSettings,
-                        user2Settings: viewModel.userSettings2,
                         requests: viewModel.myRequests,
                         isExpanded: false,
                       )),
@@ -59,9 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           viewModel.isLoading
                               ? const HomeAppbarLoading()
                               : HomeAppbarWidget(
-                                  userSettings: viewModel.userSettings,
                                   requests: viewModel.myRequests,
-                                  user2Settings: viewModel.userSettings2))),
+                          ))),
             )
           ],
           floatingActionButton: const MainAppFabWidget(),

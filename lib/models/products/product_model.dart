@@ -2,26 +2,26 @@ import 'auto_discount_model.dart';
 import 'main_cover_model.dart';
 
 class ProductModel {
-  int? id;
+  var id;
   String? sku;
   String? stockStatus;
-  int? stock;
+  var stock;
   String? title;
   String? description;
   String? shortDescription;
   List<MainCoverModel>? mainCover;
-  int? reviewRate;
-  int? reviewCount;
-  int? regularPrice;
-  int? sellPrice;
-  int? price;
+  var reviewRate;
+  var reviewCount;
+  var regularPrice;
+  var sellPrice;
+  var price;
   AutoDiscountModel? autoDiscount;
-  int? parentId;
-  int? brandId;
-  int? shippingClassId;
-  int? categoryId;
+  var parentId;
+  var brandId;
+  var shippingClassId;
+  var categoryId;
   String? merchantsUnit;
-  int? merchantsPrice;
+  var merchantsPrice;
 
   ProductModel(
       {this.id,

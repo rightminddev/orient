@@ -1,17 +1,17 @@
-import 'package:easy_localization/easy_localization.dart' as locale;
 import 'package:flutter/material.dart';
+import 'package:orient/general_services/localization.service.dart';
 import '../../../../constants/app_sizes.dart';
 import '../../../../constants/app_strings.dart';
 import 'custom_switch_button.dart';
-
+import 'package:easy_localization/easy_localization.dart' as locale;
 class SwitchRow extends StatelessWidget {
-  final bool value;
+   bool value;
   final ValueChanged<bool> onChanged;
   final String? rightText;
   final String? leftText;
   final bool? isLoginPageStyle;
 
-  const SwitchRow({
+   SwitchRow({
     super.key,
     required this.value,
     required this.onChanged,
@@ -26,16 +26,17 @@ class SwitchRow extends StatelessWidget {
         ? Theme.of(context)
             .textTheme
             .labelLarge
-            ?.copyWith(fontSize: AppSizes.s14, fontWeight: FontWeight.w500)
+            ?.copyWith(fontSize: AppSizes.s12, fontWeight: FontWeight.w500)
         : Theme.of(context).textTheme.displaySmall;
-
+    value = true;
+    print("VALUE IS --> $value");
     return Directionality(
-      textDirection: TextDirection.ltr,
+      textDirection: LocalizationService.isArabic(context: context)? TextDirection.ltr : TextDirection.ltr,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            leftText ?? AppStrings.byEmail.tr(),
+           Text(
+            rightText ?? AppStrings.byEmail.tr(),
             style: textStyle,
           ),
           gapW8,
@@ -48,8 +49,8 @@ class SwitchRow extends StatelessWidget {
             onChanged: onChanged,
           ),
           gapW8,
-          Text(
-            rightText ?? AppStrings.byPhone.tr(),
+            Text(
+            leftText ?? AppStrings.byPhone.tr(),
             style: textStyle,
           ),
         ],

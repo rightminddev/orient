@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/media_query_values.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,8 @@ import '../view_models/login.viewmodel.dart';
 
 
 class AdminLoginScreen extends StatefulWidget {
-  const AdminLoginScreen({super.key});
+  bool? fromSplash = false;
+  AdminLoginScreen({super.key, this.fromSplash});
 
   @override
   AdminLoginScreenState createState() => AdminLoginScreenState();
@@ -104,24 +106,46 @@ class AdminLoginScreenState extends State<AdminLoginScreen>
                                   appName: AppStrings.ecommerceStore.tr(),
                                   iconColor: const Color(0xffE6007E),
                                   onTap: (){
-                                    context.goNamed(AppRoutes.eCommerceHomeScreen.name,
-                                        pathParameters: {'lang': context.locale.languageCode});
+                                    print(widget.fromSplash);
+                                    if(widget.fromSplash == true){
+                                      CacheHelper.setString(key: "role", value: "customer").then((v){
+                                        context.pushNamed(AppRoutes.login.name,
+                                            pathParameters: {'lang': context.locale.languageCode});
+                                      });
+                                    }else{
+                                      context.goNamed(AppRoutes.eCommerceHomeScreen.name,
+                                          pathParameters: {'lang': context.locale.languageCode});
+                                    }
                                   },
                                   src: "assets/images/svg/e_icon.svg"
                                 ),defaultLoginContainer(
                                   appName: AppStrings.paintersCommunity.tr(),
                                     iconColor: const Color(0xffC5B700),
                                     onTap: (){
-                                      context.goNamed(AppRoutes.painterHomeScreen.name,
-                                          pathParameters: {'lang': context.locale.languageCode});
+                                      if(widget.fromSplash == true){
+                                        CacheHelper.setString(key: "role", value: "painter").then((v){
+                                          context.pushNamed(AppRoutes.login.name,
+                                              pathParameters: {'lang': context.locale.languageCode});
+                                        });
+                                      }else{
+                                        context.goNamed(AppRoutes.painterHomeScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode});
+                                      }
                                     },
                                     src: "assets/images/svg/p_icon.svg"
                                 ),defaultLoginContainer(
                                   appName: AppStrings.merchantsAndStores.tr(),
                                     iconColor: const Color(0xff0D3B6F),
                                     onTap: (){
-                                      context.goNamed(AppRoutes.merchantHomeScreen.name,
-                                          pathParameters: {'lang': context.locale.languageCode});
+                                      if(widget.fromSplash == true){
+                                        CacheHelper.setString(key: "role", value: "merchant").then((v){
+                                          context.pushNamed(AppRoutes.login.name,
+                                              pathParameters: {'lang': context.locale.languageCode});
+                                        });
+                                      }else{
+                                        context.goNamed(AppRoutes.merchantHomeScreen.name,
+                                            pathParameters: {'lang': context.locale.languageCode});
+                                      }
                                     },
                                     src: "assets/images/svg/m_icon.svg"
                                 ),

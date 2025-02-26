@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA0_VEtr3xeLaErDNjtLf-sqcmE9MxR6b4',
-    appId: '1:747916077940:android:1e86fec4f14dcb75851a21',
-    messagingSenderId: '747916077940',
-    projectId: 'orient-paints-com',
-    storageBucket: 'orient-paints-com.firebasestorage.app',
+    apiKey: 'AIzaSyDsoIUq4VCF0hHQqKG3ePkpPzoMHN4u_e8',
+    appId: '1:46719383343:android:72306eb881ca4f61b7d3da',
+    messagingSenderId: '46719383343',
+    projectId: 'orient-696ae',
+    storageBucket: 'orient-696ae.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyChKeZTpIAYIpZ_A4lmPzQ-Gut9U1Yql4s',
-    appId: '1:747916077940:ios:f8049df3ef57de0e851a21',
-    messagingSenderId: '747916077940',
-    projectId: 'orient-paints-com',
-    storageBucket: 'orient-paints-com.firebasestorage.app',
+    apiKey: 'AIzaSyDsGwcKD-fzaYDkx2jvJkUKh1p4sRkF8ps',
+    appId: '1:46719383343:ios:f6c7e683a9c73d7fb7d3da',
+    messagingSenderId: '46719383343',
+    projectId: 'orient-696ae',
+    storageBucket: 'orient-696ae.firebasestorage.app',
     iosBundleId: 'com.orientpaints.paintstudio',
   );
+
 }

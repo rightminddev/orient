@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:clipboard/clipboard.dart';
@@ -5,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:orient/common_modules_widgets/custom_elevated_button.widget.dart';
 import 'package:orient/constants/app_sizes.dart';
@@ -12,12 +14,14 @@ import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/app_config.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/general_services/date.service.dart';
 import 'package:orient/general_services/image_file_picker.service.dart';
 import 'package:orient/general_services/layout.service.dart';
 import 'package:orient/general_services/settings.service.dart';
 import 'package:orient/general_services/validation_service.dart';
 import 'package:orient/models/settings/user_settings.model.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../services/personal_profile.service.dart';
@@ -26,8 +30,8 @@ class PersonalProfileViewModel extends ChangeNotifier {
   bool isLoading = false;
   bool isSuccess = false;
   bool isSuccessUpdate = false;
+  bool isSuccessUpdateImage = false;
   String? errorMessage;
-  UserSettingsModel? userData;
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -82,13 +86,13 @@ class PersonalProfileViewModel extends ChangeNotifier {
         isSuccess = true;
       AlertsService.success(
           context: context,
-          message: 'UPDATED SUCCESSFULLY',
-          title: 'SUCCESS');}
+          message: AppStrings.updatedSuccessfully.tr(),
+          title: AppStrings.success.tr());}
     }).catchError((error){ isLoading = false;
     AlertsService.error(
         context: context,
-        message: "ERROR PLEASE TRY AGAIN"!,
-        title: 'FAILED');
+        message: AppStrings.errorPleaseTryAgain.tr(),
+        title: AppStrings.failed.tr().toUpperCase());
       if (error is DioError) {
         errorMessage = error.response?.data['message'] ?? 'Something went wrong';
       } else {
@@ -97,31 +101,35 @@ class PersonalProfileViewModel extends ChangeNotifier {
       AlertsService.error(
           context: context,
           message: errorMessage!,
-          title: 'FAILED');
+          title: AppStrings.failed.tr().toUpperCase());
     });
   }
   Future<void> initializePersonalProfileScreen(
       {required BuildContext context}) async {
     updateLoading(true);
     // First get current user Data
-    userData = AppSettingsService.getSettings(
+    UserSettingConst.userSettings = AppSettingsService.getSettings(
         settingsType: SettingsType.userSettings,
         context: context) as UserSettingsModel?;
     //set initial values for fields
-    print("USER -> ${userData!.name}");
     setInititalValues();
     updateLoading(false);
   }
 
   setInititalValues() {
-    if (userData == null) return;
-    emailController.text = userData?.email ?? '';
-    phoneNumberController.text = userData?.phone ?? '';
-    nameController.text = userData?.name ?? '';
-    birthDateController.text = userData?.birthDate == null ? ""
-        : DateService.formatDateTime(userData?.birthDate);
-    print("date is ${birthDateController.text}");
-    print("date is ${userData?.birthDate}");
+    var jsonString;
+    var gCache;
+    jsonString = CacheHelper.getString("US1");
+    if (jsonString != null && jsonString.isNotEmpty && jsonString != "") {
+      gCache = json.decode(jsonString) as Map<String, dynamic>; // Convert String back to JSON
+      UserSettingConst.userSettings = UserSettingsModel.fromJson(gCache);
+    }
+    if (UserSettingConst.userSettings == null) return;
+    emailController.text = UserSettingConst.userSettings?.email ?? '';
+    phoneNumberController.text = UserSettingConst.userSettings?.phone ?? '';
+    nameController.text = UserSettingConst.userSettings?.name ?? '';
+    birthDateController.text = UserSettingConst.userSettings?.birthDate == null ? ""
+        : DateService.formatDateTime(UserSettingConst.userSettings?.birthDate);
   }
 
   void updateLoading(bool newVal) {
@@ -176,7 +184,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      "selectPhoto",
+                      AppStrings.selectPhoto.tr(),
                       style: TextStyle(
                           fontSize: 20, color: Colors.black),
                     ),
@@ -214,7 +222,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
                               ),
                             ),
                             Text(
-                              "Gallery",
+                              AppStrings.gallery.tr(),
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black),
                             ),
@@ -248,8 +256,8 @@ class PersonalProfileViewModel extends ChangeNotifier {
                               ),
                             ),
                             Text(
-                              "Camera",
-                              style: TextStyle(fontSize: 18),
+                              AppStrings.camera.tr(),
+                              style: TextStyle(fontSize: 18, color: Colors.black),
                             ),
                           ],
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -264,7 +272,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
   Future<void> selectBirthDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: userData?.birthDate,
+      initialDate: UserSettingConst.userSettings?.birthDate,
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
       locale:  const Locale('en', ''),
@@ -281,7 +289,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
   // Future<void> selectBirthDate(BuildContext context) async {
   //   final DateTime? picked = await showDatePicker(
   //     context: context,
-  //     initialDate: userData?.birthDate,
+  //     initialDate: UserSettingConst.userSettings?.birthDate,
   //     firstDate: DateTime(1900),
   //     lastDate: DateTime(2101),
   //     locale:  const Locale('en', ''),
@@ -298,7 +306,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
       bool isActivate2FA = await AlertsService.confirmMessage(
           context, 'Activate 2FA',
           message: 'Are you sure you want to activate 2FA?');
-      // if (userData?.emailVerifiedAt == null) {
+      // if (UserSettingConst.userSettings?.emailVerifiedAt == null) {
       //   AlertsService.info(
       //       context: context,
       //       message: 'Email Verification is Required Before Activate 2FA',
@@ -407,52 +415,112 @@ class PersonalProfileViewModel extends ChangeNotifier {
   Future<void> updateProfileMainInfo({required BuildContext context}) async {
     notifyListeners();
     try {
-      //check if there is changes on the user profile
-      if (nameController.text == userData?.name &&
+      final json1String = CacheHelper.getString("US1");
+      var us1Cache;
+      if (json1String != null && json1String != "") {
+        us1Cache = json.decode(json1String) as Map<String, dynamic>;// Convert String back to JSON
+        print("S1 IS --> $us1Cache");
+        UserSettingConst.userSettings = UserSettingsModel.fromJson(us1Cache);
+      }
+      //check if there is changes on the user profil
+      print("isThis --> ${nameController.text == us1Cache['name']}");
+      print("isThis --> ${us1Cache['birthday']}");
+      print("isThis --> ${birthDateController.text}");
+      print("isThis --> ${ birthDateController.text == us1Cache['birthday']}");
+      if (nameController.text == us1Cache['name'] &&
           birthDateController.text ==
-              DateService.formatDateTime(userData?.birthDate) &&
-          selectedAvatar == null) {
+              us1Cache['birthday']) {
         AlertsService.info(
             context: context,
-            message: 'No changes detected, Profile is already up to date',
-            title: 'Info');
+            message: AppStrings.noChangesDetectedProfileIsAlreadyUpToDate.tr(),
+            title: AppStrings.information.tr());
         return;
       }
       // Vaidation
       if (form1Key.currentState?.validate() == true) {
         bool isUpdate = await AlertsService.confirmMessage(
-            context, 'Update Profile',
-            message: 'Are you sure you want to update your profile');
+            context, AppStrings.updateProfile.tr(),
+            message: AppStrings.areYouSureYouWantToUpdateYourProfile.tr());
         print("UPDATE IS---> $isUpdate");
         if (isUpdate == false) return;
-
          var result = PersonalProfileService.updateProfile(
           context: context,
           name: nameController.text,
-          avatar: listXProfileImage,
           birthDay: birthDateController.text ==
-              DateService.formatDateTime(userData?.birthDate) ? birthDateController.text:DateService.formatDateTime(birthDate, format: 'yyyy-MM-dd'),
+              DateService.formatDateTime(UserSettingConst.userSettings?.birthDate) ? birthDateController.text:DateService.formatDateTime(birthDate, format: 'yyyy-MM-dd'),
         );
-
           result.then((value)async{
-            await updateUserSettingsData(context: context);
-            AlertsService.success(
-                title: 'Profile updated!',
-                context: context,
-                message: 'Profile updated successfully');
-            isSuccessUpdate = true;
             print("Update2");
+            Fluttertoast.showToast(
+                msg: AppStrings.profileUpdatedSuccessfully.tr(),
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 5,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+            isSuccessUpdate = true;
+           // await updateUserSettingsData(context: context);
             notifyListeners();
             return;
           });
       }
     } catch (ex, t) {
       debugPrint(
-          'Failed to update profile , Please Try Later ,${ex.toString()} at $t');
-      AlertsService.error(
+          '${AppStrings.failedToUpdateProfilePleaseTryLater.tr()} ,${ex.toString()} at $t');
+      Fluttertoast.showToast(
+          msg: AppStrings.failedToUpdateProfilePleaseTryLater.tr(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      notifyListeners();
+    }
+  }
+  Future<void> updateProfileMainInfoImage({required BuildContext context}) async {
+    notifyListeners();
+    try {
+      // Vaidation
+      //   bool isUpdate = await AlertsService.confirmMessage(
+      //       context, AppStrings.updateProfile.tr(),
+      //       message: AppStrings.areYouSureYouWantToUpdateYourProfile.tr());
+      //   print("UPDATE IS---> $isUpdate");
+      //   if (isUpdate == false) return;
+         var result = PersonalProfileService.updateProfile(
           context: context,
-          message: 'Failed To update profile , Please Try Later',
-          title: 'Error');
+           avatar: listXProfileImage,
+        );
+          result.then((value)async{
+            print("Update2");
+            Fluttertoast.showToast(
+                msg:AppStrings.profileUpdatedSuccessfully.tr(),
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 5,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+            isSuccessUpdateImage = true;
+            notifyListeners();
+            return;
+          });
+    } catch (ex, t) {
+      debugPrint(
+          '${AppStrings.failedToUpdateProfilePleaseTryLater.tr()} ,${ex.toString()} at $t');
+      Fluttertoast.showToast(
+          msg:AppStrings.failedToUpdateProfilePleaseTryLater.tr(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
       notifyListeners();
     }
   }
@@ -461,39 +529,47 @@ class PersonalProfileViewModel extends ChangeNotifier {
   Future<void> updateProfileEmail({required BuildContext context}) async {
     try {
       //check if there is changes on the user profile email
-      if (emailController.text == userData?.email) {
+      if (emailController.text == UserSettingConst.userSettings?.email) {
         AlertsService.info(
             context: context,
-            message: 'No changes detected, Email is already up to date',
-            title: 'Info');
+            message: AppStrings.noChangesDetectedEmailIsAlreadyUpToDate.tr(),
+            title: AppStrings.information.tr());
         return;
       }
       // Vaidation
       if (form2Key.currentState?.validate() == true) {
         bool isUpdate = await AlertsService.confirmMessage(
-            context, 'Update Email',
-            message: 'Are you sure you want to update your email');
+            context, AppStrings.updateEmail.tr(),
+            message: AppStrings.areYouSureYouWantToUpdateYourEmail.tr());
 
         if (isUpdate == false) return;
         final result = await PersonalProfileService.updateProfile(
             context: context, email: emailController.text);
-        if (result.success &&
-            result.data?['email_code'] == true &&
-            result.data?['email_code_uuid'] != null &&
-            result.data?['email_code_uuid'] != '') {
-          return await _showEmailVerificationPopup(
-              context: context,
-              newEmail: emailController.text,
-              emailUuid: result.data?['email_code_uuid']);
+        print("result is --> $result");
+        if(result != null){
+          if (
+              result.data?['email_code'] == true &&
+              result.data?['email_code_uuid'] != null &&
+              result.data?['email_code_uuid'] != '') {
+            return await _showEmailVerificationPopup(
+                context: context,
+                newEmail: emailController.text,
+                emailUuid: result.data?['email_code_uuid']);
+          }
         }
       }
     } catch (ex, t) {
       debugPrint(
-          'Failed to update email , Please Try Later ,${ex.toString()} at $t');
-      AlertsService.error(
-          context: context,
-          message: 'Failed To update email , Please Try Later',
-          title: 'Error');
+          '${AppStrings.failedToUpdateEmailPleaseTryLater.tr()} ,${ex.toString()} at $t');
+      Fluttertoast.showToast(
+          msg:AppStrings.failedToUpdateEmailPleaseTryLater.tr(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
       return;
     }
   }
@@ -502,46 +578,58 @@ class PersonalProfileViewModel extends ChangeNotifier {
   Future<void> updateProfilePhoneNumber({required BuildContext context}) async {
     try {
       //check if there is changes on the user profile phone
-      if (phoneNumberController.text == userData?.phone) {
+      if (phoneNumberController.text == UserSettingConst.userSettings?.phone) {
         AlertsService.info(
             context: context,
-            message: 'No changes detected, Phone Number is already up to date',
-            title: 'Info');
+            message: AppStrings.noChangesDetectedPhoneIsAlreadyUpToDate.tr(),
+            title: AppStrings.information.tr());
         return;
       }
       // Vaidation
       if (phoneNumberController.text.isEmpty) {
-        AlertsService.warning(
-            context: context,
-            message: 'Please Provide Valid Phone Number',
-            title: 'Warning');
+        Fluttertoast.showToast(
+            msg: AppStrings.pleaseProvideValidPhoneNumber.tr(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         return;
       }
 
       bool isUpdate = await AlertsService.confirmMessage(
-          context, 'Update Phone Number',
-          message: 'Are you sure you want to update your Phone Number?');
+          context, AppStrings.updatePhoneNumber.tr(),
+          message: AppStrings.areYouSureYouWantToUpdateYourPhone.tr());
       if (isUpdate == false) return;
       final result = await PersonalProfileService.updateProfile(
           context: context,
           phone: phoneNumberController.text,
           countryKey: '+20');
-      if (result.success &&
-          result.data?['phone_code'] == true &&
-          result.data?['phone_code_uuid'] != null &&
-          result.data?['phone_code_uuid'] != '') {
-        return await _showPhoneVerificationPopup(
-            context: context,
-            newPhoneNumber: phoneNumberController.text,
-            phoneUuid: result.data?['phone_code_uuid']);
+      if(result != null){
+        if (
+            result.data?['phone_code'] == true &&
+            result.data?['phone_code_uuid'] != null &&
+            result.data?['phone_code_uuid'] != '') {
+          return await _showPhoneVerificationPopup(
+              context: context,
+              newPhoneNumber: phoneNumberController.text,
+              phoneUuid: result.data?['phone_code_uuid']);
+        }
       }
     } catch (ex, t) {
       debugPrint(
-          'Failed to update email , Please Try Later ,${ex.toString()} at $t');
-      AlertsService.error(
-          context: context,
-          message: 'Failed To update email , Please Try Later',
-          title: 'Error');
+          '${AppStrings.failedToUpdatePhonePleaseTryLater.tr()} ,${ex.toString()} at $t');
+      Fluttertoast.showToast(
+          msg: AppStrings.failedToUpdatePhonePleaseTryLater.tr(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
       return;
     }
   }
@@ -562,33 +650,57 @@ class PersonalProfileViewModel extends ChangeNotifier {
             isLogin: false, token: null);
         return;
       } else {
-        AlertsService.error(
-            context: context,
-            message: result.message ?? 'Failed To Logout , Please Try Later',
-            title: 'Error');
+        Fluttertoast.showToast(
+            msg: AppStrings.noProductsFounded.tr(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         return;
       }
     } catch (ex, t) {
-      debugPrint('Failed to Logout , Please Try Later ,${ex.toString()} at $t');
-      AlertsService.error(
-          context: context,
-          message: 'Failed To Logout , Please Try Later',
-          title: 'Error');
+      debugPrint('${AppStrings.failedToLogoutPleaseTryLater.tr()} ,${ex.toString()} at $t');
+      Fluttertoast.showToast(
+          msg: AppStrings.failedToLogoutPleaseTryLater.tr(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
     }
   }
 
   // DELETE ACCOUNT
   Future<void> removeAccount({required BuildContext context}) async {
     try {
-      if (form3Key.currentState?.validate() == false) return;
       bool isDeleteAccount = await AlertsService.confirmMessage(
-          context, 'Delete Account',
-          message: 'Are you sure you want to Delete Account');
+          context, AppStrings.deleteAccount.tr(),
+          form3Key: form3Key,
+          viewPassword: true,
+          passwordForRemoveAccountController: passwordForRemoveAccountController,
+          message: AppStrings.areYouSureYouWantToDeleteAccount.tr());
       if (isDeleteAccount == false) return;
+      if (form3Key.currentState?.validate() == false) return;
       final result = await PersonalProfileService.removeAccount(
           context: context, password: passwordForRemoveAccountController.text);
       if (result.success) {
         // Clear user data and navigate to login screen
+        if(result.message != null){
+          Fluttertoast.showToast(
+              msg: result.message!,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
         final appConfigService =
             Provider.of<AppConfigService>(context, listen: false);
         await appConfigService.resetConfig();
@@ -596,20 +708,29 @@ class PersonalProfileViewModel extends ChangeNotifier {
             isLogin: false, token: null);
         return;
       } else {
-        AlertsService.error(
-            context: context,
-            message:
-                result.message ?? 'Failed To Delete Account , Please Try Later',
-            title: 'Error');
+        Fluttertoast.showToast(
+            msg: result.message ?? AppStrings.failedToDeleteAccountPleaseTryLater.tr(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         return;
       }
     } catch (ex, t) {
       debugPrint(
-          'Failed to Delete Account , Please Try Later ,${ex.toString()} at $t');
-      AlertsService.error(
-          context: context,
-          message: 'Failed To Delete Account , Please Try Later',
-          title: 'Error');
+          '${AppStrings.failedToDeleteAccountPleaseTryLater.tr()} ,${ex.toString()} at $t');
+      Fluttertoast.showToast(
+          msg: AppStrings.failedToDeleteAccountPleaseTryLater.tr(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
     }
   }
 
@@ -635,7 +756,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'OTP Verification',
+                AppStrings.otpVerification.tr(),
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               IconButton(
@@ -667,7 +788,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
                     ),
                     gapH12,
                     Text(
-                      'A verification code has been sent to Your Phone Number',
+                      AppStrings.aVerificationCodeHasBeenSentToYourPhoneNumber.tr(),
                       style: Theme.of(context)
                           .textTheme
                           .displaySmall
@@ -707,22 +828,34 @@ class PersonalProfileViewModel extends ChangeNotifier {
                                     countryCodeController.text.trim().isEmpty
                                         ? '+20'
                                         : countryCodeController.text.trim());
-                        if (result.success) {
-                          await updateUserSettingsData(context: context);
-                          Navigator.of(context).pop(context);
-                          AlertsService.success(
-                              title: 'Phone Number updated!',
-                              context: context,
-                              message: 'Phone Number updated successfully');
-                        } else {
-                          Navigator.of(context).pop(context);
-                          AlertsService.error(
-                              title: 'Failed',
-                              context: context,
-                              message: result.message ??
-                                  'Failed Verification Code , Please Try Later!');
+                        if(result != null){
+                          if (result.data?['status'] == true) {
+                            await updateUserSettingsData(context: context);
+                            Navigator.of(context).pop(context);
+                            Fluttertoast.showToast(
+                                msg: AppStrings.updatePhoneNumber.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                          } else {
+                            Navigator.of(context).pop(context);
+                            Fluttertoast.showToast(
+                                msg: result.message ??
+                                    AppStrings.failedVerificationCodePleaseTryLater.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
 
-                          return;
+                            return;
+                          }
                         }
                       },
                     ),
@@ -758,7 +891,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Email Verification',
+                AppStrings.emailVerification.tr(),
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               IconButton(
@@ -790,7 +923,7 @@ class PersonalProfileViewModel extends ChangeNotifier {
                     ),
                     gapH12,
                     Text(
-                      'A verification code has been sent to Your Email',
+                      AppStrings.aVerificationCodeHasBeenSentToYourEmail.tr(),
                       style: Theme.of(context)
                           .textTheme
                           .displaySmall
@@ -826,22 +959,34 @@ class PersonalProfileViewModel extends ChangeNotifier {
                                 email: emailController.text,
                                 emailCode: codeController.text,
                                 emailUuid: emailUuid);
-                        if (result.success) {
-                          await updateUserSettingsData(context: context);
-                          Navigator.of(context).pop(context);
-                          AlertsService.success(
-                              title: 'Email updated!',
-                              context: context,
-                              message: 'Email updated successfully');
-                        } else {
-                          Navigator.of(context).pop(context);
-                          AlertsService.error(
-                              title: 'Failed',
-                              context: context,
-                              message: result.message ??
-                                  'Failed Verification Code , Please Try Later!');
+                        if(result != null){
+                          if (result.data?['status'] == true ) {
+                            await updateUserSettingsData(context: context);
+                            Navigator.of(context).pop(context);
+                            Fluttertoast.showToast(
+                                msg: AppStrings.emailUpdatedSuccessfully.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                          } else {
+                            Navigator.of(context).pop(context);
+                            Fluttertoast.showToast(
+                                msg: result.message ??
+                                    AppStrings.failedVerificationCodePleaseTryLater.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
 
-                          return;
+                            return;
+                          }
                         }
                       },
                     ),

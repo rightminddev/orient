@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import '../../../general_services/settings.service.dart';
 import '../../../models/settings/user_settings.model.dart';
 import '../models/payroll.model.dart';
@@ -6,7 +7,6 @@ import '../services/payroll.service.dart';
 
 class PayrollsListViewModel extends ChangeNotifier {
   List<PayrollModel>? payrolls;
-  UserSettingsModel? userSettings;
 
   bool isLoading = true;
   void updateLoadingStatus({required bool laodingValue}) {
@@ -17,7 +17,7 @@ class PayrollsListViewModel extends ChangeNotifier {
   Future<void> initializePayrollsListScreen(
       {required BuildContext context, required String? empId}) async {
     updateLoadingStatus(laodingValue: true);
-    userSettings = AppSettingsService.getSettings(
+    UserSettingConst.userSettings = AppSettingsService.getSettings(
         settingsType: SettingsType.userSettings,
         context: context) as UserSettingsModel;
     await _getPayrolls(context: context);

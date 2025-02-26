@@ -24,8 +24,8 @@ class CustomSliverList extends StatelessWidget {
               }
               var post = provider.listPostResponse[index];
               List<MediaItem> mediaItems = [
-                ...post.video.map((e) => MediaItem(url: e.file, type: MediaType.video)),
-                ...post.image.map((e) => MediaItem(url: e.file, type: MediaType.image)),
+                ...post.video!.map((e) => MediaItem(url: e.file, type: MediaType.video)),
+                ...post.image!.map((e) => MediaItem(url: e.file, type: MediaType.image)),
               ];
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -46,10 +46,10 @@ class CustomSliverList extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ImageAndNameSection(user: post.user),
+                        ImageAndNameSection(user: post.user!),
                         PostText(post: post),
                         MediaWidget(posts: PostModel(mediaItems: mediaItems), post: post),
-                        PostCommentAndTime(post: post, socialGroupId: socialGroupId, user: post.user),
+                        PostCommentAndTime(post: post, socialGroupId: socialGroupId, user: post.user!),
                       ],
                     ),
                   ),

@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/modules/ecommerce/cart/model/get_cart_model.dart';
 
@@ -76,12 +79,27 @@ class CartControllerProvider extends ChangeNotifier {
           "coupon" : coupon
         }
       );
-      coupons = value.data['cart']['applied_coupon'];
+      if(value.data['status'] == true){
+        coupons = value.data['cart']['applied_coupon'];
+        AlertsService.success(
+            context: context,
+            message: value.data['message'],
+            title: AppStrings.success.tr()
+        );
+        couponController.text == promoController.text;
+        promoController.clear();
+      }
+      if(value.data['status'] == false){
+        AlertsService.error(
+            context: context,
+            message: value.data['message'],
+            title: AppStrings.failed.tr()
+        );
+      }
       print("COUPON ----> $coupons");
       isAddCouponLoading = false;
       isAddCouponSuccess = true;
-      couponController.text == promoController.text;
-      promoController.clear();
+
       notifyListeners();
     } catch (e) {
       isAddCouponLoading = false;

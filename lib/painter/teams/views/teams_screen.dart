@@ -5,6 +5,7 @@ import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:orient/painter/teams/view_models/teams.viewmodel.dart';
 import 'package:orient/painter/teams/views/loading/team_screen_loading.dart';
 import 'package:orient/painter/teams/views/widgets/custom_teams_search_bar.dart';
@@ -90,7 +91,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                             CustomTeamsSearchBar(),
                             gapH16,
                             if(viewModel.isLoading && viewModel.pageNumber == 1)const TeamScreenLoading(),
-                            if (!viewModel.isLoading && homeViewModel.userSettings != null && viewModel.pageNumber == 1 || viewModel.pageNumber != 1 ) ListView.builder(
+                            if (!viewModel.isLoading && UserSettingConst.userSettings != null && viewModel.pageNumber == 1 || viewModel.pageNumber != 1 ) ListView.builder(
                               itemCount: teamsViewModel.teamsList.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -98,7 +99,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                 return TeamsListViewItem(
                                     model: teamsViewModel.teamsList,
                                     index: index,
-                                  userTeamId: (homeViewModel.userSettings!.userTeam != null)?homeViewModel.userSettings!.userTeam!.id : 0,
+                                  userTeamId: (UserSettingConst.userSettings!.userTeam != null)?UserSettingConst.userSettings!.userTeam!.id : 0,
                                 );
                               },
                             ),
@@ -111,7 +112,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
               ),
             ),
            floatingActionButton:
-           (homeViewModel.userSettings != null)?(homeViewModel.userSettings?.userTeam == null)?
+           (UserSettingConst.userSettings != null)?(UserSettingConst.userSettings?.userTeam == null)?
            SizedBox(
               width: 64,
               height: 64,

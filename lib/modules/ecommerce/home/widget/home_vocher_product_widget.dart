@@ -20,41 +20,33 @@ class HomeVocherProductWidget extends StatelessWidget {
         child: Container(
           height: 170,
           width: 320,
-          child: ListView.separated(
-            shrinkWrap: true,
-              reverse: false,
-              physics: const ClampingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: (){
-                  // context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
-                  //     pathParameters: {'lang': context.locale.languageCode,
-                  //       'id' : "${value.premiumProductImage[index]['id']}"});
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                        imageUrl: value.premiumProductImage[index]['sizes']['large'],
-                        width: 320,
-                        height: 170,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                        const ShimmerAnimatedLoading(
-                          circularRaduis: AppSizes.s50,
-                        ),
-                        errorWidget: (context, url, error) => const Icon(
-                          Icons.image_not_supported_outlined,
-                        )),
-                  ),
-                ),
+          child: GestureDetector(
+            onTap: (){
+              context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
+                  pathParameters: {'lang': context.locale.languageCode,
+                    'id' : "${value.premiumId}"});
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
               ),
-              separatorBuilder: (context, index)=> const SizedBox(width: 20,),
-              itemCount: value.premiumProductImage.length
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: CachedNetworkImage(
+                    imageUrl: value.premiumImage,
+                    width: 320,
+                    height: 170,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                    const ShimmerAnimatedLoading(
+                      circularRaduis: AppSizes.s50,
+                    ),
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.image_not_supported_outlined,
+                    )),
+              ),
+            ),
           ),
         )
         // child: Stack(

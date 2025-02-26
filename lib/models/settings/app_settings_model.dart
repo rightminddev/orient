@@ -1,5 +1,5 @@
 abstract class AppSettingsModel {
-  final String? lastUpdateDate;
+   String? lastUpdateDate;
   AppSettingsModel({this.lastUpdateDate});
   Map<String, dynamic> toJson();
 }

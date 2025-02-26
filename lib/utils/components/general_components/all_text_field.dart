@@ -17,6 +17,7 @@ Widget defaultTextFormField({
   String? Function(String?)? validator,
   TextInputType? keyboardType,
   int maxLines = 1,
+  context,
   List<BoxShadow>? boxShadow,
   double? containerHeight,
   Color? borderColor,
@@ -260,6 +261,7 @@ Widget defaultDropdownField(
     String? title,
     bool? isExpanded,
     Color? borderColor,
+      fontSize,
     required items,
     required void Function(String?)? onChanged}) {
   return Container(
@@ -294,9 +296,9 @@ Widget defaultDropdownField(
         value: value,
         hint: Text(
           title!,
-          style: const TextStyle(
+          style:  TextStyle(
               fontFamily: "Poppins",
-              fontSize: 12,
+              fontSize: fontSize?? 12,
               fontWeight: FontWeight.w400,
               color: Color(0xff464646)),
         ),

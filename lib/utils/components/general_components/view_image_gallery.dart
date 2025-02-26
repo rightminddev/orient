@@ -36,7 +36,7 @@ Widget defaultViewImageGallery({ List? listImagesUrl , bool url = false})=> list
             child:ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: CachedNetworkImage(
-                  imageUrl:url ==  false ? listImagesUrl![index]['file'] :listImagesUrl![index]['images'][0]['file'],
+                  imageUrl:url ==  false ? listImagesUrl![index]['file'] :listImagesUrl![index]['file'],
                   fit: BoxFit.fill,
                   placeholder: (context, url) => const ShimmerAnimatedLoading(
                     width:  100,
@@ -56,6 +56,42 @@ class FullScreenImageViewer extends StatelessWidget {
   final int initialIndex;
 
   FullScreenImageViewer({required this.imageUrls, required this.initialIndex,required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: GestureDetector(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child:const Icon(Icons.arrow_back, color: Color(0xffFFFFFF),)),
+      ),
+      body: PhotoViewGallery.builder(
+        itemCount: imageUrls!.length,
+        builder: (context, index) {
+          return PhotoViewGalleryPageOptions(
+            imageProvider: NetworkImage((url == false)?imageUrls![index]['file']
+                :imageUrls![index]['images'][0]['file']),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2,
+          );
+        },
+        scrollPhysics: BouncingScrollPhysics(),
+        backgroundDecoration: BoxDecoration(color: Colors.black),
+        pageController: PageController(initialPage: initialIndex),
+      ),
+    );
+  }
+}
+class FullScreenImageViewers extends StatelessWidget {
+  final List? imageUrls;
+  final bool? url;
+  final int initialIndex;
+
+  FullScreenImageViewers({required this.imageUrls, required this.initialIndex,required this.url});
 
   @override
   Widget build(BuildContext context) {

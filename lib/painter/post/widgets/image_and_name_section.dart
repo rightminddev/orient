@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/painter/post/data/models/post_response.dart';
+import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 
 import '../post_model.dart';
 
@@ -12,17 +14,41 @@ class ImageAndNameSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          height: AppSizes.s40,
-          width: AppSizes.s40,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
+        if(user.avatar == null)const Icon(
+          Icons.image_not_supported_outlined,
+          size: AppSizes.s32,
+        ),
+        if(!user.avatar!.startsWith("https") && !user.avatar!.startsWith("http"))ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: CachedNetworkImage(
+            height: AppSizes.s40,
+            width: AppSizes.s40,
+            fit: BoxFit.cover,
+            imageUrl: "https://backend.orient-paints.com/${user.avatar!}",
+            placeholder: (context, url) =>
+            const ShimmerAnimatedLoading(),
+            errorWidget: (context, url, error) => const Icon(
+              Icons.image_not_supported_outlined,
+              size: AppSizes.s32,
+              color: Colors.white,
+            ),
           ),
-          child: ClipOval(
-              child: Image.asset(
-                AppImages.splashScreenBackground,
-                fit: BoxFit.cover,
-              )),
+        ),
+       if(user.avatar!.startsWith("https") || user.avatar!.startsWith("http")) ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: CachedNetworkImage(
+            height: AppSizes.s40,
+            width: AppSizes.s40,
+            fit: BoxFit.cover,
+            imageUrl: user.avatar!,
+            placeholder: (context, url) =>
+            const ShimmerAnimatedLoading(),
+            errorWidget: (context, url, error) => const Icon(
+              Icons.image_not_supported_outlined,
+              size: AppSizes.s32,
+              color: Colors.white,
+            ),
+          ),
         ),
         gapW12,
         SizedBox(

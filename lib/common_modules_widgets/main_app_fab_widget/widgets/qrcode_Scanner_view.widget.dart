@@ -1,54 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScannerView extends StatefulWidget {
-  final GlobalKey qrKey;
-
-  const QRScannerView({super.key, required this.qrKey});
+  const QRScannerView({super.key});
 
   @override
   QRScannerViewState createState() => QRScannerViewState();
 }
 
 class QRScannerViewState extends State<QRScannerView> {
-  QRViewController? controller;
   String? scannedText;
+  final MobileScannerController controller = MobileScannerController();
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) async {
-      setState(() {
-        scannedText = scanData.code;
-      });
-
-      if (scannedText != null) {
-        // Return the scanned text and pop the view
-        Navigator.of(context).pop(scannedText);
-        controller.pauseCamera(); // Pause the camera after scanning
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Scan QR Code')),
-      body: QRView(
-        key: widget.qrKey,
-        onQRViewCreated: _onQRViewCreated,
-        overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: 300,
-        ),
+      appBar: AppBar(
+        title: const Text('Scan QR Code'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.flash_on),
+            onPressed: () {
+              controller.toggleTorch();
+            },
+          ),
+        ],
+      ),
+      body: MobileScanner(
+        controller: controller,
+        onDetect: (BarcodeCapture capture) {
+          final List<Barcode> barcodes = capture.barcodes;
+          if (barcodes.isNotEmpty && scannedText == null) {
+            setState(() {
+              scannedText = barcodes.first.rawValue;
+            });
+            Navigator.of(context).pop(scannedText);
+            controller.stop();
+          }
+        },
       ),
     );
   }

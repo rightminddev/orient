@@ -25,7 +25,7 @@ class _ECommerceMainScreenState extends State<ECommerceMainScreen> {
     ECommerceHomeScreen(),
     const TestScreen(),
     const EcommerceOrderScreen(),
-    ECommerceSearchScreen(viewArrow: false,),
+    ECommerceSearchScreen(viewArrow: false, categoryName: "null",),
     SettingsPage()
   ];
   @override

@@ -52,14 +52,9 @@ class UserSettings2Model extends AppSettingsModel {
       weekend: (json['weekend'] as List<dynamic>?)
           ?.map((e) => e.toString())
           .toList(),
-      holidays: (json['holidays'] as List<dynamic>?)
-          ?.map((e) => Holiday.fromJson(e))
-          .toList(),
       worktime: json['worktime'] != null ? Worktime.fromJson(json['worktime']) : null,
       points: json['points'] != null ? Points.fromJson(json['points']) : null,
-      requestTypes: (json['request_types'] as Map<String, dynamic>?)?.map(
-        (key, value) => MapEntry(key, RequestType.fromJson(value)),
-      ),
+
     );
   }
 

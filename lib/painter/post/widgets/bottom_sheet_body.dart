@@ -82,52 +82,7 @@ class _BottomSheetBodyState extends State<BottomSheetBody> {
                                 maxLines: 1,
                                 borderColor: const Color(0xffE3E5E5),
                                 controller: commentController,
-                                viewDropDownRates: true,
-                                dropDownValue: selectRate,
-                                dropDownOnChanged: (String? value){
-                                  setState(() {
-                                    selectRate = value!;
-                                  });
-                                },
-                                dropDownItems: ['1', '2', '3', '4', '5'].map((e) {
-                                  return DropdownMenuItem(
-                                    value: e.toString(),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          e.toString(),
-                                          style: const TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xff1B1B1B)),
-                                        ),
-                                        const Icon(
-                                          Icons.star,
-                                          color: Color(0xffE6007E),
-                                          size: 16,
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                                dropDownHint: Row(
-                                  children: [
-                                    Text(
-                                      "${selectRate.toString()} ",
-                                      style:const TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xff1B1B1B)),
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Color(0xffE6007E),
-                                      size: 16,
-                                    )
-                                  ],
-                                ),
+                                viewDropDownRates: false,
                               );
                             },
                           ),

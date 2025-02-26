@@ -1,5 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/ecommerce/single_product/controller/const.dart';
@@ -7,6 +11,7 @@ import 'package:orient/modules/ecommerce/single_product/model/single_product_mod
 
 class SingleProductProvider extends ChangeNotifier {
   TextEditingController numberOfMetersController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
   bool isLoading = false;
   bool isShowCommentLoading = false;
   bool isCheckLoading = false;
@@ -45,7 +50,8 @@ class SingleProductProvider extends ChangeNotifier {
     productVariationsSize = id;
     notifyListeners();
   }
-  Future<void> getOneProduct({required BuildContext context, int? id, bool crossSells = false, bool variation = false}) async {
+  Future<void> getOneProduct({required BuildContext context
+    , int? id, bool crossSells = false, bool variation = false}) async {
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -125,6 +131,7 @@ class SingleProductProvider extends ChangeNotifier {
         context: context,
         query: {
           "page" : 1,
+          "order_dir" : "desc"
         },
       );
       isShowCommentLoading = false;
@@ -137,7 +144,8 @@ class SingleProductProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  Future<void> addComments({required BuildContext context, int? id, rating, content}) async {
+  var commentMessage;
+  Future<void> addComments({required BuildContext context, int? id, rating,}) async {
     isAddCommentLoading = true;
     errorAddCommentMessage = null;
     notifyListeners();
@@ -147,9 +155,22 @@ class SingleProductProvider extends ChangeNotifier {
         context: context,
         data: {
           "rating" : rating,
-          "content" : content
+          "content" : commentController.text
       }
       );
+        commentController.clear();
+      commentMessage = value.data['message'];
+      if(value.data['message'] == "Can't review tha same product twice"){
+        Fluttertoast.showToast(
+            msg: value.data['message'],
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
       isAddCommentLoading = false;
       isAddCommentSuccess = true;
       print(value.data);

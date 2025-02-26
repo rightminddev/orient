@@ -59,16 +59,17 @@ class PostsProvider extends ChangeNotifier {
       _postResponse = PostResponse.fromJson(response);
 
       if (isNewPage) {
-        listPostResponse.addAll(_postResponse!.data);
+        listPostResponse.addAll(_postResponse!.data!);
       } else {
-        listPostResponse = _postResponse!.data;
+        listPostResponse = _postResponse!.data!;
       }
-      hasMore = _postResponse!.data.isNotEmpty;
+      hasMore = _postResponse!.data!.isNotEmpty;
       if (hasMore) pageNumber++;
       _setStatus(PostsStatus.success);
       notifyListeners();
     } catch (error) {
       _errorMessage = error.toString();
+      print("ERROR IS --> ${errorMessage}");
       _setStatus(PostsStatus.failure);
       notifyListeners();
     }
@@ -79,15 +80,20 @@ class PostsProvider extends ChangeNotifier {
     hasMore = true;
    await getPosts(socialGroupId: socialGroupId,context: context);
   }
-  Future<void> addPosts({required int socialGroupId,required context, required List<XFile>? attachments, String? content}) async {
+  Future<void> addPosts({required int socialGroupId,required context, required List<XFile>? attachments,required List<XFile>? attachmentsVedio, String? content}) async {
+    // attachments!.forEach((e){
+    //   if(e.)
+    // });
     notifyListeners();
     _setStatus(PostsStatus.loading);
     _errorMessage = null;
     FormData formData = FormData.fromMap({
         "content" : content,
         "social_group_id" : socialGroupId,
-       if(attachments != null)"image": attachments != null
+       if(attachments != null && attachments.isNotEmpty)"image": attachments != null
           ? await Future.wait(attachments.map((file) async => await MultipartFile.fromFile(file.path, filename: file.name)).toList()) : null,
+       if(attachmentsVedio != null && attachmentsVedio.isNotEmpty)"video": attachmentsVedio != null
+          ? await Future.wait(attachmentsVedio.map((file) async => await MultipartFile.fromFile(file.path, filename: file.name)).toList()) : null,
       });
     DioHelper.postFormData(
         url: "/social-posts/entities-operations/store",

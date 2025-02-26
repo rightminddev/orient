@@ -28,20 +28,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
       notificationProvider.getNotification(context, page: 1);
     });
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent &&
+      print("Current scroll position: ${_scrollController.position.pixels}");
+      print("Max scroll extent: ${_scrollController.position.maxScrollExtent}");
+
+      if ((_scrollController.position.maxScrollExtent - _scrollController.position.pixels).abs() < 10 &&
           !notificationProvider.isGetNotificationLoading &&
           notificationProvider.hasMoreNotifications) {
+        print("BOTTOM BOTTOM");
         notificationProvider.getNotification(context, page: notificationProvider.currentPage);
       }
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<NotificationProviderModel>(
       builder: (context, notificationProviderModel, child) {
-        print('UI Rebuilding due to provider update');
-        print('UI Rebuilding'); // Add this to verify rebuild
         return SafeArea(
           child: Scaffold(
             backgroundColor: const Color(0xffFFFFFF),
@@ -75,39 +78,41 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       ),
                     ),
                     const SizedBox(height: AppSizes.s20),
-                    // Notification List inside ListView
-                    ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      reverse: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: notificationProviderModel.isGetNotificationLoading && notificationProviderModel.notifications.isEmpty
-                          ? 12 // Show 5 loading items initially
-                          : notificationProviderModel.notifications.length,
-                      itemBuilder: (context, index) {
-                        if (notificationProviderModel.isGetNotificationLoading && notificationProviderModel.currentPage == 1) {
-                          return Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: AppSizes.s12),
-                              padding: const EdgeInsetsDirectional.symmetric(horizontal: AppSizes.s15, vertical: AppSizes.s12),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(AppSizes.s15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        reverse: false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: notificationProviderModel.isGetNotificationLoading && notificationProviderModel.notifications.isEmpty
+                            ? 12 // Show 5 loading items initially
+                            : notificationProviderModel.notifications.length,
+                        itemBuilder: (context, index) {
+                          if (notificationProviderModel.isGetNotificationLoading && notificationProviderModel.currentPage == 1) {
+                            return Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: AppSizes.s12),
+                                padding: const EdgeInsetsDirectional.symmetric(horizontal: AppSizes.s15, vertical: AppSizes.s12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(AppSizes.s15),
+                                ),
+                                height: 100,
                               ),
-                              height: 100,
-                            ),
-                          );
-                        } else {
-                          return PainterNotificationListViewItem(
-                            notifications: notificationProviderModel.notifications,
-                            index: index,
-                          );
-                        }
-                      },
+                            );
+                          } else {
+                            return PainterNotificationListViewItem(
+                              notifications: notificationProviderModel.notifications,
+                              index: index,
+                            );
+                          }
+                        },
+                      ),
                     ),
-                    if (notificationProviderModel.isGetNotificationLoading)
+                    if (notificationProviderModel.isGetNotificationLoading && notificationProviderModel.currentPage != 1)
                       const Center(child: CircularProgressIndicator()),
                   ],
                 ),

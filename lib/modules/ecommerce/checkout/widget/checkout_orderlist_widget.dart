@@ -49,13 +49,35 @@ class CheckoutOrderListWidget extends StatelessWidget {
                   value.checkoutListItems[index]['title'],
                   style:const TextStyle(color: Color(0xffE6007E), fontSize: 12, fontWeight: FontWeight.w600),
                 ),
-                subtitle: Text(
-                  (value.updateCartModel !=null)?
-                  '${(value.updateCartModel!.cart!.items![index].priceAfterDiscount != null)?
-                  value.updateCartModel!.cart!.items![index].priceAfterDiscount : value.updateCartModel!.cart!.items![index].price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.updateCartModel!.cart!.items![index].quantity}':
-                  '${(value.checkoutListItems[index]['price_after_discount'] != null)?value.checkoutListItems[index]['price_after_discount']:value.checkoutListItems[index]['price']}'
-                      ' ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.checkoutListItems[index]['quantity']}',
-                  style:const TextStyle(color: Color(0xff1B1B1B), fontSize: 12, fontWeight: FontWeight.w400),),
+                subtitle: Row(
+                  children: [
+                    Text(
+                      (value.updateCartModel !=null)?
+                      '${(value.updateCartModel!.cart!.items![index].priceAfterDiscount != null)?
+                      value.updateCartModel!.cart!.items![index].priceAfterDiscount : value.updateCartModel!.cart!.items![index].price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.updateCartModel!.cart!.items![index].quantity}':
+                      '${(value.checkoutListItems[index]['price_after_discount'] != null)?value.checkoutListItems[index]['price_after_discount']:value.checkoutListItems[index]['price']}'
+                          ' ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.checkoutListItems[index]['quantity']}',
+                      style:const TextStyle(color: Color(0xff1B1B1B), fontSize: 12, fontWeight: FontWeight.w400),),
+                    Container(color: Colors.black, width: 20,),
+                    Text(
+                      (value.updateCartModel !=null)?
+                      '${(value.updateCartModel!.cart!.items![index].price != null && value.updateCartModel!.cart!.items![index].priceAfterDiscount != value.updateCartModel!.cart!.items![index].price)?
+                      value.updateCartModel!.cart!.items![index].price : value.updateCartModel!.cart!.items![index].price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.updateCartModel!.cart!.items![index].quantity}':
+                      '${(value.checkoutListItems[index]['price_before_discount'] != null)?value.checkoutListItems[index]['price_before_discount']:value.checkoutListItems[index]['price_before_discount']}'
+                          ' ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"} × ${value.checkoutListItems[index]['quantity']}',
+                      style: TextStyle(
+                        color: const Color(0xff1B1B1B).withOpacity(0.5),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.lineThrough,
+                      ),)
+                    // SizedBox(width: 15,),
+                    // if(value.updateCartModel!.cart!.items![index].price != value.updateCartModel!.cart!.items![index].priceAfterDiscount) Text(
+                    //   "${value.updateCartModel!.cart!.items![index].price} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+
+                    // ),
+                  ],
+                ),
               ),
               itemCount: (value.updateCartModel !=null)?value.updateCartModel!.cart!.items!.length : value.checkoutListItems.length,
               separatorBuilder: (context, index)=> const Divider(),

@@ -63,63 +63,57 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                 create: (context)=>CheckoutControllerProvider()..getShippingAddress(context: context),
                 child: Consumer<CheckoutControllerProvider>(
                   builder: (context, value, child) {
-                    return Consumer<HomeViewModel>(
-                      builder: (context, values, child) {
-                        print("REBUILD AGAIN");
-                        return (value.isShippingAddressLoading)?
-                        SingleChildScrollView(
-                          child: HomeLoadingPage(viewAppbar: false,),
-                        )
-                            :Container(
-                              height: MediaQuery.sizeOf(context).height * 0.8,
-                              child: ListView.separated(
-                                separatorBuilder: (context, index)=> const SizedBox.shrink(),
-                                itemBuilder: (context, index)=> defaultLocationContainer(
-                                    context: context,
-                                    use: (selectIndex == index + 1) ? true : false,
-                                    onTap: (){
-                                      if(selectIndex == index + 1){
-                                        print("yes");
-                                        setState(() {
-                                          selectIndex = 0;
-                                          print(selectIndex);
-                                        });
-                                      }else{
-                                        setState(() {
-                                          selectIndex = index+1;
-                                          print(selectIndex);
-                                        });
-                                      }
-                                    },
-                                    location: value.addressModel!.data![index].address,
-                                    onTapEdit: ()async{
-                                      await showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
-                                        ),
-                                        builder: (BuildContext context) {
-                                          return CheckoutBottomsheetEditLocationWidget(
-                                            addAdress: false,
-                                            checkout: false,
-                                            stateIdModel:value.addressModel!.data![index].stateId,
-                                            phoneModel: value.addressModel!.data![index].phone,
-                                            countryIdModel: value.addressModel!.data![index].countryId,
-                                            countryCodeModel:value.addressModel!.data![index].countryKey ,
-                                            cityIdModel:value.addressModel!.data![index].cityId,
-                                            id: value.addressModel!.data![index].id,
-                                            addressModel:value.addressModel!.data![index].address,
-                                          );
-                                        },
-                                      );
-                                      value.getShippingAddress(context: context);
-                                    }
+                    return (value.isShippingAddressLoading != true)?
+                    Container(
+                      height: MediaQuery.sizeOf(context).height * 0.8,
+                      child: ListView.separated(
+                        separatorBuilder: (context, index)=> const SizedBox.shrink(),
+                        itemBuilder: (context, index)=> defaultLocationContainer(
+                            context: context,
+                            use: (selectIndex == index + 1) ? true : false,
+                            onTap: (){
+                              if(selectIndex == index + 1){
+                                print("yes");
+                                setState(() {
+                                  selectIndex = 0;
+                                  print(selectIndex);
+                                });
+                              }else{
+                                setState(() {
+                                  selectIndex = index+1;
+                                  print(selectIndex);
+                                });
+                              }
+                            },
+                            location: value.address[index]['address'],
+                            onTapEdit: ()async{
+                              await showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(35.0)),
                                 ),
-                                itemCount: value.addressModel!.data!.length,
-                              ),
-                            );
-                      },
+                                builder: (BuildContext context) {
+                                  return CheckoutBottomsheetEditLocationWidget(
+                                    addAdress: false,
+                                    checkout: false,
+                                    stateIdModel:value.address[index]['state_id'],
+                                    phoneModel: value.address[index]['phone'] ?? "",
+                                    countryIdModel: value.address[index]['country_id'],
+                                    countryCodeModel:value.address[index]['country_key'] ,
+                                    cityIdModel:value.address[index]['city_id'],
+                                    id: value.address[index]['id'],
+                                    addressModel:value.address[index]['address'],
+                                  );
+                                },
+                              );
+                              value.getShippingAddress(context: context);
+                            }
+                        ),
+                        itemCount: value.address.length,
+                      ),
+                    ): SingleChildScrollView(
+                      child: HomeLoadingPage(viewAppbar: false,),
                     );
                   },
                 ),

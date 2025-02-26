@@ -10,6 +10,7 @@ import 'package:orient/general_services/layout.service.dart';
 import 'package:orient/general_services/validation_service.dart';
 import 'package:orient/modules/authentication/views/widgets/phone_number_field.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:orient/utils/base_page/mobile.header.dart';
 import 'package:orient/utils/base_page/mobile.scaffold.dart';
 import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
@@ -78,12 +79,16 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
               builder: (context, value, child) {
                 return Consumer<PersonalProfileViewModel>(
                     builder: (context, viewModel, child) {
-                      if(viewModel.isSuccessUpdate == true){
+                      if(viewModel.isSuccessUpdate == true || viewModel.isSuccessUpdateImage == true){
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          value.initializeHomeScreen(context);
-                          print("UODATED");
+
+                          Future.delayed(Duration(seconds: 1), () {
+                            value.initializeHomeScreen(context, closeDate: true );
+                            print("UPDATED");
+                          });
                         });
                         viewModel.isSuccessUpdate = false;
+                        viewModel.isSuccessUpdateImage = false;
                       }
                       return Padding(
                         padding: const EdgeInsets.only(top: AppSizes.s12),
@@ -105,88 +110,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                     CrossAxisAlignment.start,
                                     children: [
                                       //Avatar
-                                      Center(
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Container(
-                                                width: AppSizes.s150,
-                                                height: AppSizes.s150,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      width: AppSizes.s2),
-                                                ),
-                                                child: ClipOval(
-                                                  child: viewModel
-                                                      .listProfileImage
-                                                      .isNotEmpty
-                                                      ? Image(
-                                                    image: FileImage(viewModel
-                                                        .listProfileImage[
-                                                    0]['view']),
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                      : viewModel.userData
-                                                      ?.photo ==
-                                                      null
-                                                      ? Image.asset(
-                                                    AppImages
-                                                        .profilePlaceHolder,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                      : CachedNetworkImage(
-                                                      imageUrl: viewModel
-                                                          .userData
-                                                          ?.photo ??
-                                                          '',
-                                                      fit: BoxFit.cover,
-                                                      placeholder: (context,
-                                                          url) =>
-                                                      const ShimmerAnimatedLoading(
-                                                        circularRaduis:
-                                                        AppSizes
-                                                            .s50,
-                                                      ),
-                                                      errorWidget:
-                                                          (context, url,
-                                                          error) =>
-                                                      const Icon(
-                                                        Icons
-                                                            .image_not_supported_outlined,
-                                                        size: AppSizes
-                                                            .s60,
-                                                      )),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                top: 0,
-                                                right: 0,
-                                                child: IconButton(
-                                                    icon: Icon(
-                                                      Icons.camera_alt,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      size: AppSizes.s40,
-                                                    ),
-                                                    onPressed: () async {
-                                                      viewModel.getImage(context,
-                                                          image1: viewModel
-                                                              .profileImage,
-                                                          image2: viewModel
-                                                              .XImageFileProfile,
-                                                          list2: viewModel
-                                                              .listXProfileImage,
-                                                          list: viewModel
-                                                              .listProfileImage);
-                                                    }),
-                                              ),
-                                            ],
-                                          )),
+
                                       gapH12,
                                       //Name
                                       TextFormField(
@@ -278,7 +202,6 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                   controller: viewModel.phoneNumberController,
                                   countryCodeController:
                                   viewModel.countryCodeController,
-                                  initialCountry: viewModel.initialCountry,
                                 ),
                                 gapH18,
                                 Center(
@@ -295,19 +218,6 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                 const CustomDivider(),
                               ],
 
-                              Form(
-                                key: viewModel.form3Key,
-                                child: TextFormField(
-                                  controller: viewModel
-                                      .passwordForRemoveAccountController,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  decoration: const InputDecoration(
-                                      hintText: 'Password'),
-                                  validator: (value) =>
-                                      ValidationService.validatePassword(
-                                          value),
-                                ),
-                              ),
                               gapH12,
                               Center(
                                 child: CustomElevatedButton(
@@ -315,7 +225,7 @@ class _PersonalProfileScreenState extends State<PersonalProfileScreen> {
                                   titleSize: AppSizes.s14,
                                   width: LayoutService.getWidth(context),
                                   radius: AppSizes.s10,
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: const Color(0xffFF0000),
                                   title: AppStrings.deleteYourAccount.tr(),
                                   onPressed: () async => await viewModel
                                       .removeAccount(context: context),

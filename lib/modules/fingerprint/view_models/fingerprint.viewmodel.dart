@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import '../../../general_services/settings.service.dart';
 import '../../../models/fingerprint.model.dart';
 import '../../../models/settings/user_settings.model.dart';
@@ -6,7 +7,6 @@ import '../../../services/fingerprint_service.dart';
 
 class FingerprintViewModel extends ChangeNotifier {
   List<FingerPrintModel>? fingerprints;
-  UserSettingsModel? userSettings;
   bool isLoading = true;
   void updateLoadingStatus({required bool laodingValue}) {
     isLoading = laodingValue;
@@ -16,7 +16,7 @@ class FingerprintViewModel extends ChangeNotifier {
   Future<void> initializeFingerprintScreen(
       {required BuildContext context, String? empId}) async {
     updateLoadingStatus(laodingValue: true);
-    userSettings = AppSettingsService.getSettings(
+    UserSettingConst.userSettings = AppSettingsService.getSettings(
         settingsType: SettingsType.userSettings,
         context: context) as UserSettingsModel;
     await _getEmployeeFingerprints(context: context, empId: empId);

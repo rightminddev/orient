@@ -35,12 +35,12 @@ class MerchantGridView extends StatelessWidget {
           backgroundColor: const Color(AppColors.oC2Color)),
     ];
     return SliverPadding(
-      padding: const EdgeInsets.only(top: AppSizes.s90, right: 24, left: 24),
+      padding: const EdgeInsets.only(top: AppSizes.s80, right: 24, left: 24),
       sliver: SliverGrid.count(
           crossAxisCount: 2,
           mainAxisSpacing: 65,
           crossAxisSpacing: 12,
-          childAspectRatio: 1.2,
+          childAspectRatio: 0.8,
           children: [
             ...merchantGrideItems.map((item) {
               return PainterGridViewItem(

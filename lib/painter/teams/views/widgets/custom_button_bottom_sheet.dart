@@ -28,7 +28,7 @@ class CustomButtonBottomSheet extends StatelessWidget {
         label: Text(
           title.toUpperCase(),
           style: const TextStyle(
-              fontSize: AppSizes.s12,
+              fontSize: AppSizes.s24,
               fontWeight: FontWeight.w500,
               color: Color(AppColors.textC5)),
         ),

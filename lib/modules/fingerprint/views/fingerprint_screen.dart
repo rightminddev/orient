@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart' as locale;
 import 'package:flutter/material.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/main_app_fab_widget/main_app_fab.widget.dart';
 import '../../../common_modules_widgets/template_page.widget.dart';
@@ -44,7 +45,7 @@ class _FingerprintScreenState extends State<FingerprintScreen> {
                   widget.empId?.isNotEmpty == true &&
                   widget.empName != null &&
                   widget.empName?.isNotEmpty == true &&
-                  viewModel.userSettings?.userId.toString() != widget.empId
+              UserSettingConst.userSettings!.userId.toString() != widget.empId
               ? PreferredSize(
                   preferredSize: const Size.fromHeight(AppSizes.s40),
                   child: Padding(

@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import '../../../models/info/city_model.dart';
 import '../../../services/crud_operation.service.dart';
 
@@ -36,6 +39,11 @@ class CitiesViewModel extends ChangeNotifier {
         (result.data?['data'] ?? []).forEach((v) {
           cities.add(CityModel.fromJson(v));
         });
+      }else{
+        AlertsService.error(
+            context: context,
+            message: result.message!,
+            title: AppStrings.failed.tr());
       }
 
       debugPrint(cities.length.toString());

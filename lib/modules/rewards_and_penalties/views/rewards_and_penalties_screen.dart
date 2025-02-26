@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:provider/provider.dart';
 import '../../../common_modules_widgets/custom_floating_action_button.widget.dart';
 import '../../../common_modules_widgets/payrolls_and_penalties_and_rewards_loading_screens.widget.dart';
@@ -55,7 +56,7 @@ class _RewardsAndPenaltiesScreenState extends State<RewardsAndPenaltiesScreen> {
                   widget.empId?.isNotEmpty == true &&
                   widget.empName != null &&
                   widget.empName?.isNotEmpty == true &&
-                  viewModel.userSettings?.userId.toString() != widget.empId
+              UserSettingConst.userSettings!.userId.toString() != widget.empId
               ? PreferredSize(
                   preferredSize: const Size.fromHeight(AppSizes.s40),
                   child: Padding(

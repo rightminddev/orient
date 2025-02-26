@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 
 
 class RedeemNowButton extends StatelessWidget {
-  const RedeemNowButton({super.key});
+  final bool friends;
+  const RedeemNowButton({Key? key, this.friends = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +21,10 @@ class RedeemNowButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset("assets/images/png/icon.png"),
+         if(friends == false) Image.asset("assets/images/png/icon.png"),
+         if(friends == true) SvgPicture.asset("assets/images/svg/sFriend.svg"),
           gapW4,
-          Text(AppStrings.redeemNow.tr().toUpperCase(),style: const TextStyle(
+          Text(friends == false?AppStrings.redeemNow.tr().toUpperCase():AppStrings.sendToFriends.tr().toUpperCase(),style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: Colors.white,

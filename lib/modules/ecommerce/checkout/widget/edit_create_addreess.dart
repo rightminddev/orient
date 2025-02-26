@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
 import 'package:orient/info/cities/view_models/cities.viewmodel.dart';
 import 'package:orient/info/countries/view_models/countries.viewmodel.dart';
 import 'package:orient/info/states/view_models/states.viewmodel.dart';
@@ -14,6 +16,7 @@ import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller
 import 'package:orient/modules/ecommerce/checkout/model/get_address_model.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:orient/utils/components/general_components/all_text_field.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
 import 'package:provider/provider.dart';
@@ -79,18 +82,27 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
     // if(widget.countryIdModel != null) countryId = widget.countryIdModel;
 
   }
+
   @override
   void didChangeDependencies() {
     if (widget.userAddressModel == null) {
       countriesViewModel.initializeCountries(context).then((_) {
         areCountriesLoaded.value = true;
         final country = countriesViewModel.countries.firstWhere((element) => element.id == widget.countryIdModel);
+        //final state = statesViewModel.states.firstWhere((element) => element.id == widget.stateIdModel);
         countrySelected.value = country.title;
+        countryId = country.id.toString();
+        countryCode = country.phoneCode.toString();
         statesViewModel.initializeStates(context, country.iso2 ?? '').then((_) {
           toggleCountrySelected.value = true;
           final state = statesViewModel.states.firstWhere((element) => element.id == widget.stateIdModel);
+          stateSelected.value = state.title;
+          stateId = state.id.toString();
+          toggleStateSelected.value = true;
           citiesViewModel.initializeCities(context, state.id ?? 0).then((_) {
-            CityModel storeCities = CityModel();
+            final city = citiesViewModel.cities.firstWhere((element) => element.id == widget.cityIdModel);
+            citySelected.value = city.title;
+            cityId = city.id.toString();
           });
         });
       });
@@ -194,13 +206,14 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                 controller: phoneController,
                 countryCodeController: countryCodeController,
               ),
-              defaultTextFormField(hintText: AppStrings.address.tr().toUpperCase(), containerHeight: 50, controller:addressController),
+              defaultTextFormField(context: context,hintText: "*${AppStrings.address.tr()}".toUpperCase(), containerHeight: 50, controller:addressController),
               const SizedBox(height: 10),
               ValueListenableBuilder(
                 valueListenable: areCountriesLoaded,
                 builder: (context, isSelected, child) {
                   return CountryDropDownWidget(
                     countrySelected: countrySelected,
+                    title: "*${AppStrings.country.tr()}",
                     countries: countriesViewModel.countries,
                     isSelected: isSelected,
                     onTap: setCountryChanged,
@@ -213,6 +226,7 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                 builder: (context, isSelected, child) {
                   return StateDropDownWidget(
                     stateSelected: stateSelected,
+                    title: "*${AppStrings.governorate.tr()}",
                     states: statesViewModel.states,
                     isSelected: isSelected,
                     onTap: setStateChanged,
@@ -226,6 +240,7 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                   return CityDropDownWidget(
                     isSelected: isSelected,
                     citySelected: citySelected,
+                    title: "*${AppStrings.city.tr()}",
                     cities: citiesViewModel.cities,
                     setCityChanged: (element) {
                       citySelected.value = element.title.toString();
@@ -243,25 +258,79 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                     onPressed: (){
                       print(widget.addAdress);
                       if(widget.addAdress == true){
-                        if(phoneController.text.isNotEmpty &&addressController.text.isNotEmpty&&stateId != null
-                            &&cityId != null && countryCode != null && countryId != null
-                        ){
-                          value.addAddressCheckout(
-                              context: context,
-                              phone: phoneController.text,
-                              address: addressController.text,
-                              user_id: values.userSettings!.userId,
-                              state_id: stateId.toString(),
-                              city_id: cityId.toString(),
-                              country_key: countryCode.toString(),
-                              country_id: countryId.toString()
+                        print("object object object object");
+                        if (phoneController.text.isEmpty) {
+                          Fluttertoast.showToast(
+                              msg: AppStrings.phoneNumberIsRequired.tr(),
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 5,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
                           );
+                          return;
+                        }if (addressController.text.isEmpty) {
+                          Fluttertoast.showToast(
+                              msg: AppStrings.addressIsRequired.tr(),
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 5,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                          return;
                         }
+                        if (countrySelected.value == null) {
+                          Fluttertoast.showToast(
+                              msg: AppStrings.countryIsRequired.tr(),
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 5,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                          return;
+                        }if (citySelected.value == null) {
+                          Fluttertoast.showToast(
+                              msg: AppStrings.cityIsRequired.tr(),
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 5,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                          return;
+                        }if (stateSelected.value == null) {
+                          Fluttertoast.showToast(
+                              msg: AppStrings.stateIsRequired.tr(),
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 5,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                          return;
+                        }
+                        value.addAddressCheckout(
+                            context: context,
+                            phone: phoneController.text,
+                            address: addressController.text,
+                            user_id: UserSettingConst.userSettings!.userId,
+                            state_id: stateId.toString(),
+                            city_id: cityId.toString(),
+                            country_key: countryCode.toString(),
+                            country_id: countryId.toString()
+                        );
                       }
                       if(widget.addAdress == false){
                         print(phoneController.text);
                         print(addressController.text);
-                        print(values.userSettings!.userId);
+                        print(UserSettingConst.userSettings!.userId);
                         print(stateId.toString());
                         print(cityId.toString());
                         print(countryCode.toString());
@@ -269,45 +338,212 @@ class _CreateEditAddressScreenState extends State<CreateEditAddressScreen> {
                         print(countryCodeController.text );
                         print(widget.countryIdModel);
                         print(widget.id);
-                        if(phoneController.text.isNotEmpty &&addressController.text.isNotEmpty&&stateId != null
-                            &&cityId != null && (countryCode != null ||countryCodeController.text.isNotEmpty) &&
-                            (countryId != null || widget.countryIdModel != null) && widget.id != null
-                        ){
-                          if(widget.addAddress == true){
-                            value.addAddressCheckout(
-                                context: context,
-                                phone: phoneController.text,
-                                address: addressController.text,
-                                user_id: values.userSettings!.userId,
-                                state_id: stateId.toString(),
-                                city_id: cityId.toString(),
-                                country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
-                                country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
+                        if(widget.addAddress == true){
+                          if (phoneController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.phoneNumberIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
                             );
+                            return;
+                          }if (addressController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.addressIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
                           }
-                         if (widget.checkout == true) {  value.updateAddressCheckout(
+                          if (countrySelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.countryIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (citySelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.cityIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (stateSelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.stateIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }
+                          value.addAddressCheckout(
+                            context: context,
+                            phone: phoneController.text,
+                            address: addressController.text,
+                            user_id: UserSettingConst.userSettings!.userId,
+                            state_id: stateId.toString(),
+                            city_id: cityId.toString(),
+                            country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
+                            country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
+                          );
+                        }
+                        if (widget.checkout == true) {
+                          if (phoneController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.phoneNumberIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (addressController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.addressIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }
+                          if (countrySelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.countryIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (citySelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.cityIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (stateSelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.stateIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }
+                          value.updateAddressCheckout(
                               context: context,
                               phone: phoneController.text,
                               address: addressController.text,
-                              user_id: values.userSettings!.userId,
+                              user_id: UserSettingConst.userSettings!.userId,
                               state_id: stateId.toString(),
                               city_id: cityId.toString(),
                               country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
                               country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
-                            id: widget.id
+                              id: widget.id
                           );}else{
-                           value.updateShippingAddress(
-                               context: context,
-                               phone: phoneController.text,
-                               address: addressController.text,
-                               user_id: values.userSettings!.userId,
-                               state_id: stateId.toString(),
-                               city_id: cityId.toString(),
-                               country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
-                               country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
-                               id: widget.id
-                           );
-                         }
+                          if (phoneController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.phoneNumberIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (addressController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.addressIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }
+                          if (countrySelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.countryIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (citySelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.cityIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }if (stateSelected.value == null) {
+                            Fluttertoast.showToast(
+                                msg: AppStrings.stateIsRequired.tr(),
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }
+                          value.updateShippingAddress(
+                              context: context,
+                              phone: phoneController.text,
+                              address: addressController.text,
+                              user_id: UserSettingConst.userSettings!.userId,
+                              state_id: stateId.toString(),
+                              city_id: cityId.toString(),
+                              country_key: (countryCode != null)? countryCode.toString() : countryCodeController.text ,
+                              country_id: (countryId != null) ? countryId.toString() : widget.countryIdModel,
+                              id: widget.id
+                          );
                         }
                       }
                     },

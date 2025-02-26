@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/common_modules_widgets/main_app_fab_widget/main_app_fab.widget.dart';
 import 'package:orient/constants/app_strings.dart';
@@ -125,13 +126,34 @@ class StoreCreateEditModel extends ChangeNotifier {
             context: context,
             message: result.message ?? AppStrings.createdSuccessfully.tr());
       } else {
+        Fluttertoast.showToast(
+            msg: result.message!,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         AlertsService.error(
-            title: AppStrings.failed.tr(),
             context: context,
-            message:
-                result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
+            message: result.message!,
+            title: AppStrings.failed.tr());
       }
     } catch (err, t) {
+      Fluttertoast.showToast(
+          msg: err.toString(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      AlertsService.error(
+          context: context,
+          message: err.toString(),
+          title: AppStrings.failed.tr());
       debugPrint(
           "error while getting Employee Details  ${err.toString()} at :- $t");
     }
@@ -156,9 +178,22 @@ class StoreCreateEditModel extends ChangeNotifier {
             title: AppStrings.failed.tr(),
             context: context,
             message:
-                result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
+                result.message ?? AppStrings.failed.tr());
       }
     } catch (err, t) {
+      Fluttertoast.showToast(
+          msg: err.toString(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      AlertsService.error(
+          context: context,
+          message: err.toString(),
+          title: AppStrings.failed.tr());
       debugPrint(
           "error while getting Employee Details  ${err.toString()} at :- $t");
     }

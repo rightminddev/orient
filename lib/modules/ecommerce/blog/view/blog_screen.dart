@@ -20,11 +20,16 @@ class _BlogScreenState extends State<BlogScreen> {
   void initState() {
     super.initState();
     final notificationProvider = Provider.of<BlogProviderModel>(context, listen: false);
-    notificationProvider.getBlog(context); // Load initial notifications
+    notificationProvider.getBlog(context, page: 1); // Load initial notifications
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent &&
-          !notificationProvider.isGetBlogLoading) {
-        notificationProvider.getBlog(context);
+      print("Current scroll position: ${_scrollController.position.pixels}");
+      print("Max scroll extent: ${_scrollController.position.maxScrollExtent}");
+
+      if ((_scrollController.position.maxScrollExtent - _scrollController.position.pixels).abs() < 10 &&
+          !notificationProvider.isGetBlogLoading &&
+          notificationProvider.hasMoreBlogs) {
+        print("BOTTOM BOTTOM");
+        notificationProvider.getBlog(context, page: notificationProvider.currentPage);
       }
     });
   }
@@ -67,35 +72,38 @@ class _BlogScreenState extends State<BlogScreen> {
                       ),
                     ),
                     const SizedBox(height: AppSizes.s20,),
-                    ListView.separated(
-                      padding: EdgeInsets.zero,
-                      separatorBuilder: (context, index)=> const SizedBox(height: 18,),
-                      shrinkWrap: true,
-                      reverse: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount:(notificationProviderModel.isGetBlogLoading && notificationProviderModel.currentPage ==1 )? 5 : notificationProviderModel.blogs.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) =>
-                      (notificationProviderModel.isGetBlogLoading&& notificationProviderModel.currentPage ==1)?
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: AppSizes.s12),
-                          padding: const EdgeInsetsDirectional.symmetric(
-                              horizontal: AppSizes.s15, vertical: AppSizes.s12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(AppSizes.s15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ListView.separated(
+                        padding: EdgeInsets.zero,
+                        separatorBuilder: (context, index)=> const SizedBox(height: 18,),
+                        shrinkWrap: true,
+                        reverse: false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount:(notificationProviderModel.isGetBlogLoading && notificationProviderModel.currentPage ==1 )? 5 : notificationProviderModel.blogs.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) =>
+                        (notificationProviderModel.isGetBlogLoading&& notificationProviderModel.currentPage ==1)?
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: AppSizes.s12),
+                            padding: const EdgeInsetsDirectional.symmetric(
+                                horizontal: AppSizes.s15, vertical: AppSizes.s12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(AppSizes.s15),
+                            ),
+                            height: 100,  // Adjust height to match your layout
                           ),
-                          height: 100,  // Adjust height to match your layout
-                        ),
-                      )
-                          :
-                      BlogListViewItem(
-                        blog: notificationProviderModel.blogs,
-                        index: index ,)
-                      ,
+                        )
+                            :
+                        BlogListViewItem(
+                          blog: notificationProviderModel.blogs,
+                          index: index ,)
+                        ,
+                      ),
                     ),
                     if(notificationProviderModel.isGetBlogLoading&& notificationProviderModel.currentPage !=1)const SizedBox(height: 10,),
                     if(notificationProviderModel.isGetBlogLoading&& notificationProviderModel.currentPage !=1) const Center(child: CircularProgressIndicator(),),

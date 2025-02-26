@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
+import 'package:orient/merchant/orders/view_models/orders.actions.viewmodel.dart';
 import 'package:orient/modules/ecommerce/blog/controller/blog_controller.dart';
+import 'package:orient/modules/ecommerce/bookmark/controller/bookmark_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
 import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
 import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
@@ -13,6 +18,7 @@ import 'package:orient/modules/notification/logic/notification_provider.dart';
 import 'package:orient/modules/shared_more_screen/contactus/controller/controller.dart';
 import 'package:orient/modules/shared_more_screen/personal_profile/viewmodels/personal_profile.viewmodel.dart';
 import 'package:orient/painter/layout_page/logic/layout_provider.dart';
+import 'package:orient/painter/points/logic/points_cubit/points_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app.dart';
 import 'firebase_options.dart';
@@ -27,12 +33,13 @@ import 'modules/main_screen/view_models/main_viewmodel.dart';
 import 'platform/platform_is.dart';
 
 GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // register global error handlers to catch , handle and repoting on any kind of error or exception appear in the application
   /// [ENABLED] IN RELEASE ( DISABLE IN DEVELOPMENT TIME TO APPEAR ANY ERROR APPEAR )
   // registerErrorHandlers();
-  await DioHelper.initail();
+
   await CacheHelper.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -58,13 +65,17 @@ void main() async {
       child: MultiProvider(
         // inject all providers to make it accessable intire all application via context.
         providers: [
+          ChangeNotifierProvider(create: (_) => OrderActionsViewModel()),
           ChangeNotifierProvider(create: (context) => NotificationProviderModel()),
+          ChangeNotifierProvider(create: (context) => PointsProvider()),
+          ChangeNotifierProvider(create: (context) => BookmarkControllerProvider()),
           ChangeNotifierProvider(create: (_) => BlogProviderModel()),
-          ChangeNotifierProvider(create: (context) => CompanyStructureInfoViewModel()..initializeCompanyinformationScreen(context: context)),
+          //ChangeNotifierProvider(create: (context) => CompanyStructureInfoViewModel()..initializeCompanyinformationScreen(context: context)),
           ChangeNotifierProvider<AppConfigService>(
             create: (_) => AppConfigService(),
-          ),ChangeNotifierProvider<HomeViewModel>(
-            create: (context) => HomeViewModel()..initializeHomeScreen(context),
+          ),
+          ChangeNotifierProvider<HomeViewModel>(
+            create: (context) => HomeViewModel()
           ),
           ChangeNotifierProvider<MainScreenViewModel>(
             create: (_) => MainScreenViewModel(),

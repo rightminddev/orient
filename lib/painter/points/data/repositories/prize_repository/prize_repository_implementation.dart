@@ -43,12 +43,13 @@ class GetPrizeRepositoryImplementation extends GetPrizeRepository {
   @override
   Future<Either<Failure, CopounModel>> sendCopoun({required String copounCode}) async{
     var get = Provider.of<AppConfigService>(context, listen: false);
+    print("SERIAL IS ---> ${copounCode}");
     try {
       Response data = await apiServices.post(
           endPoint: EndPoints.coupoun,
           context: context,
           data: {
-            'serial' : copounCode,
+            'serial' : copounCode.replaceAll('-', ''),
           }
       );
       print(data.data);

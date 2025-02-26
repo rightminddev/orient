@@ -1,10 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart' as locale;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orient/constants/app_images.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/layout.service.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:orient/routing/app_router.dart';
+import 'package:orient/utils/custom_shimmer_loading/shimmer_animated_loading.dart';
 import '../../../../../constants/app_sizes.dart';
 
 import '../../viewmodels/personal_profile.viewmodel.dart';
@@ -49,6 +53,7 @@ class PersonalProfileHeaderWidget extends StatelessWidget {
             left: 0,
             right: 0,
             child: CompanyInfoNotchedContainer(
+              viewModel: viewModel,
               notchedContainerHeight: notchedContainerHeight,
               notchRadius: notchRadius,
               notchPadding: notchPadding,
@@ -178,11 +183,13 @@ class CompanyInfoNotchedContainer extends StatelessWidget {
   final double notchPadding;
   final String notchImage;
   final String title;
+  var viewModel;
   final String subtitle;
   final double circleBorderWidth;
-  const CompanyInfoNotchedContainer(
+   CompanyInfoNotchedContainer(
       {super.key,
       required this.notchImage,
+      required this.viewModel,
       required this.notchPadding,
       required this.notchRadius,
       required this.notchedContainerHeight,
@@ -202,35 +209,96 @@ class CompanyInfoNotchedContainer extends StatelessWidget {
               left: 0,
               right: 0,
               child: Center(
-                  child: Container(
-                width: (notchRadius - notchPadding) * 2,
-                height: (notchRadius - notchPadding) * 2,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: circleBorderWidth,
-                  ),
-                ),
-                child: InkWell(
-                  onTap: () async => await context.pushNamed(
-                      AppRoutes.companyTree.name,
-                      pathParameters: {'lang': context.locale.languageCode}),
-                  child: CircleAvatar(
-                    radius: notchRadius - notchPadding - circleBorderWidth,
-                    backgroundColor: const Color(0xff224982),
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppSizes.s12),
-                      child: Image(
-                        image: AssetImage(
-                          notchImage,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: (notchRadius - notchPadding) * 2.2,
+                        height: (notchRadius - notchPadding) * 2.2,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary,
+                              width: AppSizes.s2),
                         ),
-                        fit: BoxFit.contain,
+                        child: ClipOval(
+                          child: viewModel
+                              .listProfileImage
+                              .isNotEmpty
+                              ? Image(
+                            image: FileImage(viewModel
+                                .listProfileImage[
+                            0]['view']),
+                            fit: BoxFit.fill,
+                          )
+                              : UserSettingConst.userSettings
+                              ?.photo ==
+                              null
+                              ? Image.asset(
+                            AppImages
+                                .profilePlaceHolder,
+                            fit: BoxFit.fill,
+                          )
+                              : CachedNetworkImage(
+                              imageUrl: UserSettingConst.userSettings
+                                  ?.photo ??
+                                  '',
+                              fit: BoxFit.cover,
+                              placeholder: (context,
+                                  url) =>
+                              const ShimmerAnimatedLoading(
+                                circularRaduis:
+                                AppSizes
+                                    .s50,
+                              ),
+                              errorWidget:
+                                  (context, url,
+                                  error) =>
+                              const Icon(
+                                Icons
+                                    .image_not_supported_outlined,
+                                size: AppSizes
+                                    .s60,
+                              )),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ))),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          padding: EdgeInsets.all(0),
+                          decoration: BoxDecoration(
+                            color: Color(0xffFFFFFF),
+                            shape: BoxShape.circle
+                          ),
+                          child: IconButton(
+                              icon: Icon(
+                                Icons.camera_alt,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary,
+                                size: AppSizes.s20,
+                              ),
+                              onPressed: () async {
+                               await viewModel.getImage(context,
+                                    image1: viewModel
+                                        .profileImage,
+                                    image2: viewModel
+                                        .XImageFileProfile,
+                                    list2: viewModel
+                                        .listXProfileImage,
+                                    list: viewModel
+                                        .listProfileImage);
+                               viewModel.updateProfileMainInfoImage(context: context);
+                              }),
+                        ),
+                      ),
+                    ],
+                  ))),
           Positioned(
             bottom: 0,
             left: 0,

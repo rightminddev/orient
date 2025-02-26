@@ -288,53 +288,150 @@ class Title {
   }
 }
 
-class FeatureItem {
-  final String? title;
-  final String? image;
-  final String? info;
-
-  FeatureItem({this.title, this.image, this.info});
-
-  factory FeatureItem.fromJson(Map<String, dynamic> json) {
-    return FeatureItem(
-      title: json['title'],
-      image: json['image'],
-      info: json['info'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'image': image,
-      'info': info,
-    };
-  }
-}
-
 class Features {
-  final String? date;
-  late final List<FeatureItem>? items;
+  String? date;
+  List<FeatureItems>? items;
 
   Features({this.date, this.items});
 
-  factory Features.fromJson(Map<String, dynamic> json) {
-    return Features(
-      date: json['date'],
-      items: json['items'] == null
-          ? null
-          : List<FeatureItem>.from(
-              json['items'].map((x) => FeatureItem.fromJson(x))),
-    );
+  Features.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    if (json['items'] != null) {
+      items = <FeatureItems>[];
+      json['items'].forEach((v) { items!.add(new FeatureItems.fromJson(v)); });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'date': date,
-      'items': items == null
-          ? null
-          : List<dynamic>.from(items!.map((x) => x.toJson())),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    if (this.items != null) {
+      data['items'] = this.items!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class FeatureItems {
+  List<ImageF>? image;
+  Title? title;
+  Title? info;
+
+  FeatureItems({this.image, this.title, this.info});
+
+  FeatureItems.fromJson(Map<String, dynamic> json) {
+    if (json['image'] != null) {
+      image = <ImageF>[];
+      json['image'].forEach((v) { image!.add(new ImageF.fromJson(v)); });
+    }
+    title = json['title'] != null ? new Title.fromJson(json['title']) : null;
+    info = json['info'] != null ? new Title.fromJson(json['info']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.image != null) {
+      data['image'] = this.image!.map((v) => v.toJson()).toList();
+    }
+    if (this.title != null) {
+      data['title'] = this.title!.toJson();
+    }
+    if (this.info != null) {
+      data['info'] = this.info!.toJson();
+    }
+    return data;
+  }
+}
+
+class ImageF {
+  int? id;
+  String? type;
+  String? title;
+  String? alt;
+  String? file;
+  String? thumbnail;
+  SizesF? sizes;
+
+  ImageF({this.id, this.type, this.title, this.alt, this.file, this.thumbnail, this.sizes});
+
+  ImageF.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    type = json['type'];
+    title = json['title'];
+    alt = json['alt'];
+    file = json['file'];
+    thumbnail = json['thumbnail'];
+    sizes = json['sizes'] != null ? new SizesF.fromJson(json['sizes']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['type'] = this.type;
+    data['title'] = this.title;
+    data['alt'] = this.alt;
+    data['file'] = this.file;
+    data['thumbnail'] = this.thumbnail;
+    if (this.sizes != null) {
+      data['sizes'] = this.sizes!.toJson();
+    }
+    return data;
+  }
+}
+
+class SizesF {
+  String? thumbnail;
+  String? medium;
+  String? large;
+  String? s1200800;
+  String? s8001200;
+  String? s1200300;
+  String? s3001200;
+  String? screenshotWebp;
+
+  SizesF({this.thumbnail, this.medium, this.large, this.s1200800, this.s8001200, this.s1200300, this.s3001200, this.screenshotWebp});
+
+  SizesF.fromJson(Map<String, dynamic> json) {
+    thumbnail = json['thumbnail'];
+    medium = json['medium'];
+    large = json['large'];
+    s1200800 = json['1200_800'];
+    s8001200 = json['800_1200'];
+    s1200300 = json['1200_300'];
+    s3001200 = json['300_1200'];
+    screenshotWebp = json['Screenshot_webp'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['thumbnail'] = this.thumbnail;
+    data['medium'] = this.medium;
+    data['large'] = this.large;
+    data['1200_800'] = this.s1200800;
+    data['800_1200'] = this.s8001200;
+    data['1200_300'] = this.s1200300;
+    data['300_1200'] = this.s3001200;
+    data['Screenshot_webp'] = this.screenshotWebp;
+    return data;
+  }
+}
+
+class TitleF {
+  String? en;
+  String? ar;
+
+  TitleF({this.en, this.ar});
+
+  TitleF.fromJson(Map<String, dynamic> json) {
+    en = json['en'];
+    ar = json['ar'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['en'] = this.en;
+    data['ar'] = this.ar;
+    return data;
   }
 }
 
@@ -406,7 +503,29 @@ class ColorsModel {
     };
   }
 }
+class TitleC {
+  final String? en;
+  final String? ar;
 
+  TitleC({
+    this.en,
+    this.ar,
+  });
+
+  factory TitleC.fromJson(Map<String, dynamic> json) {
+    return TitleC(
+      en: json['en'],
+      ar: json['ar'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'en': en,
+      'ar': ar,
+    };
+  }
+}
 class CompanyContacts {
   final String? phone;
   final List<String?>? otherphones;
@@ -813,9 +932,10 @@ class BranchModel {
   final String? coInfoLocationUrl;
   final String? lat;
   final String? lng;
-
+  final Title? title;
   BranchModel({
     this.isMainBranch,
+    this.title,
     this.coInfoEmail,
     this.coInfoPhone,
     this.coInfoAddress,
@@ -827,6 +947,7 @@ class BranchModel {
 
   factory BranchModel.fromJson(Map<String, dynamic> json) {
     return BranchModel(
+      title: json['title'] != null ? Title.fromJson(json['title']) : null,
       isMainBranch: json['is_main_branch'] as bool?,
       coInfoEmail: json['co_info_email'] as String?,
       coInfoPhone: json['co_info_phone'] as String?,
@@ -842,6 +963,7 @@ class BranchModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'title': title?.toJson(),
       'is_main_branch': isMainBranch,
       'co_info_email': coInfoEmail,
       'co_info_phone': coInfoPhone,

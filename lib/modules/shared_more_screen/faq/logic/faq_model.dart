@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/modules/shared_more_screen/faq/logic/get_faq_model.dart';
 
 class FaqModelProvider extends ChangeNotifier{
@@ -11,8 +12,11 @@ class FaqModelProvider extends ChangeNotifier{
     isLoading = true;
     notifyListeners();
     DioHelper.getData(
-        url: "/rm_page/v1/show?slug=faq",
+        url: "/rm_page/v1/show",
         context: context,
+      query: {
+          "slug" : CacheHelper.getString("faq")
+      }
     ).then((value){
       isLoading = false;
       faqModel = FaqModel.fromJson(value.data);

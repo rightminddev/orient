@@ -8,6 +8,7 @@ import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/checkout_controller.dart';
 import 'package:orient/modules/ecommerce/checkout/controller/cosnts.dart';
 import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
 import 'package:orient/routing/app_router.dart';
 import 'package:orient/utils/components/general_components/all_bottom_sheet.dart';
 import 'package:orient/utils/components/general_components/button_widget.dart';
@@ -26,7 +27,8 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 defaultActionBottomSheet(
                     context: context,
-                    title: "${AppStrings.successful.tr().toUpperCase()} !",
+                    home: true,
+                    title: "${AppStrings.successfulPurchase.tr().toUpperCase()} !",
                     buttonText: AppStrings.continueShopping.tr().toUpperCase(),
                     subTitle: AppStrings.yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp.tr().toUpperCase(),
                     viewCheckIcon: true,
@@ -52,7 +54,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
           return Consumer<HomeViewModel>(builder:
           (context, values, child) {
           return Container(
-              height: 180,
+              height: (value.checkoutTax != null || value.checkoutShipping != 0)? 200 : 180,
               decoration: BoxDecoration(
                 color:const Color(0xffFFFFFF),
                 borderRadius: BorderRadius.circular(30),
@@ -74,7 +76,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(AppStrings.subtotal.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
-                        Text("${value.checkoutSubtotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                        Text("${double.parse(value.checkoutSubtotal.toString()).toStringAsFixed(2)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
                       ],
                     ),
                   ),
@@ -94,7 +96,27 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(AppStrings.discount.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
-                        Text("${value.checkoutDiscountTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                        Text("-${value.checkoutDiscountTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                      ],
+                    ),
+                  ),
+                  if(value.checkoutTax != null && value.checkoutTax != 0) Container(
+                    height: 18,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(AppStrings.tax.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
+                        Text("${value.checkoutTax.toDouble().toStringAsFixed(2)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
+                      ],
+                    ),
+                  ),
+                  if(value.checkoutShipping != null && value.checkoutShipping != 0) Container(
+                    height: 18,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(AppStrings.shippingCost.tr().toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xff0D3B6F)),),
+                        Text("${value.checkoutShipping} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}".toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: Color(0xff464646)),),
                       ],
                     ),
                   ),
@@ -120,7 +142,7 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "${value.checkoutTotal} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                              "${double.parse(value.checkoutTotal.toString()).toStringAsFixed(2)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
                               style:const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
@@ -140,14 +162,13 @@ class CheckoutBottomButtonWidget extends StatelessWidget {
                                 context: context,
                                 country_id: CheckConst.userAddressModel!.countryId,
                                 city_id: CheckConst.userAddressModel!.cityId,
-                                email: values.userSettings!.email,
-                                name: values.userSettings!.name,
-                                phone: values.userSettings!.phone,
+                                email: UserSettingConst.userSettings!.email,
+                                name: UserSettingConst.userSettings!.name,
+                                phone: UserSettingConst.userSettings!.phone,
                                 address: CheckConst.userAddressModel!.address,
                                 country_key: CheckConst.userAddressModel!.countryKey,
                                 state_id: CheckConst.userAddressModel!.stateId,
                               );
-
                           },
                           padding: EdgeInsets.zero,
                           fontSize: 12,

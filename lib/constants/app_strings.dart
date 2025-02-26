@@ -2,6 +2,74 @@
 
 abstract class AppStrings {
   static const loading = 'loading';
+  static const Merchant = 'Merchant';
+  static const Admin = 'Admin';
+  static const Customer = 'Customer';
+  static const cancel = 'cancel';
+  static const height = 'height';
+  static const width = 'width';
+  static const product = 'product';
+  static const pointsTransferredSuccessfully = 'pointsTransferredSuccessfully';
+  static const couponCode = 'couponCode';
+  static const productPrice = 'productPrice';
+  static const confirmSending = 'confirmSending';
+  static const areYouSureThatPointsWillBeSentTo = 'areYouSureThatPointsWillBeSentTo';
+  static const noOrdersHaveBeenPlacedYet = 'noOrdersHaveBeenPlacedYet';
+  static const invoiceDetails = 'invoiceDetails';
+  static const myInvoices = 'myInvoices';
+  static const sendPoints = 'sendPoints';
+  static const pleaseSelectAddress = 'pleaseSelectAddress';
+  static const viewOdooOrders = 'viewOdooOrders';
+  static const theCartIsEmpty = 'theCartIsEmpty';
+  static const calculate = 'calculate';
+  static const sendToFriends = 'sendToFriends';
+  static const enterTheNumberOfPoints = 'enterTheNumberOfPoints';
+  static const countryIsRequired = 'countryIsRequired';
+  static const cityIsRequired = 'cityIsRequired';
+  static const stateIsRequired = 'stateIsRequired';
+  static const pleaseRefreshThePage = 'pleaseRefreshThePage';
+  static const tax = 'tax';
+  static const assignedBy = 'assignedBy';
+  static const nationalId = 'nationalId';
+  static const textCopiedToClipboard = 'textCopiedToClipboard';
+  static const addressSaved = 'addressSaved';
+  static const verifiedPurchase = 'verifiedPurchase';
+  static const noProductsFounded = 'noProductsFounded';
+  static const refundPolicy = 'refundPolicy';
+  static const privacyPolicy = 'privacyPolicy';
+  static const emailUpdatedSuccessfully = 'emailUpdatedSuccessfully';
+  static const emailUpdated = 'emailUpdated';
+  static const aVerificationCodeHasBeenSentToYourEmail = 'aVerificationCodeHasBeenSentToYourEmail';
+  static const emailVerification = 'emailVerification';
+  static const failedVerificationCodePleaseTryLater = 'failedVerificationCodePleaseTryLater';
+  static const aVerificationCodeHasBeenSentToYourPhoneNumber = 'aVerificationCodeHasBeenSentToYourPhoneNumber';
+  static const otpVerification = 'otpVerification';
+  static const failedToLogoutPleaseTryLater = 'failedToLogoutPleaseTryLater';
+  static const failedToDeleteAccountPleaseTryLater = 'failedToDeleteAccountPleaseTryLater';
+  static const failedToUpdatePhonePleaseTryLater = 'failedToUpdatePhonePleaseTryLater';
+  static const areYouSureYouWantToUpdateYourPhone = 'areYouSureYouWantToUpdateYourPhone';
+  static const updatePhoneNumber = 'updatePhoneNumber';
+  static const pleaseProvideValidPhoneNumber = 'pleaseProvideValidPhoneNumber';
+  static const noChangesDetectedPhoneIsAlreadyUpToDate = 'noChangesDetectedPhoneIsAlreadyUpToDate';
+  static const failedToUpdateEmailPleaseTryLater = 'failedToUpdateEmailPleaseTryLater';
+  static const areYouSureYouWantToUpdateYourEmail = 'areYouSureYouWantToUpdateYourEmail';
+  static const noChangesDetectedEmailIsAlreadyUpToDate = 'noChangesDetectedEmailIsAlreadyUpToDate';
+  static const failedToUpdateProfilePleaseTryLater = 'failedToUpdateProfilePleaseTryLater';
+  static const profileUpdatedSuccessfully = 'profileUpdatedSuccessfully';
+  static const profileUpdated = 'profileUpdated';
+  static const areYouSureYouWantToUpdateYourProfile = 'areYouSureYouWantToUpdateYourProfile';
+  static const noChangesDetectedProfileIsAlreadyUpToDate = 'noChangesDetectedProfileIsAlreadyUpToDate';
+  static const errorPleaseTryAgain = 'errorPleaseTryAgain';
+  static const areYouSureYouWantToDeleteAccount = 'areYouSureYouWantToDeleteAccount';
+  static const mustInclude = 'mustInclude';
+  static const atLeastOneSpecialCharacter = 'atLeastOneSpecialCharacter';
+  static const aMinimumOfEightCharacters = 'aMinimumOfEightCharacters';
+  static const atLeastOneUppercaseLetter = 'atLeastOneUppercaseLetter';
+  static const atLeastOneLowercaseLetter = 'atLeastOneLowercaseLetter';
+  static const atLeastOneNumber = 'atLeastOneNumber';
+  static const pleaseEnterAPassword = 'pleaseEnterAPassword';
+  static const governorate = 'governorate';
+  static const backToSelectAccountType = 'backToSelectAccountType';
   static const completeControlOverVacationBalance = 'completeControlOverVacationBalance';
   static const smartFingerprint = 'smartFingerprint';
   static const recordAttendanceInMultipleWaysAndWatchLiveAllAttendanceRecordsAndTheirDates = 'recordAttendanceInMultipleWaysAndWatchLiveAllAttendanceRecordsAndTheirDates';
@@ -10,7 +78,11 @@ abstract class AppStrings {
   static const faqs = 'faqs';
   static const colorBlog = 'colorBlog';
   static const yes  = 'yes';
+  static const customer  = 'customer';
+  static const merchant  = 'merchant';
+  static const painter  = 'painter';
   static const no = 'no';
+  static const accountType = 'accountType';
   static const joinMyTeamOnTheOrientApp = 'joinMyTeamOnTheOrientApp';
   static const downloadFromPlayStore = 'downloadFromPlayStore';
   static const downloadFromAppleStore = 'downloadFromAppleStore';
@@ -150,6 +222,7 @@ abstract class AppStrings {
       'failed2FAVerificationPleaseTryAgain';
   static const failedLoginingPleaseTryAgain = 'failedLoginingPleaseTryAgain';
   static const phoneNumberIsRequired = 'phoneNumberIsRequired';
+  static const addressIsRequired = 'addressIsRequired';
   static const passwordResetedPleaseLogin = 'passwordResetedPleaseLogin';
   static const userRegisteredPleaseLogin = 'userRegisteredPleaseLogin';
   static const phoneNumber = 'phoneNumber';
@@ -227,6 +300,7 @@ abstract class AppStrings {
   static const change = 'change';
   static const shippingFees = 'shippingFees';
   static const successful = 'successful';
+  static const successfulPurchase = 'successfulPurchase';
   static const continueShopping = 'continueShopping';
   static const yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp =
       'yourOrderWillBeDeliveredSoonThankYouForChoosingOurApp';
@@ -255,6 +329,7 @@ abstract class AppStrings {
   static const viewYourPreviousInvoicesWithOrient =
       'viewYourPreviousInvoicesWithOrient';
   static const getMyInvoices = 'getMyInvoices';
+  static const viewYourPreviousOrderWithOrient = 'viewYourPreviousOrderWithOrient';
   static const editThisStoresData = 'editThisStoresData';
   static const addRequestCap = 'addRequestCap';
   static const customerId = 'customerId';
@@ -302,6 +377,7 @@ abstract class AppStrings {
   static const String content = 'content';
   static const String createPost = 'createPost';
   static const String selectPhoto = 'selectPhoto';
+  static const String selectVideo = 'selectVideo';
   static const String gallery = 'gallery';
   static const String camera = 'camera';
   static const String remove = 'remove';
@@ -335,6 +411,6 @@ abstract class AppStrings {
   static const String areYouSureYouDeleteThisUser = 'areYouSureYouDeleteThisUser';
   static const String uploadImage = 'uploadImage';
   static const String loadHistory = 'loadHistory';
-  static const String aboutProgramIAmPleasedToReachOutToYouTodayToOfferAJobOpportunityAsASurgicalNurseWithUsGivenYourExperienceAndOutstandingSkillsInTheField = 'aboutProgramIAmPleasedToReachOutToYouTodayToOfferAJobOpportunityAsASurgicalNurseWithUsGivenYourExperienceAndOutstandingSkillsInTheField';
+  static const String enterYourCouponCodeHereToGetPointsFromOrientPaintsProducts = 'enterYourCouponCodeHereToGetPointsFromOrientPaintsProducts';
 
 }

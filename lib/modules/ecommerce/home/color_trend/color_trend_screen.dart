@@ -9,8 +9,10 @@ import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart
 import 'package:orient/utils/components/general_components/gallery_slider_image.dart';
 import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
 import 'package:orient/utils/components/general_components/view_image_gallery.dart';
+import 'package:orient/utils/styles.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../constants/app_colors.dart';
 import '../widget/color_trend_blog.dart';
 
 class ColorTrendScreen extends StatelessWidget {
@@ -35,6 +37,7 @@ class ColorTrendScreen extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Container(
               height: MediaQuery.sizeOf(context).height *1,
+              width: MediaQuery.sizeOf(context).width *1,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -43,18 +46,15 @@ class ColorTrendScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Html(
-                          data: value.colorTrendContant,
-                          style: {
-                            "p": Style(
-                              color: Color(0xff525252),
-                              lineHeight: LineHeight(1.5),
-                              fontSize: FontSize(14), // Adjust font size for better visibility
-                              fontWeight: FontWeight.w400,
-                            ),
-                          }),
+                          data: value.colorTrendContant.isNotEmpty == true ? value.colorTrendContant : "<p>No content available</p>",
+                            style: TextsStyles.htmlStyle
+                          ),
                     ),
                     const SizedBox(height: 20,),
-                    defaultViewImageGallery(listImagesUrl: value.colorTrendGallery,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: defaultViewImageGallery(listImagesUrl: value.colorTrendGallery,),
+                    ),
                     const SizedBox(height: 10,),
                     const ClorTrendProduct(),
                     const SizedBox(height: 20,),

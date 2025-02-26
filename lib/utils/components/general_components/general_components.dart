@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orient/constants/app_images.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'package:orient/general_services/localization.service.dart';
 import 'package:orient/modules/ecommerce/bookmark/controller/bookmark_controller.dart';
 import 'package:orient/modules/ecommerce/home/controller/const.dart';
@@ -109,10 +110,10 @@ Widget defaultTap2BarItem(
                     ),
                     child: Text(
                       items![index].toUpperCase(),
-                      style: const TextStyle(
-                          fontSize: 8,
+                      style: TextStyle(
+                          fontSize: (CacheHelper.getString("lang") == "en")? 8 : 12,
                           color: Color(0xffFFFFFF),
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w900,
                           fontFamily: "Poppins"),
                     ),
                   )),
@@ -207,12 +208,12 @@ Widget defaultProductContainer(
     required BuildContext? context,
     required bool? showBookMark,
     bool showUnit = true,
+      max,
     required bool? showDiscountPrice,
     double? containerWidth,
     final void Function()? onPressedBookMark,
     required String? imageUrl}) {
   return Container(
-    height: 104,
     width: containerWidth ?? MediaQuery.sizeOf(context!).width * 1,
     padding: EdgeInsets.only(right: 10),
     decoration: BoxDecoration(
@@ -250,8 +251,6 @@ Widget defaultProductContainer(
             children: [
               Text(
                 title!,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                     color: Color(0xffE6007E),
                     fontFamily: "Poppins",
@@ -328,6 +327,15 @@ Widget defaultProfileContainer({
   required String? userRole,
   required BuildContext? context,
 }) {
+  String formatName(String fullName) {
+    List<String> nameParts = fullName.split(' ');
+    if (nameParts.length < 2) {
+      return fullName; // Return the full name if no last name is provided.
+    }
+    String firstName = nameParts[0];
+    String lastInitial = nameParts[1][0].toUpperCase();
+    return (CacheHelper.getString("lang") == "ar") ?'.$firstName $lastInitial' :'$firstName $lastInitial.';
+  }
   return Container(
     color: Colors.transparent,
     child: Row(
@@ -368,7 +376,7 @@ Widget defaultProfileContainer({
           width: 10,
         ),
         Container(
-          width: MediaQuery.sizeOf(context!).width * 0.3,
+          width: MediaQuery.sizeOf(context!).width * 0.45,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -377,6 +385,7 @@ Widget defaultProfileContainer({
                 child: Text(
                   userName!.toUpperCase(),
                   maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       color: Color(0xffFFFFFF),
                       fontSize: 16,
@@ -469,7 +478,7 @@ Widget defaultViewProductGrid(
                             )),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 7, left: 22, right: 22),
+                        padding: const EdgeInsets.only(top: 7, left: 10, right: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -490,7 +499,7 @@ Widget defaultViewProductGrid(
                                 decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0xff000000).withOpacity(0.5)),
                                 child: (bookmarkControllerProvider.isLoadingAdd)?const Center(child: CircularProgressIndicator(color: Color(0xffFFFFFF),),)
                                     :(home.checkResponse != null &&  home.checkResponse['products']['$productId'] != null)?
-                                SvgPicture.asset("assets/images/svg/book.svg", fit: BoxFit.scaleDown, color: home.checkResponse['products']['$productId']['favorite'] == true ? Colors.amberAccent : Colors.white,) : const SizedBox.shrink(),
+                                SvgPicture.asset(home.checkResponse['products']['$productId']['favorite'] == false ?"assets/images/svg/book.svg":"assets/images/svg/bookFill.svg", fit: BoxFit.scaleDown, color:home.checkResponse['products']['$productId']['favorite'] == false ? Colors.white:Colors.amber,) : const SizedBox.shrink(),
                               ),
                             ),
                           ],
@@ -498,8 +507,7 @@ Widget defaultViewProductGrid(
                       )
                     ],
                   ),
-                  if(productType != null)Text((productType == "variation")?(LocalizationService.isArabic(context: context))? "التباين" : "variation" :
-                  (productType == "simple")?(LocalizationService.isArabic(context: context))? "بسيط" : "simple": "",
+                  if(productType != null)Text(productType,
                     style: const TextStyle(
                       color: Color(0xffE6007E),
                       fontFamily: "Poppins",

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart' as locale;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
@@ -63,69 +64,69 @@ class AuthenticationViewModel extends ChangeNotifier {
     countryCodeController.dispose();
     super.dispose();
   }  bool status = false;
-  postDeviceSys({context, fcmToken }){
-    isLoading = true;
-    notifyListeners();
-    DioHelper.postData(
-        url: "/rm_users/v1/device_sys",
-        context : context,
-        data: {
-          "action" : "set",
-          "key" : "notification_token",
-          "value" : fcmToken
-        }
-    ).then((value){
-      if (!_isDisposed) {
-        isLoading = false;
-        isSuccess = true;
-
-        print(value.data);
-        notifyListeners();
-      }
-    }).catchError((error){
-      if (error is DioError) {
-        if (!_isDisposed) {
-          errorMessage = error.response?.data['message'] ?? 'Something went wrong';
-        } else {
-          errorMessage = error.toString();
-        }
-        isLoading = false;
-        notifyListeners();
-        }
-    });
-  }
-  getDeviceSys({context, status}){
-    isLoading2 = true;
-    notifyListeners();
-    DioHelper.postData(
-        url: "/rm_users/v1/device_sys",
-        context : context,
-        data: {
-          "action" : "set",
-          "key" : "notification_token_status",
-          "value" : status
-        }
-    ).then((value){
-      if (!_isDisposed2) {
-        isLoading2 = false;
-        status = (value.data['device']['notification_token_status'] == 0) ? false : true;
-        print("PUT SUCCESS");
-        CacheHelper.setBool( "status",  true);
-        print(value.data);
-        notifyListeners();
-      }
-    }).catchError((error){
-      if (!_isDisposed2) {
-        if (error is DioError) {
-          errorMessage2 = error.response?.data['message'] ?? 'Something went wrong';
-        } else {
-          errorMessage2 = error.toString();
-        }
-        isLoading2 = false;
-        notifyListeners();
-      }
-    });
-  }
+  // postDeviceSys({context, fcmToken }){
+  //   isLoading = true;
+  //   notifyListeners();
+  //   DioHelper.postData(
+  //       url: "/rm_users/v1/device_sys",
+  //       context : context,
+  //       data: {
+  //         "action" : "set",
+  //         "key" : "notification_token",
+  //         "value" : fcmToken
+  //       }
+  //   ).then((value){
+  //     if (!_isDisposed) {
+  //       isLoading = false;
+  //       isSuccess = true;
+  //
+  //       print(value.data);
+  //       notifyListeners();
+  //     }
+  //   }).catchError((error){
+  //     if (error is DioError) {
+  //       if (!_isDisposed) {
+  //         errorMessage = error.response?.data['message'] ?? 'Something went wrong';
+  //       } else {
+  //         errorMessage = error.toString();
+  //       }
+  //       isLoading = false;
+  //       notifyListeners();
+  //       }
+  //   });
+  // }
+  // getDeviceSys({context, status}){
+  //   isLoading2 = true;
+  //   notifyListeners();
+  //   DioHelper.postData(
+  //       url: "/rm_users/v1/device_sys",
+  //       context : context,
+  //       data: {
+  //         "action" : "set",
+  //         "key" : "notification_token_status",
+  //         "value" : status
+  //       }
+  //   ).then((value){
+  //     if (!_isDisposed2) {
+  //       isLoading2 = false;
+  //       status = (value.data['device']['notification_token_status'] == 0) ? false : true;
+  //       print("PUT SUCCESS");
+  //       CacheHelper.setBool( "status",  true);
+  //       print(value.data);
+  //       notifyListeners();
+  //     }
+  //   }).catchError((error){
+  //     if (!_isDisposed2) {
+  //       if (error is DioError) {
+  //         errorMessage2 = error.response?.data['message'] ?? 'Something went wrong';
+  //       } else {
+  //         errorMessage2 = error.toString();
+  //       }
+  //       isLoading2 = false;
+  //       notifyListeners();
+  //     }
+  //   });
+  // }
 
   void initializeAnimation(TickerProvider vsync) {
     animationController = AnimationController(
@@ -140,7 +141,49 @@ class AuthenticationViewModel extends ChangeNotifier {
     isPhoneLogin = !isPhoneLogin;
     notifyListeners();
   }
-
+  Future<void> getDeviceToken({required BuildContext context}) async {
+    OperationResult<Map<String, dynamic>> result =
+    await AuthenticationService.getDeviceToken(
+      context: context,
+    );
+    if (result.success &&
+        result.data != null &&
+        (result.data?.isNotEmpty ?? false)) {
+      await _handleLoginResponse(result: result.data!, context: context);
+    } else {
+      AlertsService.error(
+          title: AppStrings.failed.tr(),
+          context: context,
+          message:
+          result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
+    }
+  }
+  Future<void> loginWithSocial(BuildContext context, String url) async {
+    try {
+      return await launchUrl(
+        Uri.parse(url),
+        customTabsOptions: CustomTabsOptions(
+          colorSchemes: CustomTabsColorSchemes.defaults(
+            toolbarColor: Theme.of(context).colorScheme.surface,
+          ),
+          shareState: CustomTabsShareState.on,
+          urlBarHidingEnabled: true,
+          showTitle: true,
+          closeButton: CustomTabsCloseButton(
+            icon: CustomTabsCloseButtonIcons.back,
+          ),
+        ),
+        safariVCOptions: SafariViewControllerOptions(
+          preferredBarTintColor: Theme.of(context).colorScheme.surface,
+          preferredControlTintColor: Theme.of(context).colorScheme.onSurface,
+          barCollapsingEnabled: true,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
   Future<void> login({required BuildContext context}) async {
     print("request login /////1221");
     if (isPhoneLogin && phoneController.text.isEmpty) {
@@ -156,7 +199,7 @@ class AuthenticationViewModel extends ChangeNotifier {
       final appConfigServiceProvider =
       Provider.of<AppConfigService>(context, listen: false);
       final completePhoneNumber = (countryCodeController.text.isEmpty
-          ? '+02'
+          ? '+20${phoneController.text}'
           : countryCodeController.text + phoneController.text)
           .trim();
       print("request login /////");
@@ -173,18 +216,23 @@ class AuthenticationViewModel extends ChangeNotifier {
       if (result.success &&
           result.data != null &&
           (result.data?.isNotEmpty ?? false)) {
-        await _handleLoginResponse(result: result.data!, context: context);
-        await postDeviceSys(
+        if(result.data!['login_status'] != null && result.data!['login_status'] == "schedule_delete"){
+          AlertsService.success(
+            title: AppStrings.success.tr(),
             context: context,
-            fcmToken:await FirebaseMessaging.instance.getToken()
-        );
-        await getDeviceSys(context: context, status: 1);
+            message: result.message ?? AppStrings.success.tr(),);
+        }
+        await _handleLoginResponse(result: result.data!, context: context);
+        // await postDeviceSys(
+        //     context: context,
+        //     fcmToken:await FirebaseMessaging.instance.getToken()
+        // );
+        // await getDeviceSys(context: context, status: 1);
       } else {
         AlertsService.error(
             title: AppStrings.failed.tr(),
             context: context,
-            message:
-            result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
+            message: result.message ?? AppStrings.failedLoginingPleaseTryAgain.tr());
       }
     } else {
       AlertsService.warning(
@@ -721,6 +769,7 @@ class AuthenticationViewModel extends ChangeNotifier {
     if (result['token'] != null &&
         (((result['token'] as String?)?.isNotEmpty) ?? false)) {
       print(result['token']);
+      CacheHelper.setString(key: "tokens", value: result['token']);
       return await appConfigServiceProvider.setAuthenticationStatusWithToken(
           isLogin: true, token: result['token']);
     }
@@ -776,6 +825,7 @@ class AuthenticationViewModel extends ChangeNotifier {
       case AuthStatus.active:
         appConfigServiceProvider.setAuthenticationStatusWithToken(
             isLogin: true, token: result['token']);
+        CacheHelper.setString(key: "tokens", value: result['token']);
         context.goNamed(AppRoutes.eCommerceHomeScreen.name);
         //context.goNamed(AppRoutes.addStore.name);
         return;
@@ -821,7 +871,7 @@ class AuthenticationViewModel extends ChangeNotifier {
       case 'deactivated':
         authStatus = AuthStatus.deactivated;
         break;
-      case 'scheduled_for_deletion':
+      case 'schedule_delete':
         authStatus = AuthStatus.scheduledForDeletion;
         break;
       case 'otp_required':

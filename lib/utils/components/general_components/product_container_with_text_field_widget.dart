@@ -151,6 +151,7 @@ class _ProductContainerWithTextFieldWidgetState
                         ),
                         Expanded(
                           child: defaultTextFormField(
+                            context: context,
                             controller: controller,
                             hasShadows: false,
                             hintText: AppStrings.input.tr(),

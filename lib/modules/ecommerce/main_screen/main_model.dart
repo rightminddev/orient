@@ -58,7 +58,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case EcommerceNavbarPages.eCommerceMyOrderScreen:
         return const EcommerceOrderScreen();
       case EcommerceNavbarPages.eCommerceSearchScreen:
-        return  ECommerceSearchScreen(viewArrow: false,);
+        return  ECommerceSearchScreen(viewArrow: false, categoryName: "null",);
       case EcommerceNavbarPages.eCommerceMoreScreen:
         return SettingsPage();
       default:
@@ -106,7 +106,7 @@ class EcommerceMainScreenViewModel extends ChangeNotifier {
       case EcommerceNavbarPages.eCommerceSearchScreen:
         await context.pushNamed(AppRoutes.eCommerceSearchScreen.name,
             extra: begin,
-            pathParameters: {'lang': context.locale.languageCode});
+            pathParameters: {'lang': context.locale.languageCode , 'categoryName' : "null", 'id' : '-1',});
         return;
       case EcommerceNavbarPages.eCommerceMoreScreen:
          context.pushReplacementNamed(AppRoutes.eCommerceMoreScreen.name,

@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
 import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
 import 'constants/app_images.dart';
 import 'general_services/app_theme.service.dart';
@@ -6,20 +8,28 @@ import 'package:orient/routing/app_router.dart';
 import 'platform/platform_is.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if(CacheHelper.getString("lang") == null){
+
+    DioHelper.initail(context);
+    if(CacheHelper.getString("lang") == ""){
+      print("=========0");
       CacheHelper.setString(key: "lang", value: context.locale.languageCode);
+      print("lang is ${CacheHelper.getString("lang")}");
     }
+    print("langs is ${CacheHelper.getString("lang")}");
     // precache spash screen image
     precacheImage(const AssetImage(AppImages.splashScreenBackground), context);
+
     final appGoRouter = goRouter(context);
     return
-      MaterialApp.router(
+    MaterialApp.router(
       title: 'Orient',
       restorationScopeId: 'app',
       debugShowCheckedModeBanner: false,
@@ -28,6 +38,7 @@ class MyApp extends StatelessWidget {
       routeInformationProvider: appGoRouter.routeInformationProvider,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
+      scaffoldMessengerKey: AlertsService.scaffoldMessengerKey,
       locale: context.locale,
       themeMode: ThemeMode.light,
       theme: AppThemeService.getTheme(isDark: false, context: context),

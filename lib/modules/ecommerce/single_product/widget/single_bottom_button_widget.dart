@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:orient/constants/app_colors.dart';
 import 'package:orient/constants/app_sizes.dart';
 import 'package:orient/constants/app_strings.dart';
 import 'package:orient/general_services/localization.service.dart';
@@ -40,7 +41,7 @@ class SingleBottomButtonWidget extends StatelessWidget {
             print("totalPriceBefore $totalPriceBefore");
             print("totalPriceAfter $totalPriceAfter");
             return Container(
-              height: 136,
+              height: 120,
               decoration: BoxDecoration(
                 color:const Color(0xffFFFFFF),
                 borderRadius: BorderRadius.circular(30),
@@ -57,41 +58,41 @@ class SingleBottomButtonWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 26,
-                        child: Text(
-                          AppStrings.totalPrice.tr().toUpperCase(),
+                  Container(
+                    height: 80,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppStrings.productPrice.tr().toUpperCase(),
                           style:const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 11,
                               color: Color(0xff1B1B1B)
                           ),
                         ),
-                      ),
-                      Text(
-                        "$totalPriceAfter ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
-                        style:const TextStyle(
+                        Text(
+                          "${double.parse(totalPriceAfter.toString()).toStringAsFixed(1)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                          style:const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: Color(0xff1B1B1B)
+                          ),
+                        ),
+                        if(value.singleProductModel!.product!.price_after_discount !=
+                            value.singleProductModel!.product!.price_before_discount)Text(
+                          "${double.parse(totalPriceBefore.toString()).toStringAsFixed(1)} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}"!,
+                          style: const TextStyle(
+                            color: Color(0xffE6007E),
+                            fontFamily: "Poppins",
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: Color(0xff1B1B1B)
+                            fontSize: 12,
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: Color(0xffE6007E),
+                          ),
                         ),
-                      ),
-                      if(value.singleProductModel!.product!.price_after_discount != value.singleProductModel!.product!.price_before_discount)Text(
-                        "$totalPriceBefore ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}"!,
-                        style: const TextStyle(
-                          color: Color(0xffE6007E),
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: Color(0xffE6007E),
-                          decorationThickness: 2,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   if(value.isAddtoCartLoading)Container(
                       width: MediaQuery.sizeOf(context).width * 0.5,
@@ -123,8 +124,7 @@ class SingleBottomButtonWidget extends StatelessWidget {
                         bookmarkControllerProvider.addOrRemoveBookMark(context, action:value.check == true ?
                         "remove" : "add", id: id);
                       },
-                      child: SvgPicture.asset("assets/images/svg/book_single.svg", fit: BoxFit.cover,
-                        color: value.check == true ? Colors.amberAccent :const Color(0xff0D3B6F) )),
+                      child: SvgPicture.asset(value.check == false ? "assets/images/svg/book.svg": "assets/images/svg/bookFill.svg", fit: BoxFit.cover, color: value.check == false ? const Color(AppColors.oc1) : Colors.amber,)),
                 ],
               ),
             );

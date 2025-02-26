@@ -46,29 +46,52 @@ abstract class PersonalProfileService {
     String? phone,
     String? phoneUuid,
     String? birthDay, // Format should be "YYYY-MM-DD"
-     List<XFile>? avatar,
+    List<XFile>? avatar,
     required BuildContext context,
   }) async {
-    FormData formData = FormData.fromMap(
-        {
-          if (name != null) 'name' : name,
-          if (email != null) 'email' : email,
-          if (avatar!.isNotEmpty) "avatar" : avatar != null
-        ? await Future.wait(avatar.map((file) async => await MultipartFile.fromFile(file.path, filename: file.name)).toList()) : null,
-          if (emailUuid != null) 'email_uuid' : emailUuid,
-          if (phoneUuid != null) 'phone_uuid' : phoneUuid,
-          if (emailCode != null) 'email_code' : emailCode,
-          if (countryKey != null) 'country_key' : countryKey,
-          if (phoneCode != null) 'phone_code' : phoneCode,
-          if (phone != null) 'phone' : phone,
-          if (birthDay != null) 'birth_day' : birthDay,
-        }
-    );
-      DioHelper.postFormData(
-        url: "/rm_users/v1/update_profile",
-        context: context,
-        formdata: formData
-    );
+    print("AVATAR IS-->${avatar}");
+    if(avatar != null && avatar.isNotEmpty){
+      print("SERVER FORM DATA");
+      FormData formData = FormData.fromMap(
+          {
+            if (name != null) 'name' : name,
+            if (email != null) 'email' : email,
+            if (avatar.isNotEmpty) "avatar" : avatar != null
+                ? await Future.wait(avatar.map((file) async => await MultipartFile.fromFile(file.path, filename: file.name)).toList()) : null,
+            if (emailUuid != null) 'email_uuid' : emailUuid,
+            if (phoneUuid != null) 'phone_uuid' : phoneUuid,
+            if (emailCode != null) 'email_code' : emailCode,
+            if (countryKey != null) 'country_key' : countryKey,
+            if (phoneCode != null) 'phone_code' : phoneCode,
+            if (phone != null) 'phone' : phone,
+            if (birthDay != null) 'birth_day' : birthDay,
+          }
+      );
+    var res = await DioHelper.postFormData(
+          url: "/rm_users/v1/update_profile",
+          context: context,
+          formdata: formData
+      );
+    return res;
+    }else{
+      print("SERVER POST DATA");
+      var res =  await DioHelper.postData(
+          url: "/rm_users/v1/update_profile",
+          context: context,
+          data: {
+            if (name != null) 'name' : name,
+            if (email != null) 'email' : email,
+            if (emailUuid != null) 'email_uuid' : emailUuid,
+            if (phoneUuid != null) 'phone_uuid' : phoneUuid,
+            if (emailCode != null) 'email_code' : emailCode,
+            if (countryKey != null) 'country_key' : countryKey,
+            if (phoneCode != null) 'phone_code' : phoneCode,
+            if (phone != null) 'phone' : phone,
+            if (birthDay != null) 'birth_day' : birthDay,
+          }
+      );
+      return res;
+    }
 
     // Send request
     // return await DioApiService().postWithFormData<Map<String, dynamic>>(

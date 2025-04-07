@@ -1,0 +1,343 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart' as locale;
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:orient/constants/app_images.dart';
+import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/constants/settings/default_general_settings.dart';
+import 'package:orient/general_services/app_config.service.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
+import 'package:orient/general_services/localization.service.dart';
+import 'package:orient/models/settings/general_settings.model.dart';
+import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/home/view_models/user_cont.dart';
+import 'package:orient/routing/app_router.dart';
+import 'package:orient/utils/components/general_components/gradient_bg_image.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../modules/shared_more_screen/customize_notification/customize_notification_screen.dart';
+import '../../utils/custom_shimmer_loading/shimmer_animated_loading.dart';
+
+class SettingsPageTwo extends StatelessWidget {
+  var gCache;
+  var s1Cache;
+  var s2Cache;
+  @override
+  Widget build(BuildContext context) {
+    final jsonString = CacheHelper.getString("USG");
+    final json1String = CacheHelper.getString("US1");
+    final json2String = CacheHelper.getString("US2");
+    if (jsonString != "") {
+      gCache = json.decode(jsonString) as Map<String, dynamic>;// Convert String back to JSON
+      print("GCACHE IS --> $gCache");
+
+    }if (json1String != "") {
+      s1Cache = json.decode(json1String) as Map<String, dynamic>;// Convert String back to JSON
+      print("S1 IS --> $s1Cache");
+      print("PREVIEW IS --> ${s1Cache['name']}");
+    }if (json2String != "") {
+      s2Cache = json.decode(json2String) as Map<String, dynamic>;// Convert String back to JSON
+      print("S2 IS --> $s2Cache");
+    }
+    print("LANGUAGE IS --> ${LocalizationService.isArabic(context: context)}");
+    return SafeArea(
+      child:  Scaffold(
+        backgroundColor: const Color(0xffFFFFFF),
+        body: GradientBgImage(
+          padding: EdgeInsets.zero,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Container(
+                    padding: EdgeInsets.zero,
+                    alignment: Alignment.topCenter,
+                    color: const Color(0xff0D3B6F).withOpacity(1),
+                    height: MediaQuery.sizeOf(context).height * 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.asset("assets/images/png/sbacks.png",
+                            width: double.infinity,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 15,right: 15, bottom: MediaQuery.sizeOf(context).height * 0.15
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(AppStrings.accountAndSettings.tr().toUpperCase(),
+                                  style: const TextStyle(
+                                      color: Color(0xffFFFFFF),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.sizeOf(context).height * 0.6,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.2,),
+                        Expanded(
+                          child:ListView(
+                            children: [
+                              defaultListTile(
+                                  context,
+                                  title: AppStrings.customizeNotifications.tr(),
+                                  onTap: (){
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return CustomizeNotificationScreen();
+                                        });
+                                  },
+                                  src: "assets/images/svg/s1.svg"
+                              ),
+                              defaultListTile(
+                                  context,
+                                  title: AppStrings.languageSettings.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.langSettingScreen.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                        });
+                                  },
+                                  src: "assets/images/svg/s2.svg"
+                              ),defaultListTile(
+                                  context,
+                                  title: AppStrings.updatePassword.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.updatePassword.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                        });
+                                  },
+                                  src: "assets/images/svg/s3.svg"
+                              ),defaultListTile(
+                                  context,
+                                  title: AppStrings.personalInfo.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.personalInfoScreen.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                        });
+                                  },
+                                  src: "assets/images/svg/s4.svg"
+                              ),
+                              if(s1Cache['role'][0] == "painter")defaultListTile(
+                                  context,
+                                  title: AppStrings.teamRank.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.painterRatedTeamsScreen.name,
+                                        pathParameters: {'lang': context.locale.languageCode,});
+                                  },
+                                  src: AppImages.competition
+                              ),defaultListTile(
+                                  context,
+                                  title: AppStrings.aboutUs.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.aboutusScreen.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                        });
+                                  },
+                                  src: "assets/images/svg/s5.svg"
+                              ),
+                              if(s1Cache['role'][0] != "painter" && s1Cache['role'][0] != "merchant")  defaultListTile(
+                                  context,
+                                  title: AppStrings.refundPolicy.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.generalDetails.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                          'slug' : "refund-policy"
+                                        });
+                                  },
+                                  src: "assets/images/svg/s5.svg"
+                              ),
+                              if(s1Cache['role'][0] != "painter" && s1Cache['role'][0] != "merchant")defaultListTile(
+                                  context,
+                                  title: AppStrings.termsAndConditions.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.generalDetails.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                          'slug' : "terms-and-conditions"
+                                        });
+                                  },
+                                  src: "assets/images/svg/s5.svg"
+                              ),
+                              // defaultListTile(
+                              //     context,
+                              //     title: AppStrings.privacyPolicy.tr(),
+                              //     onTap: (){
+                              //       context.pushNamed(AppRoutes.generalDetails.name,
+                              //           pathParameters: {'lang': context.locale.languageCode,
+                              //             'slug' : "privacy-policy"
+                              //           });
+                              //     },
+                              //     src: "assets/images/svg/s5.svg"
+                              // ),
+                              defaultListTile(
+                                  context,
+                                  title: AppStrings.contactUs.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.contactUs.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                        });
+                                  },
+                                  src: "assets/images/svg/s6.svg"
+                              ),defaultListTile(
+                                  context,
+                                  title: AppStrings.faqs.tr(),
+                                  onTap: (){
+                                    context.pushNamed(AppRoutes.faqScreen.name,
+                                        pathParameters: {'lang': context.locale.languageCode,
+                                        });
+                                  },
+                                  src: "assets/images/svg/faqqs.svg"
+                              ),defaultListTile(
+                                  context,
+                                  title: AppStrings.logout.tr(),
+                                  onTap: ()async{
+                                    final appConfigService =
+                                    Provider.of<AppConfigService>(context, listen: false);
+                                    appConfigService.logout().then((v){
+                                      context.goNamed(AppRoutes.splash.name,
+                                          pathParameters: {'lang': context.locale.languageCode});
+                                    });
+                                  },
+                                  src: "assets/images/svg/s7.svg"
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                top: MediaQuery.sizeOf(context).height * 0.13,
+                child: Column(
+                  children: [
+                    Container(
+                      width: 124,
+                      height: 124,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xffFFFFFF)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(124),
+                          child: GestureDetector(
+                            onTap:(){
+                              context.pushNamed(AppRoutes.personalInfoScreen.name,
+                                  pathParameters: {'lang': context.locale.languageCode,
+                                  });
+                            },
+                            child: CachedNetworkImage(
+                                imageUrl:(s1Cache != null)? s1Cache['photo'] : "https://th.bing.com/th/id/OIP.NV-x3Km5_nHK2ZcRuqV5OgHaHa?rs=1&pid=ImgDetMain",
+                                fit: BoxFit.cover,
+                                height: 124,
+                                width: 124,
+                                placeholder: (context, url) => const ShimmerAnimatedLoading(
+                                  width: 63.0,
+                                  height: 63,
+                                  circularRaduis: 63,
+                                ),
+                                errorWidget: (context, url, error) => const Icon(
+                                  Icons.image_not_supported_outlined,
+                                )),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15,),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      width: MediaQuery.sizeOf(context).width * 1,
+                      child: Text((s1Cache != null )?"${s1Cache['name']}".toUpperCase(): "",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: Color(0xffE6007E),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10,),
+                    Text(AppStrings.niceToMeetYou.tr(),
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff1B1B1B)
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  Widget defaultListTile(context, {src, title, onTap})=> Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    child: Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        color: const Color(0xffFFFFFF),
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xffC9CFD2).withOpacity(0.1),
+            blurRadius: AppSizes.s5,
+            spreadRadius: 1,
+          )
+        ],
+      ),
+      child: ListTile(
+        leading: Container(
+            height: 38,
+            width: 38,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: const Color(0xff9B9B9B).withOpacity(0.1)
+            ),
+            child: SizedBox(
+              height: 17,
+              width: 17,
+              child: SvgPicture.asset(src, fit: BoxFit.scaleDown, color: Color(0xffE6007E), width: 15, height: 17,),
+            )),
+        title: Text( "$title".toUpperCase(), style: TextStyle(
+            color:  const Color(0xff1B1B1B).withOpacity(0.7), fontWeight: FontWeight.w500, fontSize: 12
+        ),),
+        trailing: (LocalizationService.isArabic(context: context) == true)?
+        const Icon(Icons.arrow_forward_ios_sharp, size: 18, color: Color(0xffE6007E),):
+        const Icon(Icons.arrow_forward_ios_sharp, size: 18, color: Color(0xffE6007E),),
+        onTap: onTap ?? (){}, // Add your onTap functionality here
+      ),
+    ),
+  );
+}

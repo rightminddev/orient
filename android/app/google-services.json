@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "46719383343",
+    "project_id": "orient-696ae",
+    "storage_bucket": "orient-696ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46719383343:android:481bc90b160c08c7b7d3da",
+        "android_client_info": {
+          "package_name": "com.orientpaints.paintstudio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsoIUq4VCF0hHQqKG3ePkpPzoMHN4u_e8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

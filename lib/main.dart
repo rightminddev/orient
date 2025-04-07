@@ -1,0 +1,151 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive/hive.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/dio.dart';
+import 'package:orient/general_services/backend_services/api_service/dio_api_service/shared.dart';
+import 'package:orient/merchant/main/view_models/merchant_main_view_model.dart';
+import 'package:orient/merchant/orders/view_models/orders.actions.viewmodel.dart';
+import 'package:orient/modules/ecommerce/blog/controller/blog_controller.dart';
+import 'package:orient/modules/ecommerce/bookmark/controller/bookmark_controller.dart';
+import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
+import 'package:orient/modules/ecommerce/main_screen/main_model.dart';
+import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
+import 'package:orient/modules/general/viewmodels/company_structure_info.viewmodel.dart';
+import 'package:orient/modules/home/view_models/home.viewmodel.dart';
+import 'package:orient/modules/notification/logic/notification_provider.dart';
+import 'package:orient/modules/shared_more_screen/contactus/controller/controller.dart';
+import 'package:orient/modules/shared_more_screen/personal_profile/viewmodels/personal_profile.viewmodel.dart';
+import 'package:orient/painter/layout_page/logic/layout_provider.dart';
+import 'package:orient/painter/points/logic/points_cubit/points_provider.dart';
+import 'package:orient/painter/teams/view_models/teams.actions.viewmodel.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'app.dart';
+//import 'package:firebase_analytics/observer.dart';
+import 'firebase_options.dart';
+import 'general_services/app_config.service.dart';
+import 'general_services/conditional_imports/mock_file.dart'
+    if (dart.library.js_util) 'general_services/conditional_imports/change_url_strategy.service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'modules/main_screen/view_models/main_viewmodel.dart';
+import 'platform/platform_is.dart';
+
+GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+// Background handler for Firebase messages
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print("🔹 Background Notification: ${message.notification?.title}");
+}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // register global error handlers to catch , handle and repoting on any kind of error or exception appear in the application
+  /// [ENABLED] IN RELEASE ( DISABLE IN DEVELOPMENT TIME TO APPEAR ANY ERROR APPEAR )
+  // registerErrorHandlers();
+
+  await CacheHelper.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+
+  if (await Permission.notification.isPermanentlyDenied) {
+    openAppSettings();
+  } else {
+    try {
+      const platform = MethodChannel('notification_settings_channel');
+      await platform.invokeMethod('openNotificationSettings');
+    } catch (e) {
+      print("Error opening notification settings: $e");
+    }
+  }
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Request notification permissions
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+
+  // Initialize local notifications
+  var androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+  var iOSSettings = DarwinInitializationSettings();
+  var initializationSettings = InitializationSettings(
+    android: androidSettings,
+    iOS: iOSSettings,
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // Handle background messages
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  /// Retrieve and print the FCM Token
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("FCM Token: $token");
+  await EasyLocalization.ensureInitialized();
+  if (!PlatformIs.android && !PlatformIs.iOS) {
+    changeUrlStrategyService();
+  }
+  GoRouter.optionURLReflectsImperativeAPIs = true;
+  try {
+    final appDocumentDirectory = await getApplicationDocumentsDirectory();
+    Hive.init(appDocumentDirectory.path);
+  } catch (ex, t) {
+    debugPrint('Failed to initialize Hive Database $ex $t');
+  }
+  runApp(EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'assets/json/lang',
+      fallbackLocale: const Locale('en'),
+      // Enable saving the selected locale in local storage
+      saveLocale: true,
+      child: MultiProvider(
+        // inject all providers to make it accessable intire all application via context.
+        providers: [
+          ChangeNotifierProvider(create: (_) => OrderActionsViewModel()),
+          ChangeNotifierProvider(create: (context) => NotificationProviderModel()),
+          ChangeNotifierProvider(create: (context) => PointsProvider()),
+          ChangeNotifierProvider(create: (context) => BookmarkControllerProvider()),
+          ChangeNotifierProvider(create: (_) => BlogProviderModel()),
+          ChangeNotifierProvider(create: (_) => TeamsActionsViewModel()),
+          //ChangeNotifierProvider(create: (context) => CompanyStructureInfoViewModel()..initializeCompanyinformationScreen(context: context)),
+          ChangeNotifierProvider<AppConfigService>(
+            create: (_) => AppConfigService(),
+          ),
+          ChangeNotifierProvider<HomeViewModel>(
+            create: (context) => HomeViewModel()
+          ),
+          ChangeNotifierProvider<MainScreenViewModel>(
+            create: (_) => MainScreenViewModel(),
+          ),
+          ChangeNotifierProvider<PainterMainScreenViewModel>(
+            create: (_) => PainterMainScreenViewModel(),
+          ),
+          ChangeNotifierProvider(create: (_) => PersonalProfileViewModel()),
+          ChangeNotifierProvider<EcommerceMainScreenViewModel>(
+            create: (_) => EcommerceMainScreenViewModel(),
+          ),ChangeNotifierProvider<SearchControllerProvider>(
+            create: (_) => SearchControllerProvider(),
+          ),ChangeNotifierProvider<HomeProvider>(
+            create: (_) => HomeProvider(),
+          ),
+          ChangeNotifierProvider<MerchantMainViewModel>(
+            create: (_) => MerchantMainViewModel(),
+          ),
+        ],
+        child:  MyApp(),
+      )));
+}

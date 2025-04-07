@@ -1,0 +1,36 @@
+class BranchConst{
+  static List<Map<String, dynamic>> egyptCities = [
+    {"city": "Cairo", "latitude": 30.0444, "longitude": 31.2357},
+    {"city": "Alexandria", "latitude": 31.2156, "longitude": 29.9553},
+    {"city": "Giza", "latitude": 30.0131, "longitude": 31.2089},
+    {"city": "Port Said", "latitude": 31.2653, "longitude": 32.3019},
+    {"city": "Suez", "latitude": 29.9668, "longitude": 32.5498},
+    {"city": "Luxor", "latitude": 25.6872, "longitude": 32.6396},
+    {"city": "Aswan", "latitude": 24.0889, "longitude": 32.8998},
+    {"city": "Mansoura", "latitude": 31.0392, "longitude": 31.3785},
+    {"city": "Tanta", "latitude": 30.7865, "longitude": 31.0004},
+    {"city": "Ismailia", "latitude": 30.5965, "longitude": 32.2715},
+    {"city": "Faiyum", "latitude": 29.3083, "longitude": 30.8418},
+    {"city": "Zagazig", "latitude": 30.5877, "longitude": 31.5020},
+    {"city": "Damietta", "latitude": 31.4175, "longitude": 31.8144},
+    {"city": "Assiut", "latitude": 27.1809, "longitude": 31.1837},
+    {"city": "Minya", "latitude": 28.0890, "longitude": 30.7579},
+    {"city": "Beni Suef", "latitude": 29.0661, "longitude": 31.0994},
+    {"city": "Qena", "latitude": 26.1551, "longitude": 32.7160},
+    {"city": "Sohag", "latitude": 26.5560, "longitude": 31.6956},
+    {"city": "Hurghada", "latitude": 27.2579, "longitude": 33.8116},
+    {"city": "Sharm El-Sheikh", "latitude": 27.9158, "longitude": 34.3299},
+    {"city": "El-Mahalla El-Kubra", "latitude": 30.9706, "longitude": 31.1669},
+    {"city": "Qalyub", "latitude": 30.1799, "longitude": 31.2056},
+    {"city": "Banha", "latitude": 30.4623, "longitude": 31.1845},
+    {"city": "Arish", "latitude": 31.1314, "longitude": 33.7984},
+    {"city": "6th of October City", "latitude": 29.9385, "longitude": 30.9138},
+    {"city": "Obour City", "latitude": 30.2233, "longitude": 31.4622},
+    {"city": "Sadat City", "latitude": 30.3843, "longitude": 30.5254},
+    {"city": "New Cairo", "latitude": 30.0307, "longitude": 31.4913},
+    {"city": "Helwan", "latitude": 29.8414, "longitude": 31.3343},
+    {"city": "Borg El Arab", "latitude": 30.9177, "longitude": 29.6116},
+    {"city": "Rafah", "latitude": 31.2472, "longitude": 34.2609}
+  ];
+
+}

@@ -1,0 +1,100 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
+import 'package:orient/constants/app_sizes.dart';
+import 'package:orient/constants/app_strings.dart';
+import 'package:orient/general_services/alert_service/alerts.service.dart';
+import 'package:orient/general_services/localization.service.dart';
+import 'package:orient/modules/ecommerce/home/controller/const.dart';
+import 'package:orient/modules/ecommerce/home/controller/home_controller.dart';
+import 'package:orient/modules/ecommerce/search/controller/search_controller.dart';
+import 'package:orient/modules/ecommerce/single_product/single_product_screen.dart';
+import 'package:orient/modules/home/views/widgets/loading/home_body_loading.dart';
+import 'package:orient/routing/app_router.dart';
+import 'package:orient/utils/components/general_components/general_components.dart';
+import 'package:orient/utils/components/general_components/pagination_widget.dart';
+import 'package:provider/provider.dart';
+
+class SearchProductGridviewWidget extends StatelessWidget {
+  var painter;
+  SearchProductGridviewWidget(this.painter);
+  final ScrollController controller = ScrollController();
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<HomeProvider>(
+        builder: (context, value, child) {
+          return Consumer<SearchControllerProvider>(
+            builder: (context, searchControllerProvider, child){
+              if(searchControllerProvider.isSuccessSearch == true){
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  value.getCheck(context: context, ids: HomeConst.Ids);
+                });
+                if(searchControllerProvider.productss.isEmpty && SearchConstant.filter == true){
+                  Fluttertoast.showToast(
+                      msg: AppStrings.noProductsFounded.tr(),
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 5,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                }
+                searchControllerProvider.isSuccessSearch = false;
+              }
+               if (searchControllerProvider.searchProduct.isEmpty) {
+                return Center(child: Text('No products found.'));
+              } else {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: GridView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    reverse: false,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                      childAspectRatio: .7,
+                    ),
+                    itemBuilder: (context, index){
+                      return  defaultViewProductGrid(
+                          bookMark:  true,
+                          search: true,
+                          viewPrice: painter == "true" ? false : true,
+                          productId: searchControllerProvider.searchProduct[index]['id'],
+                          productName: searchControllerProvider.searchProduct[index]['title'],
+                          productType: searchControllerProvider.searchProduct[index]['category']['title'],
+                          productPrice: "${searchControllerProvider.searchProduct[index]['price_after_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                          discountPrice: "${searchControllerProvider.searchProduct[index]['price_before_discount']} ${LocalizationService.isArabic(context: context)? "جنيه" : "ُEGP"}",
+                          showSale: (searchControllerProvider.searchProduct[index]['price_after_discount'] != searchControllerProvider.searchProduct[index]['price_before_discount'])? true : false ,
+                          showDiscount: (searchControllerProvider.searchProduct[index]['price_after_discount'] != searchControllerProvider.searchProduct[index]['price_before_discount'])? true : false ,
+                          productImageUrl: searchControllerProvider.searchProduct[index]['main_cover'][0]['file'],
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xffC9CFD2).withOpacity(0.5),
+                              blurRadius: AppSizes.s8,
+                              spreadRadius: 1,
+                            )
+                          ],
+                          onTap: (){
+                            print("ID IS ---> ${searchControllerProvider.searchProduct[index]['id']}");
+                            context.pushNamed(AppRoutes.ecommerceSingleProductDetailScreen.name,
+                                pathParameters: {'lang': context.locale.languageCode,
+                                  'viewPrice' : painter == "true" ?'false' : 'true',
+                                  'id' : "${searchControllerProvider.searchProduct[index]['id']}"});
+                          }
+                      );
+                    },
+                    itemCount: searchControllerProvider.searchProduct.length,
+                  ),
+                );
+               }
+            }
+
+          );
+        },);
+  }
+}

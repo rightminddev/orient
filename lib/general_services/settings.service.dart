@@ -99,7 +99,7 @@ abstract class AppSettingsService {
           "check_auth"
         ],
         if(appConfigServiceProvider.token.isNotEmpty) "token": appConfigServiceProvider.token,
-        "device_id": appConfigServiceProvider.deviceInformation.deviceUniqueId
+        "device_id": await appConfigServiceProvider.deviceInformation.deviceUniqueId
       };
       result = await DioApiService().post<Map<String, dynamic>>(
           EndpointServices.getApiEndpoint(EndpointsNames.startApp).url.trim(),

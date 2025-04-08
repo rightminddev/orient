@@ -39,8 +39,6 @@ class SliverAppBarPoints extends StatelessWidget {
         builder: (context, pointsProvider, child) {
           return Consumer<HomeViewModel>(
             builder: (context, value, child) {
-              var balancePoints = 0;
-              var availablePoints = 0;
               final json2String = CacheHelper.getString("US2");
               var us2Cache;
               if (json2String != null && json2String != "") {
@@ -48,8 +46,6 @@ class SliverAppBarPoints extends StatelessWidget {
                     as Map<String, dynamic>; // Convert String back to JSON
                 print("S111111 IS --> ${us2Cache['points']['available']}");
               }
-              balancePoints = us2Cache['points']['total'];
-              availablePoints = us2Cache['points']['available'];
               // value.userSettings2!.balance!.forEach((key, balance) {
               //   balancePoints = balance.max;
               //   availablePoints = balance.available;
@@ -119,7 +115,7 @@ class SliverAppBarPoints extends StatelessWidget {
                             gapH16,
                             Text.rich(TextSpan(children: [
                               TextSpan(
-                                text: availablePoints.toString(),
+                                text: us2Cache['points']['available'].toString(),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -136,7 +132,7 @@ class SliverAppBarPoints extends StatelessWidget {
                               ),
                             ])),
                             Text(
-                              "${AppStrings.from.tr().toUpperCase()} ${balancePoints.toString()} ${AppStrings.myPoints.tr()}",
+                              "${AppStrings.from.tr().toUpperCase()} ${us2Cache['points']['total'].toString()} ${AppStrings.myPoints.tr()}",
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.white,

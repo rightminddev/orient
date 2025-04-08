@@ -209,6 +209,7 @@ class DioApiService implements BackEndServicesInterface {
         queryParameters: queryParameters,
         options: Options(
             sendTimeout: const Duration(minutes: 2),
+            receiveTimeout: const Duration(minutes: 2),
             headers: ApiServiceHelpers.buildHeaders(
                 additionalHeaders: header, context: context)),
       );

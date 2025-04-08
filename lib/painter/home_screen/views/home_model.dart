@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,58 +34,73 @@ class HomeModelProvider extends ChangeNotifier{
      notifyListeners();
    });
  }
-  addRedeemGift({String? serial, context}){
-    isLoading = true;
-    errorMessage = null;
-    notifyListeners();
-    DioHelper.postData(
-        url: "/rm_pointsys/v1/redeem_gift_card",
-        context: context,
-        data: {
-          "serial" : (serial!.contains("-"))? serial.replaceAll('-', '') : serial.toString()
-        }
-    ).then((value){
-      print(value.data);
-      status = value.data['status'];
-      if(value.data['status'] == false){
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            Fluttertoast.showToast(
-                msg: "${value.data['message']}",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          }
-        });
-      }
-      if(value.data['status'] == true){
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            Fluttertoast.showToast(
-                msg: "${value.data['message']}",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-            isSuccess = true;
-          }
-        });
-      }
-      isLoading = false;
-      errorMessage = value.data['message'];
-      notifyListeners();
-    }).catchError((e){
-      isError = true;
-      errorMessage = e.toString();
-      print("ERROR--> $errorMessage");
-      notifyListeners();
-    });
-  }
+ Future<void> addRedeemGift({String? serial, context}) async {
+   isLoading = true;
+   errorMessage = null;
+   notifyListeners();
+
+   try {
+     Response value = await DioHelper.postData(
+       url: "/rm_pointsys/v1/redeem_gift_card",
+       context: context,
+       data: {
+         "serial": (serial?.contains("-") ?? false) ? serial!.replaceAll('-', '') : serial,
+       },
+     );
+
+     print(value.data);
+     status = value.data['status'];
+
+     if (value.data['status'] == false) {
+       if (context.mounted) {
+         Fluttertoast.showToast(
+           msg: "${value.data['message']}",
+           toastLength: Toast.LENGTH_SHORT,
+           gravity: ToastGravity.BOTTOM,
+           timeInSecForIosWeb: 1,
+           backgroundColor: Colors.red,
+           textColor: Colors.white,
+           fontSize: 16.0,
+         );
+       }
+     } else if (value.data['status'] == true) {
+       if (context.mounted) {
+         int secondsShown = 0;
+         const interval = Duration(seconds: 3); // Toast.LENGTH_LONG ~3 sec
+
+         Timer.periodic(interval, (timer) {
+           if (secondsShown >= 6) {
+             timer.cancel();
+           } else {
+             Fluttertoast.showToast(
+               msg: "${value.data['message']}",
+               toastLength: Toast.LENGTH_SHORT,
+               gravity: ToastGravity.BOTTOM,
+               timeInSecForIosWeb: 1,
+               backgroundColor: Colors.green,
+               textColor: Colors.white,
+               fontSize: 16.0,
+             );
+             secondsShown += 3;
+           }
+         });
+
+         isSuccess = true;
+       }
+     }
+
+     errorMessage = value.data['message'];
+   } catch (e) {
+     isError = true;
+     errorMessage = e.toString();
+     print("ERROR--> $errorMessage");
+   } finally {
+     isLoading = false;
+     notifyListeners();
+   }
+
+   // Explicitly return void
+   return;
+ }
+
 }

@@ -77,11 +77,30 @@ class OnboardingViewModel extends ChangeNotifier {
         defaultGeneralSettings.features!.items = (gCache['features']['items'] as List<dynamic>)
             .map((item) => FeatureItems.fromJson(item))
             .toList();
+      }else{
+        print("YES IT IS EMPTY");
+        try{
+          defaultGeneralSettings.features!.items = (defaultGeneralSettingsMap['features']['items'] as List<dynamic>)
+              .map((item) => FeatureItems.fromJson(item))
+              .toList();
+          print("done");
+        }catch(e){
+          print(e.toString());
+        }
+
+      }
+    }else{
+      try{
+        defaultGeneralSettings.features!.items = (defaultGeneralSettingsMap['features']['items'] as List<dynamic>)
+            .map((item) => FeatureItems.fromJson(item))
+            .toList();
+        print("done");
+      }catch(e){
+        print(e.toString());
       }
     }
     return defaultGeneralSettings.features!.items;
   }
-
 
   FeatureItems? getOnboardingDataWithIndex(int index, BuildContext context) {
     final items = getAllOnboardingData(context: context);

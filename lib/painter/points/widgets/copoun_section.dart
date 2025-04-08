@@ -124,7 +124,7 @@ class CopounSection extends StatelessWidget {
                                 onTap: (){
                                   copounCodeController.clear();
                                   Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => QRScannerScreen()));
+                                      MaterialPageRoute(builder: (context) => QRScannerScreen(true)));
                                 },
                                 child: Icon(Icons.qr_code_2, size: 28,),
                               ),

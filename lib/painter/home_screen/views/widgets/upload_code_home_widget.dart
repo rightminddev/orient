@@ -71,7 +71,7 @@ class DefaultTextFieldCodeSendNow extends StatelessWidget {
                               onTap: (){
                                 codeController.clear();
                                 Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => QRScannerScreen()));
+                                    MaterialPageRoute(builder: (context) => QRScannerScreen(false)));
                               },
                               child: Icon(Icons.qr_code_2, size: 28,),
                             ),

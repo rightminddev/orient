@@ -17,9 +17,13 @@ class DioHelper{
         BaseOptions(
             baseUrl: "https://backend.orient-paints.com/api",
             receiveDataWhenStatusError: true,
+            sendTimeout: const Duration(minutes: 2),
+            receiveTimeout: const Duration(minutes: 2),
+            connectTimeout: const Duration(minutes: 2),
             headers: {
               'Accept':'application/json',
               "lang" : "${CacheHelper.getString("lang")}",
+
               // 'Content-Type' : 'multipart/form-data'
               'Content-Type':"application/json",
 

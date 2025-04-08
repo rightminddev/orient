@@ -6,9 +6,9 @@ import '../app_images.dart';
 
 /// getter for default [generalSettings].
 final GeneralSettingsModel defaultGeneralSettings =
-    GeneralSettingsModel.fromJson(_defaultGeneralSettingsMap);
+    GeneralSettingsModel.fromJson(defaultGeneralSettingsMap);
 
-Map<String, dynamic> _defaultGeneralSettingsMap = {
+Map<String, dynamic> defaultGeneralSettingsMap = {
   "last_update_date": "2022-02-16",
   "item_per_page": 9,
   "popup": null,

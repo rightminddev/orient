@@ -35,6 +35,7 @@ class AdminLoginScreenState extends State<AdminLoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("is --> ${widget.fromSplash}");
     return ChangeNotifierProvider<AuthenticationViewModel>(
         create: (context) => viewModel,
         child: Scaffold(
